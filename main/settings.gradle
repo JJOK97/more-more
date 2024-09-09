@@ -1,8 +1,0 @@
-rootProject.name = 'main'
-include 'AccountService',
-        'ClubService',
-        'MemberService',
-        'NotificationService',
-        'PostingService',
-        'ScheduleService'
-
