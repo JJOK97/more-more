@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.enjoytrip.worldcup.model.mapper.WorldcupMapper">
+
+	<resultMap id="best64" type="worldcupDto">
+		<result column="content_id" property="contentId"/>
+		<result column="title" property="name"/>
+		<result column="first_image" property="url"/>
+		<result column="latitude" property="mapy"/>
+		<result column="longitude" property="mapx"/>
+	</resultMap>
+	
+	<resultMap id="top8" type="attractionDto">
+		<result column="content_id" property="contentId"/>
+		<result column="title" property="title"/>
+		<result column="latitude" property="mapy"/>
+		<result column="longitude" property="mapx"/>
+	</resultMap>
+
+	<resultMap id="Pick" type="PickDto">
+		<result column="title" property="name"/>
+		<result column="first_image" property="url"/>
+	</resultMap>
+
+	<select id="getList" resultMap="best64">
+		select content_id, title, first_image, latitude, longitude from attraction_info
+		where first_image != ''
+		order by rand()
+		limit 64;
+	</select>
+	
+	<select id="getTop8ByName" resultMap="top8">
+		select content_id , title, latitude, longitude from attraction_info
+		where title in
+	 	<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	 		#{item.name}
+ 		</foreach>
+	</select>
+	
+	<insert id="updateCnt" parameterType="PickWorldcupDto">
+		insert into pick(content_id, user_id, count)
+		values
+		
+	 	<foreach item="item" index="index" collection="list" separator=",">
+	 		(#{item.contentId}, #{item.userId}, 1)
+ 		</foreach>
+
+		ON DUPLICATE KEY
+		update count = count + 1;
+		
+	</insert>
+	
+	<select id="getPickList" parameterType="String" resultMap="Pick">
+		select a.title, p.count, a.first_image
+		from pick p join attraction_info a
+		on (p.content_id =a.content_id)
+		where p.user_id = #{id} and
+		a.first_image is not null and
+		a.first_image != ""
+		order by p.count desc
+		limit 8;
+	</select>
+	
+	
+	
+</mapper>

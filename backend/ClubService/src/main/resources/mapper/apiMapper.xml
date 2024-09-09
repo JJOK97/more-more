@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.enjoytrip.api.model.mapper.ApiMapper">
+	<resultMap type="attractionDto" id="attDto">
+		<result column="content_id" property="contentId"/>
+		<result column="content_type_id" property="contentTypeId"/>
+		<result column="first_image" property="imgSrc"/>
+		<result column="latitude" property="mapy"/>
+		<result column="longitude" property="mapx"/>
+
+	</resultMap>
+	
+	<select id="listGungu" parameterType="String" resultType="gunguDto">
+		select gugun_code gungu , gugun_name name From gugun Where sido_code=#{sido};
+	</select>
+	<select id="listAttr" parameterType="searchDto" resultMap="attDto">
+		select * from attraction_info 
+		<where>
+		    <if test = 'sido != null and sido != "" and sido != 0 '>
+				and sido_code = #{sido}
+			</if>
+			<if test = 'gungu != null and gungu != "" and gungu != 0 '>
+				and gugun_code = #{gungu}
+			</if>
+			<if test = 'content != null and content != "" and content != 0 '>
+				and content_type_id = #{content};
+			</if>
+			<if test = 'keyword != null and keyword != ""'>
+				and title like CONCAT('%', #{keyword}, '%');
+			</if>
+		</where>
+	</select>
+	
+</mapper>
