@@ -28,6 +28,21 @@ class ClubTest {
         assertThat(generatedClub.getClubCode()).isEqualTo("tttt");
     }
 
+    @DisplayName("클럽 객체는 이미지 이름을 변경할 수 있다.")
+    @Test
+    void changeImageName(){
+        Club club = Club.builder()
+                .clubId(1L)
+                .dues(10L)
+                .clubName("test")
+                .build();
+        club.changeImageName("test");
+        assertThat(club.getClubId()).isEqualTo(1L);
+        assertThat(club.getDues()).isEqualTo(10L);
+        assertThat(club.getClubName()).isEqualTo("test");
+        assertThat(club.getClubImage()).isEqualTo("test");
+    }
 
 
 }
+
