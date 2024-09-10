@@ -1,7 +1,10 @@
 package com.ssafy.clubservice.club.service.domain;
 
+import com.ssafy.clubservice.club.service.UUIDHolder;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.UUID;
 
 @Getter
 public class Club {
@@ -19,4 +22,11 @@ public class Club {
         this.clubCode = clubCode;
         this.clubName = clubName;
     }
+
+    public Club generateClubCode(UUIDHolder uuidHolder){
+        this.clubCode = uuidHolder.getUUID();
+        return this;
+    }
+
+
 }

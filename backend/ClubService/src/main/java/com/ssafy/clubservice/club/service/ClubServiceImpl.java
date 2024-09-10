@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
-
+    private final UUIDHolder uuidHolder;
     public Club create(Club club){
-        System.out.println(club.getClubName());
-        return clubRepository.save(club);
+        Club generatedClub = club.generateClubCode(uuidHolder);
+        return clubRepository.save(generatedClub);
     }
-
 }

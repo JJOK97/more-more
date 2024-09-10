@@ -13,8 +13,7 @@ public class ClubRepositoryImpl implements ClubRepository {
     private final ClubObjectMapper clubObjectMapper;
     @Override
     public Club save(Club club) {
-        System.out.println(club.getClubName());
-        clubMybatisMapper.save(clubObjectMapper.from(club));
+        clubMybatisMapper.save(clubObjectMapper.toEntity(club));
         return club;
     }
 }

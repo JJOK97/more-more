@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class ClubCreateRequest {
-    private Long clubId;
     private String clubImage;
     private Long dues;
     private String clubCode;
