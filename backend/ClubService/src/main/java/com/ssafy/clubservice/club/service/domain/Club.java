@@ -22,11 +22,13 @@ public class Club {
         this.clubCode = clubCode;
         this.clubName = clubName;
     }
-
     public Club generateClubCode(UUIDHolder uuidHolder){
         this.clubCode = uuidHolder.getUUID();
         return this;
     }
 
-
+    public Club changeImageName(String imageFileName) {
+        this.clubImage = imageFileName;
+        return this;
+    }
 }

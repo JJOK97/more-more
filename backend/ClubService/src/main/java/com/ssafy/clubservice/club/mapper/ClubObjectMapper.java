@@ -12,4 +12,5 @@ public interface ClubObjectMapper {
    public ClubEntity toEntity  (Club club);
    public Club toDomain (ClubCreateRequest clubCreateRequest);
    public ClubCreateResponse fromDomain(Club club);
+   public Club fromEntity(ClubEntity clubEntity);
 }

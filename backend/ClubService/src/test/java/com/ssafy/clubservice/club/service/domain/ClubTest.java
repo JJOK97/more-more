@@ -28,4 +28,6 @@ class ClubTest {
         assertThat(generatedClub.getClubCode()).isEqualTo("tttt");
     }
 
+
+
 }

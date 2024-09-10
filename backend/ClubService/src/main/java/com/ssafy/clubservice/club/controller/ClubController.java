@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClubController {
     private final ClubService clubService;
     private final ClubObjectMapper clubObjectMapper;
+
     @PostMapping
-    public ClubCreateResponse create(ClubCreateRequest clubCreateRequest) {
-        Club club = clubService.create(clubObjectMapper.toDomain(clubCreateRequest));
+    public ClubCreateResponse create(@RequestPart("file") MultipartFile file, ClubCreateRequest clubCreateRequest) {
+        Club club = clubService.create(clubObjectMapper.toDomain(clubCreateRequest), file);
         return clubObjectMapper.fromDomain(club);
     }
 }

@@ -10,6 +10,6 @@ public class RandomUUIDHolder implements UUIDHolder {
 
     @Override
     public String getUUID() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().replace("-", "");
     }
 }
