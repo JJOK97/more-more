@@ -1,12 +1,16 @@
 import React from 'react';
 
-import '@/assets/css/common/mainHeader.css';
+import '@/assets/css/common/header.css';
 import logo from '@/assets/img/common/mainHeader/text-logo.svg';
 import search from '@/assets/img/common/mainHeader/search.svg';
 import user from '@/assets/img/common/mainHeader/user.svg';
 import bell from '@/assets/img/common/mainHeader/bell.svg';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
+	const location = useLocation();
+	console.log(location);
+	if (location.pathname !== '/') return null;
 	return (
 		<header>
 			<div className="menu">

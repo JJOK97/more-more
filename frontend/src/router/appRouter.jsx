@@ -4,12 +4,14 @@ import Main from '@/pages/Main';
 import Login from '@/pages/Login/Login';
 import Profile from '@/pages/User/Profile';
 import Feed from '@/pages/feed/Feed';
+import MainHeader from '@/components/common/MainHeader'
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
 
 const AppRouter = () => {
 	return (
 		<Router>
+			<MainHeader />
 			<Header />
 			<main>
 				<Routes>
