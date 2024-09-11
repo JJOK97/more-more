@@ -14,6 +14,8 @@ public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
     private final S3Connector s3Connector;
     private final UUIDHolder uuidHolder;
+
+    @Override
     public Club create(Club club, MultipartFile file){
         Club generatedClub = club.generateClubCode(uuidHolder);
         s3Connector.upload(generatedClub.getClubCode(), file);
@@ -28,5 +30,11 @@ public class ClubServiceImpl implements ClubService {
         Club findClub = clubRepository.findByClubCode(clubCode);
         findClub.update(club);
         return clubRepository.update(findClub);
+    }
+
+    @Override
+    public String updateImage(String clubCode, MultipartFile file) {
+        s3Connector.upload(clubCode, file);
+        return s3Connector.getImageURL(clubCode);
     }
 }
