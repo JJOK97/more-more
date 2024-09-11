@@ -10,4 +10,5 @@ public class ClubCreateRequest {
     private String clubCode;
     private String clubName;
     private String clubIntro;
+    private Long creatorId;
 }

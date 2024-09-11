@@ -10,4 +10,5 @@ public interface ClubMybatisMapper {
     ClubEntity findById(Long clubId);
     void update(ClubEntity entity);
     ClubEntity findByClubCode(String clubCode);
+    Club findWithParticipantsByClubCode(String clubCode);
 }

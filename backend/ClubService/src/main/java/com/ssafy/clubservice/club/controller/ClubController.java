@@ -1,12 +1,13 @@
 package com.ssafy.clubservice.club.controller;
 
 import com.ssafy.clubservice.club.controller.dto.request.ClubCreateRequest;
-import com.ssafy.clubservice.club.controller.dto.request.ClubUpdateImageRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ClubUpdateRequest;
 import com.ssafy.clubservice.club.controller.dto.response.ClubCreateResponse;
+import com.ssafy.clubservice.club.controller.dto.response.ClubReadResponse;
 import com.ssafy.clubservice.club.controller.dto.response.ClubUpdateImageResponse;
 import com.ssafy.clubservice.club.controller.dto.response.ClubUpdateResponse;
 import com.ssafy.clubservice.club.mapper.ClubObjectMapper;
+import com.ssafy.clubservice.club.mapper.ParticipantObjectMapper;
 import com.ssafy.clubservice.club.service.ClubService;
 import com.ssafy.clubservice.club.service.domain.Club;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,17 @@ import org.springframework.web.multipart.MultipartFile;
 public class ClubController {
     private final ClubService clubService;
     private final ClubObjectMapper clubObjectMapper;
+    private final ParticipantObjectMapper participantObjectMapper;
 
     @PostMapping
     public ClubCreateResponse create(@RequestPart("file") MultipartFile file, ClubCreateRequest clubCreateRequest) {
-        Club club = clubService.create(clubObjectMapper.toDomain(clubCreateRequest), file);
+        Club club = clubService.create(clubObjectMapper.toDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
         return clubObjectMapper.toCreateResponse(club);
+    }
+
+    @GetMapping("/{clubCode}")
+    public ClubReadResponse get(@PathVariable("clubCode") String clubCode){
+        Club club = clubService.get(clubCode);
     }
 
     @PutMapping("/{clubCode}")

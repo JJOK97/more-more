@@ -10,4 +10,6 @@ public interface ClubRepository {
     Club update(Club club);
 
     Club findByClubCode(String clubCode);
+
+    Club findWithParticipantsByClubCode(String clubCode);
 }
