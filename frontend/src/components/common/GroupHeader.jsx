@@ -5,8 +5,11 @@ import '@/assets/css/common/header.css';
 import chevron from '@/assets/img/common/mainHeader/chevron-left.svg';
 import user from '@/assets/img/common/mainHeader/user.svg';
 import bell from '@/assets/img/common/mainHeader/bell.svg';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
+	const location = useLocation();
+	if(location.pathname === '/') return null;
 	return (
 		<header>
 			<div className="menu">
