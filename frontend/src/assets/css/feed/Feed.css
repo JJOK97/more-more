@@ -1,25 +1,99 @@
+.group-feed {
+    display: flex;
+    flex-direction: column;
+}
+
 .group-background-image {
 	width: 100%;
-	height: 10rem;
+	height: 7.5rem;
 	object-fit: cover;
 }
 
-.feed-profile-area {
+.feed-area {
+    border-top: 1px solid #DFDFDF;
+    border-bottom: 1px solid #DFDFDF;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
+}
+
+.feed-head-area {
 	display: flex;
-    margin-left: 0.5rem;
+    margin: 0 0.75rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feed-profile-area {
+    display: flex;
+    align-items: center;
 }
 
 .feed-profile-image {
-	width: 2rem;
-	height: 2rem;
+	width: 2.5rem;
+	height: 2.5rem;
+    margin-right: 0.5rem;
+    border-radius: 10rem;
+}
+
+.feed-profile-name {
+    font-weight: 700;
+}
+
+.feed-profile-date {
+    font-size: 0.75rem;
+    color: gray;
+}
+
+.feed-account-history {
+    font-size: 0.75rem;
+    background-color: #F7FFC6;
+    padding: 0.5rem;
+    font-weight: 700;
+    border-radius: 10rem;
+}
+
+.feed-post-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .feed-post-content {
-    margin: 0.5rem;
+    margin: 0 0.75rem;
+    font-size: 0.75rem;
 }
 
 .feed-post-image {
 	width: 100%;
-	height: 15rem;
+	height: 11rem;
 	object-fit: cover;
+}
+
+.feed-att-area {
+    display: flex;
+    margin: 0 0.75rem;
+    gap: 0.75rem;
+}
+
+.feed-att-like {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.feed-att-like-count {
+    color: gray;
+}
+
+.feed-att-comment {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.feed-att-comment-count {
+    color: gray;
 }
