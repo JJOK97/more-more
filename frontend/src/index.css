@@ -2,7 +2,7 @@
 
 body {
 	margin: 0;
-	font-family: 'Pretendard', 'Roboto', sans-serif;
+	font-family: 'Pretendard', 'Roboto', sans-serif !important;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
