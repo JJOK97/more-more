@@ -4,7 +4,7 @@ import com.ssafy.clubservice.club.service.UUIDHolder;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.UUID;
+import java.time.LocalDate;
 
 @Getter
 public class Club {
@@ -13,15 +13,22 @@ public class Club {
     private Long dues;
     private String clubCode;
     private String clubName;
+    private String clubIntro;
+    private LocalDate createdDate;
 
     @Builder
-    private Club(Long clubId, String clubImage, Long dues, String clubCode, String clubName) {
-        this.clubId = clubId;
-        this.clubImage = clubImage;
-        this.dues = dues;
-        this.clubCode = clubCode;
+    public Club(String clubName, String clubCode, Long dues, String clubImage, Long clubId, LocalDate createdDate, String clubIntro) {
+        this.createdDate = createdDate;
+        this.clubIntro = clubIntro;
         this.clubName = clubName;
+        this.clubCode = clubCode;
+        this.dues = dues;
+        this.clubImage = clubImage;
+        this.clubId = clubId;
     }
+
+
+
     public Club generateClubCode(UUIDHolder uuidHolder){
         this.clubCode = uuidHolder.getUUID();
         return this;
