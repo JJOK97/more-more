@@ -1,0 +1,25 @@
+.group-background-image {
+	width: 100%;
+	height: 10rem;
+	object-fit: cover;
+}
+
+.feed-profile-area {
+	display: flex;
+    margin-left: 0.5rem;
+}
+
+.feed-profile-image {
+	width: 2rem;
+	height: 2rem;
+}
+
+.feed-post-content {
+    margin: 0.5rem;
+}
+
+.feed-post-image {
+	width: 100%;
+	height: 15rem;
+	object-fit: cover;
+}
