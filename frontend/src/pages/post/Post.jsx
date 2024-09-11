@@ -1,7 +1,14 @@
-import React from 'react';
+import React from "react";
+import { useParams } from "react-router-dom";
+import datas from "@/pages/feed/data.json"
 
-const Post = ({ post }) => {
-	return (
+const Post = () => {
+    const { id } = useParams();
+    const post = datas.posts[id - 1];
+    console.log(id);
+    console.log(post);
+
+    return (
 		<div className="feed-area">
 			<div className="feed-head-area">
 				<div className="feed-profile-area">
@@ -37,6 +44,6 @@ const Post = ({ post }) => {
 			</div>
 		</div>
 	);
-};
+}
 
 export default Post;
