@@ -31,4 +31,11 @@ public class Club {
         this.clubImage = imageFileName;
         return this;
     }
+
+    public Club update(Club club){
+        this.dues = (club.getDues() != null) ? club.getDues() : this.dues;
+        this.clubName = (club.getClubName() != null) ? club.getClubName() : this.clubName;
+        return this;
+    }
+
 }

@@ -22,4 +22,11 @@ public class ClubServiceImpl implements ClubService {
         clubWithId.changeImageName(imageURL);
         return clubWithId;
     }
+
+    @Override
+    public Club update(String clubCode, Club club) {
+        Club findClub = clubRepository.findByClubCode(clubCode);
+        findClub.update(club);
+        return clubRepository.update(findClub);
+    }
 }

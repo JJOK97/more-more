@@ -37,5 +37,5 @@ out/
 .vscode/
 src/main/resources/application-local.yml
 src/main/resources/mapper/*
-src/main/resources/db.sql
+src/main/resources/schema.sql
 src/main/resources/log4jdbc.log4j2.properties
