@@ -10,8 +10,10 @@
     "test": "vitest"
   },
   "dependencies": {
+    "moment": "^2.30.1",
     "pretendard": "^1.3.9",
     "react": "^18.2.0",
+    "react-calendar": "^5.0.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.2",
     "zustand": "^4.5.5"
