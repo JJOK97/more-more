@@ -1,0 +1,73 @@
+body {
+	display: flex;
+	justify-content: center;
+	height: 100vh;
+	margin: 0;
+}
+
+.dues {
+	margin: 10px;
+	text-decoration: none;
+}
+
+text[name='dues'] {
+	font-size: 12px;
+}
+
+.AccountBalance {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 320px;
+	height: 191px;
+}
+
+.AccountBalance-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: #53b36c;
+	border-radius: 20px;
+	width: 320px;
+	height: 100px;
+	box-shadow: 3px 6px 5px #1a19193e;
+}
+
+text[name='account-number'] {
+	margin: 0px;
+	color: #eae5e5;
+	font-size: 12px;
+}
+
+text[name='account-balance'] {
+	margin: 0px;
+	color: #ffffff;
+	font-size: 22px;
+}
+
+.AccountBalance-Button {
+	display: flex;
+	flex-direction: row;
+	width: 320px;
+	justify-content: space-between;
+	margin-top: 1rem;
+}
+
+.AccountBalance-Button > button {
+	color: #ffffff;
+	width: 8.8rem;
+	border-radius: 14px;
+	box-shadow: 3px 6px 5px #1a19193e;
+}
+
+button[name='fill'] {
+	background-color: #a8d7b0;
+	width: 8.8rem;
+}
+
+button[name='send'] {
+	background-color: #53b36c;
+	width: 8.8rem;
+}
