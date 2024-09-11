@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '@/assets/css/common/header.css';
+import '@/assets/css/common/mainHeader.css';
 import logo from '@/assets/img/header/text-logo.svg';
 import search from '@/assets/img/header/search.svg';
 import user from '@/assets/img/header/user.svg';

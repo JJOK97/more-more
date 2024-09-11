@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
+import Header from '@/components/common/MainHeader';
+import Footer from '@/components/common/GroupFooter';
 
 import '@/assets/css/common/Main.css';
 
