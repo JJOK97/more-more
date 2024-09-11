@@ -1,49 +1,46 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import datas from "@/pages/feed/data.json"
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import PostView from '@/components/postView/PostView';
+import datas from '@/pages/feed/data.json';
+import '@/assets/css/post/Post.css';
 
 const Post = () => {
-    const { id } = useParams();
-    const post = datas.posts[id - 1];
-    console.log(id);
-    console.log(post);
+	const { id } = useParams();
+	const post = datas.posts[id - 1];
+	const comments = post.comments;
+	console.log(comments);
 
-    return (
-		<div className="feed-area">
-			<div className="feed-head-area">
-				<div className="feed-profile-area">
-					<img
-						className="feed-profile-image"
-						src={post.userProfile}
-						alt="프로필"
-					/>
-					<div className="feed-profile-data">
-						<div className="feed-profile-name">{post.userName}</div>
-						<div className="feed-profile-date">{post.date}</div>
-					</div>
+	return (
+		<div>
+			<PostView
+				key={post.postId}
+				post={post}
+			/>
+			<div className="comment-container">
+				<div className="comment-field-name">댓글</div>
+				<div className="comment-input-area">
+					<input className='comment-input-box' placeholder='댓글 작성..' />
+					<img alt="댓글쓰기" />
 				</div>
-				<div className="feed-account-history">#{post.accountHistory}</div>
-			</div>
-			<div className="feed-post-area">
-				<div className="feed-post-content">{post.postContent}</div>
-				<img
-					className="feed-post-image"
-					src={post.postImage}
-					alt="사진"
-				/>
-			</div>
-			<div className="feed-att-area">
-				<div className="feed-att-like">
-					<img className="feed-att-like-icon" src="/feed/Heart.svg" alt="좋아요 아이콘" />
-					<div className="feed-att-like-count">{post.likeCount}</div>
-				</div>
-				<div className="feed-att-comment">
-					<img className="feed-att-comment-icon" src="/feed/chat.svg" alt="댓글 아이콘" />
-					<div className="feed-att-comment-count">{post.commentCount}</div>
+				<div className="comment-list-area">
+					{comments.map((comment) => (
+						<div className='comment-detail-area'>
+							<img
+                                className='comment-detail-profile'
+								src=""
+								alt="프로필 이미지"
+							/>
+							<div className='comment-detail-data'>
+								<div className='comment-detail-name'>{comment.memberName}</div>
+								<div className='comment-detail-date'>{comment.commentDate}</div>
+							</div>
+							<div className='comment-detail-content'>{comment.commentContent}</div>
+						</div>
+					))}
 				</div>
 			</div>
 		</div>
 	);
-}
+};
 
 export default Post;

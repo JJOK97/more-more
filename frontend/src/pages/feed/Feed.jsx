@@ -1,6 +1,6 @@
 import React from 'react';
 import '@/assets/css/feed/Feed.css';
-import FeedPost from '@/components/feed/FeedPost';
+import PostView from '@/components/postView/PostView';
 import datas from "@/pages/feed/data.json"
 
 const Feed = () => {
@@ -55,7 +55,7 @@ const Feed = () => {
 			/>
 			<div className="feed-container">
 				{posts ? posts.map((post) => (
-					<FeedPost key={post.postId} post={post} />
+					<PostView key={post.postId} post={post} />
 				)) : ''}
 			</div>
 		</div>

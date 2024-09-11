@@ -10,7 +10,25 @@
 			"postContent": "이런 눈빛을 한 지은이의 정면 얼굴을 마주할 때마다, 영영 익숙해지지 않을 것 같은 새로운 종류의 박자로 심장이 달음질 친다. 다람쥐 헌 쳇바퀴에 타고파.",
 			"postImage": "/feed/회식.webp",
 			"likeCount": 1,
-			"commentCount": 1
+			"commentCount": 1,
+			"comments": [
+				{
+					"postId":1,
+					"commentsId":1,
+					"memberName":"옥진석",
+					"commentDate":"2024.09.10",
+					"commentContent":"즐거운 시간이었습니다.",
+					"clubId":1
+				},
+				{
+					"postId":1,
+					"commentsId":2,
+					"memberName":"박지환",
+					"commentDate":"2024.09.10",
+					"commentContent":"옥냥이 키우기.",
+					"clubId":1
+				}
+			]
 		},
 		{
 			"postId": 2,
