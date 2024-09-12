@@ -15,7 +15,7 @@ const Footer = () => {
 	return (
 		<footer>
 			<div className="navbar">
-				<img src={boardOn}></img>
+				<img src={boardOff}></img>
 				<img src={accountOff}></img>
 				<img src={calendarOff}></img>
 				<img src={settingOff}></img>
