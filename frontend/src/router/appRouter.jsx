@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import '@/assets/css/common/appRouter.css';
-import MainHeader from '@/components/common/MainHeader'
+import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
+import GroupAccount from '@/pages/groupaccount/GroupAccount';
 import Main from '@/pages/Main';
 import Login from '@/pages/Login/Login';
 import Profile from '@/pages/User/Profile';
@@ -35,6 +36,10 @@ const AppRouter = () => {
 					<Route
 						path="/post/:id"
 						element={<Post />}
+					/>
+					<Route
+						path="/groupaccount"
+						element={<GroupAccount />}
 					/>
 				</Routes>
 			</main>
