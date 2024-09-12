@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Post = ({ post }) => {
+const PostView = ({ post }) => {
 	return (
 		<div className="feed-area">
 			<div className="feed-head-area">
@@ -39,4 +39,4 @@ const Post = ({ post }) => {
 	);
 };
 
-export default Post;
+export default PostView;
