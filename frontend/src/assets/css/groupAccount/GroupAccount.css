@@ -1,17 +1,20 @@
-body {
+.AccountArea {
 	display: flex;
 	justify-content: center;
-	height: 100vh;
-	margin: 0;
 }
 
 .dues {
 	margin: 10px;
 	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 10.3rem;
 }
 
 text[name='dues'] {
 	font-size: 12px;
+	font-weight: 700;
 }
 
 .AccountBalance {
