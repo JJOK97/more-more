@@ -1,14 +1,12 @@
-package com.ssafy.clubservice.club.infrastructure.repository.entity;
+package com.ssafy.clubservice.club.controller.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@Getter
-public class ParticipantEntity {
+@Data
+public class ParticipantCreateResponse {
     private Long participantId;
     private String clubCode;
     private String acceptanceStatus;

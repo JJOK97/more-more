@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ParticipantRepository {
     List<Participant> addAll(List<Participant> participant);
+
+    List<Participant> findInUserId(List<Long> participants);
 }

@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.S3Client;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
     private final ParticipantRepository participantRepository;
@@ -20,11 +23,10 @@ public class ClubServiceImpl implements ClubService {
     private final UUIDHolder uuidHolder;
 
     @Override
-    @Transactional
     public Club create(Club club, Long creatorId, MultipartFile file){
         club = club.generateClubCode(uuidHolder);
         club = club.addCreator(creatorId);
-        s3Connector.upload(club.getClubCode(), file);
+//        s3Connector.upload(club.getClubCode(), file);
         String imageURL = s3Connector.getImageURL(club.getClubCode());
         participantRepository.addAll(club.getParticipants());
         club = clubRepository.save(club);
@@ -48,6 +50,15 @@ public class ClubServiceImpl implements ClubService {
     @Override
     public Club get(String clubCode) {
         return clubRepository.findWithParticipantsByClubCode(clubCode);
+    }
+
+    @Override
+    public List<Participant> addParticipant(String clubCode, List<Participant> participants) {
+        return participantRepository.addAll(participants
+                .stream()
+                .map(participant -> Participant.createClubParticipant(clubCode, participant.getUserId()))
+                .toList()
+        );
     }
 
 }

@@ -17,15 +17,13 @@ public class ParticipantRepositoryImpl implements ParticipantRepository {
 
     @Override
     public List<Participant> addAll(List<Participant> participants) {
-        List<ParticipantEntity> participantEntities = participants
-                .stream()
-                .map(participantObjectMapper::toEntity)
-                .toList();
+        List<ParticipantEntity> participantEntities = participantObjectMapper.fromDomainToEntity(participants);
         participantMybatisMapper.saveAll(participantEntities);
-        return
-                participantEntities
-                        .stream()
-                        .map(participantObjectMapper::fromEntity)
-                        .toList();
+        return findInUserId(participants.stream().map(Participant::getUserId).toList());
+    }
+
+    @Override
+    public List<Participant> findInUserId(List<Long> userIdList) {
+        return participantObjectMapper.fromEntityToDomain(participantMybatisMapper.findInUserId(userIdList));
     }
 }
