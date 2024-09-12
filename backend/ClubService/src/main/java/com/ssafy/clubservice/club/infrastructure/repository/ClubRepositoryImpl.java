@@ -36,4 +36,9 @@ public class ClubRepositoryImpl implements ClubRepository {
         ClubEntity entity = clubMybatisMapper.findByClubCode(clubCode);
         return clubObjectMapper.fromEntity(entity);
     }
+
+    @Override
+    public Club findWithParticipantsByClubCode(String clubCode) {
+        return clubMybatisMapper.findWithParticipantsByClubCode(clubCode);
+    }
 }

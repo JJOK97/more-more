@@ -3,6 +3,7 @@ package com.ssafy.clubservice.club.controller.dto.response;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class ClubCreateResponse {
