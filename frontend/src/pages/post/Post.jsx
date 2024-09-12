@@ -20,14 +20,14 @@ const Post = () => {
 				<div className="comment-field-name">댓글</div>
 				<div className="comment-input-area">
 					<input className='comment-input-box' placeholder='댓글 작성..' />
-					<img alt="댓글쓰기" />
+					<img className='comment-input-button' src='/feed/paper-airplane.svg' alt="댓글쓰기" />
 				</div>
 				<div className="comment-list-area">
 					{comments.map((comment) => (
 						<div className='comment-detail-area'>
 							<img
                                 className='comment-detail-profile'
-								src=""
+								src="/feed/profile_icon3.png"
 								alt="프로필 이미지"
 							/>
 							<div className='comment-detail-data'>
