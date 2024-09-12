@@ -1,6 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Header from '@/components/common/GroupHeader';
+import Calendar from '@/components/calendar/Calendar';
+
+import Footer from '@/components/common/GroupFooter';
+
 import '@/assets/css/common/Main.css';
 
 const Main = () => {
@@ -12,8 +17,11 @@ const Main = () => {
 
 	return (
 		<div className="main">
-			<h1>Welcome to Main Page</h1>
-			<button onClick={handleLogin}>Go to Login</button>
+			<Header />
+			<div className="body">
+				<Calendar />
+			</div>
+			<Footer />
 		</div>
 	);
 };
