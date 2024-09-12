@@ -5,6 +5,7 @@ body {
 	font-family: 'Pretendard', 'Roboto', sans-serif !important;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	background-color: #FFFDF5;
 }
 
 code {

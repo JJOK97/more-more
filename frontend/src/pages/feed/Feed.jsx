@@ -58,6 +58,7 @@ const Feed = () => {
 					<PostView key={post.postId} post={post} />
 				)) : ''}
 			</div>
+			<img className='feed-write-btn' src='/feed/edit.svg' />
 		</div>
 	);
 };
