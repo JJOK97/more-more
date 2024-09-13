@@ -16,3 +16,4 @@ public class ClubCreateResponse {
     private String clubIntro;
     List<ParticipantCreateResponse> participants;
 }
+

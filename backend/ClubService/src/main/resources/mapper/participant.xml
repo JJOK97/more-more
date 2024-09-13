@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.clubservice.club.infrastructure.repository.ParticipantMybatisMapper">
+    <insert id="saveAll" parameterType="participantEntity">
+        insert into participant (club_code, user_id, club_role, acceptance_status) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.clubCode}, #{item.userId}, #{item.clubRole}, #{item.acceptanceStatus})
+        </foreach>
+    </insert>
+
+
+    <select id="findInUserIdByParticipants" resultType="participantEntity">
+        SELECT participant_id, club_code, acceptance_status, club_role, user_id, created_date
+        FROM participant
+        <where>
+            <if test="userIds != null">
+            AND user_id IN
+                <foreach item="id" collection="userIds" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="clubCode != null">
+                AND club_code=#{clubCode}
+            </if>
+        </where>
+    </select>
+    <select id="getParticipants" resultType="participantEntity">
+        SELECT p.participant_id, p.club_code, p.acceptance_status, p.club_role, p.user_id, p.created_date
+        FROM participant p join club c
+        on p.club_code = c.club_code
+        WHERE c.club_code = #{clubCode}
+    </select>
+</mapper>
