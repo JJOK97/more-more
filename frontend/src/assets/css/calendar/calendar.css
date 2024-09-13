@@ -2,106 +2,146 @@ button {
 	color: black !important;
 }
 
+.react-calendar__navigation__label {
+	background-color: #fffdf5;
+}
+
+.react-calendar__navigation__arrow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #fffdf5;
+}
+
 .react-calendar__month-view__days__day--weekend {
 	color: #d10000 !important;
 }
 
 .react-calendar__month-view__weekdays__weekday abbr {
-	text-decoration: none; /* 밑줄 제거 */
+	text-decoration: none;
 }
 
 .react-calendar {
 	border: none;
+	padding: 0.5rem;
+	background-color: #fffdf5;
+	width: 100%;
+	height: auto;
+	flex-grow: 1;
 }
 
 .react-calendar__navigation {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
 	background-color: #fffdf5;
-	margin-bottom: 0;
 }
 
 .react-calendar__viewContainer {
-	border: 1px solid black;
+	background-color: white;
+	border: 1px solid rgba(0, 0, 0, 0.25);
+	border-radius: 5px;
 }
 
-.StyledCalendarWrapper {
+.styledCalendarWrapper {
 	width: 100%;
+	max-width: 600px;
+	height: 40vh;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 	position: relative;
 }
 
-.StyledCalendarWrapper .react-calendar {
-	width: 100%;
-	border: none;
-	border-radius: 0.5rem;
-	box-shadow: 4px 2px 10px 0px rgba(0, 0, 0, 0.13);
-	padding: 3% 5%;
-	background-color: white;
+.react-calendar__year-view {
+	margin-top: 3%;
+	height: 27vh;
 }
 
-.StyledCalendarWrapper .react-calendar__month-view abbr {
+.react-calendar__month_view {
+	margin: 2.5% 0;
+}
+
+.styledCalendarWrapper .react-calendar__month-view abbr {
 	color: gray;
 }
 
-.StyledCalendarWrapper .react-calendar__navigation {
+.styledCalendarWrapper .react-calendar__navigation {
+	position: relative;
 	justify-content: center;
+	margin-bottom: 1.5%;
 }
 
-.StyledCalendarWrapper .react-calendar__navigation button {
+.styledCalendarWrapper .react-calendar__navigation button {
 	font-weight: 800;
-	font-size: 1rem;
+	font-size: 1.2rem;
 }
 
-.StyledCalendarWrapper .react-calendar__navigation button:focus {
-	background-color: white;
+.styledCalendarWrapper .react-calendar__navigation button:focus {
+	background-color: #fffdf5;
 }
 
-.StyledCalendarWrapper .react-calendar__navigation button:disabled {
-	background-color: white;
+.styledCalendarWrapper .react-calendar__navigation button:hover {
+	background-color: #fff6de;
+}
+
+.styledCalendarWrapper .react-calendar__navigation button:disabled {
+	background-color: #fffdf5;
 	color: black;
 }
 
-.StyledCalendarWrapper .react-calendar__navigation__label {
+.styledCalendarWrapper .react-calendar__navigation__label {
 	flex-grow: 0 !important;
 }
 
-.StyledCalendarWrapper .react-calendar__month-view__weekdays abbr {
+.styledCalendarWrapper .react-calendar__month-view__weekdays abbr {
 	text-decoration: none;
 	font-weight: 800;
 }
 
-.StyledCalendarWrapper .react-calendar__month-view__weekdays__weekday--weekend abbr[title='일요일'] {
+.styledCalendarWrapper .react-calendar__month-view__weekdays__weekday--weekend abbr[title='일요일'] {
 	color: red;
 }
 
-.StyledCalendarWrapper .react-calendar__tile--now {
+.styledCalendarWrapper .react-calendar__tile--now {
 	background: none;
 }
 
-.StyledCalendarWrapper .react-calendar__tile--now abbr {
-	color: blue;
+.styledCalendarWrapper .react-calendar__tile--now abbr {
+	color: #ffb600;
 }
 
-.StyledCalendarWrapper .react-calendar__year-view__months__month {
+.styledCalendarWrapper .react-calendar__year-view__months__month {
 	border-radius: 0.8rem;
-	background-color: lightgray;
 	padding: 0;
+	border: 0.5px solid lightgray;
+	flex: 0 0 calc(33.3333% - 8px) !important;
+	margin-inline-start: 3px !important;
+	margin-inline-end: 5px !important;
+	margin-block-end: 0px;
+	padding: 0px 0.6667px;
+	font-size: 0.9rem;
+	font-weight: 600;
+
+	height: 20%;
 }
 
-.StyledCalendarWrapper .react-calendar__tile--hasActive {
-	background-color: blue;
+.styledCalendarWrapper .react-calendar__tile--hasActive {
+	background-color: #fff6de;
 }
 
-.StyledCalendarWrapper .react-calendar__tile--hasActive abbr {
-	color: white;
+.styledCalendarWrapper .react-calendar__tile--hasActive abbr {
+	color: #ffb600;
 }
 
-.StyledCalendarWrapper .react-calendar__tile {
+.styledCalendarWrapper .react-calendar__tile {
 	padding: 5px 0px 18px;
 	position: relative;
 }
 
-.StyledCalendarWrapper .react-calendar__year-view__months__month {
+.styledCalendarWrapper .react-calendar__year-view__months__month {
 	flex: 0 0 calc(33.3333% - 10px) !important;
 	margin-inline-start: 5px !important;
 	margin-inline-end: 5px !important;
@@ -110,35 +150,40 @@ button {
 	font-size: 0.9rem;
 	font-weight: 600;
 	color: gray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-.StyledCalendarWrapper .react-calendar__tile:enabled:hover,
-.StyledCalendarWrapper .react-calendar__tile:enabled:focus,
-.StyledCalendarWrapper .react-calendar__tile--active {
-	background-color: yellow;
+.styledCalendarWrapper .react-calendar__tile:enabled:hover,
+.styledCalendarWrapper .react-calendar__tile:enabled:focus,
+.styledCalendarWrapper .react-calendar__tile--active {
+	background-color: #fff6de;
 	border-radius: 0.3rem;
+	font-weight: bold;
 }
 
-.StyledDate {
+.styledDate {
 	position: absolute;
-	right: 7%;
-	top: 6%;
-	background-color: blue;
-	color: yellow;
+	right: 3%;
+	top: 10.3%;
+	transform: translateY(-50%);
+	background-color: #ffb600;
+	color: #ffffff;
 	width: 18%;
 	min-width: fit-content;
 	height: 1.5rem;
 	text-align: center;
-	margin: 0 auto;
 	line-height: 1.6rem;
 	border-radius: 15px;
 	font-size: 0.8rem;
 	font-weight: 800;
+	z-index: 10;
 }
 
-.StyledToday {
+.styledToday {
 	font-size: x-small;
-	color: brown;
+	color: #ffb600;
 	font-weight: 600;
 	position: absolute;
 	top: 50%;
@@ -146,8 +191,8 @@ button {
 	transform: translateX(-50%);
 }
 
-.StyledDot {
-	background-color: brown;
+.styledDot {
+	background-color: #ffb600;
 	border-radius: 50%;
 	width: 0.3rem;
 	height: 0.3rem;
@@ -155,4 +200,8 @@ button {
 	top: 60%;
 	left: 50%;
 	transform: translateX(-50%);
+}
+
+div.react-calendar__viewContainer > div > div {
+	height: 100%;
 }
