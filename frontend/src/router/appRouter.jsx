@@ -9,6 +9,7 @@ import Login from '@/pages/Login/Login';
 import Profile from '@/pages/User/Profile';
 import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
+import CreatePost from '@/pages/createPost/CreatePost';
 
 const AppRouter = () => {
 	return (
@@ -36,6 +37,10 @@ const AppRouter = () => {
 					<Route
 						path="/post/:id"
 						element={<Post />}
+					/>
+					<Route
+						path="/create-post"
+						element={<CreatePost />}
 					/>
 					<Route
 						path="/groupaccount"

@@ -59,6 +59,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    text-decoration: none;
+}
+
+.feed-post-area:visited {
+    color: inherit;
 }
 
 .feed-post-content {
