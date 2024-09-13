@@ -1,6 +1,71 @@
-.AccountArea {
+.account-area {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
+}
+
+.deposit-detail-one {
+	display: flex;
+	flex-direction: column;
+	margin: 1rem;
+}
+
+.deposit-list-place-price {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-bottom: 0.3rem;
+}
+
+.deposit-list-time-balance {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.deposit-list {
+	width: 100%;
+	height: 65%;
+	background-color: #ffffff;
+	border: 0.5px solid lightGray;
+}
+
+.deposit-list-date {
+	font-size: 14px;
+	font-weight: 700;
+	margin-left: 1rem;
+}
+
+.deposit-list-place {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.deposit-list-price {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.deposit-list-time {
+	font-size: 14px;
+	font-weight: 700;
+	color: #959494;
+}
+
+.deposit-list-balance {
+	font-size: 14px;
+	font-weight: 700;
+	color: #959494;
+}
+
+.searchStandard {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin: 1rem;
 }
 
 .dues {
@@ -17,7 +82,7 @@ text[name='dues'] {
 	font-weight: 700;
 }
 
-.AccountBalance {
+.account-balance {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -26,7 +91,7 @@ text[name='dues'] {
 	height: 191px;
 }
 
-.AccountBalance-info {
+.account-balance-info {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -50,7 +115,7 @@ text[name='account-balance'] {
 	font-size: 22px;
 }
 
-.AccountBalance-Button {
+.account-balance-button {
 	display: flex;
 	flex-direction: row;
 	width: 320px;
@@ -58,7 +123,7 @@ text[name='account-balance'] {
 	margin-top: 1rem;
 }
 
-.AccountBalance-Button > button {
+.account-balance-button > button {
 	color: #ffffff;
 	width: 8.8rem;
 	border-radius: 14px;
