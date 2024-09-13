@@ -55,6 +55,11 @@ button {
 	position: relative;
 }
 
+.react-calendar__year-view {
+	margin-top: 3%;
+	height: 27vh;
+}
+
 .react-calendar__month_view {
 	margin: 2.5% 0;
 }
@@ -79,7 +84,7 @@ button {
 }
 
 .styledCalendarWrapper .react-calendar__navigation button:hover {
-	background-color: #ffeea9;
+	background-color: #fff6de;
 }
 
 .styledCalendarWrapper .react-calendar__navigation button:disabled {
@@ -110,16 +115,25 @@ button {
 
 .styledCalendarWrapper .react-calendar__year-view__months__month {
 	border-radius: 0.8rem;
-	background-color: lightgray;
 	padding: 0;
+	border: 0.5px solid lightgray;
+	flex: 0 0 calc(33.3333% - 8px) !important;
+	margin-inline-start: 3px !important;
+	margin-inline-end: 5px !important;
+	margin-block-end: 0px;
+	padding: 0px 0.6667px;
+	font-size: 0.9rem;
+	font-weight: 600;
+
+	height: 20%;
 }
 
 .styledCalendarWrapper .react-calendar__tile--hasActive {
-	background-color: #ffb600;
+	background-color: #fff6de;
 }
 
 .styledCalendarWrapper .react-calendar__tile--hasActive abbr {
-	color: white;
+	color: #ffb600;
 }
 
 .styledCalendarWrapper .react-calendar__tile {
@@ -136,12 +150,15 @@ button {
 	font-size: 0.9rem;
 	font-weight: 600;
 	color: gray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .styledCalendarWrapper .react-calendar__tile:enabled:hover,
 .styledCalendarWrapper .react-calendar__tile:enabled:focus,
 .styledCalendarWrapper .react-calendar__tile--active {
-	background-color: #ffebb9;
+	background-color: #fff6de;
 	border-radius: 0.3rem;
 	font-weight: bold;
 }
@@ -183,4 +200,8 @@ button {
 	top: 60%;
 	left: 50%;
 	transform: translateX(-50%);
+}
+
+div.react-calendar__viewContainer > div > div {
+	height: 100%;
 }
