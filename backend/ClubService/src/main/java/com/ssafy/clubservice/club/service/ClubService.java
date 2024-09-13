@@ -13,7 +13,11 @@ public interface ClubService {
 
     String updateImage(String clubCode, MultipartFile file);
 
-    Club get(String clubCode);
-
     List<Participant> addParticipant(String clubCode, List<Participant> participants);
+
+    List<Participant> getParticipants(String clubCode);
+
+    Club getClub(String clubCode);
+
+    List<Club> getClubs(String memberId);
 }

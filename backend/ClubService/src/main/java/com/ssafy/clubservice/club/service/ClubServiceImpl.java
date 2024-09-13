@@ -9,13 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.services.s3.S3Client;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
     private final ParticipantRepository participantRepository;
@@ -23,18 +22,21 @@ public class ClubServiceImpl implements ClubService {
     private final UUIDHolder uuidHolder;
 
     @Override
+    @Transactional
     public Club create(Club club, Long creatorId, MultipartFile file){
         club = club.generateClubCode(uuidHolder);
         club = club.addCreator(creatorId);
 //        s3Connector.upload(club.getClubCode(), file);
         String imageURL = s3Connector.getImageURL(club.getClubCode());
-        participantRepository.addAll(club.getParticipants());
+        List<Participant> participants = participantRepository.addAll(club.getClubCode(), club.getParticipants());
         club = clubRepository.save(club);
-        club.changeImageName(imageURL);
+        club = club.changeImageName(imageURL);
+        club = club.changeParticipant(participants);
         return club;
     }
 
     @Override
+    @Transactional
     public Club update(String clubCode, Club club) {
         Club findClub = clubRepository.findByClubCode(clubCode);
         findClub.update(club);
@@ -48,17 +50,31 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public Club get(String clubCode) {
-        return clubRepository.findWithParticipantsByClubCode(clubCode);
+    public Club getClub(String clubCode) {
+        Club club = clubRepository.findByClubCode(clubCode);
+        club.changeImageName(s3Connector.getImageURL(clubCode));
+        club.changeParticipant(participantRepository.getParticipants(clubCode));
+        return club;
     }
 
     @Override
+    public List<Club> getClubs(String memberId) {
+        return clubRepository.findClubByMemberId(memberId);
+    }
+
+
+    @Override
     public List<Participant> addParticipant(String clubCode, List<Participant> participants) {
-        return participantRepository.addAll(participants
+        return participantRepository.addAll(clubCode, participants
                 .stream()
                 .map(participant -> Participant.createClubParticipant(clubCode, participant.getUserId()))
                 .toList()
         );
+    }
+
+    @Override
+    public List<Participant> getParticipants(String clubCode) {
+        return participantRepository.getParticipants(clubCode);
     }
 
 }
