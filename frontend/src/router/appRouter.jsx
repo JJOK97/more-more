@@ -3,6 +3,7 @@ import '@/assets/css/common/appRouter.css';
 import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
+import GroupAccount from '@/pages/groupaccount/GroupAccount';
 import Main from '@/pages/Main';
 import Login from '@/pages/Login/Login';
 import Profile from '@/pages/User/Profile';
@@ -40,6 +41,10 @@ const AppRouter = () => {
 					<Route
 						path="/create-post"
 						element={<CreatePost />}
+					/>
+					<Route
+						path="/groupaccount"
+						element={<GroupAccount />}
 					/>
 				</Routes>
 			</main>
