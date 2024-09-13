@@ -79,3 +79,35 @@ textarea::placeholder {
     color: white;
     font-family: 'Pretendard';
 }
+
+.create-post-image-grid {
+    display: flex;
+    flex-direction: column;
+    /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
+    gap: 0.5rem;
+}
+
+.create-post-image-item {
+    position: relative;
+}
+
+.create-post-uploaded-image {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.create-post-remove-image {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+}
