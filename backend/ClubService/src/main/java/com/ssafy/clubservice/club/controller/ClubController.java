@@ -25,15 +25,27 @@ public class ClubController {
 
     @PostMapping
     public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file, ClubCreateRequest clubCreateRequest) {
-        Club club = clubService.create(clubObjectMapper.toDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
-        return clubObjectMapper.toCreateResponse(club);
+        Club club = clubService.create(clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
+        return clubObjectMapper.fromDomainToCreateResponse(club);
     }
 
 
     @GetMapping("/{clubCode}")
     public ClubReadResponse getClub(@PathVariable("clubCode") String clubCode){
-        Club club = clubService.get(clubCode);
-        return null;
+        Club club = clubService.getClub(clubCode);
+        return clubObjectMapper.fromDomainToReadResponse(club);
+    }
+
+    @GetMapping
+    public List<ClubReadResponse> getClubs(@RequestParam("memberId") String memberId) {
+        List<Club> clubs = clubService.getClubs(memberId);
+        return clubObjectMapper.fromDomainToReadResponse(clubs);
+    }
+
+    @GetMapping("/{clubCode}/participants")
+    public List<ParticipantReadResponse> getParticipants(@PathVariable("clubCode") String clubCode){
+        List<Participant> participants = clubService.getParticipants(clubCode);
+        return participantObjectMapper.fromDomainToReadResponse(participants);
     }
 
     @PostMapping("/{clubCode}/participants")
@@ -45,8 +57,8 @@ public class ClubController {
 
     @PutMapping("/{clubCode}")
     public ClubUpdateResponse update(@PathVariable("clubCode") String clubCode, @RequestBody ClubUpdateRequest clubUpdateRequest){
-        Club club = clubService.update(clubCode, clubObjectMapper.toDomain(clubUpdateRequest));
-        return clubObjectMapper.toUpdatesResponse(club);
+        Club club = clubService.update(clubCode, clubObjectMapper.fromUpdateRequestToDomain(clubUpdateRequest));
+        return clubObjectMapper.fromDomainToUpdatesResponse(club);
     }
 
 

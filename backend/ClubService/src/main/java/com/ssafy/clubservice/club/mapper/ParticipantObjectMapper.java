@@ -2,6 +2,7 @@ package com.ssafy.clubservice.club.mapper;
 
 import com.ssafy.clubservice.club.controller.dto.request.ParticipantCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.response.ParticipantCreateResponse;
+import com.ssafy.clubservice.club.controller.dto.response.ParticipantReadResponse;
 import com.ssafy.clubservice.club.infrastructure.repository.entity.ParticipantEntity;
 import com.ssafy.clubservice.club.service.domain.Participant;
 import org.mapstruct.Mapper;
@@ -18,4 +19,7 @@ public interface ParticipantObjectMapper {
     List<Participant> fromCreateRequestToDomain(List<ParticipantCreateRequest> participantCreateRequest);
     ParticipantCreateResponse fromDomainToCreateResponse(Participant participant);
     List<ParticipantCreateResponse> fromDomainToCreateResponse(List<Participant> participants);
+
+    ParticipantReadResponse fromDomainToReadResponse(Participant participant);
+    List<ParticipantReadResponse> fromDomainToReadResponse(List<Participant> participants);
 }

@@ -31,7 +31,7 @@ public class Club {
     }
 
     public Club addCreator(Long creatorId) {
-        this.participants.add(Participant.createClubParticipant(this.clubCode, creatorId));
+        this.participants.add(Participant.createClubCreator(this.clubCode, creatorId));
         return this;
     }
 
@@ -52,4 +52,8 @@ public class Club {
         return this;
     }
 
+    public Club changeParticipant(List<Participant> participants) {
+        this.participants = participants;
+        return this;
+    }
 }
