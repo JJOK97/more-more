@@ -6,7 +6,7 @@ create table IF NOT EXISTS MOREMORE.CLUB(
     club_code VARCHAR(100) NOT NULL unique,
     club_name VARCHAR(100) NOT NULL,
     club_intro TEXT NOT NULL,
-    created_date DATE OT NULL default (CURRENT_DATE)
+    created_date DATE NULL default (CURRENT_DATE)
     );
 
 create table IF NOT EXISTS MOREMORE.PARTICIPANT(
