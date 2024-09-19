@@ -1,3 +1,118 @@
+.deposit-payment-status {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	background-color: #ffffff;
+	border-radius: 20px;
+	width: 340px;
+	height: 180px;
+	justify-content: space-between;
+}
+
+.filter-date {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	font-weight: 700;
+	font-size: 16px;
+	margin: 1.3rem;
+}
+
+.dues-group-member-status input {
+	accent-color: #53b36c;
+}
+
+.dues-group-member-status checkbox:checked {
+	color: #ffffff;
+}
+.dues-group-member-status checkbox:checked {
+	color: #ffffff;
+}
+
+.dues-member-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding-top: 1rem;
+}
+
+.dues-one-member {
+	display: flex;
+	flex-direction: row;
+	width: 40%;
+	justify-content: space-between;
+	margin-bottom: 1.5rem;
+	align-items: center;
+}
+
+.progress-bar {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.dues-group-member-status {
+	font-weight: 700;
+	font-size: 16px;
+	background-color: white;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	height: 85vh;
+	padding: 2rem;
+}
+
+.dues-member-gather-count {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: 1rem;
+}
+
+.dues-gather {
+	color: #53b36c;
+}
+
+.dues-people-count {
+	color: #53b36c;
+}
+
+.deposit-status-payment {
+	display: flex;
+	justify-content: center;
+}
+
+.dues-payment {
+	margin: 1.5rem;
+	font-weight: 700;
+}
+
+.dues-payment span {
+	color: #53b36c;
+}
+
+.dues-payment-info {
+	margin-left: 1rem;
+	padding-bottom: 1rem;
+}
+
+.dues-payment-info li {
+	margin-bottom: 1rem;
+}
+
+.dues-payment-info > li::marker {
+	color: #53b36c;
+}
+
+.payment-date {
+	color: #53b36c;
+	font-weight: 700;
+}
+
+.payment-this-month {
+	color: #53b36c;
+	font-weight: 700;
+}
+
 .account-area {
 	display: flex;
 	flex-direction: column;

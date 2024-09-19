@@ -1,27 +1,50 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import Header from '@/components/common/GroupHeader';
-import Calendar from '@/components/calendar/Calendar';
-
-import Footer from '@/components/common/GroupFooter';
-
 import '@/assets/css/common/Main.css';
+import datas from '@/components/main/data.json';
+import Group from '../components/main/Group';
 
 const Main = () => {
-	const navigate = useNavigate();
-
-	const handleLogin = () => {
-		navigate('/login');
-	};
-
+	const groups = datas.groups;
 	return (
-		<div className="main">
-			<Header />
-			<div className="body">
-				<Calendar />
+		<div className="main-container">
+			<div className="main-profile-area">
+				<div className="main-profile-title">내 정보</div>
+				<div className="main-profile-data">
+					<img
+						className="main-profile-image"
+						src="/feed/profile_icon2.png"
+						alt="프로필 이미지"
+					/>
+					<div className="main-profile-info">
+						<div className="main-profile-name">옥진석님</div>
+						<div className="main-profile-bank-info">
+							<img
+								className="main-bank-logo"
+								src="/main/BNK.png"
+								alt="은행로고"
+							/>
+							<div className="main-bank-name">경남</div>
+							<div className="main-account-number">578-21-0227054</div>
+						</div>
+						<div className="main-profile-balance">394,227원</div>
+					</div>
+				</div>
 			</div>
-			<Footer />
+			<div className="main-groups-area">
+				<div className="main-groups-title">내 그룹</div>
+				<div className="main-groups-list">
+					{groups ? (
+						groups.map((group) => (
+							<Group
+								key={group.groupId}
+								group={group}
+							/>
+						))
+					) : (
+						<div className="main-no-groups-message">그룹이 없습니다.</div>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };
