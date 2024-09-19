@@ -28,11 +28,11 @@ public class ClubServiceImpl implements ClubService {
         club = club.addCreator(creatorId);
 //        s3Connector.upload(club.getClubCode(), file);
         String imageURL = s3Connector.getImageURL(club.getClubCode());
+        Club retClub = clubRepository.save(club);
         List<Participant> participants = participantRepository.addAll(club.getClubCode(), club.getParticipants());
-        club = clubRepository.save(club);
-        club = club.changeImageName(imageURL);
-        club = club.changeParticipant(participants);
-        return club;
+        retClub = retClub.changeImageName(imageURL);
+        retClub = retClub.changeParticipant(participants);
+        return retClub;
     }
 
     @Override
