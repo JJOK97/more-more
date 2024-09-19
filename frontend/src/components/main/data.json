@@ -11,7 +11,7 @@
             "numberOfPeople":6
         },
         {
-            "groupId":1,
+            "groupId":2,
             "groupCode":"qwer",
             "dues":100000,
             "groupName":"ssafy 11기 6반",

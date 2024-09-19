@@ -12,7 +12,7 @@ const Main = () => {
 				<div className="main-profile-data">
 					<img
 						className="main-profile-image"
-						src="/feed/jinsukProfile.png"
+						src="/feed/profile_icon2.png"
 						alt="프로필 이미지"
 					/>
 					<div className="main-profile-info">
