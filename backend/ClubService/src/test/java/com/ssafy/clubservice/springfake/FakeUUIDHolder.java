@@ -1,4 +1,4 @@
-package com.ssafy.clubservice.club.controller.springfake;
+package com.ssafy.clubservice.springfake;
 
 import com.ssafy.clubservice.club.service.UUIDHolder;
 import org.springframework.context.annotation.Profile;

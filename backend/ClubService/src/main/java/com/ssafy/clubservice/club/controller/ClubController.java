@@ -61,14 +61,10 @@ public class ClubController {
         return clubObjectMapper.fromDomainToUpdatesResponse(club);
     }
 
-
-    @PutMapping("/{clubCode}/image")
+    @PostMapping("/{clubCode}/image")
     public ClubUpdateImageResponse updateImage(@PathVariable("clubCode") String clubCode,
                                                @RequestPart("file") MultipartFile file){
         return new ClubUpdateImageResponse(clubService.updateImage(clubCode, file));
     }
-
-
-
 
 }

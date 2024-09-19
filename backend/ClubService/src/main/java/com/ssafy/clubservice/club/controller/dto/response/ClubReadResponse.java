@@ -15,5 +15,4 @@ public class ClubReadResponse {
     private String clubName;
     private String clubIntro;
     private LocalDate createdDate;
-    List<ParticipantReadResponse> participants = new ArrayList<>();
 }
