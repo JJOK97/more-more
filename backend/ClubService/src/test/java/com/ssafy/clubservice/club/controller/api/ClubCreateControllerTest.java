@@ -1,13 +1,11 @@
-package com.ssafy.clubservice.club.controller;
+package com.ssafy.clubservice.club.controller.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ssafy.clubservice.club.controller.dto.request.ClubCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ParticipantCreateRequest;
-import com.ssafy.clubservice.club.controller.dto.response.ClubReadResponse;
 import com.ssafy.clubservice.club.controller.dto.response.ParticipantCreateResponse;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
