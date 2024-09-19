@@ -8,4 +8,6 @@ import java.util.List;
 public interface PostingService {
     public Posting create(Posting posting);
     List<Posting> findByClubCode(String clubCode);
+
+
 }

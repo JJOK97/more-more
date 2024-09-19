@@ -1,5 +1,6 @@
 package com.ssafy.postingservice.posting.infrastructure.repository;
 
+import com.ssafy.postingservice.posting.controller.dto.request.CommentUpdateRequest;
 import com.ssafy.postingservice.posting.infrastructure.repository.entity.CommentEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,4 +12,8 @@ public interface CommentMybatisMapper {
     void saveComment(CommentEntity entity);
 
     List<CommentEntity> getCommentByPostId(Long postingId);
+
+    void deleteComment(Long commentId);
+
+    void updateComment(CommentEntity entity);
 }

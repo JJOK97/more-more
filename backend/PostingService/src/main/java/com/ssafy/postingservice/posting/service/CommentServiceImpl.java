@@ -1,6 +1,6 @@
 package com.ssafy.postingservice.posting.service;
 
-import com.ssafy.postingservice.posting.controller.dto.response.CommentFindResponse;
+import com.ssafy.postingservice.posting.controller.dto.request.CommentUpdateRequest;
 import com.ssafy.postingservice.posting.infrastructure.repository.CommentRepositorylmpl;
 import com.ssafy.postingservice.posting.service.domain.Comment;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +24,15 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> findBypostingId(Long postingId) {
         return commentRepositorylmpl.getComment(postingId);
+    }
+
+    @Override
+    public void deleteByCommentId(Long commentId) {
+        commentRepositorylmpl.deleteComment(commentId);
+    }
+
+    @Override
+    public Comment updateComment(Comment comment) {
+       return commentRepositorylmpl.updateComment(comment);
     }
 }
