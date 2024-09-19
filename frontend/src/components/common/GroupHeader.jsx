@@ -9,9 +9,9 @@ import { useLocation } from 'react-router-dom';
 
 const Header = () => {
 	const location = useLocation();
-	if(location.pathname === '/') return null;
+	if (location.pathname === '/') return null;
 	return (
-		<header>
+		<header className="common-header">
 			<div className="menu">
 				<div className="headLeft">
 					<div className="groupName">
