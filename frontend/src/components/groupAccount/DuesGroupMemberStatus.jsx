@@ -31,7 +31,7 @@ const DuesGroupMemberStatus = () => {
 						/>
 					</div>
 					<div>
-						<label for="신승호">신승호</label>
+						<label htmlFor="신승호">신승호</label>
 					</div>
 				</div>
 				<div className="dues-one-member">
@@ -43,7 +43,7 @@ const DuesGroupMemberStatus = () => {
 						/>
 					</div>
 					<div>
-						<label for="신승호">신승호</label>
+						<label htmlFor="신승호">신승호</label>
 					</div>
 				</div>
 				<div className="dues-one-member">
@@ -55,7 +55,7 @@ const DuesGroupMemberStatus = () => {
 						/>
 					</div>
 					<div>
-						<label for="신승호">신승호</label>
+						<label htmlFor="신승호">신승호</label>
 					</div>
 				</div>
 				<div className="dues-one-member">
@@ -67,7 +67,7 @@ const DuesGroupMemberStatus = () => {
 						/>
 					</div>
 					<div>
-						<label for="신승호">신승호</label>
+						<label htmlFor="신승호">신승호</label>
 					</div>
 				</div>
 				<div className="dues-one-member">
@@ -79,7 +79,7 @@ const DuesGroupMemberStatus = () => {
 						/>
 					</div>
 					<div>
-						<label for="신승호">신승호</label>
+						<label htmlFor="신승호">신승호</label>
 					</div>
 				</div>
 				<div className="dues-one-member">
@@ -91,7 +91,7 @@ const DuesGroupMemberStatus = () => {
 						/>
 					</div>
 					<div>
-						<label for="신승호">신승호</label>
+						<label htmlFor="신승호">신승호</label>
 					</div>
 				</div>
 			</div>
