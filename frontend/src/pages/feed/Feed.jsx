@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import '@/assets/css/feed/Feed.css';
 import PostView from '@/components/postView/PostView';
 import datas from '@/pages/feed/data.json';
-import { Link } from 'react-router-dom';
 
 const Feed = () => {
-	const posts = datas.posts;
+	const { groupId } = useParams(); // URL에서 groupId를 추출
+	const [posts, setPosts] = useState([]);
+
+	useEffect(() => {
+		const fetchPosts = () => {
+			// groupId에 해당하는 게시물만 필터링
+			const filteredPosts = datas.posts.filter((post) => post.groupId === parseInt(groupId, 10));
+			setPosts(filteredPosts);
+		};
+
+		fetchPosts();
+	}, [groupId]); // groupId가 변경될 때마다 실행
+
+	if (!posts) {
+		return <div>Loading...</div>;
+	}
+
 	return (
 		<div className="group-feed">
 			<img
@@ -14,19 +30,22 @@ const Feed = () => {
 				alt="배경사진"
 			/>
 			<div className="feed-container">
-				{posts
-					? posts.map((post) => (
-							<PostView
-								key={post.postId}
-								post={post}
-							/>
-					  ))
-					: ''}
+				{posts.length > 0 ? (
+					posts.map((post) => (
+						<PostView
+							key={post.postId}
+							post={post}
+						/>
+					))
+				) : (
+					<p>이 그룹에 게시물이 없습니다.</p>
+				)}
 			</div>
-			<Link to={`/create-post`}>
+			<Link to={`/create-post/${groupId}`}>
 				<img
 					className="feed-write-btn"
 					src="/feed/edit.svg"
+					alt="글쓰기"
 				/>
 			</Link>
 		</div>
