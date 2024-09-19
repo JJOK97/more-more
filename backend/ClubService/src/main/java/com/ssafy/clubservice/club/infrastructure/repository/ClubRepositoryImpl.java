@@ -14,34 +14,23 @@ public class ClubRepositoryImpl implements ClubRepository {
     private final ClubMybatisMapper clubMybatisMapper;
     private final ClubObjectMapper clubObjectMapper;
     @Override
-    public Club save(Club club) {
+    public Club saveClub(Club club) {
         ClubEntity entity = clubObjectMapper.fromDomainToEntity(club);
-        clubMybatisMapper.save(entity);
+        clubMybatisMapper.saveClub(entity);
         return clubObjectMapper.fromEntityToDomain(entity);
     }
 
     @Override
-    public Club findById(Long clubId) {
-        ClubEntity entity = clubMybatisMapper.findById(clubId);
-        return clubObjectMapper.fromEntityToDomain(entity);
-    }
-
-    @Override
-    public Club update(Club club) {
+    public Club updateClub(Club club) {
         ClubEntity entity = clubObjectMapper.fromDomainToEntity(club);
-        clubMybatisMapper.update(entity);
+        clubMybatisMapper.updateClub(entity);
         return clubObjectMapper.fromEntityToDomain(entity);
     }
 
     @Override
-    public Club findByClubCode(String clubCode) {
-        ClubEntity entity = clubMybatisMapper.findByClubCode(clubCode);
+    public Club findClubByClubCode(String clubCode) {
+        ClubEntity entity = clubMybatisMapper.findClubByClubCode(clubCode);
         return clubObjectMapper.fromEntityToDomain(entity);
-    }
-
-    @Override
-    public Club findWithParticipantsByClubCode(String clubCode) {
-        return clubObjectMapper.fromEntityToDomain(clubMybatisMapper.findWithParticipantsByClubCode(clubCode));
     }
 
     @Override

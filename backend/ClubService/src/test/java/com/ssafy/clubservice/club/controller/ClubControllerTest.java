@@ -50,7 +50,7 @@ class ClubControllerTest {
 
     @DisplayName("모임 코드로 모임 조회시, 모임 정보와 참석자 정보를 반환한다.")
     @Test
-    void getClub() throws Exception {
+    void findClub() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/api/club/test1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.clubId").isNumber())
@@ -69,7 +69,7 @@ class ClubControllerTest {
 
     @DisplayName("전체 모임 조회시, 멤버 ID에 해당하는 모임의 코드, 이름, 소개 문구를 모두 반환한다.")
     @Test
-    void getClubs() throws Exception {
+    void findClubs() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/api/club?memberId=1"))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -81,7 +81,7 @@ class ClubControllerTest {
 
     @DisplayName("모임 코드로 전체 멤버 조회 시, 멤버ID, 참석자ID를 반환한다.")
     @Test
-    void getParticipants() throws Exception {
+    void findParticipants() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/api/club/test1/participants"))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -115,7 +115,7 @@ class ClubControllerTest {
     }
     @DisplayName("이미지 이름 변경 시, 변경된 이미지 URL을 반환한다.")
     @Test
-    void updateImage() throws Exception {
+    void updateClubImage() throws Exception {
         mockMvc.perform(multipart("/api/club/test1/image")
                 .file(getMockMultipartFile()))
                 .andExpect(status().isOk())

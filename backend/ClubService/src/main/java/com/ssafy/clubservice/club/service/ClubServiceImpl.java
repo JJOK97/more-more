@@ -23,58 +23,66 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     @Transactional
-    public Club create(Club club, Long creatorId, MultipartFile file){
+    public Club createClub(Club club, Long creatorId, MultipartFile file){
         club = club.generateClubCode(uuidHolder);
-        club = club.addCreator(creatorId);
-//        s3Connector.upload(club.getClubCode(), file);
-        String imageURL = s3Connector.getImageURL(club.getClubCode());
-        Club retClub = clubRepository.save(club);
-        List<Participant> participants = participantRepository.addAll(club.getClubCode(), club.getParticipants());
-        retClub = retClub.changeImageName(imageURL);
-        retClub = retClub.changeParticipant(participants);
-        return retClub;
+        Club clubWithId = clubRepository.saveClub(club);
+        clubWithId = addCreator(creatorId, clubWithId);
+        return clubWithId.changeImageName(processImage(club, file));
+    }
+
+    private String processImage(Club club, MultipartFile file) {
+        s3Connector.upload(club.getClubCode(), file);
+        return s3Connector.getImageURL(club.getClubCode());
     }
 
     @Override
     @Transactional
-    public Club update(String clubCode, Club club) {
-        Club findClub = clubRepository.findByClubCode(clubCode);
-        findClub.update(club);
-        return clubRepository.update(findClub);
+    public Club updateClub(String clubCode, Club club) {
+        Club findClub = clubRepository.findClubByClubCode(clubCode);
+        Club updateClub = findClub.updateClub(club);
+        return clubRepository.updateClub(updateClub);
     }
 
     @Override
-    public String updateImage(String clubCode, MultipartFile file) {
+    public String updateClubImage(String clubCode, MultipartFile file) {
         s3Connector.upload(clubCode, file);
         return s3Connector.getImageURL(clubCode);
     }
 
     @Override
-    public Club getClub(String clubCode) {
-        Club club = clubRepository.findByClubCode(clubCode);
+    public Club findClub(String clubCode) {
+        Club club = clubRepository.findClubByClubCode(clubCode);
         club.changeImageName(s3Connector.getImageURL(clubCode));
-        club.changeParticipant(participantRepository.getParticipants(clubCode));
+        club.changeParticipant(participantRepository.findParticipants(clubCode));
         return club;
     }
 
     @Override
-    public List<Club> getClubs(String memberId) {
+    public List<Club> findClubs(String memberId) {
         return clubRepository.findClubByMemberId(memberId);
     }
 
-
-    @Override
-    public List<Participant> addParticipant(String clubCode, List<Participant> participants) {
-        return participantRepository.addAll(clubCode, participants
-                .stream()
-                .map(participant -> Participant.createClubParticipant(clubCode, participant.getUserId()))
-                .toList()
-        );
+    private Club addCreator(Long creatorId, Club club) {
+        Club clubWithCreator = club.makeCreator(creatorId);
+        List<Participant> creatorWithId = participantRepository.addMember(clubWithCreator.getClubCode(), clubWithCreator.getParticipants());
+        return club.changeParticipant(creatorWithId);
     }
 
     @Override
-    public List<Participant> getParticipants(String clubCode) {
-        return participantRepository.getParticipants(clubCode);
+    public List<Participant> addParticipant(String clubCode, List<Participant> participants) {
+        return participantRepository.addMember(clubCode, makeParticipantList(clubCode, participants));
+    }
+
+    private static List<Participant> makeParticipantList(String clubCode, List<Participant> participants) {
+        return participants
+                .stream()
+                .map(participant -> Participant.createClubParticipant(clubCode, participant.getUserId()))
+                .toList();
+    }
+
+    @Override
+    public List<Participant> findParticipants(String clubCode) {
+        return participantRepository.findParticipants(clubCode);
     }
 
 }
