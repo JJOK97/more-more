@@ -4,6 +4,7 @@ import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
 import GroupAccount from '@/pages/groupaccount/GroupAccount';
+import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
 import Main from '@/pages/Main';
 import Login from '@/pages/Login/Login';
 import Profile from '@/pages/User/Profile';
