@@ -1,0 +1,35 @@
+{
+	"schedules": [
+		{
+			"scheduleId": 1,
+			"userId": 1,
+			"userName": "옥진석",
+			"userProfile": "/feed/profile_icon2.png",
+			"memberName": "옥진석",
+			"scheduleDate": "2024.09.19",
+			"scheduleTime": "07:30",
+			"scheduleEvent": "축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.축구 합니다.",
+			"clubId": 1
+		},
+		{
+			"scheduleId": 2,
+			"userId": 2,
+			"userName": "박지환",
+			"userProfile": "/feed/profile_icon3.png",
+			"scheduleDate": "2024.09.19",
+			"scheduleTime": "09:30",
+			"scheduleEvent": "야구 합니다.",
+			"clubId": 1
+		},
+		{
+			"scheduleId": 3,
+			"userId": 2,
+			"userName": "박지환",
+			"userProfile": "/feed/profile_icon3.png",
+			"scheduleDate": "2024.09.19",
+			"scheduleTime": "12:30",
+			"scheduleEvent": "행복 합니다.",
+			"clubId": 1
+		}
+	]
+}
