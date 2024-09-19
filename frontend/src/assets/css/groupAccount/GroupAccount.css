@@ -18,6 +18,64 @@
 	margin: 1.3rem;
 }
 
+.dues-group-member-status input {
+	accent-color: #53b36c;
+}
+
+.dues-group-member-status checkbox:checked {
+	color: #ffffff;
+}
+.dues-group-member-status checkbox:checked {
+	color: #ffffff;
+}
+
+.dues-member-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding-top: 1rem;
+}
+
+.dues-one-member {
+	display: flex;
+	flex-direction: row;
+	width: 40%;
+	justify-content: space-between;
+	margin-bottom: 1.5rem;
+	align-items: center;
+}
+
+.progress-bar {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.dues-group-member-status {
+	font-weight: 700;
+	font-size: 16px;
+	background-color: white;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	height: 85vh;
+	padding: 2rem;
+}
+
+.dues-member-gather-count {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: 1rem;
+}
+
+.dues-gather {
+	color: #53b36c;
+}
+
+.dues-people-count {
+	color: #53b36c;
+}
+
 .deposit-status-payment {
 	display: flex;
 	justify-content: center;
