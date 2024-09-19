@@ -4,9 +4,12 @@ import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
 import GroupAccount from '@/pages/groupaccount/GroupAccount';
+<<<<<<< HEAD
+import Schedule from '@/pages/schedule/GroupSchedule';
+=======
 import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
+>>>>>>> 9a125d864ecf06cf55c5dab80efff01ec44175cc
 import Main from '@/pages/Main';
-import Login from '@/pages/Login/Login';
 import Profile from '@/pages/User/Profile';
 import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
@@ -23,10 +26,7 @@ const AppRouter = () => {
 						path="/"
 						element={<Main />}
 					/>
-					<Route
-						path="/login"
-						element={<Login />}
-					/>
+
 					<Route
 						path="/profile"
 						element={<Profile />}
@@ -44,6 +44,10 @@ const AppRouter = () => {
 						element={<GroupAccount />}
 					/>
 					<Route
+<<<<<<< HEAD
+						path="/schedule"
+						element={<Schedule />}
+=======
 						path="/group/:groupId"
 						element={<Feed />}
 					/>
@@ -54,6 +58,7 @@ const AppRouter = () => {
 					<Route
 						path="/deposit-status"
 						element={<GroupAccountDepositStatus />}
+>>>>>>> 9a125d864ecf06cf55c5dab80efff01ec44175cc
 					/>
 				</Routes>
 			</main>

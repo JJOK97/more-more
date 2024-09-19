@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar as ReactCalendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import '@/assets/css/calendar/calendar.css';
+import '@/assets/css/schedule/calendar/calendar.css';
 import moment from 'moment';
 
 function Calendar() {

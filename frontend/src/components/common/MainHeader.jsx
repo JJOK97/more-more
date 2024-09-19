@@ -11,7 +11,7 @@ const Header = () => {
 	const location = useLocation();
 	if (location.pathname !== '/') return null;
 	return (
-		<header>
+		<header className="common-header">
 			<div className="menu">
 				<div className="logo">
 					<img src={logo}></img>
