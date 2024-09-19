@@ -9,6 +9,7 @@ import com.ssafy.clubservice.club.mapper.ParticipantObjectMapper;
 import com.ssafy.clubservice.club.service.ClubService;
 import com.ssafy.clubservice.club.service.domain.Club;
 import com.ssafy.clubservice.club.service.domain.Participant;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class ClubController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file, @RequestPart("clubCreateRequest") ClubCreateRequest clubCreateRequest) {
+    public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file, @Valid @RequestPart("clubCreateRequest") ClubCreateRequest clubCreateRequest) {
         Club club = clubService.createClub(clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
         return clubObjectMapper.fromDomainToCreateResponse(club);
     }
@@ -59,7 +60,7 @@ public class ClubController {
     }
 
     @PutMapping("/{clubCode}")
-    public ClubUpdateResponse updateClub(@PathVariable("clubCode") String clubCode, @RequestBody ClubUpdateRequest clubUpdateRequest){
+    public ClubUpdateResponse updateClub(@PathVariable("clubCode") String clubCode, @Valid @RequestBody ClubUpdateRequest clubUpdateRequest){
         Club club = clubService.updateClub(clubCode, clubObjectMapper.fromUpdateRequestToDomain(clubUpdateRequest));
         return clubObjectMapper.fromDomainToUpdatesResponse(club);
     }

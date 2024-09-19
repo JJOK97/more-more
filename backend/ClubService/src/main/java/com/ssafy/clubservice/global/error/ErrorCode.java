@@ -11,8 +11,7 @@ import static org.springframework.http.HttpStatus.*;
 public enum ErrorCode {
 
     // INPUT VALIDATION
-    INVALID_ARGUMENT(BAD_REQUEST, "1000", "입력값이 잘못됐습니다");
-
+    INVALID_ARGUMENT(BAD_REQUEST, "1000",  null);
     ;
 
     private final HttpStatus httpStatus;
