@@ -19,14 +19,42 @@ const AppRouter = () => {
 			<Header />
 			<main>
 				<Routes>
-					<Route path="/" element={<Main />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/profile" element={<Profile />} />
-					<Route path="/feed" element={<Feed />} />
-					<Route path="/create-post" element={<CreatePost />} />
-					<Route path="/groupaccount" element={<GroupAccount />} />
-					<Route path="/group/:groupId" element={<Feed />} />
-					<Route path="/group/:groupId/:postId" element={<Post />} />
+					<Route
+						path="/"
+						element={<Main />}
+					/>
+					<Route
+						path="/login"
+						element={<Login />}
+					/>
+					<Route
+						path="/profile"
+						element={<Profile />}
+					/>
+					<Route
+						path="/feed"
+						element={<Feed />}
+					/>
+					<Route
+						path="/create-post"
+						element={<CreatePost />}
+					/>
+					<Route
+						path="/groupaccount"
+						element={<GroupAccount />}
+					/>
+					<Route
+						path="/group/:groupId"
+						element={<Feed />}
+					/>
+					<Route
+						path="/group/:groupId/:postId"
+						element={<Post />}
+					/>
+					<Route
+						path="/deposit-status"
+						element={<GroupAccountDepositStatus />}
+					/>
 				</Routes>
 			</main>
 			<Footer />
