@@ -3,17 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.clubservice.club.infrastructure.repository.ClubMybatisMapper">
-    <insert id="save" parameterType="clubEntity" useGeneratedKeys="true" keyProperty="clubId">
+    <insert id="saveClub" parameterType="clubEntity" useGeneratedKeys="true" keyProperty="clubId">
         insert into club (dues, club_code, club_name, club_intro)
         values(#{dues}, #{clubCode}, #{clubName}, #{clubIntro});
     </insert>
-    <select id="findById" parameterType="long" resultType="clubEntity">
-        select * from club where club_id = #{clubId};
-    </select>
-    <select id="findByClubCode" parameterType="string" resultType="clubEntity">
+    <select id="findClubByClubCode" parameterType="string" resultType="clubEntity">
         select * from club where club_code = #{clubCode};
     </select>
-    <update id="update" parameterType="clubEntity">
+    <update id="updateClub" parameterType="clubEntity">
         update club
         set club_name = #{clubName},
             dues = #{dues}

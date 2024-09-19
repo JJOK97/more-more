@@ -5,15 +5,13 @@ import com.ssafy.clubservice.club.service.domain.Club;
 import java.util.List;
 
 public interface ClubRepository {
-    Club save(Club club);
+    Club saveClub(Club club);
 
-    Club findById(Long clubId);
 
-    Club update(Club club);
+    Club updateClub(Club club);
 
-    Club findByClubCode(String clubCode);
-
-    Club findWithParticipantsByClubCode(String clubCode);
+    Club findClubByClubCode(String clubCode);
 
     List<Club> findClubByMemberId(String memberId);
+
 }

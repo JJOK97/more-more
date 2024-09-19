@@ -30,7 +30,7 @@ public class Club {
         this.clubId = clubId;
     }
 
-    public Club addCreator(Long creatorId) {
+    public Club makeCreator(Long creatorId) {
         this.participants.add(Participant.createClubCreator(this.clubCode, creatorId));
         return this;
     }
@@ -46,7 +46,7 @@ public class Club {
         return this;
     }
 
-    public Club update(Club club){
+    public Club updateClub(Club club){
         this.dues = (club.getDues() != null) ? club.getDues() : this.dues;
         this.clubName = (club.getClubName() != null) ? club.getClubName() : this.clubName;
         return this;
