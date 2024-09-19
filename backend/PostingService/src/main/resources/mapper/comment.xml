@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.postingservice.posting.infrastructure.repository.CommentMybatisMapper">
+    <insert id="saveComment" parameterType="CommentEntity" useGeneratedKeys="true" keyProperty="commentId">
+        insert into comment (posting_id, member_id, comment_content)
+        values(#{postingId}, #{memberId}, #{commentContent});
+    </insert>
+
+    <select id="getCommentByPostId" resultType="com.ssafy.postingservice.posting.infrastructure.repository.entity.CommentEntity" parameterType="Long">
+        select comment_id, posting_id, member_id, comment_created_time, comment_content
+        from comment
+        where posting_id = #{postingId}
+        order by comment_id desc;
+    </select>
+
+    <delete id="deleteComment" parameterType="Long">
+        DELETE FROM comment WHERE comment_id = #{commentId}
+    </delete>
+
+    <update id="updateComment" parameterType="com.ssafy.postingservice.posting.infrastructure.repository.entity.CommentEntity">
+        UPDATE comment
+        SET comment_content = #{commentContent}
+        WHERE comment_id = #{commentId}
+    </update>
+
+
+
+
+</mapper>

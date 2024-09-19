@@ -12,5 +12,4 @@ public class PostingEntity {
     private Long accountHistoryId;
     private String clubCode;
     private String postContent;
-
 }

@@ -10,7 +10,6 @@ import com.ssafy.postingservice.posting.controller.dto.response.CommentUpdateRep
 import com.ssafy.postingservice.posting.infrastructure.repository.entity.CommentEntity;
 import com.ssafy.postingservice.posting.service.domain.Comment;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
