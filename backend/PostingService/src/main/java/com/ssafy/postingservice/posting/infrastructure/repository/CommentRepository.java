@@ -1,5 +1,6 @@
 package com.ssafy.postingservice.posting.infrastructure.repository;
 
+import com.ssafy.postingservice.posting.controller.dto.request.CommentUpdateRequest;
 import com.ssafy.postingservice.posting.infrastructure.repository.entity.CommentEntity;
 import com.ssafy.postingservice.posting.service.domain.Comment;
 
@@ -11,4 +12,8 @@ public interface CommentRepository {
 
     Comment saveComment(Comment comment);
     List<Comment> getComment(Long id);
+
+    void deleteComment(Long commentId);
+
+    Comment updateComment(Comment comment);
 }

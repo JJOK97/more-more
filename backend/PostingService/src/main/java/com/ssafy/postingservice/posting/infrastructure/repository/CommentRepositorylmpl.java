@@ -1,4 +1,5 @@
 package com.ssafy.postingservice.posting.infrastructure.repository;
+import com.ssafy.postingservice.posting.controller.dto.request.CommentUpdateRequest;
 import com.ssafy.postingservice.posting.infrastructure.repository.entity.CommentEntity;
 import com.ssafy.postingservice.posting.mapper.CommentObjectMapper;
 
@@ -17,17 +18,26 @@ public class CommentRepositorylmpl implements CommentRepository {
 
     @Override
     public Comment saveComment(Comment comment) {
-
-        CommentEntity entity = commentObjectMapper.toEntity(comment);
+        CommentEntity entity = commentObjectMapper.fromDomainToEntity(comment);
         commentMybatisMapper.saveComment(entity);
-
-
-        return commentObjectMapper.fromEntity(entity);
+        return commentObjectMapper.fromEntityToDomain(entity);
     }
 
     @Override
     public List<Comment> getComment(Long id) {
-        return commentObjectMapper.toDomainListFromEntities(commentMybatisMapper.getCommentByPostId(id));
+        return commentObjectMapper.fromEntitiesToDomainList(commentMybatisMapper.getCommentByPostId(id));
+    }
+
+    @Override
+    public void deleteComment(Long commentId) {
+        commentMybatisMapper.deleteComment(commentId);
+    }
+
+    @Override
+    public Comment updateComment(Comment comment) {
+        CommentEntity entity= commentObjectMapper.fromDomainToEntity(comment);
+        commentMybatisMapper.updateComment(entity);
+        return commentObjectMapper.fromEntityToDomain(entity);
     }
 
 
