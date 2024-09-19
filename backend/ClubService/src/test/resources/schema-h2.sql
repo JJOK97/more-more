@@ -1,3 +1,6 @@
+drop table if exists PARTICIPANT;
+drop table if exists CLUB;
+
 create table IF NOT EXISTS CLUB(
     club_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     dues BIGINT NOT NULL,

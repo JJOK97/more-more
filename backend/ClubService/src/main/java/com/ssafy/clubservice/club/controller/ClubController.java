@@ -10,6 +10,7 @@ import com.ssafy.clubservice.club.service.ClubService;
 import com.ssafy.clubservice.club.service.domain.Club;
 import com.ssafy.clubservice.club.service.domain.Participant;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +25,8 @@ public class ClubController {
     private final ParticipantObjectMapper participantObjectMapper;
 
     @PostMapping
-    public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file, ClubCreateRequest clubCreateRequest) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file, @RequestPart("clubCreateRequest") ClubCreateRequest clubCreateRequest) {
         Club club = clubService.create(clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
         return clubObjectMapper.fromDomainToCreateResponse(club);
     }
@@ -49,6 +51,7 @@ public class ClubController {
     }
 
     @PostMapping("/{clubCode}/participants")
+    @ResponseStatus(HttpStatus.CREATED)
     public List<ParticipantCreateResponse> addParticipant(@PathVariable("clubCode") String clubCode,
                                                     @RequestBody List<ParticipantCreateRequest> participantCreateRequestList){
         List<Participant> participants = clubService.addParticipant(clubCode, participantObjectMapper.fromCreateRequestToDomain(participantCreateRequestList));
