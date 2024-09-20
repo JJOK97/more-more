@@ -27,26 +27,26 @@ public class ClubController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file, @RequestPart("clubCreateRequest") ClubCreateRequest clubCreateRequest) {
-        Club club = clubService.create(clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
+        Club club = clubService.createClub(clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
         return clubObjectMapper.fromDomainToCreateResponse(club);
     }
 
 
     @GetMapping("/{clubCode}")
-    public ClubReadResponse getClub(@PathVariable("clubCode") String clubCode){
-        Club club = clubService.getClub(clubCode);
+    public ClubReadResponse findClub(@PathVariable("clubCode") String clubCode){
+        Club club = clubService.findClub(clubCode);
         return clubObjectMapper.fromDomainToReadResponse(club);
     }
 
     @GetMapping
-    public List<ClubReadResponse> getClubs(@RequestParam("memberId") String memberId) {
-        List<Club> clubs = clubService.getClubs(memberId);
+    public List<ClubReadResponse> findClubs(@RequestParam("memberId") String memberId) {
+        List<Club> clubs = clubService.findClubs(memberId);
         return clubObjectMapper.fromDomainToReadResponse(clubs);
     }
 
     @GetMapping("/{clubCode}/participants")
-    public List<ParticipantReadResponse> getParticipants(@PathVariable("clubCode") String clubCode){
-        List<Participant> participants = clubService.getParticipants(clubCode);
+    public List<ParticipantReadResponse> findParticipants(@PathVariable("clubCode") String clubCode){
+        List<Participant> participants = clubService.findParticipants(clubCode);
         return participantObjectMapper.fromDomainToReadResponse(participants);
     }
 
@@ -59,15 +59,15 @@ public class ClubController {
     }
 
     @PutMapping("/{clubCode}")
-    public ClubUpdateResponse update(@PathVariable("clubCode") String clubCode, @RequestBody ClubUpdateRequest clubUpdateRequest){
-        Club club = clubService.update(clubCode, clubObjectMapper.fromUpdateRequestToDomain(clubUpdateRequest));
+    public ClubUpdateResponse updateClub(@PathVariable("clubCode") String clubCode, @RequestBody ClubUpdateRequest clubUpdateRequest){
+        Club club = clubService.updateClub(clubCode, clubObjectMapper.fromUpdateRequestToDomain(clubUpdateRequest));
         return clubObjectMapper.fromDomainToUpdatesResponse(club);
     }
 
     @PostMapping("/{clubCode}/image")
-    public ClubUpdateImageResponse updateImage(@PathVariable("clubCode") String clubCode,
-                                               @RequestPart("file") MultipartFile file){
-        return new ClubUpdateImageResponse(clubService.updateImage(clubCode, file));
+    public ClubUpdateImageResponse updateClubImage(@PathVariable("clubCode") String clubCode,
+                                                   @RequestPart("file") MultipartFile file){
+        return new ClubUpdateImageResponse(clubService.updateClubImage(clubCode, file));
     }
 
 }
