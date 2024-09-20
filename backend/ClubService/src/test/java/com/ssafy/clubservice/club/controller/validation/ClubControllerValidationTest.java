@@ -67,6 +67,7 @@ public class ClubControllerValidationTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                 )
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("1000"))
                 .andExpect(jsonPath("$.message").value("모임 코드는 필수값입니다."));
     }
@@ -94,6 +95,7 @@ public class ClubControllerValidationTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                 )
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("1000"))
                 .andExpect(jsonPath("$.message").value("회비는 0원보다 커야합니다."));
     }
@@ -121,6 +123,7 @@ public class ClubControllerValidationTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                 )
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("1000"))
                 .andExpect(jsonPath("$.message").value("모임 생성자 ID는 필수값입니다."));
     }
@@ -139,6 +142,7 @@ public class ClubControllerValidationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clubupdateRequest))
                 )
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("1000"))
                 .andExpect(jsonPath("$.message").value("모임 코드는 필수값입니다."));
     }
@@ -157,6 +161,7 @@ public class ClubControllerValidationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clubupdateRequest))
                 )
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("1000"))
                 .andExpect(jsonPath("$.message").value("회비는 0원보다 커야합니다."));
     }
