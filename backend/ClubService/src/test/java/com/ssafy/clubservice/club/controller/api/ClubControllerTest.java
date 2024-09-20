@@ -1,4 +1,4 @@
-package com.ssafy.clubservice.club.controller;
+package com.ssafy.clubservice.club.controller.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,9 +8,6 @@ import com.ssafy.clubservice.club.controller.dto.request.ClubUpdateRequest;
 import com.ssafy.clubservice.club.controller.dto.response.ClubReadResponse;
 import com.ssafy.clubservice.club.controller.dto.response.ParticipantCreateResponse;
 import com.ssafy.clubservice.club.controller.dto.response.ParticipantReadResponse;
-import com.ssafy.clubservice.club.service.domain.Club;
-import lombok.Data;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +21,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
