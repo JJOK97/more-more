@@ -29,22 +29,17 @@ const AppRouter = () => {
 						element={<Profile />}
 					/>
 					<Route
-						path="/feed"
-						element={<Feed />}
-					/>
-					<Route
-						path="/create-post"
+						path="/group/:groupId/create"
 						element={<CreatePost />}
 					/>
 					<Route
-						path="/groupaccount"
+						path="/group/:groupId/account"
 						element={<GroupAccount />}
 					/>
 					<Route
-						path="/schedule"
+						path="/group/:groupId/schedule"
 						element={<Schedule />}
 					/>
-
 					<Route
 						path="/group/:groupId"
 						element={<Feed />}
@@ -54,7 +49,7 @@ const AppRouter = () => {
 						element={<Post />}
 					/>
 					<Route
-						path="/deposit-status"
+						path="/group/:groupId/account/status"
 						element={<GroupAccountDepositStatus />}
 					/>
 				</Routes>

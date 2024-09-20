@@ -20,7 +20,7 @@ const Header = () => {
 								alt="Back"
 							/>
 						</Link>
-						<div>{groupName}</div>
+						<div>groupName</div>
 					</div>
 				</div>
 				<div className="headerRight">
