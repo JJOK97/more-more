@@ -3,14 +3,16 @@ import '@/assets/css/common/appRouter.css';
 import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
+
+import Main from '@/pages/Main';
+import Login from '@/pages/user/Login';
+import Profile from '@/pages/user/Profile';
+import CreatePost from '@/pages/createPost/CreatePost';
 import GroupAccount from '@/pages/groupaccount/GroupAccount';
 import Schedule from '@/pages/schedule/GroupSchedule';
-import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
-import Main from '@/pages/Main';
-import Profile from '@/pages/User/Profile';
 import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
-import CreatePost from '@/pages/createPost/CreatePost';
+import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
 
 const AppRouter = () => {
 	return (
@@ -23,7 +25,10 @@ const AppRouter = () => {
 						path="/"
 						element={<Main />}
 					/>
-
+					<Route
+						path="/login"
+						element={<Login />}
+					/>
 					<Route
 						path="/profile"
 						element={<Profile />}

@@ -8,13 +8,13 @@ import groupData from '@/components/main/data.json'; // data.json 파일의 실�
 
 const Header = () => {
 	const location = useLocation();
-	if (location.pathname === '/') return null;
+	if (location.pathname === '/' || location.pathname == '/login' || location.pathname == '/signup') return null;
 	return (
 		<header className="common-header">
 			<div className="menu">
 				<div className="headLeft">
 					<div className="groupName">
-						<Link to="/groups">
+						<Link to="/">
 							<img
 								src={chevron}
 								alt="Back"

@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
 
 const Header = () => {
 	const location = useLocation();
-	if (location.pathname !== '/') return null;
+	if (location.pathname !== '/' || location.pathname == '/login' || location.pathname == '/signup') return null;
 	return (
 		<header className="common-header">
 			<div className="menu">
