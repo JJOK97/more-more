@@ -1,7 +1,7 @@
 import React from 'react';
 
 import '@/assets/css/common/header.css';
-import logo from '@/assets/img/common/mainHeader/text-logo.svg';
+import logo from '@/assets/img/common/text-logo.svg';
 import search from '@/assets/img/common/mainHeader/search.svg';
 import user from '@/assets/img/common/mainHeader/user.svg';
 import bell from '@/assets/img/common/mainHeader/bell.svg';
@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
 
 const Header = () => {
 	const location = useLocation();
-	if (location.pathname !== '/') return null;
+	if (location.pathname !== '/' || location.pathname == '/login' || location.pathname == '/signup') return null;
 	return (
 		<header className="common-header">
 			<div className="menu">

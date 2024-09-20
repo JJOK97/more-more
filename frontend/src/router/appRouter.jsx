@@ -1,17 +1,25 @@
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+
+import PrivateRoute from '@/components/common/PrivateRoute';
+
 import '@/assets/css/common/appRouter.css';
+
 import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
+
+import Main from '@/pages/Main';
+import Login from '@/pages/user/Login';
+import Profile from '@/pages/user/Profile';
+import CreatePost from '@/pages/createPost/CreatePost';
 import GroupAccount from '@/pages/groupaccount/GroupAccount';
 import Schedule from '@/pages/schedule/GroupSchedule';
-import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
-import Main from '@/pages/Main';
-import Profile from '@/pages/User/Profile';
 import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
 import CreatePost from '@/pages/createPost/CreatePost';
 import CreateGroup from '../pages/createGroup/CreateGroup';
+import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
+import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
 
 const AppRouter = () => {
 	return (
@@ -22,7 +30,15 @@ const AppRouter = () => {
 				<Routes>
 					<Route
 						path="/"
-						element={<Main />}
+						element={
+							<PrivateRoute>
+								<Main />
+							</PrivateRoute>
+						}
+					/>
+					<Route
+						path="/login"
+						element={<Login />}
 					/>
 					<Route
 						path="/create"
@@ -55,6 +71,10 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/account/status"
 						element={<GroupAccountDepositStatus />}
+					/>
+					<Route
+						path="/group/:groupId/account/setting"
+						element={<GroupDuesSetting />}
 					/>
 				</Routes>
 			</main>
