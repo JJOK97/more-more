@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ssafy.clubservice.club.controller.ClubController;
 import com.ssafy.clubservice.club.controller.dto.request.ClubCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ClubUpdateRequest;
+import com.ssafy.clubservice.club.controller.dto.request.ParticipantCreateRequest;
 import com.ssafy.clubservice.club.infrastructure.repository.ClubRepository;
 import com.ssafy.clubservice.club.infrastructure.repository.ParticipantRepository;
 import com.ssafy.clubservice.club.mapper.ClubObjectMapper;
@@ -18,6 +19,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -147,7 +151,7 @@ public class ClubControllerValidationTest {
                 .andExpect(jsonPath("$.message").value("모임 코드는 필수값입니다."));
     }
 
-    @DisplayName("모임을 수정할 때,, 회비는 0원보다 커야한다.")
+    @DisplayName("모임을 수정할 때, 회비는 0원보다 커야한다.")
     @Test
     void updateClubDueValidationTest() throws Exception {
         ClubUpdateRequest clubupdateRequest = ClubUpdateRequest.builder()
@@ -164,6 +168,20 @@ public class ClubControllerValidationTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("1000"))
                 .andExpect(jsonPath("$.message").value("회비는 0원보다 커야합니다."));
+    }
+
+    @DisplayName("참석자를 추가할 때, 참석자가 한 명 이상 있어야한다.")
+    @Test
+    void validateParticipants() throws Exception{
+        List<ParticipantCreateRequest> participantCreateRequestList = new ArrayList<>();
+
+        mockMvc.perform(post("/api/club/test1/participants")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(participantCreateRequestList))
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("1003"))
+                .andExpect(jsonPath("$.message").value("참석 인원이 존재하지않습니다."));
     }
 
 
