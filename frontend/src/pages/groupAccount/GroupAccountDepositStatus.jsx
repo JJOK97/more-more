@@ -5,11 +5,11 @@ import DuesGroupMemberStatus from '@/components/groupAccount/DuesGroupMemberStat
 
 const GroupAccountDepositStatus = () => {
 	return (
-		<div>
+		<div className="deposit-status">
 			<div className="deposit-status-payment">
 				<DepositStatusPayment />
 			</div>
-			<div className="DuesGroupMemberStatus">
+			<div className="dues-group-member-status-area">
 				<DuesGroupMemberStatus />
 			</div>
 		</div>
