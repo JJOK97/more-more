@@ -8,27 +8,9 @@ import groupData from '@/components/main/data.json'; // data.json 파일의 실�
 
 const Header = () => {
 	const location = useLocation();
-	const { groupId } = useParams();
-	const [groupName, setGroupName] = useState('');
-
-	useEffect(() => {
-		console.log(groupData.groups);
-		console.log(groupId);
-		if (groupId) {
-			const group = groupData.groups.find((g) => g.groupId === parseInt(groupId, 10) - 1);
-			console.log(group);
-			if (group) {
-				setGroupName(group.groupName);
-			} else {
-				setGroupName('그룹을 찾을 수 없음');
-			}
-		}
-	}, [groupId]);
-
 	if (location.pathname === '/') return null;
-
 	return (
-		<header>
+		<header className="common-header">
 			<div className="menu">
 				<div className="headLeft">
 					<div className="groupName">
