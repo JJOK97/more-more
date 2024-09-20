@@ -49,33 +49,6 @@ public class ClubControllerValidationTest {
 
     private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-    @DisplayName("새로운 모임을 등록할 때, 모임코드는 필수값이다.")
-    @Test
-    void createClubClubCodeValidationTest() throws Exception {
-        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
-                .creatorId(1L)
-                .clubName("name1")
-                .clubIntro("intro1")
-                .dues(1000L)
-                .build();
-
-        mockMvc.perform(multipart("/api/club")
-                        .file(getMockMultipartFile())
-                        .file(new MockMultipartFile(
-                                "clubCreateRequest", // Request part name (same as @RequestPart)
-                                "clubCreateRequest",
-                                "application/json",
-                                objectMapper.writeValueAsString(clubCreateRequest).getBytes() // Attach the JSON part
-                        ))
-                        .contentType(MediaType.MULTIPART_FORM_DATA) // Specify the content type as multipart form
-                        .accept(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-                )
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("1000"))
-                .andExpect(jsonPath("$.message").value("모임 코드는 필수값입니다."));
-    }
-
     @DisplayName("새로운 모임을 등록할 때, 회비는 0원보다 커야한다.")
     @Test
     void createClubDueValidationTest() throws Exception {
@@ -84,7 +57,6 @@ public class ClubControllerValidationTest {
                 .clubName("name1")
                 .clubIntro("intro1")
                 .dues(0L)
-                .clubCode("code1")
                 .build();
 
         mockMvc.perform(multipart("/api/club")
@@ -112,7 +84,6 @@ public class ClubControllerValidationTest {
                 .clubName("name1")
                 .clubIntro("intro1")
                 .dues(1000L)
-                .clubCode("code1")
                 .build();
 
         mockMvc.perform(multipart("/api/club")
