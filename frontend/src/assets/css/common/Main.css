@@ -116,6 +116,7 @@ body {
 	font-size: 1rem;
 	font-weight: 600;
 	margin-bottom: 0.25rem;
+	color: black;
 }
 
 .group-created-date {
@@ -127,6 +128,7 @@ body {
 .group-introduction {
 	/* display: none; */
 	font-size: 0.75rem;
+	color: black;
 }
 
 .group-member-count {
