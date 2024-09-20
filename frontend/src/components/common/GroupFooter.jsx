@@ -14,7 +14,7 @@ import { useLocation } from 'react-router-dom';
 
 const Footer = () => {
 	const location = useLocation();
-	if(location.pathname === '/') return null;
+	if (location.pathname === '/' || location.pathname == '/group/:groupId/account/transfer') return null;
 	return (
 		<footer>
 			<div className="navbar">
