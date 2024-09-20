@@ -1,0 +1,64 @@
+.loading-page {
+	display: flex;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+	background-color: #52bd6d;
+	align-items: center;
+	justify-content: center;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.logo-area {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	animation: fadeIn 1s ease-out forwards;
+	opacity: 0;
+}
+
+.logo-area img {
+	width: 4.75rem;
+	height: 4.75rem;
+}
+
+.text-logo {
+	margin-top: 1.25rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 15px;
+	color: white;
+}
+
+.text-logo img {
+	width: 12rem;
+	height: 2rem;
+	margin-bottom: 0.5rem;
+}
+
+.logo-area.show {
+	animation-play-state: running;
+}
+
+.login-container {
+	opacity: 0;
+	transition: opacity 0.25s ease-in;
+}
+
+.login-container.fade-in {
+	opacity: 1;
+}
