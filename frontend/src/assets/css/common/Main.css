@@ -24,10 +24,10 @@ body {
 
 .main-profile-title,
 .main-groups-title {
-	font-size: 1rem;
-	font-weight: 600;
-	color: var(--text-color);
-	margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
 }
 
 .main-profile-data {

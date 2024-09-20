@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import '@/assets/css/common/appRouter.css';
 import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';

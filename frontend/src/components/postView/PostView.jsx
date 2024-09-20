@@ -8,7 +8,6 @@ const PostView = ({ post }) => {
 	useEffect(() => {
 		// 경로가 /group/:groupId인지 확인하여 상태 업데이트
 		const pathArray = location.pathname.split('/');
-		console.log(pathArray);
 		if (pathArray.length === 3 && pathArray[1] === 'group') {
 			setIsFeedPage(true); // /group/:groupId 형식일 때 feed 페이지로 간주
 		} else {
