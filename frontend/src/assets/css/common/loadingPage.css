@@ -56,7 +56,7 @@
 
 .main-container {
 	opacity: 0;
-	transition: opacity 0.5s ease-in;
+	transition: opacity 0.25s ease-in;
 }
 
 .main-container.fade-in {

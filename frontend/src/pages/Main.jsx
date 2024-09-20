@@ -18,7 +18,7 @@ const Main = () => {
 			setFadeOut(true);
 			setTimeout(() => {
 				setLoading(false);
-			}, 250); // LoadingPage가 사라지는 데 걸리는 시간
+			}, 100); // LoadingPage가 사라지는 데 걸리는 시간
 		}, 1000); // 데이터 로딩을 시뮬레이션하는 시간
 	}, []);
 
