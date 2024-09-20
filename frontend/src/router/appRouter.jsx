@@ -16,8 +16,7 @@ import GroupAccount from '@/pages/groupaccount/GroupAccount';
 import Schedule from '@/pages/schedule/GroupSchedule';
 import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
-import CreatePost from '@/pages/createPost/CreatePost';
-import CreateGroup from '../pages/createGroup/CreateGroup';
+import CreateGroup from '@/pages/createGroup/CreateGroup';
 import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
 import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
 
