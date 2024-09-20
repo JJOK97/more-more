@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
-public class ClubEntity {
-    private Long clubId;
-    private Long dues;
+public class ParticipantEntity {
+    private Long participantId;
     private String clubCode;
-    private String clubName;
-    private String clubIntro;
-    private LocalDate createdDate;
+    private String acceptanceStatus;
+    private String clubRole;
+    private Long userId;
+    private LocalDateTime createdDate;
 }
