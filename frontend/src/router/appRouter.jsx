@@ -14,6 +14,11 @@ import Profile from '@/pages/user/Profile';
 import CreatePost from '@/pages/createPost/CreatePost';
 import GroupAccount from '@/pages/groupaccount/GroupAccount';
 import Schedule from '@/pages/schedule/GroupSchedule';
+import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
+import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
+import AccountTransfer from '../pages/groupAccount/AccountTransfer';
+import Main from '@/pages/Main';
+import Profile from '@/pages/User/Profile';
 import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
 import CreateGroup from '@/pages/createGroup/CreateGroup';
@@ -74,6 +79,10 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/account/setting"
 						element={<GroupDuesSetting />}
+					/>
+					<Route
+						path="/group/:groupId/account/transfer"
+						element={<AccountTransfer />}
 					/>
 				</Routes>
 			</main>

@@ -262,8 +262,128 @@ button {
 	margin: 1rem;
 }
 
+.account-transfer-area {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 0 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
 text[name='dues'] {
 	font-size: 12px;
+	font-weight: 700;
+}
+
+.keypad-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	background-color: #fffdf5;
+	margin-bottom: 2rem;
+}
+
+.amount-display {
+	font-size: 2rem;
+	font-weight: 700;
+	padding-bottom: 0.25rem;
+	border-bottom: 1px solid #000;
+	width: 97%;
+	text-align: right;
+	margin-bottom: 7rem;
+}
+
+div.amount-display > span {
+	margin-right: 0.25rem;
+}
+
+.keypad {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 1rem;
+	width: 100%;
+	max-width: 300px;
+}
+
+.keypad button {
+	font-size: 1.5rem;
+	padding: 1rem;
+	background-color: #fffdf5;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.send-button {
+	background-color: #53b36c;
+	color: #ffffff;
+	font-size: 1.2rem;
+	border: none;
+	border-radius: 10px;
+	width: 100%;
+	margin-top: 2rem;
+	cursor: pointer;
+}
+
+.transfer-account-info {
+	margin-left: 0.5rem;
+}
+
+.transfer-back {
+	margin-bottom: 1rem;
+}
+
+.zero {
+	font-weight: 700;
+}
+
+.zerozero {
+	font-weight: 700;
+}
+
+.keypad button.number {
+	font-weight: 700;
+}
+
+.transfer-info {
+	margin-top: 1.5rem;
+}
+
+.transer-my-account {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+}
+
+.transfer-group-account {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+}
+
+.from-my-account {
+	font-weight: 700;
+}
+
+.transfer-balance {
+	font-size: 0.875rem;
+	color: #999898;
+	font-weight: 700;
+}
+
+.to-group-account {
+	font-weight: 700;
+}
+
+.transfer-account {
+	font-size: 0.875rem;
+	color: #999898;
 	font-weight: 700;
 }
 
