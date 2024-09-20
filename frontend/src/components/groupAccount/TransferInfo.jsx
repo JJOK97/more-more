@@ -4,7 +4,7 @@ import back from '@/assets/img/account/back.svg';
 const TransferInfo = () => {
 	return (
 		<div className="transfer-info">
-			<div>
+			<div className="transfer-back">
 				<img src={back}></img>
 			</div>
 			<div className="transfer-account-info">
