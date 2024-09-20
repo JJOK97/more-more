@@ -14,8 +14,6 @@ import java.time.LocalDate;
 public class ClubCreateRequest {
     @Positive(message = "회비는 0원보다 커야합니다.")
     private Long dues;
-    @NotBlank(message = "모임 코드는 필수값입니다.")
-    private String clubCode;
 
     @NotNull(message = "모임 생성자 ID는 필수값입니다.")
     private Long creatorId;
