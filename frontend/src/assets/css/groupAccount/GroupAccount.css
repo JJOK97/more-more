@@ -262,8 +262,60 @@ button {
 	margin: 1rem;
 }
 
+.account-transfer-area {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+
 text[name='dues'] {
 	font-size: 12px;
+	font-weight: 700;
+}
+
+.transfer-account-info {
+	margin-left: 2rem;
+}
+
+.transfer-info img {
+	margin-left: 1rem;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.transer-my-account {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+}
+
+.transfer-group-account {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+}
+
+.from-my-account {
+	font-weight: 700;
+}
+
+.transfer-balance {
+	font-size: 0.875rem;
+	color: #999898;
+	font-weight: 700;
+}
+
+.to-group-account {
+	font-weight: 700;
+}
+
+.transfer-account {
+	font-size: 0.875rem;
+	color: #999898;
 	font-weight: 700;
 }
 
