@@ -1,3 +1,9 @@
+button {
+	padding: 10px;
+	border: none;
+	font-size: 1rem;
+}
+
 .deposit-payment-status {
 	display: flex;
 	flex-direction: column;
@@ -51,6 +57,58 @@
 	padding-bottom: 1rem;
 }
 
+.edit-save {
+	display: flex;
+	cursor: pointer;
+}
+
+.dues-payment-date label {
+	margin-bottom: 0.5rem;
+}
+
+.dues-date-text {
+	margin-bottom: 0.3rem;
+	width: 100%;
+}
+
+.dues-input {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.dues-input label {
+	display: block;
+	margin-bottom: 0.5rem;
+}
+
+.dues-input input {
+	display: block;
+	margin-bottom: 0.5rem;
+	width: 100%;
+}
+
+.dues-payment-date input {
+	border: none;
+	border-bottom: 1px solid #ccc;
+	padding: 0.5rem;
+	outline: none;
+	font-size: 16px;
+	color: #aaaaaa;
+	background-color: #fffdf5;
+}
+
+.dues-setting-title {
+	font-size: 1.25rem;
+}
+
+.dues-setting-top {
+	display: flex;
+	justify-content: space-between;
+	font-weight: 700;
+	margin-bottom: 2.5rem;
+}
+
 .dues-group-member-status {
 	font-weight: 700;
 	font-size: 16px;
@@ -59,6 +117,7 @@
 	border-radius: 20px;
 	height: 85vh;
 	padding: 2rem;
+	height: 100%;
 }
 
 .dues-member-gather-count {
@@ -76,9 +135,18 @@
 	color: #53b36c;
 }
 
-.deposit-status-payment {
+.deposit-status {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.deposit-status-payment {
+	height: 35vh;
+}
+
+.dues-group-member-status-area {
+	height: 50vh;
 }
 
 .dues-payment {
@@ -101,6 +169,17 @@
 
 .dues-payment-info > li::marker {
 	color: #53b36c;
+}
+
+.dues-payment-date {
+	display: flex;
+	flex-direction: column;
+	padding: 2rem 1rem;
+	margin: 0 auto;
+}
+
+.dues-payment-date-detail {
+	color: #aaaaaa;
 }
 
 .payment-date {
@@ -181,15 +260,6 @@
 	align-items: center;
 	justify-content: space-between;
 	margin: 1rem;
-}
-
-.dues {
-	margin: 10px;
-	text-decoration: none;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: 10.3rem;
 }
 
 text[name='dues'] {
