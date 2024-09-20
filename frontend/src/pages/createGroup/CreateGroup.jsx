@@ -31,9 +31,9 @@ const CreateGroup = () => {
     return (
         <div className="create-group">
             <form className="create-group-form" onSubmit={handleSubmit}>
-                <div className="group-name-container">
+                <div className="create-group-name-container">
                     <input
-                        className="group-name"
+                        className="create-group-name"
                         placeholder='모임 이름 입력'
                         type="text"
                         value={groupName}
@@ -41,25 +41,25 @@ const CreateGroup = () => {
                         required
                     />
                 </div>
-                <div className="image-upload-container">
-                    <label htmlFor="imageInput" className="image-input-label" style={{ display: 'none' }}>Profile Image:</label>
+                <div className="create-image-upload-container">
+                    <label htmlFor="imageInput" className="create-image-input-label" style={{ display: 'none' }}>Profile Image:</label>
                     <input
                         type="file"
                         id="imageInput"
                         accept="image/*"
                         onChange={handleImageChange}
-                        className="image-input"
+                        className="create-image-input"
                         style={{ display: 'none' }} // 숨겨진 파일 입력
                     />
-                    <div className="image-upload" onClick={handleImageClick}>
+                    <div className="create-image-upload" onClick={handleImageClick}>
                         {imagePreview ? (
                             <img
                                 src={imagePreview}
                                 alt="Profile Preview"
-                                className="image-preview"
+                                className="create-image-preview"
                             />
                         ) : (
-                            <span className="add-photo">사진 추가</span>
+                            <span className="create-add-photo">사진 추가</span>
                         )}
                     </div>
                 </div>
