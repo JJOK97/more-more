@@ -3,10 +3,16 @@ import { useParams, Link } from 'react-router-dom';
 import '@/assets/css/feed/Feed.css';
 import PostView from '@/components/postView/PostView';
 import datas from '@/pages/feed/data.json';
+import useGroupName from '@/store/useGroupName';
 
 const Feed = () => {
+	const { setGroupName } = useGroupName();
 	const { groupId } = useParams(); // URL에서 groupId를 추출
 	const [posts, setPosts] = useState([]);
+
+	useEffect(() => {
+		setGroupName(groupId);
+	}, []);
 
 	useEffect(() => {
 		const fetchPosts = () => {
@@ -41,7 +47,7 @@ const Feed = () => {
 					<p>이 그룹에 게시물이 없습니다.</p>
 				)}
 			</div>
-			<Link to={`/create-post/${groupId}`}>
+			<Link to={`/group/${groupId}/create`}>
 				<img
 					className="feed-write-btn"
 					src="/feed/edit.svg"

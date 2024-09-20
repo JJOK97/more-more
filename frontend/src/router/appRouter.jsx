@@ -17,6 +17,7 @@ import Schedule from '@/pages/schedule/GroupSchedule';
 import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
 import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
+import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
 
 const AppRouter = () => {
 	return (
@@ -64,6 +65,10 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/account/status"
 						element={<GroupAccountDepositStatus />}
+					/>
+					<Route
+						path="/group/:groupId/account/setting"
+						element={<GroupDuesSetting />}
 					/>
 				</Routes>
 			</main>
