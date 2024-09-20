@@ -3,6 +3,7 @@ package com.ssafy.postingservice.posting.controller;
 
 import com.ssafy.postingservice.posting.controller.dto.request.CommentCreateRequest;
 import com.ssafy.postingservice.posting.controller.dto.request.CommentUpdateRequest;
+import com.ssafy.postingservice.posting.controller.dto.request.LikeRequest;
 import com.ssafy.postingservice.posting.controller.dto.request.PostingCreateRequest;
 import com.ssafy.postingservice.posting.controller.dto.response.CommentCreateResponse;
 import com.ssafy.postingservice.posting.controller.dto.response.CommentFindResponse;
@@ -11,6 +12,7 @@ import com.ssafy.postingservice.posting.controller.dto.response.PostingCreateRes
 import com.ssafy.postingservice.posting.mapper.CommentObjectMapper;
 import com.ssafy.postingservice.posting.mapper.PostingObjectMapper;
 import com.ssafy.postingservice.posting.service.CommentService;
+import com.ssafy.postingservice.posting.service.LikeService;
 import com.ssafy.postingservice.posting.service.PostingService;
 import com.ssafy.postingservice.posting.service.domain.Comment;
 import com.ssafy.postingservice.posting.service.domain.Posting;
@@ -28,6 +30,7 @@ public class PostingController {
     private final PostingObjectMapper postingObjectMapper;
     private final CommentService commentService;
     private final CommentObjectMapper commentObjectMapper;
+    private final LikeService likeService;
 
     @PostMapping
     public PostingCreateResponse create(@RequestBody PostingCreateRequest postingCreateRequest) {
@@ -64,6 +67,34 @@ public class PostingController {
         CommentUpdateRequest.setCommentId(commentId);
        Comment comment = commentService.updateComment(commentObjectMapper.fromCommentUpdateRequestToDomain(CommentUpdateRequest));
         return commentObjectMapper.fromDomainToUpdateResponse(comment);
+    }
+
+    @GetMapping("/{postingId}/like")
+    public Boolean isLike(@PathVariable Long postingId, @RequestParam Long memberId) {
+        LikeRequest request = new LikeRequest(postingId, memberId);
+        return likeService.isLike(request);
+
+    }
+    @PostMapping("/{postingId}/like")
+    public String likePost(@PathVariable Long postingId, @RequestParam Long memberId) {
+        LikeRequest request = new LikeRequest(postingId, memberId);
+        return likeService.likePost(request);
+    }
+
+    @DeleteMapping("/{postingId}/like")
+    public String unlikePost(@PathVariable Long postingId, @RequestParam Long memberId) {
+        LikeRequest request = new LikeRequest(postingId, memberId);
+        return likeService.unlikePost(request);
+    }
+
+    @GetMapping("/{postingId}/likes")
+    public Long getLikeCount(@PathVariable Long postingId) {
+        return likeService.getLikeCount(postingId);
+    }
+
+    @GetMapping("/{postingId}/likedMembers")
+    public List<String> getLikedMembers(@PathVariable Long postingId) {
+        return likeService.getAllPosts(postingId);
     }
 
 

@@ -1,7 +1,6 @@
 package com.ssafy.postingservice.posting.infrastructure.repository;
 
-import com.ssafy.postingservice.posting.controller.dto.request.CommentUpdateRequest;
-import com.ssafy.postingservice.posting.infrastructure.repository.entity.CommentEntity;
+
 import com.ssafy.postingservice.posting.service.domain.Comment;
 
 import java.util.List;

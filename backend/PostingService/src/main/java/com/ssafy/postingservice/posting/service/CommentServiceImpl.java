@@ -1,6 +1,5 @@
 package com.ssafy.postingservice.posting.service;
 
-import com.ssafy.postingservice.posting.controller.dto.request.CommentUpdateRequest;
 import com.ssafy.postingservice.posting.infrastructure.repository.CommentRepositorylmpl;
 import com.ssafy.postingservice.posting.service.domain.Comment;
 import lombok.RequiredArgsConstructor;

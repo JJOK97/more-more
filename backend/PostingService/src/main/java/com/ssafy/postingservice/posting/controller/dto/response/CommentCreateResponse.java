@@ -22,10 +22,6 @@ public class CommentCreateResponse {
         this.memberId = memberId;
         this.commentCreatedTime = commentCreatedTime;
         this.commentContent = commentContent;
-
-
-
     }
-
 
 }
