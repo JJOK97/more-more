@@ -10,20 +10,16 @@ import Footer from '@/components/common/GroupFooter';
 
 import Main from '@/pages/Main';
 import Login from '@/pages/user/Login';
+import CreateGroup from '@/pages/createGroup/CreateGroup';
 import Profile from '@/pages/user/Profile';
 import CreatePost from '@/pages/createPost/CreatePost';
 import GroupAccount from '@/pages/groupaccount/GroupAccount';
 import Schedule from '@/pages/schedule/GroupSchedule';
+import Feed from '@/pages/feed/Feed';
+import Post from '@/pages/post/Post';
 import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
 import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
 import AccountTransfer from '../pages/groupAccount/AccountTransfer';
-import Main from '@/pages/Main';
-import Profile from '@/pages/User/Profile';
-import Feed from '@/pages/feed/Feed';
-import Post from '@/pages/post/Post';
-import CreateGroup from '@/pages/createGroup/CreateGroup';
-import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
-import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
 
 const AppRouter = () => {
 	return (
