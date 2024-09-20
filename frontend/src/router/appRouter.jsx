@@ -11,6 +11,7 @@ import Profile from '@/pages/User/Profile';
 import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
 import CreatePost from '@/pages/createPost/CreatePost';
+import CreateGroup from '../pages/createGroup/CreateGroup';
 
 const AppRouter = () => {
 	return (
@@ -23,7 +24,10 @@ const AppRouter = () => {
 						path="/"
 						element={<Main />}
 					/>
-
+					<Route
+						path="/create"
+						element={<CreateGroup />}
+					/>
 					<Route
 						path="/profile"
 						element={<Profile />}
