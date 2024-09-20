@@ -2,11 +2,17 @@ package com.ssafy.clubservice.club.service.domain;
 
 import com.ssafy.clubservice.club.enumeration.AcceptanceStatus;
 import com.ssafy.clubservice.club.enumeration.ClubRole;
+import com.ssafy.clubservice.global.error.ErrorCode;
+import com.ssafy.clubservice.global.error.exception.NoSuchAcceptanceStatusException;
+import com.ssafy.clubservice.global.error.exception.NoSuchClubRoleException;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.ssafy.clubservice.global.error.ErrorCode.*;
 
 @Getter
 public class Participant {
@@ -16,6 +22,10 @@ public class Participant {
     private ClubRole clubRole;
     private AcceptanceStatus acceptanceStatus;
     private LocalDateTime createdDate;
+
+    private static List<String> clubRoleValues = List.of("CREATOR", "PARTICIPANT");
+    private static List<String> acceptanceStatusValues = List.of("WAITING", "ACCEPTED", "REFUSED");
+
 
     @Builder
     public Participant(Long participantId, String clubCode, Long userId, ClubRole clubRole, AcceptanceStatus acceptanceStatus, LocalDateTime createdDate) {
@@ -34,7 +44,6 @@ public class Participant {
                 .clubRole(ClubRole.CREATOR)
                 .acceptanceStatus(AcceptanceStatus.ACCEPTED)
                 .build();
-        // TODO paritipant가 없을 때 exception 발생 로직 추가
     }
 
     public static Participant createClubParticipant(String clubCode, Long userId){
@@ -44,6 +53,16 @@ public class Participant {
                 .clubRole(ClubRole.PARTICIPANT)
                 .acceptanceStatus(AcceptanceStatus.WAITING)
                 .build();
+    }
+
+    public static boolean isValidClubRole (String clubRole){
+        if(!clubRoleValues.contains(clubRole)) throw new NoSuchClubRoleException(NO_SUCH_CLUB_ROLE);
+        return true;
+    }
+
+    public static boolean isValidAcceptanceStatus (String acceptanceStatus){
+        if(!acceptanceStatusValues.contains(acceptanceStatus)) throw new NoSuchAcceptanceStatusException(NO_SUCH_ACCEPTANCE_STATUS);
+        return true;
     }
 
 }

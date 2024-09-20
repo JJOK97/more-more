@@ -9,6 +9,7 @@ import com.ssafy.clubservice.club.mapper.ParticipantObjectMapper;
 import com.ssafy.clubservice.club.service.ClubService;
 import com.ssafy.clubservice.club.service.domain.Club;
 import com.ssafy.clubservice.club.service.domain.Participant;
+import com.ssafy.clubservice.global.validator.ParticipantListValid;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class ClubController {
     @PostMapping("/{clubCode}/participants")
     @ResponseStatus(HttpStatus.CREATED)
     public List<ParticipantCreateResponse> addParticipant(@PathVariable("clubCode") String clubCode,
-                                                    @RequestBody List<ParticipantCreateRequest> participantCreateRequestList){
+                                                   @ParticipantListValid @RequestBody List<ParticipantCreateRequest> participantCreateRequestList){
         List<Participant> participants = clubService.addParticipant(clubCode, participantObjectMapper.fromCreateRequestToDomain(participantCreateRequestList));
         return participantObjectMapper.fromDomainToCreateResponse(participants);
     }
