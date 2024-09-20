@@ -22,6 +22,8 @@
     outline: none;
     font-size: 0.75rem;
     padding: 0.5rem;
+    background-color: #FFFDF5;
+    width: 100%;
 }
 
 .comment-input-button {

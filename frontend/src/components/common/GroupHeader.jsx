@@ -19,7 +19,13 @@ const Header = () => {
 	const displayedGroupName = currentGroup ? currentGroup.groupName : '';
 
 	// '/' 경로에서는 Header가 보이지 않도록
-	if (location.pathname === '/' || location.pathname == '/group/:groupId/account/transfer') return null;
+	if (
+		location.pathname === '/' ||
+		location.pathname == '/login' ||
+		location.pathname == '/signup' ||
+		location.pathname == '/group/:groupId/account/transfer'
+	)
+		return null;
 
 	return (
 		<header className="common-header">
