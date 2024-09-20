@@ -2,6 +2,7 @@ import React from 'react';
 import '@/assets/css/common/Main.css';
 import datas from '@/components/main/data.json';
 import Group from '../components/main/Group';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
 	const groups = datas.groups;
@@ -31,7 +32,7 @@ const Main = () => {
 				</div>
 			</div>
 			<div className="main-groups-area">
-				<div className="main-groups-title">내 그룹</div>
+				<div className="main-groups-title">내 모임</div>
 				<div className="main-groups-list">
 					{groups ? (
 						groups.map((group) => (
@@ -41,8 +42,12 @@ const Main = () => {
 							/>
 						))
 					) : (
-						<div className="main-no-groups-message">그룹이 없습니다.</div>
+						<div className="main-no-groups-message">모임이 없습니다.</div>
 					)}
+					<Link className='main-group-create-area' to={"/create"}>
+						<img className='main-create-icon' src='/main/Plus circle.svg'/>
+						<div className='main-create-title'>새로운 모임 만들기</div>
+					</Link>
 				</div>
 			</div>
 		</div>
