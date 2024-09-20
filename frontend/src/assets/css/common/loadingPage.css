@@ -54,11 +54,11 @@
 	animation-play-state: running;
 }
 
-.main-container {
+.login-container {
 	opacity: 0;
 	transition: opacity 0.25s ease-in;
 }
 
-.main-container.fade-in {
+.login-container.fade-in {
 	opacity: 1;
 }

@@ -1,5 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+
+import PrivateRoute from '@/components/common/PrivateRoute';
+
 import '@/assets/css/common/appRouter.css';
+
 import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
@@ -23,7 +27,11 @@ const AppRouter = () => {
 				<Routes>
 					<Route
 						path="/"
-						element={<Main />}
+						element={
+							<PrivateRoute>
+								<Main />
+							</PrivateRoute>
+						}
 					/>
 					<Route
 						path="/login"
