@@ -51,10 +51,12 @@ const Header = () => {
 							alt="User"
 						/>
 					</Link>
-					<img
-						src={bell}
-						alt="Notifications"
-					/>
+					<Link>
+						<img
+							src={bell}
+							alt="Notifications"
+						/>
+					</Link>
 				</div>
 			</div>
 		</header>

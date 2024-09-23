@@ -17,11 +17,15 @@ const Header = () => {
 					<img src={logo}></img>
 				</div>
 				<div className="userNavbar">
-					<img src={search}></img>
+					<Link>
+						<img src={search}></img>
+					</Link>
 					<Link to={'/profile'}>
 						<img src={user}></img>
 					</Link>
-					<img src={bell}></img>
+					<Link>
+						<img src={bell}></img>
+					</Link>
 				</div>
 			</div>
 		</header>
