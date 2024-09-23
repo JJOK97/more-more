@@ -17,11 +17,11 @@
 
 .comment-input-box {
     border: 0;
-    border-bottom: 1px solid black;
-    border-radius: 0;
+    border: 1px solid #52BD6D;
+    border-radius: 1rem;
     outline: none;
     font-size: 0.75rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
     background-color: #FFFDF5;
     width: 100%;
 }
