@@ -10,6 +10,7 @@
 	width: 100%;
 	object-fit: cover;
 	display: block;
+	border-bottom: 1px solid #dfdfdf;
 }
 
 .group-info-profile-placeholder {
@@ -18,6 +19,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border-bottom: 1px solid #dfdfdf;
 }
 
 .group-info-profile-input {
@@ -26,54 +28,80 @@
 
 .group-info-details,
 .group-info-members {
-	border-top: 1px solid #dfdfdf;
 	border-bottom: 1px solid #dfdfdf;
 }
 
 .group-info-header,
 .group-info-members-header {
 	padding: 0.5rem 1rem;
-	border-top: 1px solid #dfdfdf;
 	border-bottom: 1px solid #dfdfdf;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.group-info-toggle-button,
+.group-info-toggle-button {
+	background-color: #fff;
+}
+
 .group-info-edit-button,
 .group-info-invite-button {
-	background-color: #52bd6d;
-	color: white;
-	border: none;
-	padding: 0.5rem 0.75rem;
+	color: #52bd6d;
+	border: 1px solid #52bd6d;
+	background-color: #fff;
+	padding: 0.25rem 0.75rem;
 	cursor: pointer;
 	border-radius: 0.5rem;
 }
 
-.group-info-toggle-button:hover,
-.group-info-edit-button:hover,
-.group-info-invite-button:hover {
-}
-
 .group-info-body,
 .group-info-members-list {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+	display: flex;
+	flex-direction: column;
 }
 
 .group-info-name,
-.group-info-start-date,
 .group-info-intro {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	padding: 0.5rem 1rem;
 }
 
-.group-info-name-value,
-.group-info-intro-value {
+.group-info-start-date-value {
 	display: flex;
 	gap: 0.25rem;
+	padding: 0.5rem 1rem;
+}
+
+.group-info-name-value, 
+.group-info-intro-value {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.group-info-members-count {
+	text-align: center;
+	color: gray;
+	font-size: 0.875rem;
+}
+
+.group-info-members-actions {
+	display: flex;
+	align-items: center;
+}
+
+.group-info-member {
+	display: flex;
+	border-bottom: 1px solid #dfdfdf;
+	padding: 0.5rem 1rem;
+}
+
+.group-info-pending-invites {
+	display: flex;
+	flex-direction: column;
+}
+
+.group-info-pending-label {
+	padding: 0.5rem 1rem;
 }

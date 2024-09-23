@@ -57,22 +57,23 @@ const GroupInfo = () => {
 						className="group-info-toggle-button"
 						onClick={toggleInfo}
 					>
-						{isInfoOpen ? '접기' : '펼치기'}
+						{isInfoOpen ? <img src="/info/chevron-up.svg" /> : <img src="/info/chevron-down.svg" />}
 					</button>
 				</div>
 				{isInfoOpen && (
 					<div className="group-info-body">
 						<div className="group-info-name">
 							<div className="group-info-name-value">
-								<div>그룹명 : </div>
+								<div className="group-info-name-label">그룹명 :</div>
 								{isEditing ? (
 									<input
 										type="text"
 										value={groupName}
 										onChange={(e) => setGroupName(e.target.value)}
+										className="group-info-name-input"
 									/>
 								) : (
-									<div>{groupName}</div>
+									<div className="group-info-name-text">{groupName}</div>
 								)}
 							</div>
 							<button
@@ -83,19 +84,23 @@ const GroupInfo = () => {
 							</button>
 						</div>
 						<div className="group-info-start-date">
-							<div>개설일 : 2024-09-09</div>
+							<div className="group-info-start-date-value">
+								<div className="group-info-start-date-label">개설일 :</div>
+								<div className="group-info-start-date-text">2024-09-09</div>
+							</div>
 						</div>
 						<div className="group-info-intro">
 							<div className="group-info-intro-value">
-								<div>한 줄 소개 :</div>
+								<div className="group-info-intro-label">한 줄 소개 :</div>
 								{isEditing ? (
 									<input
 										type="text"
 										value={intro}
 										onChange={(e) => setIntro(e.target.value)}
+										className="group-info-intro-input"
 									/>
 								) : (
-									<div>{intro}</div>
+									<div className="group-info-intro-text">{intro}</div>
 								)}
 							</div>
 						</div>
@@ -106,37 +111,39 @@ const GroupInfo = () => {
 			{/* 모임원 섹션 */}
 			<div className="group-info-members">
 				<div className="group-info-members-header">
-					<div>
-						<div>모임원</div>
-						<div>6명</div>
+					<div className="group-info-members-info">
+						<div className="group-info-members-label">모임원</div>
+						<div className="group-info-members-count">5명</div>
 					</div>
-					<button className="group-info-invite-button">모임 초대</button>
-					<button
-						className="group-info-toggle-button"
-						onClick={toggleMembers}
-					>
-						{isMembersOpen ? '접기' : '펼치기'}
-					</button>
+					<div className='group-info-members-actions'>
+						{isMembersOpen && <button className="group-info-invite-button">멤버 초대</button>}
+						<button
+							className="group-info-toggle-button"
+							onClick={toggleMembers}
+						>
+							{isMembersOpen ? <img src="/info/chevron-up.svg" /> : <img src="/info/chevron-down.svg" />}
+						</button>
+					</div>
 				</div>
 				{isMembersOpen && (
 					<div className="group-info-members-list">
 						<div className="group-info-member">
-							<div>프로필 사진</div>
-							<div>이름</div>
+							<div className="group-info-member-profile">프로필 사진</div>
+							<div className="group-info-member-name">이름</div>
 						</div>
 						<div className="group-info-member">
-							<div>프로필 사진</div>
-							<div>이름</div>
+							<div className="group-info-member-profile">프로필 사진</div>
+							<div className="group-info-member-name">이름</div>
 						</div>
 						<div className="group-info-pending-invites">
-							<div>수락 대기</div>
+							<div className="group-info-pending-label">수락 대기</div>
 							<div className="group-info-member">
-								<div>프로필 사진</div>
-								<div>이름</div>
+								<div className="group-info-member-profile">프로필 사진</div>
+								<div className="group-info-member-name">이름</div>
 							</div>
 							<div className="group-info-member">
-								<div>프로필 사진</div>
-								<div>이름</div>
+								<div className="group-info-member-profile">프로필 사진</div>
+								<div className="group-info-member-name">이름</div>
 							</div>
 						</div>
 					</div>

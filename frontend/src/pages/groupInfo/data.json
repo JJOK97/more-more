@@ -1,0 +1,36 @@
+{
+	"users": [
+		{
+			"userId": 1,
+			"userName": "박지환",
+			"userProfile": "/info/profile_icon1.png"
+		},
+		{
+			"userId": 2,
+			"userName": "옥진석",
+			"userProfile": "/info/profile_icon2.png"
+		},
+		{
+			"userId": 3,
+			"userName": "박정선",
+			"userProfile": "/info/profile_icon3.png"
+		},
+		{
+			"userId": 4,
+			"userName": "권주안",
+			"userProfile": "/info/profile_icon4.png"
+		}
+	],
+	"pendings": [
+		{
+			"userId": 5,
+			"userName": "신승호",
+			"userProfile": "/info/profile_icon5.png"
+		},
+		{
+			"userId": 6,
+			"userName": "이재성",
+			"userProfile": "/info/profile_icon6.png"
+		}
+    ]
+}
