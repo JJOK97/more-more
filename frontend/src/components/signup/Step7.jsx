@@ -28,28 +28,38 @@ const Step7 = () => {
 	}, []);
 
 	return (
-		<div>
-			<h2>Step 7: 주소 입력</h2>
-			<div>
-				<label htmlFor="address">주소</label>
-				<Field
-					id="address"
-					name="address"
-					placeholder="주소를 검색하세요"
-					type="text"
-					readOnly // 사용자가 직접 입력하지 않고 검색 결과로만 입력
-				/>
-				<ErrorMessage
-					name="address"
-					component="div"
-					className="error"
-				/>
-				<button
-					type="button"
-					onClick={handleAddressSearch}
-				>
-					주소 검색
-				</button>
+		<div className="registration-step-container">
+			<div className="registration-step-title">주소 입력</div>
+			<div className="registration-step-content">
+				<div className="welcome-message">
+					프로필에 등록할 <br />
+					주소를 입력해 주세요.
+				</div>
+				<div className="input-group">
+					<label htmlFor="address">주소</label>
+					<div className="input-with-button">
+						<Field
+							id="address"
+							name="address"
+							placeholder="주소를 검색하세요"
+							type="text"
+							readOnly
+							className="input-field"
+							onClick={handleAddressSearch}
+						/>
+						<button
+							className="verify-button"
+							type="button"
+							onClick={handleAddressSearch}
+						>
+							검색
+						</button>
+					</div>
+					<ErrorMessage
+						name="address"
+						render={(msg) => <div className="error-message">{msg}</div>}
+					/>
+				</div>
 			</div>
 		</div>
 	);

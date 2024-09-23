@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+
+import '@/assets/css/user/signup.css';
+
+import arrowleft from '@/assets/img/common/arrow-left.svg';
+
 import Step1 from '@/components/signup/Step1';
 import Step2 from '@/components/signup/Step2';
 import Step3 from '@/components/signup/Step3';
@@ -24,7 +29,7 @@ const validationSchemas = [
 	}),
 	Yup.object({
 		verification_code: Yup.string()
-			.length(6, '인증번호는 6자리여야 합니다.')
+			.length(6, '인증번호가 일치하지 않습니다.')
 			.required('인증번호는 필수 입력 항목입니다.'),
 	}),
 	Yup.object({
@@ -44,13 +49,14 @@ const validationSchemas = [
 	}),
 	Yup.object({
 		profile_image: Yup.mixed()
+			.nullable()
 			.test('fileSize', '파일 크기가 너무 큽니다.', (value) => {
 				if (!value) return true; // 파일 없으면 검사하지 않음
 				return value.size <= 102400; // 100KB 이하
 			})
 			.test('fileType', '이미지 파일만 업로드 가능합니다.', (value) => {
 				if (!value) return true;
-				return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type); // 허용 이미지 유형
+				return ['image/jpeg', 'image/png', 'image/gif'].includes(value.type);
 			}),
 	}),
 	Yup.object({
@@ -81,7 +87,8 @@ const Signup = () => {
 		birth_date: '',
 		phone_number: '',
 		pwd: '',
-		profile_image: '',
+		profile_image: null,
+		profile_image_preview: null,
 		email: '',
 		address: '',
 	};
@@ -123,15 +130,15 @@ const Signup = () => {
 						{step === 7 && <Step8 />}
 
 						<div className="signup-nav-button">
-							<button
-								type="button"
+							<img
+								src={arrowleft}
 								onClick={handlePrevious}
-							>
-								Previous
+							/>
+
+							<button type="submit">
+								{step === validationSchemas.length - 1 ? '회원가입' : '다음으로'}
 							</button>
-							<button type="submit">{step === validationSchemas.length - 1 ? 'Submit' : 'Next'}</button>
 						</div>
-						<pre>{JSON.stringify(values, null, 2)}</pre>
 					</Form>
 				)}
 			</Formik>
