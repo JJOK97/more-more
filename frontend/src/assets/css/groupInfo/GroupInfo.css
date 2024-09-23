@@ -1,0 +1,79 @@
+.group-info-container {
+}
+
+.group-info-profile-picture-container {
+	position: relative;
+}
+
+.group-info-profile-picture {
+	height: 10rem;
+	width: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.group-info-profile-placeholder {
+	height: 10rem;
+	background-color: #ccc;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.group-info-profile-input {
+	display: none; /* input 파일 선택 버튼 숨김 */
+}
+
+.group-info-details,
+.group-info-members {
+	border-top: 1px solid #dfdfdf;
+	border-bottom: 1px solid #dfdfdf;
+}
+
+.group-info-header,
+.group-info-members-header {
+	padding: 0.5rem 1rem;
+	border-top: 1px solid #dfdfdf;
+	border-bottom: 1px solid #dfdfdf;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.group-info-toggle-button,
+.group-info-edit-button,
+.group-info-invite-button {
+	background-color: #52bd6d;
+	color: white;
+	border: none;
+	padding: 0.5rem 0.75rem;
+	cursor: pointer;
+	border-radius: 0.5rem;
+}
+
+.group-info-toggle-button:hover,
+.group-info-edit-button:hover,
+.group-info-invite-button:hover {
+}
+
+.group-info-body,
+.group-info-members-list {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.group-info-name,
+.group-info-start-date,
+.group-info-intro {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.group-info-name-value,
+.group-info-intro-value {
+	display: flex;
+	gap: 0.25rem;
+}
