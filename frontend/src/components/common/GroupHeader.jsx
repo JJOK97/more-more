@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '@/assets/css/common/header.css';
 import chevron from '@/assets/img/common/mainHeader/chevron-left.svg';
 import user from '@/assets/img/common/mainHeader/user.svg';
@@ -45,10 +45,12 @@ const Header = () => {
 					</div>
 				</div>
 				<div className="headerRight">
-					<img
-						src={user}
-						alt="User"
-					/>
+					<Link to={'/profile'}>
+						<img
+							src={user}
+							alt="User"
+						/>
+					</Link>
 					<img
 						src={bell}
 						alt="Notifications"
