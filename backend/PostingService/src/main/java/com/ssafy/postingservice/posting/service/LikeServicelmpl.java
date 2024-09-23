@@ -5,9 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -39,8 +37,6 @@ public class LikeServicelmpl implements LikeService{
 
         // 사용자 ID를 SET에 추가하고 좋아요 수 증가
         redisTemplate.opsForSet().add(userLikedKey, memberId.toString());
-
-
 
         return "좋아요를 추가했습니다.";
     }
@@ -84,5 +80,22 @@ public class LikeServicelmpl implements LikeService{
 
         // Set을 List로 변환
         return new ArrayList<>(likedMembers);
+    }
+
+    @Override
+    public Map<Long, Long> getLikeCountsForPostings(List<Long> postingIds) {
+        // 결과를 저장할 Map 생성
+        Map<Long, Long> likeCounts = new HashMap<>();
+
+        // 각 postingId에 대해 Redis에서 좋아요 수를 조회
+        for (Long postId : postingIds) {
+            String userLikedKey = Member_LIKED_KEY_PREFIX + postId;
+            // Redis SET의 크기를 가져와 좋아요 수 조회
+            Long likeCount = redisTemplate.opsForSet().size(userLikedKey);
+            // null 값인 경우 0으로 처리
+            likeCounts.put(postId, likeCount != null ? likeCount : 0L);
+        }
+
+        return likeCounts;
     }
 }

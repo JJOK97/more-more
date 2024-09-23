@@ -5,6 +5,7 @@ import com.ssafy.postingservice.posting.infrastructure.repository.entity.Comment
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface CommentMybatisMapper {
@@ -16,4 +17,7 @@ public interface CommentMybatisMapper {
     void deleteComment(Long commentId);
 
     void updateComment(CommentEntity entity);
+
+
+
 }

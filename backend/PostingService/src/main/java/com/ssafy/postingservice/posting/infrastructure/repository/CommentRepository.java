@@ -15,4 +15,8 @@ public interface CommentRepository {
     void deleteComment(Long commentId);
 
     Comment updateComment(Comment comment);
+
+
+    class PostImageMybatisMapper {
+    }
 }

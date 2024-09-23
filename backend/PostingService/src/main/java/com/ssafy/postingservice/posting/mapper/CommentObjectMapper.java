@@ -24,10 +24,8 @@ public interface CommentObjectMapper {
    Comment fromCreatRequestToDomain(CommentCreateRequest postingCreateRequest);
    CommentCreateResponse fromDomainToCreateResponse(Comment comment);
    Comment fromEntityToDomain(CommentEntity commentEntity);
-
    List<Comment> fromEntitiesToDomainList(List<CommentEntity> commentEntities);
    List<CommentFindResponse> fromDomainListToFindResponse(List<Comment> comments);
-
    Comment fromCommentUpdateRequestToDomain(CommentUpdateRequest commentUpdateRequest);
    CommentUpdateReponse fromDomainToUpdateResponse(Comment comment);
 

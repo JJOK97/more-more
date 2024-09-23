@@ -25,7 +25,14 @@
         WHERE comment_id = #{commentId}
     </update>
 
-
-
+    <select id="getCommentCountsForPostings" resultType="map">
+        SELECT posting_id AS postingId, COUNT(*) AS commentCount
+        FROM comment
+        WHERE posting_id IN
+        <foreach item="postingId" collection="postingIds" open="(" separator="," close=")">
+            #{postingId}
+        </foreach>
+        GROUP BY posting_id
+    </select>
 
 </mapper>
