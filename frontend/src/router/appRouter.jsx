@@ -10,6 +10,9 @@ import Footer from '@/components/common/GroupFooter';
 
 import Main from '@/pages/Main';
 import Login from '@/pages/user/Login';
+import Signup from '@/pages/user/Signup';
+import AccountSetup from '@/components/signup/AccountSetup';
+import RegisterAccount from '@/pages/user/RegisterAccount';
 import CreateGroup from '@/pages/createGroup/CreateGroup';
 import Profile from '@/pages/user/Profile';
 import CreatePost from '@/pages/createPost/CreatePost';
@@ -19,7 +22,7 @@ import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
 import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
 import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
-import AccountTransfer from '../pages/groupAccount/AccountTransfer';
+import AccountTransfer from '@/pages/groupAccount/AccountTransfer';
 
 const AppRouter = () => {
 	return (
@@ -39,6 +42,18 @@ const AppRouter = () => {
 					<Route
 						path="/login"
 						element={<Login />}
+					/>
+					<Route
+						path="/signup"
+						element={<Signup />}
+					/>
+					<Route
+						path="/account-setup"
+						element={<AccountSetup />}
+					/>
+					<Route
+						path="/register-account/:userId"
+						element={<RegisterAccount />}
 					/>
 					<Route
 						path="/create"
