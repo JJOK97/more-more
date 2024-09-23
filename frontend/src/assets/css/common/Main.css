@@ -88,6 +88,7 @@
 	padding: 0.5rem;
 	gap: 0.5rem;
 	text-decoration: none;
+	color: black;
 }
 
 .main-group-area:visited {
@@ -143,6 +144,28 @@
 	}
 }
 
+
 input {
 	font-family: pretandard;
 }
+
+.main-group-create-area {
+	background-color: white;
+	border-radius: 0.75rem;
+	box-shadow: var(--card-shadow);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5rem;
+	gap: 0.5rem;
+	text-decoration: none;
+	color: black;
+	height: 6rem;
+}
+
+.main-create-title {
+	color: #52bd6d;
+}
+

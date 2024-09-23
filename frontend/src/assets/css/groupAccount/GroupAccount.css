@@ -318,6 +318,14 @@ div.amount-display > span {
 	cursor: pointer;
 }
 
+.account-question-button {
+	margin-bottom: 2rem;
+}
+
+.account-check-button {
+	margin-bottom: 2rem;
+}
+
 .send-button {
 	background-color: #53b36c;
 	color: #ffffff;
@@ -327,6 +335,89 @@ div.amount-display > span {
 	width: 100%;
 	margin-top: 2rem;
 	cursor: pointer;
+}
+
+.account-question {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.account-check {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.account-question-message {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-top: 3rem;
+}
+
+.account-check-area {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.account-check-message {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-top: 3rem;
+}
+
+div.account-question-top-component > div.transfer-info-area > div > div.transfer-account-info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+div.account-question-top-component > div.transfer-info-area > div > div.transfer-account-info > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+	align-items: center;
+}
+
+div.account-check-top-component > div.transfer-info-area > div > div.transfer-account-info > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+	align-items: center;
+}
+
+.account-question-info-area {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 0 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.account-check-info-area {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 0 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .transfer-account-info {
