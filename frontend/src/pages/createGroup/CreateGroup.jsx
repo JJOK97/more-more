@@ -59,7 +59,7 @@ const CreateGroup = () => {
                                 className="create-image-preview"
                             />
                         ) : (
-                            <span className="create-add-photo">사진 추가</span>
+                            <span className="create-add-photo">모임 프로필 추가</span>
                         )}
                     </div>
                 </div>
