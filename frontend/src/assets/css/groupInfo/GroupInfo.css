@@ -1,8 +1,9 @@
 .group-info-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .group-info-profile-picture-container {
-	position: relative;
 }
 
 .group-info-profile-picture {
@@ -104,4 +105,17 @@
 
 .group-info-pending-label {
 	padding: 0.5rem 1rem;
+}
+
+.group-info-member {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.group-info-member-profile {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 99rem;
+    border: 1px solid black;
 }

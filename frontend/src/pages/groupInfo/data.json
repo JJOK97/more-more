@@ -8,29 +8,29 @@
 		{
 			"userId": 2,
 			"userName": "옥진석",
-			"userProfile": "/info/profile_icon2.png"
+			"userProfile": "/info/profile_icon2.webp"
 		},
 		{
 			"userId": 3,
 			"userName": "박정선",
-			"userProfile": "/info/profile_icon3.png"
+			"userProfile": "/info/profile_icon3.webp"
 		},
 		{
 			"userId": 4,
 			"userName": "권주안",
-			"userProfile": "/info/profile_icon4.png"
+			"userProfile": "/info/profile_icon4.webp"
 		}
 	],
 	"pendings": [
 		{
 			"userId": 5,
 			"userName": "신승호",
-			"userProfile": "/info/profile_icon5.png"
+			"userProfile": "/info/profile_icon5.webp"
 		},
 		{
 			"userId": 6,
 			"userName": "이재성",
-			"userProfile": "/info/profile_icon6.png"
+			"userProfile": "/info/profile_icon6.webp"
 		}
     ]
 }

@@ -1,6 +1,6 @@
 main {
 	padding-top: 7.5vh;
 	padding-bottom: 7.5vh;
-	height: 85vh;
+	min-height: 85vh;
 	background-color: #fffdf5;
 }

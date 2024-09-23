@@ -1,5 +1,6 @@
 import '@/assets/css/groupInfo/GroupInfo.css'; // CSS 파일 분리
 import React, { useState } from 'react';
+import data from './data.json';
 
 const GroupInfo = () => {
 	const [isInfoOpen, setIsInfoOpen] = useState(true);
@@ -113,9 +114,9 @@ const GroupInfo = () => {
 				<div className="group-info-members-header">
 					<div className="group-info-members-info">
 						<div className="group-info-members-label">모임원</div>
-						<div className="group-info-members-count">5명</div>
+						<div className="group-info-members-count">{data.users.length}명</div>
 					</div>
-					<div className='group-info-members-actions'>
+					<div className="group-info-members-actions">
 						{isMembersOpen && <button className="group-info-invite-button">멤버 초대</button>}
 						<button
 							className="group-info-toggle-button"
@@ -125,26 +126,40 @@ const GroupInfo = () => {
 						</button>
 					</div>
 				</div>
+
 				{isMembersOpen && (
 					<div className="group-info-members-list">
-						<div className="group-info-member">
-							<div className="group-info-member-profile">프로필 사진</div>
-							<div className="group-info-member-name">이름</div>
-						</div>
-						<div className="group-info-member">
-							<div className="group-info-member-profile">프로필 사진</div>
-							<div className="group-info-member-name">이름</div>
-						</div>
+						{/* Users 목록 */}
+						{data.users.map((user) => (
+							<div
+								key={user.userId}
+								className="group-info-member"
+							>
+								<img
+									src={user.userProfile}
+									alt={`${user.userName}의 프로필`}
+									className="group-info-member-profile"
+								/>
+								<div className="group-info-member-name">{user.userName}</div>
+							</div>
+						))}
+
+						{/* 수락 대기 목록 */}
 						<div className="group-info-pending-invites">
 							<div className="group-info-pending-label">수락 대기</div>
-							<div className="group-info-member">
-								<div className="group-info-member-profile">프로필 사진</div>
-								<div className="group-info-member-name">이름</div>
-							</div>
-							<div className="group-info-member">
-								<div className="group-info-member-profile">프로필 사진</div>
-								<div className="group-info-member-name">이름</div>
-							</div>
+							{data.pendings.map((pending) => (
+								<div
+									key={pending.userId}
+									className="group-info-member"
+								>
+									<img
+										src={pending.userProfile}
+										alt={`${pending.userName}의 프로필`}
+										className="group-info-member-profile"
+									/>
+									<div className="group-info-member-name">{pending.userName}</div>
+								</div>
+							))}
 						</div>
 					</div>
 				)}
