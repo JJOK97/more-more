@@ -23,7 +23,8 @@ const Header = () => {
 		location.pathname === '/' ||
 		location.pathname == '/login' ||
 		location.pathname == '/signup' ||
-		location.pathname == '/group/:groupId/account/transfer'
+		location.pathname == '/group/:groupId/account/transfer' ||
+		location.pathname == '/group/:groupId/account/transfer-question'
 	)
 		return null;
 

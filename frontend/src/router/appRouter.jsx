@@ -19,7 +19,8 @@ import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
 import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
 import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
-import AccountTransfer from '../pages/groupAccount/AccountTransfer';
+import AccountTransfer from '@/pages/groupAccount/AccountTransfer';
+import AccountTransferQuestion from '@/pages/groupAccount/AccountTransferQuestion';
 
 const AppRouter = () => {
 	return (
@@ -79,6 +80,10 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/account/transfer"
 						element={<AccountTransfer />}
+					/>
+					<Route
+						path="/group/:groupId/account/transfer-question"
+						element={<AccountTransferQuestion />}
 					/>
 				</Routes>
 			</main>
