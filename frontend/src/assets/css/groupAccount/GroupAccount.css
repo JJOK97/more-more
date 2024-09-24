@@ -319,6 +319,7 @@
 	padding-top: 2rem;
 	padding-bottom: 2rem;
 	box-shadow: 0px 4px 4px rgba(55, 54, 54, 0.5);
+	margin-top: 1rem;
 }
 
 .bill-area img {
@@ -327,13 +328,14 @@
 }
 
 .bill-area > div {
-	width: 100%;
-	padding-left: 5rem;
+	width: 80%;
 }
 
-.memo-title {
+.memo {
 	text-align: left;
 	margin-bottom: 0.5rem;
+	font-size: 1rem;
+	font-weight: 700;
 }
 
 .memo-content {
@@ -344,7 +346,8 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	margin: 1rem;
+	height: 85vh;
+	margin: 0 1rem;
 }
 
 .transaction-detail-one-list {
@@ -358,6 +361,7 @@
 	box-shadow: 0px 4px 4px rgba(55, 54, 54, 0.5);
 	padding-left: 1rem;
 	padding-right: 1rem;
+	margin-top: 1rem;
 }
 
 .transaction-detail-date {
@@ -404,11 +408,12 @@ text[name='dues'] {
 .move-to-post {
 	background-color: #53b36c;
 	color: #ffffff;
-	font-size: 1.2rem;
+	font-size: 1rem;
+	padding: 10px;
 	border: none;
 	border-radius: 10px;
 	width: 100%;
-	margin-top: 2rem;
+	margin-bottom: 2rem;
 	cursor: pointer;
 	box-shadow: 0px 4px 4px rgba(55, 54, 54, 0.5);
 }
@@ -659,4 +664,10 @@ button[name='fill'] {
 button[name='send'] {
 	background-color: #53b36c;
 	width: 8.8rem;
+}
+
+/* detail */
+.detail-container {
+	width: 100%;
+	min-height: 85vh;
 }
