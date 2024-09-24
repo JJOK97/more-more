@@ -1,7 +1,7 @@
 import '@/assets/css/groupInfo/GroupInfo.css';
 import React, { useState } from 'react';
 import data from './data.json';
-import GroupMember from '@/components/groupInfo/GroupMember.jsx'
+import GroupMember from '@/components/groupInfo/GroupMember.jsx';
 
 const GroupInfo = () => {
 	const [isInfoOpen, setIsInfoOpen] = useState(true);
@@ -52,13 +52,24 @@ const GroupInfo = () => {
 			<div className="group-info-details">
 				<div className="group-info-header">
 					<div className="group-info-header-info">모임 정보</div>
-					<button
-						className="group-info-toggle-button"
-						onClick={toggleInfo}
-					>
-						{isInfoOpen ? <img src="/info/chevron-up.svg" /> : <img src="/info/chevron-down.svg" />}
-					</button>
+					<div className="group-info-header-actions">
+						{isInfoOpen && (
+							<button
+								className="group-info-edit-button"
+								onClick={handleEditToggle}
+							>
+								{isEditing ? '저장' : '편집'}
+							</button>
+						)}
+						<button
+							className="group-info-toggle-button"
+							onClick={toggleInfo}
+						>
+							{isInfoOpen ? <img src="/info/chevron-up.svg" /> : <img src="/info/chevron-down.svg" />}
+						</button>
+					</div>
 				</div>
+
 				{isInfoOpen && (
 					<div className="group-info-body">
 						<div className="group-info-name">
@@ -75,18 +86,6 @@ const GroupInfo = () => {
 									<div className="group-info-name-text">{groupName}</div>
 								)}
 							</div>
-							<button
-								className="group-info-edit-button"
-								onClick={handleEditToggle}
-							>
-								{isEditing ? '저장' : '편집'}
-							</button>
-						</div>
-						<div className="group-info-start-date">
-							<div className="group-info-start-date-value">
-								<div className="group-info-start-date-label">개설일 :</div>
-								<div className="group-info-start-date-text">2024-09-09</div>
-							</div>
 						</div>
 						<div className="group-info-intro">
 							<div className="group-info-intro-value">
@@ -101,6 +100,12 @@ const GroupInfo = () => {
 								) : (
 									<div className="group-info-intro-text">{intro}</div>
 								)}
+							</div>
+						</div>
+						<div className="group-info-start-date">
+							<div className="group-info-start-date-value">
+								<div className="group-info-start-date-label">개설일 :</div>
+								<div className="group-info-start-date-text">2024-09-09</div>
 							</div>
 						</div>
 					</div>
