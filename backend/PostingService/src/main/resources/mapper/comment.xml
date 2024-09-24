@@ -35,4 +35,9 @@
         GROUP BY posting_id
     </select>
 
+    <delete id="deleteComments" parameterType="Long">
+        DELETE FROM comment WHERE posting_id = #{postingId}
+    </delete>
+
+
 </mapper>

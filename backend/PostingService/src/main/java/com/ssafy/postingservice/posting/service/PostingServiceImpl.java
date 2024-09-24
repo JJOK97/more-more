@@ -1,6 +1,7 @@
 package com.ssafy.postingservice.posting.service;
 
 
+import com.ssafy.postingservice.posting.controller.dto.request.PostingUpdateRequest;
 import com.ssafy.postingservice.posting.controller.dto.response.PostingGetAllResponse;
 import com.ssafy.postingservice.posting.controller.dto.response.PostingGetResponse;
 import com.ssafy.postingservice.posting.infrastructure.repository.CommentRepository;
@@ -27,6 +28,7 @@ public class PostingServiceImpl implements PostingService {
     private final S3Connector s3Connector;
     private final PostImageRepository postImageRepository;
     private final CommentRepository commentRepository;
+
 
 
     public Posting create(Posting posting, MultipartFile[] files){
@@ -122,6 +124,79 @@ public class PostingServiceImpl implements PostingService {
         postingGetResponse.setComments(comments);
 
         return postingGetResponse;
+    }
+
+    @Override
+    public PostingGetResponse updatePostingById(Long postingId, PostingUpdateRequest postingUpdateRequest) {
+        // 1. 기존 게시글 가져오기
+        PostingGetResponse existingPosting = postingRepository.findByPostId(postingId);
+
+        // 2. 게시글 내용 수정 처리 (content)
+        if (postingUpdateRequest.getPostingContent() != null && !postingUpdateRequest.getPostingContent().isEmpty()) {
+            existingPosting.setPostingContent(postingUpdateRequest.getPostingContent());
+        }
+
+        // 3. accountHistoryId 수정 처리
+        if (postingUpdateRequest.getAccountHistoryId() != null) {
+            existingPosting.setAccountHistoryId(postingUpdateRequest.getAccountHistoryId());
+        }
+
+
+        postingRepository.updatePosting(existingPosting);
+
+        // 4. 기존 이미지 삭제 처리 (imageUrls에 삭제할 이미지들이 있음)
+        if (postingUpdateRequest.getImageUrls() != null && !postingUpdateRequest.getImageUrls().isEmpty()) {
+            List<String> imageUrlsToDelete = postingUpdateRequest.getImageUrls();
+
+            for(String url: imageUrlsToDelete){
+                // DB에서도 삭제
+                postImageRepository.deleteByPostingIdAndImageUrls(url);
+
+            }
+
+
+        }
+
+        // 5. 새로운 이미지 추가 처리 (files에 추가할 이미지들이 있음)
+        if (postingUpdateRequest.getFiles() != null && postingUpdateRequest.getFiles().length > 0) {
+            List<String> imageUrls = new ArrayList<>();
+
+            for (MultipartFile file : postingUpdateRequest.getFiles()) {
+                String fileName = UUID.randomUUID().toString();
+                s3Connector.upload(fileName, file);
+                String imageUrl = s3Connector.getImageURL(fileName);
+
+                // 새로운 이미지 엔티티 생성 및 저장
+                PostImageEntity postImageEntity = new PostImageEntity();
+                postImageEntity.setPostImageUrl(imageUrl);
+                postImageEntity.setPostingId(postingId);
+                postImageRepository.save(postImageEntity);
+
+                imageUrls.add(imageUrl);
+            }
+
+            // 새로운 이미지 URL 업데이트
+            existingPosting.setImageUrls(imageUrls);
+        }
+
+        return existingPosting;
+    }
+
+    @Override
+    public void PostingDeleteByPostId(Long postingId) {
+        // 연관된 댓글 지우기
+        commentRepository.deleteComments(postingId);
+        //연관된 좋아요 정보 지우기
+        likeService.deletebyPostId(postingId);
+
+        // 연관된 이미지 지우기
+        postImageRepository.deleteByPostingId(postingId);
+        // 게시글 지우기
+        postingRepository.deleteByPostingId(postingId);
+
+
+
+
     }
 
 

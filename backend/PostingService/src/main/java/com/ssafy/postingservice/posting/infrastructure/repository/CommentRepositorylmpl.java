@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,6 +39,10 @@ public class CommentRepositorylmpl implements CommentRepository {
         return commentObjectMapper.fromEntityToDomain(entity);
     }
 
+    @Override
+    public void deleteComments(Long postingId) {
+        commentMybatisMapper.deleteComments(postingId);
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.ssafy.postingservice.posting.service;
 
 
+import com.ssafy.postingservice.posting.controller.dto.request.PostingUpdateRequest;
 import com.ssafy.postingservice.posting.controller.dto.response.PostingGetAllResponse;
 import com.ssafy.postingservice.posting.controller.dto.response.PostingGetResponse;
 import com.ssafy.postingservice.posting.service.domain.Posting;
@@ -13,4 +14,8 @@ public interface PostingService {
     List<PostingGetAllResponse> findByClubCode(String clubCode);
 
     PostingGetResponse findByPostId(Long postingId);
+
+    PostingGetResponse updatePostingById(Long postingId, PostingUpdateRequest postingUpdateRequest);
+
+    void PostingDeleteByPostId(Long postingId);
 }
