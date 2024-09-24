@@ -1,15 +1,14 @@
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
-
 import PrivateRoute from '@/components/common/PrivateRoute';
-
 import '@/assets/css/common/appRouter.css';
-
 import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
-
 import Main from '@/pages/Main';
 import Login from '@/pages/user/Login';
+import Signup from '@/pages/user/Signup';
+import AccountSetup from '@/components/signup/AccountSetup';
+import RegisterAccount from '@/pages/user/RegisterAccount';
 import CreateGroup from '@/pages/createGroup/CreateGroup';
 import Profile from '@/pages/user/Profile';
 import CreatePost from '@/pages/createPost/CreatePost';
@@ -19,8 +18,11 @@ import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
 import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
 import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
-import AccountTransfer from '../pages/groupAccount/AccountTransfer';
 import GroupInfo from '../pages/groupInfo/GroupInfo';
+import AccountTransfer from '@/pages/groupAccount/AccountTransfer';
+import AccountTransferQuestion from '@/pages/groupAccount/AccountTransferQuestion';
+import AccountTransferCheck from '@/pages/groupAccount/AccountTransferCheck';
+import GroupAccountSearch from '@/pages/groupAccount/GroupAccountSearch';
 
 const AppRouter = () => {
 	return (
@@ -40,6 +42,18 @@ const AppRouter = () => {
 					<Route
 						path="/login"
 						element={<Login />}
+					/>
+					<Route
+						path="/signup"
+						element={<Signup />}
+					/>
+					<Route
+						path="/account-setup"
+						element={<AccountSetup />}
+					/>
+					<Route
+						path="/register-account/:userId"
+						element={<RegisterAccount />}
 					/>
 					<Route
 						path="/create"
@@ -84,6 +98,18 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/account/transfer"
 						element={<AccountTransfer />}
+					/>
+					<Route
+						path="/group/:groupId/account/transfer-question"
+						element={<AccountTransferQuestion />}
+					/>
+					<Route
+						path="/group/:groupId/account/transfer-check"
+						element={<AccountTransferCheck />}
+					/>
+					<Route
+						path="/group/:groupId/account/search"
+						element={<GroupAccountSearch />}
 					/>
 				</Routes>
 			</main>

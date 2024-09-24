@@ -1,7 +1,7 @@
 :root {
 	--primary-color: #52bd6d;
 	--secondary-color: #aaa;
-	--background-color: #FFFDF5;
+	--background-color: #fffdf5;
 	--text-color: #000;
 	--card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -17,10 +17,10 @@
 
 .main-profile-title,
 .main-groups-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--primary-color);
+	margin-bottom: 0.5rem;
 }
 
 .main-profile-data {
@@ -144,6 +144,11 @@
 	}
 }
 
+
+input {
+	font-family: pretandard;
+}
+
 .main-group-create-area {
 	background-color: white;
 	border-radius: 0.75rem;
@@ -163,3 +168,4 @@
 .main-create-title {
 	color: #52bd6d;
 }
+

@@ -22,9 +22,11 @@ const Header = () => {
 	// '/' 경로에서는 Header가 보이지 않도록
 	if (
 		location.pathname === '/' ||
-		location.pathname === '/login' ||
-		location.pathname === '/signup' ||
-		location.pathname === '/group/:groupId/account/transfer'
+		location.pathname == '/login' ||
+		location.pathname == '/signup' ||
+		location.pathname == '/group/:groupId/account/transfer' ||
+		location.pathname == '/group/:groupId/account/transfer-question' ||
+		location.pathname == '/group/:groupId/account/transfer-check'
 	)
 		return null;
 
