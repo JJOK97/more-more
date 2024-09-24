@@ -1,6 +1,10 @@
 main {
 	padding-top: 7.5vh;
 	padding-bottom: 7.5vh;
-	min-height: 85vh;
 	background-color: #fffdf5;
+}
+
+main > div {
+	overflow-y: scroll;
+	max-height: 85vh;
 }
