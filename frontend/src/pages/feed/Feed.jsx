@@ -32,7 +32,7 @@ const Feed = () => {
 		<div className="group-feed">
 			<img
 				className="group-background-image"
-				src="/feed/배경사진.png"
+				src="/feed/회식.webp"
 				alt="배경사진"
 			/>
 			<div className="feed-container">

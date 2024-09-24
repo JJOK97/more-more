@@ -1,13 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
-
 import PrivateRoute from '@/components/common/PrivateRoute';
-
 import '@/assets/css/common/appRouter.css';
-
 import MainHeader from '@/components/common/MainHeader';
 import Header from '@/components/common/GroupHeader';
 import Footer from '@/components/common/GroupFooter';
-
 import Main from '@/pages/Main';
 import Login from '@/pages/user/Login';
 import Signup from '@/pages/user/Signup';
@@ -22,6 +18,7 @@ import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
 import GroupAccountDepositStatus from '@/pages/groupaccount/GroupAccountDepositStatus';
 import GroupDuesSetting from '@/pages/groupaccount/GroupDuesSetting';
+import GroupInfo from '../pages/groupInfo/GroupInfo';
 import AccountTransfer from '@/pages/groupAccount/AccountTransfer';
 import AccountTransferQuestion from '@/pages/groupAccount/AccountTransferQuestion';
 import AccountTransferCheck from '@/pages/groupAccount/AccountTransferCheck';
@@ -77,6 +74,10 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/schedule"
 						element={<Schedule />}
+					/>
+					<Route
+						path="/group/:groupId/info"
+						element={<GroupInfo />}
 					/>
 					<Route
 						path="/group/:groupId"
