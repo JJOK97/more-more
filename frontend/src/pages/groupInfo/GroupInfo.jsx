@@ -1,33 +1,31 @@
-import '@/assets/css/groupInfo/GroupInfo.css'; // CSS 파일 분리
+import '@/assets/css/groupInfo/GroupInfo.css';
 import React, { useState } from 'react';
 import data from './data.json';
+import GroupMember from '@/components/groupInfo/GroupMember.jsx';
 
 const GroupInfo = () => {
 	const [isInfoOpen, setIsInfoOpen] = useState(true);
 	const [isMembersOpen, setIsMembersOpen] = useState(false);
-	const [isEditing, setIsEditing] = useState(false); // 그룹명과 한 줄 소개를 동시에 수정할 수 있게 함
+	const [isEditing, setIsEditing] = useState(false);
 	const [groupName, setGroupName] = useState('옥냥이네 가족');
 	const [intro, setIntro] = useState('행복한 하루@...');
-	const [profileImage, setProfileImage] = useState(null); // 프로필 사진 상태
+	const [profileImage, setProfileImage] = useState(null);
 
 	const toggleInfo = () => setIsInfoOpen(!isInfoOpen);
 	const toggleMembers = () => setIsMembersOpen(!isMembersOpen);
+	const handleEditToggle = () => setIsEditing(!isEditing);
 
-	const handleEditToggle = () => setIsEditing(!isEditing); // 편집 모드 토글
-
-	// 이미지 파일 업로드 핸들러
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
 		if (file) {
-			const imageUrl = URL.createObjectURL(file); // 이미지 URL 생성
-			setProfileImage(imageUrl); // 상태 업데이트
+			const imageUrl = URL.createObjectURL(file);
+			setProfileImage(imageUrl);
 		}
 	};
 
 	return (
 		<div className="group-info-container">
 			<div className="group-info-profile-picture-container">
-				{/* 이미지 미리 보기 또는 기본 이미지 */}
 				<label
 					htmlFor="profile-upload"
 					className="group-info-profile-picture-label"
@@ -54,13 +52,24 @@ const GroupInfo = () => {
 			<div className="group-info-details">
 				<div className="group-info-header">
 					<div className="group-info-header-info">모임 정보</div>
-					<button
-						className="group-info-toggle-button"
-						onClick={toggleInfo}
-					>
-						{isInfoOpen ? <img src="/info/chevron-up.svg" /> : <img src="/info/chevron-down.svg" />}
-					</button>
+					<div className="group-info-header-actions">
+						{isInfoOpen && (
+							<button
+								className="group-info-edit-button"
+								onClick={handleEditToggle}
+							>
+								{isEditing ? '저장' : '편집'}
+							</button>
+						)}
+						<button
+							className="group-info-toggle-button"
+							onClick={toggleInfo}
+						>
+							{isInfoOpen ? <img src="/info/chevron-up.svg" /> : <img src="/info/chevron-down.svg" />}
+						</button>
+					</div>
 				</div>
+
 				{isInfoOpen && (
 					<div className="group-info-body">
 						<div className="group-info-name">
@@ -76,18 +85,6 @@ const GroupInfo = () => {
 								) : (
 									<div className="group-info-name-text">{groupName}</div>
 								)}
-							</div>
-							<button
-								className="group-info-edit-button"
-								onClick={handleEditToggle}
-							>
-								{isEditing ? '저장' : '편집'}
-							</button>
-						</div>
-						<div className="group-info-start-date">
-							<div className="group-info-start-date-value">
-								<div className="group-info-start-date-label">개설일 :</div>
-								<div className="group-info-start-date-text">2024-09-09</div>
 							</div>
 						</div>
 						<div className="group-info-intro">
@@ -105,11 +102,16 @@ const GroupInfo = () => {
 								)}
 							</div>
 						</div>
+						<div className="group-info-start-date">
+							<div className="group-info-start-date-value">
+								<div className="group-info-start-date-label">개설일 :</div>
+								<div className="group-info-start-date-text">2024-09-09</div>
+							</div>
+						</div>
 					</div>
 				)}
 			</div>
 
-			{/* 모임원 섹션 */}
 			<div className="group-info-members">
 				<div className="group-info-members-header">
 					<div className="group-info-members-info">
@@ -129,38 +131,35 @@ const GroupInfo = () => {
 
 				{isMembersOpen && (
 					<div className="group-info-members-list">
-						{/* Users 목록 */}
-						{data.users.map((user) => (
-							<div
-								key={user.userId}
-								className="group-info-member"
-							>
-								<img
-									src={user.userProfile}
-									alt={`${user.userName}의 프로필`}
-									className="group-info-member-profile"
+						{/* 일반 멤버 */}
+						{data.users && data.users.length > 0 ? (
+							data.users.map((user) => (
+								<GroupMember
+									key={user.userId}
+									user={user}
 								/>
-								<div className="group-info-member-name">{user.userName}</div>
-							</div>
-						))}
+							))
+						) : (
+							<div>모임원이 없습니다.</div>
+						)}
 
-						{/* 수락 대기 목록 */}
-						<div className="group-info-pending-invites">
-							<div className="group-info-pending-label">수락 대기</div>
-							{data.pendings.map((pending) => (
-								<div
-									key={pending.userId}
-									className="group-info-member"
-								>
-									<img
-										src={pending.userProfile}
-										alt={`${pending.userName}의 프로필`}
-										className="group-info-member-profile"
+						{/* 펜딩 멤버 */}
+						{data.pendings && data.pendings.length > 0 ? (
+							<div className="group-info-pending-invites">
+								<div className="group-info-pending-label">수락 대기</div>
+								{data.pendings.map((pending) => (
+									<GroupMember
+										key={pending.userId}
+										user={pending}
+										isPending={true}
+										// onApprove={handleApprove}
+										// onReject={handleReject}
 									/>
-									<div className="group-info-member-name">{pending.userName}</div>
-								</div>
-							))}
-						</div>
+								))}
+							</div>
+						) : (
+							<div>수락 대기 중인 멤버가 없습니다.</div>
+						)}
 					</div>
 				)}
 			</div>
