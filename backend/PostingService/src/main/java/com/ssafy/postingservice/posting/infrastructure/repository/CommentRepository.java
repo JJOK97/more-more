@@ -7,16 +7,10 @@ import java.util.List;
 
 
 public interface CommentRepository {
-
-
     Comment saveComment(Comment comment);
     List<Comment> getComment(Long id);
-
     void deleteComment(Long commentId);
-
     Comment updateComment(Comment comment);
 
-
-    class PostImageMybatisMapper {
-    }
+    void deleteComments(Long postingId);
 }

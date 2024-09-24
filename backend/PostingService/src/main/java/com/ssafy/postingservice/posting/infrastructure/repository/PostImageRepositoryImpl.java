@@ -4,8 +4,6 @@ package com.ssafy.postingservice.posting.infrastructure.repository;
 import com.ssafy.postingservice.posting.infrastructure.repository.entity.PostImageEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
-import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -24,5 +22,15 @@ public class PostImageRepositoryImpl implements PostImageRepository {
         List<PostImageEntity> postImages = postingImageMybatisMapper.findByPostingId(postingId);
 
         return postImages;
+    }
+
+    @Override
+    public void deleteByPostingIdAndImageUrls(String url) {
+       postingImageMybatisMapper.deleteByPostingIdAndImageUrls(url);
+    }
+
+    @Override
+    public void deleteByPostingId(Long postingId) {
+        postingImageMybatisMapper.deleteByPostingId(postingId);
     }
 }

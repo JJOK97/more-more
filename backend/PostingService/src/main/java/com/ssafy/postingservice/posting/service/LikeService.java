@@ -20,4 +20,6 @@ public interface LikeService {
     List<String> getAllPosts(Long postId);
 
     Map<Long, Long> getLikeCountsForPostings(List<Long> postingIds);
+
+    void deletebyPostId(Long postingId);
 }

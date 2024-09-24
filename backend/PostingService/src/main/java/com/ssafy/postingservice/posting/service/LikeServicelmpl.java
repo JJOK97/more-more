@@ -98,4 +98,12 @@ public class LikeServicelmpl implements LikeService{
 
         return likeCounts;
     }
+
+    @Override
+    public void deletebyPostId(Long postingId) {
+
+        String userLikedKey = Member_LIKED_KEY_PREFIX + postingId;
+        redisTemplate.delete(userLikedKey);
+
+    }
 }

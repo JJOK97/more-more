@@ -1,14 +1,11 @@
 package com.ssafy.postingservice.posting.infrastructure.repository;
-import com.ssafy.postingservice.posting.controller.dto.response.PostingGetAllResponse;
 import com.ssafy.postingservice.posting.controller.dto.response.PostingGetResponse;
 import com.ssafy.postingservice.posting.infrastructure.repository.entity.PostingEntity;
 import com.ssafy.postingservice.posting.mapper.PostingObjectMapper;
-import com.ssafy.postingservice.posting.service.LikeServicelmpl;
 import com.ssafy.postingservice.posting.service.domain.Posting;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,6 +33,17 @@ public class PostingRepositoryImpl implements PostingRepository {
     public PostingGetResponse findByPostId(Long postingId) {
 
         return postingObjectMapper.fromEntityToPostingGetResponse(postingMybatisMapper.findByPostingId(postingId));
+    }
+
+    @Override
+    public void updatePosting(PostingGetResponse existingPosting) {
+        postingMybatisMapper.updatePosting(postingObjectMapper.fromPostingGetResponseToOneEntity(existingPosting));
+
+    }
+
+    @Override
+    public void deleteByPostingId(Long postingId) {
+        postingMybatisMapper.deleteByPostingId(postingId);
     }
 
 
