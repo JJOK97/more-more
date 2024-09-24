@@ -11,12 +11,15 @@ const Main = () => {
 	useEffect(() => {
 		setGroupName('');
 	}, []);
-	
+
 	return (
 		<div className="main-container">
 			<div className="main-profile-area">
 				<div className="main-profile-title">내 정보</div>
-				<div className="main-profile-data">
+				<Link
+					to={'/profile'}
+					className="main-profile-data"
+				>
 					<img
 						className="main-profile-image"
 						src="/feed/profile_icon2.png"
@@ -35,7 +38,7 @@ const Main = () => {
 						</div>
 						<div className="main-profile-balance">394,227원</div>
 					</div>
-				</div>
+				</Link>
 			</div>
 			<div className="main-groups-area">
 				<div className="main-groups-title">내 모임</div>
