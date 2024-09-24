@@ -1,5 +1,5 @@
 import React from 'react';
-import GroupAccountDepositList from './GroupAccountDepositList';
+import GroupAccountDepositList from '@/components/groupAccount/GroupAccountDepositList';
 import account_search from '@/assets/img/account/account_search.svg';
 
 const GroupAccountDepositWithDrawalDetails = () => {
