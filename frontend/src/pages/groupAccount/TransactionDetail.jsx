@@ -3,7 +3,7 @@ import TransactionDetailOneList from '@/components/groupAccount/TransactionDetai
 
 const TransactionDetail = () => {
 	return (
-		<div>
+		<div className="detail-container">
 			<TransactionDetailOneList />
 		</div>
 	);
