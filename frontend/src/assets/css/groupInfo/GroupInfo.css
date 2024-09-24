@@ -4,23 +4,23 @@
 }
 
 .group-info-profile-picture-container {
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
 }
 
 .group-info-profile-picture {
-    height: 10rem;
-    width: 100%;
-    object-fit: cover;
     display: block;
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
     border-bottom: 1px solid #dfdfdf;
 }
 
 .group-info-profile-placeholder {
-    height: 10rem;
-    background-color: #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 10rem;
+    background-color: #ccc;
     border-bottom: 1px solid #dfdfdf;
 }
 
@@ -35,11 +35,11 @@
 
 .group-info-header,
 .group-info-members-header {
-    padding: 0.5rem 1rem;
-    border-bottom: 1px solid #dfdfdf;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #dfdfdf;
 }
 
 .group-info-toggle-button {
@@ -50,10 +50,10 @@
 
 .group-info-edit-button,
 .group-info-invite-button {
-    color: #52bd6d;
+    padding: 0.25rem 0.75rem;
     border: 1px solid #52bd6d;
     background-color: #fff;
-    padding: 0.25rem 0.75rem;
+    color: #52bd6d;
     cursor: pointer;
     border-radius: 0.5rem;
 }
@@ -86,8 +86,8 @@
 
 .group-info-members-count {
     text-align: center;
-    color: gray;
     font-size: 0.875rem;
+    color: gray;
 }
 
 .group-info-members-actions {
@@ -99,15 +99,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #dfdfdf;
     padding: 0.5rem 1rem;
+    border-bottom: 1px solid #dfdfdf;
 }
 
 .group-info-member-profile {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 99rem;
-    border: 1px solid black;
 }
 
 .group-info-member-details {
@@ -134,16 +133,17 @@
     gap: 0.5rem;
 }
 
-.group-info-member-approve,
+.group-info-member-approve {
+	padding: 0.25rem 0.75rem;
+	background-color: #52bd6d;
+	border-radius: 0.5rem;
+}
 .group-info-member-reject {
-    cursor: pointer;
-    background-color: #fff;
-    border: 1px solid #52bd6d;
     padding: 0.25rem 0.75rem;
+	border: 1px solid red;
+    background-color: #fff;
     border-radius: 0.5rem;
 }
 
 .group-info-member-reject {
-    border-color: #ff6347;
-    color: #ff6347;
 }

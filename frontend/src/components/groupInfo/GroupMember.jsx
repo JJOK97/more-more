@@ -16,13 +16,13 @@ const GroupMember = ({ user, isPending, onApprove, onReject }) => {
 						className="group-info-member-approve"
 						// onClick={() => onApprove(user.userId)}
 					>
-						V
+						<img src="/info/ok.svg" />
 					</button>
 					<button
 						className="group-info-member-reject"
 						// onClick={() => onReject(user.userId)}
 					>
-						X
+						<img src="/info/close.svg" />
 					</button>
 				</div>
 			)}
