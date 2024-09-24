@@ -2,6 +2,7 @@ import '@/assets/css/groupInfo/GroupInfo.css';
 import React, { useState } from 'react';
 import data from './data.json';
 import GroupMember from '@/components/groupInfo/GroupMember.jsx';
+import InviteModal from './InviteModal';
 
 const GroupInfo = () => {
 	const [isInfoOpen, setIsInfoOpen] = useState(true);
@@ -10,6 +11,7 @@ const GroupInfo = () => {
 	const [groupName, setGroupName] = useState('옥냥이네 가족');
 	const [intro, setIntro] = useState('행복한 하루@...');
 	const [profileImage, setProfileImage] = useState(null);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const toggleInfo = () => setIsInfoOpen(!isInfoOpen);
 	const toggleMembers = () => setIsMembersOpen(!isMembersOpen);
@@ -22,6 +24,9 @@ const GroupInfo = () => {
 			setProfileImage(imageUrl);
 		}
 	};
+
+	const openModal = () => setIsModalOpen(true); // 모달 열기
+	const closeModal = () => setIsModalOpen(false); // 모달 닫기
 
 	return (
 		<div className="group-info-container">
@@ -119,7 +124,14 @@ const GroupInfo = () => {
 						<div className="group-info-members-count">{data.users.length}명</div>
 					</div>
 					<div className="group-info-members-actions">
-						{isMembersOpen && <button className="group-info-invite-button">멤버 초대</button>}
+						{isMembersOpen && (
+							<button
+								className="group-info-invite-button"
+								onClick={openModal}
+							>
+								멤버 초대
+							</button>
+						)}
 						<button
 							className="group-info-toggle-button"
 							onClick={toggleMembers}
@@ -163,6 +175,7 @@ const GroupInfo = () => {
 					</div>
 				)}
 			</div>
+			{isModalOpen && <InviteModal onClose={closeModal} />}
 		</div>
 	);
 };
