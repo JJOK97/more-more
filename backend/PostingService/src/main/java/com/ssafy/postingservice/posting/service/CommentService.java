@@ -6,6 +6,7 @@ import com.ssafy.postingservice.posting.service.domain.Comment;
 
 import java.util.List;
 
+
 public interface CommentService {
     Comment createComment(Comment comment);
 
@@ -14,4 +15,5 @@ public interface CommentService {
     void deleteByCommentId(Long commentId);
 
     Comment updateComment(Comment comment);
+
 }
