@@ -15,6 +15,7 @@ import Step5 from '@/components/signup/Step5';
 import Step6 from '@/components/signup/Step6';
 import Step7 from '@/components/signup/Step7';
 import Step8 from '@/components/signup/Step8';
+import AccountSetup from '@/components/signup/AccountSetup';
 
 const validationSchemas = [
 	Yup.object({
@@ -111,8 +112,10 @@ const Signup = () => {
 				initialValues={userValues}
 				validationSchema={validationSchemas[step]}
 				onSubmit={(values) => {
-					if (step === validationSchemas.length - 1) {
-						navigate('/account-setup'); // 계좌 설정 페이지로 이동
+					// 마지막 단계일 경우 계좌 등록 페이지로 이동
+					if (step === validationSchemas.length) {
+						console.log('API에 데이터 제출:', values); // API로 제출할 데이터 확인
+						navigate('/register-account');
 					} else {
 						handleNext();
 					}
@@ -128,16 +131,23 @@ const Signup = () => {
 						{step === 5 && <Step6 />}
 						{step === 6 && <Step7 />}
 						{step === 7 && <Step8 />}
+						{step === 8 && (
+							<AccountSetup
+								onRegisterNow={() => navigate('/register-account')}
+								onRegisterLater={() => navigate('/login')}
+							/>
+						)}
 
 						<div className="signup-nav-button">
 							<img
 								src={arrowleft}
 								onClick={handlePrevious}
 							/>
-
-							<button type="submit">
-								{step === validationSchemas.length - 1 ? '회원가입' : '다음으로'}
-							</button>
+							{step < 8 && (
+								<button type="submit">
+									{step === validationSchemas.length ? '계좌 등록하기' : '다음으로'}
+								</button>
+							)}
 						</div>
 					</Form>
 				)}
