@@ -25,12 +25,14 @@ import AccountTransferCheck from '@/pages/groupAccount/AccountTransferCheck';
 import GroupAccountSearch from '@/pages/groupAccount/GroupAccountSearch';
 import TransactionDetail from '@/pages/groupAccount/TransactionDetail';
 import Notice from '../pages/notification/Notice';
+import UserHeader from '../components/common/UserHeader';
 
 const AppRouter = () => {
 	return (
 		<Router>
 			<MainHeader />
 			<Header />
+			<UserHeader />
 			<main>
 				<Routes>
 					<Route
