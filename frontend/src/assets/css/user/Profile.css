@@ -1,0 +1,45 @@
+.profile-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 1rem;
+	background-color: #fffdf5;
+    gap: 1rem;
+}
+
+.profile-image-user {
+	width: 12rem;
+	height: 12rem;
+    object-fit: cover;
+	border-radius: 50%;
+}
+
+.profile-info {
+	width: 100%;
+	max-width: 400px;
+}
+
+.profile-item {
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem 1rem;
+	border-bottom: 1px solid #dfdfdf;
+}
+
+.profile-label {
+	font-weight: bold;
+}
+
+.profile-value {
+	color: #555;
+}
+
+.profile-edit-button {
+	padding: 0.75rem 1rem;
+    border: none;
+	background-color: #52bd6d;
+	color: white;
+	border-radius: 0.5rem;
+    font-size: 1rem;
+    font-family: 'Pretendard';
+}
