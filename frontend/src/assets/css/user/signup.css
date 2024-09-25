@@ -47,6 +47,10 @@
 	font-size: 1rem;
 }
 
+.signup-nav-button > button:focus {
+	border: none !important;
+}
+
 .registration-step-title {
 	position: fixed;
 	top: 5%;
