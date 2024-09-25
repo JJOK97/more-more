@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormikContext } from 'formik'; // Formik의 submitForm 메서드 사용
+import { useFormikContext } from 'formik';
 
 const AccountSetup = ({ onRegisterNow, onRegisterLater }) => {
 	const { submitForm } = useFormikContext();

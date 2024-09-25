@@ -9,6 +9,7 @@
 	background-color: #52bd6d;
 	align-items: center;
 	justify-content: center;
+	max-height: 100vh;
 }
 
 @keyframes fadeIn {

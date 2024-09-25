@@ -53,7 +53,7 @@ const AppRouter = () => {
 						element={<AccountSetup />}
 					/>
 					<Route
-						path="/register-account/:userId"
+						path="/registeraccount/:userId"
 						element={<RegisterAccount />}
 					/>
 					<Route

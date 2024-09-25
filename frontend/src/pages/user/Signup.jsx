@@ -115,7 +115,7 @@ const Signup = () => {
 					// 마지막 단계일 경우 계좌 등록 페이지로 이동
 					if (step === validationSchemas.length) {
 						console.log('API에 데이터 제출:', values); // API로 제출할 데이터 확인
-						navigate('/register-account');
+						navigate('/registeraccount/:userId');
 					} else {
 						handleNext();
 					}
@@ -133,7 +133,7 @@ const Signup = () => {
 						{step === 7 && <Step8 />}
 						{step === 8 && (
 							<AccountSetup
-								onRegisterNow={() => navigate('/register-account')}
+								onRegisterNow={() => navigate('/registeraccount/:userId')}
 								onRegisterLater={() => navigate('/login')}
 							/>
 						)}
