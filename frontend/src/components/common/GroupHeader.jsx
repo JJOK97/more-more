@@ -55,7 +55,7 @@ const Header = () => {
 							alt="User"
 						/>
 					</Link>
-					<Link>
+					<Link to={'/notice'}>
 						<img
 							src={bell}
 							alt="Notifications"

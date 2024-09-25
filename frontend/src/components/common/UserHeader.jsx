@@ -8,7 +8,7 @@ const UserHeader = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	if (location.pathname !== '/profile' && location.pathname !== '/notice') return null;
+	if (location.pathname !== '/profile' && location.pathname !== '/notice' && location.pathname !== '/create') return null;
 
 	return (
 		<header className="common-header">

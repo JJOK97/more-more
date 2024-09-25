@@ -20,6 +20,7 @@ const Footer = () => {
 		location.pathname == '/signup' ||
 		location.pathname == '/profile' ||
 		location.pathname == '/notice' ||
+		location.pathname == '/create' ||
 		location.pathname == '/group/:groupId/account/transfer' ||
 		location.pathname == '/group/:groupId/account/transfer-question' ||
 		location.pathname == '/group/:groupId/account/transfer-check'
