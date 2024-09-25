@@ -24,6 +24,7 @@ import AccountTransferQuestion from '@/pages/groupAccount/AccountTransferQuestio
 import AccountTransferCheck from '@/pages/groupAccount/AccountTransferCheck';
 import GroupAccountSearch from '@/pages/groupAccount/GroupAccountSearch';
 import TransactionDetail from '@/pages/groupAccount/TransactionDetail';
+import Notice from '../pages/notification/Notice';
 
 const AppRouter = () => {
 	return (
@@ -63,6 +64,10 @@ const AppRouter = () => {
 					<Route
 						path="/profile"
 						element={<Profile />}
+					/>
+					<Route
+						path="/notice"
+						element={<Notice />}
 					/>
 					<Route
 						path="/group/:groupId/create"
