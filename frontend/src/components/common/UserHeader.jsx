@@ -11,15 +11,17 @@ const UserHeader = () => {
 	if (location.pathname !== '/profile' && location.pathname !== '/notice') return null;
 
 	return (
-		<header className='common-header'>
-			<img
-                className='group-header-back-button-img'
-                alt='Back'
-				src={chevron}
-				onClick={() => navigate(-1)}
-			/>
-			<div>{pageName}</div>
-			<div></div>
+		<header className="common-header">
+			<div className='menu'>
+				<img
+					className="group-header-back-button-img"
+					alt="Back"
+					src={chevron}
+					onClick={() => navigate(-1)}
+				/>
+				<div className="groupName">{pageName}</div>
+				<div className='group-header-space'></div>
+			</div>
 		</header>
 	);
 };
