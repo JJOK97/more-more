@@ -1,6 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+const formatDate = (dateString) => {
+	const postDate = new Date(dateString);
+	const now = new Date();
+	const diffInMs = now - postDate; // 현재 시간과 게시물 시간 차이 (ms)
+	const diffInHours = diffInMs / (1000 * 60 * 60); // 시간 차이로 변환
+	const diffInMinutes = diffInMs / (1000 * 60); // 분 차이로 변환
+
+	if (diffInHours < 1) {
+		const minutesAgo = Math.floor(diffInMinutes);
+		return `${minutesAgo}분 전`;
+	} else if (diffInHours < 24) {
+		const hoursAgo = Math.floor(diffInHours);
+		return `${hoursAgo}시간 전`;
+	} else {
+		const year = postDate.getFullYear();
+		const month = String(postDate.getMonth() + 1).padStart(2, '0'); // 0-indexed
+		const day = String(postDate.getDate()).padStart(2, '0');
+		return `${year}.${month}.${day}`;
+	}
+};
+
 const PostView = ({ post }) => {
 	const location = useLocation(); // 현재 경로 가져오기
 	const [isFeedPage, setIsFeedPage] = useState(false); // 경로 상태를 관리
@@ -26,7 +47,7 @@ const PostView = ({ post }) => {
 					/>
 					<div className="feed-profile-data">
 						<div className="feed-profile-name">{post.userName}</div>
-						<div className="feed-profile-date">{post.date}</div>
+						<div className="feed-profile-date">{formatDate(post.date)}</div>
 					</div>
 				</div>
 				<div className="feed-account-history">#{post.accountHistory}</div>

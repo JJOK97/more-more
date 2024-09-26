@@ -24,6 +24,8 @@ const Header = () => {
 		location.pathname === '/' ||
 		location.pathname == '/login' ||
 		location.pathname == '/signup' ||
+		location.pathname == '/profile' ||
+		location.pathname == '/notice' ||
 		location.pathname == '/group/:groupId/account/transfer' ||
 		location.pathname == '/group/:groupId/account/transfer-question' ||
 		location.pathname == '/group/:groupId/account/transfer-check'
@@ -53,7 +55,7 @@ const Header = () => {
 							alt="User"
 						/>
 					</Link>
-					<Link>
+					<Link to={'/notice'}>
 						<img
 							src={bell}
 							alt="Notifications"

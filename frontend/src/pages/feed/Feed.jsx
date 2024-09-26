@@ -37,14 +37,17 @@ const Feed = () => {
 			/>
 			<div className="feed-container">
 				{posts.length > 0 ? (
-					posts.map((post) => (
-						<PostView
-							key={post.postId}
-							post={post}
-						/>
-					))
+					posts
+						.slice() // 원본 배열을 유지하기 위해 복사
+						.reverse() // 복사한 배열을 역순으로
+						.map((post) => (
+							<PostView
+								key={post.postId}
+								post={post}
+							/>
+						))
 				) : (
-					<p>이 그룹에 게시물이 없습니다.</p>
+					<p>모임에 아직 게시물이 없습니다.</p>
 				)}
 			</div>
 			<Link to={`/group/${groupId}/create`}>

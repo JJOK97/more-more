@@ -23,7 +23,7 @@ const Header = () => {
 					<Link to={'/profile'}>
 						<img src={user}></img>
 					</Link>
-					<Link>
+					<Link to={'/notice'}>
 						<img src={bell}></img>
 					</Link>
 				</div>
