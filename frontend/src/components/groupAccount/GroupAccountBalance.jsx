@@ -2,9 +2,16 @@ import React from 'react';
 import arrow from '@/assets/img/account/arrow_right.svg';
 
 const AccountBalance = () => {
+	const handleDuesClick = () => {
+		window.location.href = 'http://localhost:3000/group/:groupId/account/status';
+	};
 	return (
 		<div className="account-balance">
-			<div className="dues">
+			<div
+				className="dues"
+				onClick={handleDuesClick}
+				style={{ cursor: 'pointer' }}
+			>
 				<text name="dues">매 월 1일, 10만원씩 | 입금현황</text>
 				<img
 					src={arrow}
