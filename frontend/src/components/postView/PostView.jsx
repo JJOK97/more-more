@@ -59,21 +59,28 @@ const PostView = ({ post }) => {
 					to={`/group/${post.groupId}/${post.postId}`}
 					className="feed-post-area"
 				>
-					<div className="feed-post-content">{post.postContent}</div>
-					<img
-						className="feed-post-image"
-						src={post.postImage}
-						alt="사진"
-					/>
+					<div className={`feed-post-content ${isFeedPage ? 'line-clamp' : ''}`}>{post.postContent}</div>
+					{/* 첫 번째 이미지 렌더링 */}
+					{post.postImage.length > 0 && (
+						<img
+							className="feed-post-image"
+							src={post.postImage[0]}
+							alt="사진"
+						/>
+					)}
 				</Link>
 			) : (
 				<div className="feed-post-area">
 					<div className="feed-post-content">{post.postContent}</div>
-					<img
-						className="feed-post-image"
-						src={post.postImage}
-						alt="사진"
-					/>
+					{/* 모든 이미지 렌더링 */}
+					{post.postImage.map((image, index) => (
+						<img
+							key={index}
+							className="feed-post-image"
+							src={image}
+							alt={`사진 ${index + 1}`}
+						/>
+					))}
 				</div>
 			)}
 

@@ -2,13 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PostView from '@/components/postView/PostView';
 import CommentItem from './CommentItem'; // 분리한 컴포넌트 import
+import ContentInput from './ContentInput'; // ContentInput 컴포넌트 import
 import datas from '@/pages/feed/data.json';
 import '@/assets/css/post/Post.css';
+import useGroupName from '@/store/useGroupName';
 
 const Post = () => {
+	const { setGroupName } = useGroupName();
 	const { groupId, postId } = useParams(); // groupId와 postId를 URL에서 추출
 	const [post, setPost] = useState(null);
 	const [comments, setComments] = useState([]);
+	const [content, setContent] = useState(''); // 댓글 내용을 저장할 상태
+
+	useEffect(() => {
+		setGroupName(groupId);
+	}, []);
 
 	useEffect(() => {
 		const fetchPost = () => {
@@ -34,28 +42,32 @@ const Post = () => {
 	}
 
 	return (
-		<div>
+		<div className="post-page-container">
 			<PostView
 				key={post.postId}
 				post={post}
 			/>
-			<div className="comment-container">
-				<div className="comment-input-area">
-					<input
-						className="comment-input-box"
-						placeholder="댓글 작성.."
+
+			<div className="comment-list-area">
+				{comments.map((comment, index) => (
+					<CommentItem
+						key={index}
+						comment={comment}
 					/>
-					<img
-						className="comment-input-button"
-						src="/feed/paper-airplane.svg"
-						alt="댓글쓰기"
-					/>
-				</div>
-				<div className="comment-list-area">
-					{comments.map((comment, index) => (
-						<CommentItem key={index} comment={comment} />
-					))}
-				</div>
+				))}
+			</div>
+
+			{/* 댓글 입력 박스 */}
+			<div className="comment-input-area">
+				<ContentInput
+					content={content}
+					setContent={setContent}
+				/>
+				<img
+					className="comment-input-button"
+					src="/feed/paper-airplane.svg"
+					alt="댓글쓰기"
+				/>
 			</div>
 		</div>
 	);
