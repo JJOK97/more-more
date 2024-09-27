@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import arrow from '@/assets/img/account/arrow_left.svg';
 
 const TransferKeypad = () => {
 	const [amount, setAmount] = useState('');
+	const navigate = useNavigate();
+	const location = useLocation();
+
+	const groupId = location.pathname.match(/^\/group\/(\d+)/)?.[1];
 
 	const handleNumberClick = (value) => {
 		setAmount(amount + value);
@@ -14,6 +19,13 @@ const TransferKeypad = () => {
 
 	const handleClear = () => {
 		setAmount('');
+	};
+
+	const handleSendClick = () => {
+		console.log(`보낼 금액: ${amount}원`);
+		if (groupId) {
+			navigate(`/group/${groupId}/account/transfer-question`);
+		}
 	};
 
 	return (
@@ -45,10 +57,18 @@ const TransferKeypad = () => {
 					0
 				</button>
 				<button onClick={handleDelete}>
-					<img src={arrow} />
+					<img
+						src={arrow}
+						alt="delete"
+					/>
 				</button>
 			</div>
-			<button className="send-button">보내기</button>
+			<button
+				className="send-button"
+				onClick={handleSendClick}
+			>
+				보내기
+			</button>
 		</div>
 	);
 };

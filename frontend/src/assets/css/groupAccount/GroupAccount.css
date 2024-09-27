@@ -396,6 +396,7 @@
 	right: 0;
 	left: 0;
 	padding: 0 1rem;
+	max-height: 100vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -546,6 +547,7 @@ div.account-check-top-component > div.transfer-info-area > div > div.transfer-ac
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	max-height: 100vh;
 }
 
 .account-check-info-area {
@@ -558,6 +560,8 @@ div.account-check-top-component > div.transfer-info-area > div > div.transfer-ac
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	max-height: 100vh;
+	overflow-y: hidden;
 }
 
 .transfer-account-info {
