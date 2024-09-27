@@ -59,7 +59,7 @@ const PostView = ({ post }) => {
 					to={`/group/${post.groupId}/${post.postId}`}
 					className="feed-post-area"
 				>
-					<div className="feed-post-content">{post.postContent}</div>
+					<div className={`feed-post-content ${isFeedPage ? 'line-clamp' : ''}`}>{post.postContent}</div>
 					<img
 						className="feed-post-image"
 						src={post.postImage}
