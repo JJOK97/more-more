@@ -34,28 +34,32 @@ const Post = () => {
 	}
 
 	return (
-		<div>
+		<div className="post-page-container">
 			<PostView
 				key={post.postId}
 				post={post}
 			/>
-			<div className="comment-container">
-				<div className="comment-input-area">
-					<input
-						className="comment-input-box"
-						placeholder="댓글 작성.."
+
+			<div className="comment-list-area">
+				{comments.map((comment, index) => (
+					<CommentItem
+						key={index}
+						comment={comment}
 					/>
-					<img
-						className="comment-input-button"
-						src="/feed/paper-airplane.svg"
-						alt="댓글쓰기"
-					/>
-				</div>
-				<div className="comment-list-area">
-					{comments.map((comment, index) => (
-						<CommentItem key={index} comment={comment} />
-					))}
-				</div>
+				))}
+			</div>
+
+			{/* 댓글 입력 박스 */}
+			<div className="comment-input-area">
+				<input
+					className="comment-input-box"
+					placeholder="댓글 작성.."
+				/>
+				<img
+					className="comment-input-button"
+					src="/feed/paper-airplane.svg"
+					alt="댓글쓰기"
+				/>
 			</div>
 		</div>
 	);
