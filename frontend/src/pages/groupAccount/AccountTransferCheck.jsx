@@ -1,7 +1,6 @@
 import React from 'react';
 import TransferInfo from '@/components/groupAccount/TransferInfo';
 import AccountCheckMessage from '@/components/groupAccount/AccountCheckMessage';
-import AccountSendButton from '@/components/groupAccount/AccountSendButton';
 
 const AccountTransferCheck = () => {
 	return (
@@ -15,7 +14,7 @@ const AccountTransferCheck = () => {
 				</div>
 			</div>
 			<div className="account-check-button">
-				<AccountSendButton />
+				<button className="send-button">보내기</button>
 			</div>
 		</div>
 	);
