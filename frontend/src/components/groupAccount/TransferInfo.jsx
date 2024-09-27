@@ -1,11 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import back from '@/assets/img/account/back.svg';
 
 const TransferInfo = () => {
+	const navigate = useNavigate();
+
 	return (
 		<div className="transfer-info">
 			<div className="transfer-back">
-				<img src={back}></img>
+				<img
+					src={back}
+					alt="Back"
+					onClick={() => navigate(-1)}
+				/>
 			</div>
 			<div className="transfer-account-info">
 				<div className="transer-my-account">

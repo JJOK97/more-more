@@ -558,6 +558,8 @@ div.account-check-top-component > div.transfer-info-area > div > div.transfer-ac
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	max-height: 100vh;
+	overflow-y: hidden;
 }
 
 .transfer-account-info {
