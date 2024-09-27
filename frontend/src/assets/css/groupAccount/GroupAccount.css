@@ -15,7 +15,7 @@
 	align-items: center;
 	font-weight: 700;
 	font-size: 1rem;
-	margin: 1.3rem;
+	margin: 1rem;
 }
 
 .dues-group-member-status input {
@@ -35,30 +35,25 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	padding-top: 1rem;
+	height: 15rem;
+	overflow-y: scroll;
+	padding-right: 1rem;
 }
 
 .dues-one-member {
 	display: flex;
 	flex-direction: row;
-	width: 40%;
+	width: 45%;
 	justify-content: space-between;
 	margin-bottom: 1.5rem;
 	align-items: center;
 }
 
-.progress-bar {
-	position: relative;
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-}
+.dues-one-member label {
+	width: 5rem;
+	display: flex;
 
-.progress-bar .label {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%); /* 레이블을 바 안의 정중앙에 위치시킴 */
-	color: white; /* 레이블 색상 */
-	font-weight: bold;
+	justify-content: center;
 }
 
 .edit-save {
@@ -120,9 +115,12 @@
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 1.25rem;
 	padding: 2rem;
-	flex-grow: 1;
-	overflow-y: auto;
-	margin-bottom: 2rem;
+}
+
+.dues-group-member-status-area {
+	height: 55vh;
+	display: flex;
+	align-items: flex-end;
 }
 
 .dues-member-gather-count {
@@ -145,14 +143,14 @@
 	flex-direction: column;
 	justify-content: space-between;
 	height: 85vh;
+	overflow-y: hidden;
+	align-items: center;
 }
 
 .deposit-status-payment {
 	height: 35vh;
-}
-
-.dues-group-member-status-area {
-	height: auto;
+	display: flex;
+	justify-content: center;
 }
 
 .dues-payment {

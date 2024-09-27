@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import ProgressBar from '@ramonak/react-progress-bar';
+import React, { useState, useEffect } from 'react';
+
 import '@/assets/css/groupAccount/ProgressBar.css';
+
+import checkOn from '@/assets/img/account/check-on.svg';
+import checkOff from '@/assets/img/account/check-off.svg';
 
 const DuesGroupMemberStatus = () => {
 	const [members, setMembers] = useState([
-		{ name: '신승호', isPaid: true },
+		{ name: '신승호', isPaid: false },
 		{ name: '박정선', isPaid: true },
 		{ name: '권주안', isPaid: true },
 		{ name: '박지환', isPaid: false },
@@ -13,16 +16,16 @@ const DuesGroupMemberStatus = () => {
 		{ name: '옥장석', isPaid: true },
 		{ name: '박옥정', isPaid: false },
 		{ name: '옥장석박', isPaid: true },
-		{ name: '석석이', isPaid: false },
+		{ name: '석석이', isPaid: true },
 	]);
 
-	const handleCheck = (index) => {
-		const updatedMembers = [...members];
-		updatedMembers[index].isPaid = !updatedMembers[index].isPaid;
-		setCheckedMembers(updatedMembers);
-	};
+	const [completedPercentage, setCompletedPercentage] = useState(0);
 
-	const completedPercentage = Math.round((members.filter((member) => member.isPaid).length / members.length) * 100);
+	useEffect(() => {
+		const paidMembers = members.filter((member) => member.isPaid).length;
+		const percentage = Math.round((paidMembers / members.length) * 100);
+		setCompletedPercentage(percentage);
+	}, [members]);
 
 	return (
 		<div className="dues-group-member-status">
@@ -36,14 +39,16 @@ const DuesGroupMemberStatus = () => {
 				</div>
 			</div>
 			<div className="progress-bar">
-				<ProgressBar
-					completed={completedPercentage}
-					className="wrapper"
-					barContainerClassName="container"
-					completedClassName="barCompleted"
-					labelClassName="label"
-					labelAlignment="center"
-				/>
+				<div className="wrapper">
+					<div className="container">
+						<div
+							className="completedBar"
+							style={{ width: `${completedPercentage}%` }}
+						>
+							<span className="label">{`${completedPercentage}%`}</span>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div className="dues-member-list">
 				{members.map((member, index) => (
@@ -51,11 +56,10 @@ const DuesGroupMemberStatus = () => {
 						className="dues-one-member"
 						key={member.name}
 					>
-						<input
-							type="checkbox"
-							checked={member.isPaid}
-							onChange={() => handleCheck(index)}
-							disabled
+						<img
+							src={member.isPaid ? checkOn : checkOff}
+							alt={member.isPaid ? '납부 완료' : '납부 미완료'}
+							className="checkbox-Img"
 						/>
 						<label>{member.name}</label>
 					</div>
