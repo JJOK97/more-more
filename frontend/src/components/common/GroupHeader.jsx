@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '@/assets/css/common/header.css';
 import chevron from '@/assets/img/common/mainHeader/chevron-left.svg';
+import search from '@/assets/img/common/mainHeader/search.svg';
 import user from '@/assets/img/common/mainHeader/user.svg';
 import bell from '@/assets/img/common/mainHeader/bell.svg';
 import useGroupName from '@/store/useGroupName';
@@ -49,6 +50,9 @@ const Header = () => {
 					</div>
 				</div>
 				<div className="headerRight">
+					<Link>
+						<img src={search}></img>
+					</Link>
 					<Link to={'/profile'}>
 						<img
 							src={user}
