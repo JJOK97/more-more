@@ -23,15 +23,19 @@
 }
 
 .comment-input-box {
-    border: 1px solid #52BD6D;
-    border-radius: 1rem;
-    outline: none;
-    font-size: 0.875rem;
-    padding: 0.5rem 0.75rem;
-    background-color: white;
-    width: 100%;
-    font-family: 'Pretendard';
+    border: 1px solid #52BD6D; /* 테두리 색상 */
+    border-radius: 1rem; /* 모서리 둥글게 */
+    outline: none; /* 포커스 시 테두리 아웃라인 제거 */
+    font-size: 0.875rem; /* 폰트 크기 */
+    padding: 0.5rem 0.75rem; /* 안쪽 여백 (상하 여백을 추가) */
+    background-color: white; /* 배경색 */
+    width: 100%; /* 너비 100% */
+    font-family: 'Pretendard'; /* 폰트 패밀리 */
+    overflow-y: auto; /* 4줄을 초과하면 스크롤 생성 */
+    line-height: 1.5; /* 줄 간격 설정 */
+    resize: none; /* 사용자가 크기 조정 불가능하도록 설정 */
 }
+
 
 .comment-input-button {
     width: 1.5rem;

@@ -17,7 +17,7 @@
     font-size: 1.25rem;
 }
 
-textarea {
+.create-post-textarea {
     width: 100%;
     overflow: hidden;
     resize: none;
@@ -26,6 +26,7 @@ textarea {
     outline: none;
     background-color: #FFFDF5;
     font-family: 'Pretendard';
+    font-size: 0.875rem;
 }
 
 textarea::placeholder {
@@ -70,6 +71,8 @@ textarea::placeholder {
     gap: 0.2rem;
     background-color: #52BD6D;
     height: 3rem;
+    border: none;
+    border-radius: 0.5rem;
 }
 
 .create-post-finish-icon {
