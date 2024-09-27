@@ -50,8 +50,8 @@ const Header = () => {
 					</div>
 				</div>
 				<div className="headerRight">
-					<Link>
-						<img src={search}></img>
+					<Link to={`/group/${groupName}/search`}>
+						<img src={search} />
 					</Link>
 					<Link to={'/profile'}>
 						<img

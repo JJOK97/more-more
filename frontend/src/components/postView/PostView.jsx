@@ -27,10 +27,13 @@ const PostView = ({ post }) => {
 	const [isFeedPage, setIsFeedPage] = useState(false); // 경로 상태를 관리
 
 	useEffect(() => {
-		// 경로가 /group/:groupId인지 확인하여 상태 업데이트
+		// 경로가 /group/:groupId 또는 /group/:groupId/search인지 확인하여 상태 업데이트
 		const pathArray = location.pathname.split('/');
-		if (pathArray.length === 3 && pathArray[1] === 'group') {
-			setIsFeedPage(true); // /group/:groupId 형식일 때 feed 페이지로 간주
+		if (
+			(pathArray.length === 3 && pathArray[1] === 'group') ||
+			(pathArray.length === 4 && pathArray[1] === 'group' && pathArray[3] === 'search')
+		) {
+			setIsFeedPage(true); // /group/:groupId 또는 /group/:groupId/search 형식일 때 feed 페이지로 간주
 		} else {
 			setIsFeedPage(false);
 		}

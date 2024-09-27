@@ -26,6 +26,7 @@ import GroupAccountSearch from '@/pages/groupAccount/GroupAccountSearch';
 import TransactionDetail from '@/pages/groupAccount/TransactionDetail';
 import Notice from '../pages/notification/Notice';
 import UserHeader from '../components/common/UserHeader';
+import SearchPost from '../pages/searchPost/SearchPost';
 
 const AppRouter = () => {
 	return (
@@ -90,6 +91,10 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId"
 						element={<Feed />}
+					/>
+					<Route
+						path="/group/:groupId/search"
+						element={<SearchPost />}
 					/>
 					<Route
 						path="/group/:groupId/:postId"
