@@ -16,22 +16,20 @@ const Footer = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	// 특정 경로에서는 Footer를 렌더링하지 않음
 	if (
 		['/', '/login', '/signup', '/profile', '/notice', '/create'].includes(location.pathname) ||
-		location.pathname.match(/^\/group\/\d+\/account\/transfer/) // 동적 경로 패턴 처리
+		location.pathname.match(/^\/group\/\d+\/account\/transfer/)
 	) {
 		return null;
 	}
 
-	// 정규식을 사용하여 동적 경로 비교
-	const isBoardActive = /^\/group\/\d+$/.test(location.pathname);
-	const isAccountActive = /^\/group\/\d+\/account$/.test(location.pathname);
-	const isCalendarActive = /^\/group\/\d+\/schedule$/.test(location.pathname);
-	const isSettingActive = /^\/group\/\d+\/info$/.test(location.pathname);
+	const isAccountActive = /^\/group\/\d+\/account(\/.*)?$/.test(location.pathname);
+	const isCalendarActive = /^\/group\/\d+\/schedule(\/.*)?$/.test(location.pathname);
+	const isSettingActive = /^\/group\/\d+\/info(\/.*)?$/.test(location.pathname);
+	const isBoardActive =
+		/^\/group\/\d+(\/.*)?$/.test(location.pathname) && !isAccountActive && !isCalendarActive && !isSettingActive;
 
 	const handleNavigation = (path) => {
-		// groupId를 추출하여 경로에 반영
 		const groupId = location.pathname.match(/^\/group\/(\d+)/)?.[1];
 		if (groupId) {
 			navigate(path.replace(':groupId', groupId));
