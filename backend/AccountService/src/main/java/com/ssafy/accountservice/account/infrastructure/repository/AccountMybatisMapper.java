@@ -1,0 +1,9 @@
+package com.ssafy.accountservice.account.infrastructure.repository;
+
+import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountEntity;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface AccountMybatisMapper {
+    void insertAccount(AccountEntity accountEntity);
+}
