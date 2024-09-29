@@ -2,6 +2,7 @@ package com.ssafy.memberservice.member.service;
 
 
 import com.ssafy.memberservice.member.controller.dto.request.MemberCreateRequest;
+import com.ssafy.memberservice.member.controller.dto.response.MemberAllGetResponse;
 import com.ssafy.memberservice.member.controller.dto.response.MemberGetResponse;
 import com.ssafy.memberservice.member.infrastructure.repository.MemberRepository;
 import com.ssafy.memberservice.member.infrastructure.repository.entity.MemberEntity;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,7 +27,6 @@ public class MemberServicelmpl implements MemberService{
 
     @Override
     public void registerMember(MemberCreateRequest memberRequest) {
-
         MemberEntity memberEntity= memberObjectMapper.fromMemberCreateRequestToEntity(memberRequest);
 
         // 1. 비밀번호 암호화
@@ -60,5 +61,10 @@ public class MemberServicelmpl implements MemberService{
     @Override
     public MemberGetResponse findByMemberId(Long memberId) {
         return memberObjectMapper.fromEntityToMemberGetResponse(memberRepository.findByMemberId(memberId)) ;
+    }
+
+    @Override
+    public List<MemberAllGetResponse> findAllMembers() {
+        return memberObjectMapper.fromEntitysToMemberAllGetResponses(memberRepository.findAllMembers());
     }
 }
