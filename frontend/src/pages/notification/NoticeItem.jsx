@@ -6,7 +6,7 @@ import docu from '/notice/docu1.svg';
 const formatDate = (dateString) => {
 	const noticeDate = new Date(dateString);
 	const now = new Date();
-	const diffInMs = now - noticeDate; 
+	const diffInMs = now - noticeDate;
 	const diffInHours = diffInMs / (1000 * 60 * 60);
 	const diffInMinutes = diffInMs / (1000 * 60);
 
@@ -22,7 +22,7 @@ const formatDate = (dateString) => {
 };
 
 const NoticeItem = ({ data }) => {
-	const { type, date, content } = data;
+	const { type, date, content, isRead } = data;
 
 	return (
 		<div className="notice-item">
@@ -45,7 +45,10 @@ const NoticeItem = ({ data }) => {
 				</div>
 				<div className="notice-date">{formatDate(date)}</div>
 			</div>
-			<div className="notice-item-content">{content}</div>
+			<div className="notice-content-wrapper">
+				<div className={`notice-read-icon ${isRead ? 'hidden' : ''}`}></div>
+				<div className="notice-item-content">{content}</div>
+			</div>
 		</div>
 	);
 };
