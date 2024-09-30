@@ -20,6 +20,7 @@ import GroupAccountDepositStatus from '@/pages/groupAccount/GroupAccountDepositS
 import GroupDuesSetting from '@/pages/groupAccount/GroupDuesSetting';
 import GroupInfo from '../pages/groupInfo/GroupInfo';
 import AccountTransfer from '@/pages/groupAccount/AccountTransfer';
+import AccountWithDrawal from '@/pages/groupAccount/AccountWithDrawal';
 import AccountTransferQuestion from '@/pages/groupAccount/AccountTransferQuestion';
 import AccountTransferCheck from '@/pages/groupAccount/AccountTransferCheck';
 import GroupAccountSearch from '@/pages/groupAccount/GroupAccountSearch';
@@ -112,6 +113,10 @@ const AppRouter = () => {
 						path="/group/:groupId/account/transfer"
 						element={<AccountTransfer />}
 					/>
+					<Route
+						path="/group/:groupId/account/withDrawal"
+						element={<AccountWithDrawal />}
+					></Route>
 					<Route
 						path="/group/:groupId/account/transfer-question"
 						element={<AccountTransferQuestion />}

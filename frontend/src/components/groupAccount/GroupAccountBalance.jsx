@@ -6,20 +6,23 @@ const AccountBalance = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	// 현재 경로에서 groupId 추출
 	const groupId = location.pathname.match(/^\/group\/(\d+)/)?.[1];
 
-	// 입금 현황 클릭 시 경로 이동
 	const handleDuesClick = () => {
 		if (groupId) {
 			navigate(`/group/${groupId}/account/status`);
 		}
 	};
 
-	// 채우기 클릭 시 경로 이동
 	const handleFillClick = () => {
 		if (groupId) {
 			navigate(`/group/${groupId}/account/transfer`);
+		}
+	};
+
+	const handleSendClick = () => {
+		if (groupId) {
+			navigate(`/group/${groupId}/account/withDrawal`);
 		}
 	};
 
@@ -47,7 +50,12 @@ const AccountBalance = () => {
 				>
 					채우기
 				</button>
-				<button name="send">보내기</button>
+				<button
+					name="send"
+					onClick={handleSendClick}
+				>
+					보내기
+				</button>
 			</div>
 		</div>
 	);
