@@ -74,3 +74,17 @@
 .group-header-space {
 	width: 1rem;
 }
+
+.notification-icon-wrapper {
+	position: relative;
+}
+
+.red-dot {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 8px;
+	height: 8px;
+	background-color: red;
+	border-radius: 50%;
+}

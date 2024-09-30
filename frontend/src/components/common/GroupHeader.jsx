@@ -7,15 +7,16 @@ import user from '@/assets/img/common/mainHeader/user.svg';
 import bell from '@/assets/img/common/mainHeader/bell.svg';
 import useGroupName from '@/store/useGroupName';
 import datas from '@/components/main/data.json';
+import useNoticeState from '@/store/useNoticeState'; // zustand store 가져오기
 
 const Header = () => {
 	const groups = datas.groups;
 	const { groupName } = useGroupName();
+	const { isUnreadNotice } = useNoticeState(); // 읽지 않은 알림 상태 확인
 	const location = useLocation();
 	const navigate = useNavigate();
 
 	const currentGroup = groups.find((group) => group.groupId === parseInt(groupName));
-
 	const displayedGroupName = currentGroup ? currentGroup.groupName : '';
 
 	if (
@@ -47,20 +48,17 @@ const Header = () => {
 				</div>
 				<div className="headerRight">
 					<Link to={`/group/${groupName}/search`}>
-						<img src={search} />
+						<img src={search} alt="Search" />
 					</Link>
 					<Link to={'/profile'}>
-						<img
-							src={user}
-							alt="User"
-						/>
+						<img src={user} alt="User" />
 					</Link>
-					<Link to={'/notice'}>
-						<img
-							src={bell}
-							alt="Notifications"
-						/>
-					</Link>
+					<div className="notification-icon-wrapper">
+						<Link to={'/notice'}>
+							<img src={bell} alt="Notifications" />
+							{isUnreadNotice && <div className="red-dot" />}
+						</Link>
+					</div>
 				</div>
 			</div>
 		</header>

@@ -27,8 +27,19 @@ import TransactionDetail from '@/pages/groupAccount/TransactionDetail';
 import Notice from '../pages/notification/Notice';
 import UserHeader from '../components/common/UserHeader';
 import SearchPost from '../pages/searchPost/SearchPost';
+import React, { useEffect } from 'react';
+import data from '../pages/notification/data.json'; // data.json 경로
+import useNoticeState from '../store/useNoticeState'; // zustand 스토어
 
 const AppRouter = () => {
+	const { setIsUnreadNotice } = useNoticeState();
+
+	useEffect(() => {
+		// 읽지 않은 알림이 있는지 확인하여 상태 업데이트
+		const hasUnreadNotice = data.notice.some((notice) => !notice.isRead);
+		setIsUnreadNotice(hasUnreadNotice); // 읽지 않은 알림이 있으면 true로 설정
+	}, [setIsUnreadNotice]);
+
 	return (
 		<Router>
 			<MainHeader />
