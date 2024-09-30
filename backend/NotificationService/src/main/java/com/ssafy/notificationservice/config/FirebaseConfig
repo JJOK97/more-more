@@ -1,0 +1,46 @@
+package com.ssafy.notificationservice.config;
+
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Configuration
+public class FirebaseConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(FirebaseConfig.class);
+
+    @Value("${firebase.config.path}")
+    private String firebaseConfigPath;
+
+    @PostConstruct
+    public void initializeFirebaseApp() {
+        logger.info("Attempting to initialize Firebase app");
+        try {
+            ClassPathResource resource = new ClassPathResource(firebaseConfigPath);
+            logger.info("Firebase config file path: {}", resource.getPath());
+
+            FirebaseOptions options = FirebaseOptions.builder()
+                    .setCredentials(GoogleCredentials.fromStream(resource.getInputStream()))
+                    .build();
+
+            if (FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(options);
+                logger.info("Firebase app has been initialized successfully");
+            } else {
+                logger.info("Firebase app was already initialized");
+            }
+        } catch (IOException e) {
+            logger.error("Error initializing Firebase app", e);
+        } catch (Exception e) {
+            logger.error("Unexpected error during Firebase initialization", e);
+        }
+    }
+}
