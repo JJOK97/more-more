@@ -24,6 +24,7 @@ const Header = () => {
 		location.pathname === '/signup' ||
 		location.pathname === '/profile' ||
 		location.pathname === '/notice' ||
+		location.pathname.match(/^\/group\/\d+\/account\/withDrawal/) ||
 		location.pathname.match(/^\/group\/\d+\/account\/transfer/) ||
 		location.pathname.match(/^\/group\/\d+\/account\/transfer-question/) ||
 		location.pathname.match(/^\/group\/\d+\/account\/transfer-check/)
