@@ -1,17 +1,25 @@
 import '@/assets/css/groupInfo/GroupInfo.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import data from './data.json';
 import GroupMember from '@/components/groupInfo/GroupMember.jsx';
 import InviteModal from './InviteModal';
+import useGroupName from '@/store/useGroupName';
+import { useParams } from 'react-router-dom';
 
 const GroupInfo = () => {
+	const { setGroupName } = useGroupName();
+	const { groupId } = useParams(); // URL에서 groupId를 추출
 	const [isInfoOpen, setIsInfoOpen] = useState(true);
 	const [isMembersOpen, setIsMembersOpen] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
-	const [groupName, setGroupName] = useState('옥냥이네 가족');
+	const [groupInfoName, setGroupInfoName] = useState('옥냥이네 가족');
 	const [intro, setIntro] = useState('행복한 하루@...');
 	const [profileImage, setProfileImage] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	useEffect(() => {
+		setGroupName(groupId);
+	}, []);
 
 	const toggleInfo = () => setIsInfoOpen(!isInfoOpen);
 	const toggleMembers = () => setIsMembersOpen(!isMembersOpen);
@@ -83,12 +91,12 @@ const GroupInfo = () => {
 								{isEditing ? (
 									<input
 										type="text"
-										value={groupName}
-										onChange={(e) => setGroupName(e.target.value)}
+										value={groupInfoName}
+										onChange={(e) => setGroupInfoName(e.target.value)}
 										className="group-info-name-input"
 									/>
 								) : (
-									<div className="group-info-name-text">{groupName}</div>
+									<div className="group-info-name-text">{groupInfoName}</div>
 								)}
 							</div>
 						</div>

@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; // useParams 추가
 import './SearchPost.css';
 import datas from '../feed/data.json'; // 데이터 가져오기
 import PostView from '@/components/postView/PostView'; // PostView 컴포넌트 가져오기
+import useGroupName from '@/store/useGroupName';
 
 const SearchPost = () => {
+	const { setGroupName } = useGroupName();
 	const { groupId } = useParams(); // groupId 가져오기
 	const [searchTerm, setSearchTerm] = useState('');
 	const [results, setResults] = useState([]);
+
+	useEffect(() => {
+		setGroupName(groupId);
+	}, []);
 
 	const handleSearch = () => {
 		if (!searchTerm) return;
