@@ -24,6 +24,7 @@ public class MemberServicelmpl implements MemberService{
     private final PasswordEncoder passwordEncoder;
     private final MemberObjectMapper memberObjectMapper;
     private final MemberRepository memberRepository;
+    private final SsafyApiService ssafyApiService;
 
     @Override
     public void registerMember(MemberCreateRequest memberRequest) {
@@ -40,21 +41,19 @@ public class MemberServicelmpl implements MemberService{
 
             // S3에 파일 업로드
             s3Connector.upload(fileName, profileImage);
-
             // 업로드된 파일의 URL 가져오기
             String imageUrl = s3Connector.getImageURL(fileName);
-
             // 이미지 URL을 MemberEntity에 설정
             memberEntity.setProfileImageUrl(imageUrl);
         }
 
+        // 외부 API에서 userKey 가져오기 (SsafyApiService에서 처리)
+        String userKey = ssafyApiService.fetchUserKeyFromApi(memberRequest.getEmail());
+        memberEntity.setUserKey(userKey);
+
 
         memberEntity.setPassword(encodedPassword);
-
-
         memberRepository.saveMember(memberEntity);
-
-
 
     }
 

@@ -20,6 +20,7 @@ public class MemberEntity {
     private Date birthDate;
     private String name;
     private String profileImageUrl;
+    private String userKey;
 
 
 }

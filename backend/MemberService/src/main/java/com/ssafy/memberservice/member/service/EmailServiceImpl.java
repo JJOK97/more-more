@@ -28,6 +28,7 @@ public class EmailServiceImpl implements EmailService {
         helper.setText(text, true);  // HTML 형식 지원을 위해 true
 
 
+
         try {
             mailSender.send(message);
         } catch (MailException e) {
