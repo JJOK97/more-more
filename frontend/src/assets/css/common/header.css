@@ -1,7 +1,7 @@
 .common-header {
 	height: 7.5vh;
 	width: 100vw;
-	background-color: #53b36c;
+	background-color: #52bd6d;
 	display: flex;
 	align-items: center;
 	/* border-radius: 0 0 1rem 1rem; */
@@ -73,4 +73,18 @@
 
 .group-header-space {
 	width: 1rem;
+}
+
+.notification-icon-wrapper {
+	position: relative;
+}
+
+.red-dot {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 8px;
+	height: 8px;
+	background-color: red;
+	border-radius: 50%;
 }
