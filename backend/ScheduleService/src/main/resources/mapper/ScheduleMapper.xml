@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.scheduleservice.schedule.infrastructure.repository.ScheduleMybatisMapper">
+    <!-- 스케줄 ID로 조회 -->
+    <select id="findSchedule" parameterType="map" resultType="com.ssafy.scheduleservice.schedule.infrastructure.repository.entity.ScheduleEntity">
+        SELECT *
+        FROM schedules
+        WHERE club_code = #{clubCode} and schedule_id = #{scheduleId}
+    </select>
+
+    <!-- 전체 스케줄 조회 -->
+    <select id="findAllScheduleEntities" parameterType="String" resultType="com.ssafy.scheduleservice.schedule.infrastructure.repository.entity.ScheduleEntity">
+        SELECT *
+        FROM schedules
+        WHERE club_code = #{clubCode}
+    </select>
+
+    <!-- 스케줄 저장 -->
+    <insert id="saveSchedule" parameterType="com.ssafy.scheduleservice.schedule.infrastructure.repository.entity.ScheduleEntity" useGeneratedKeys="true" keyProperty="scheduleId">
+        INSERT INTO schedules (club_code, event, date, time, member_id)
+        VALUES (#{clubCode}, #{event}, #{date}, #{time}, #{memberId})
+    </insert>
+
+    <!-- 스케줄 수정 -->
+    <update id="updateSchedule" parameterType="com.ssafy.scheduleservice.schedule.infrastructure.repository.entity.ScheduleEntity">
+        UPDATE schedules
+        SET event = #{event}, date = #{date}, time = #{time}
+        WHERE club_code = #{clubCode} and schedule_id = #{scheduleId}
+    </update>
+
+    <!-- 스케줄 삭제 -->
+    <delete id="deleteSchedule" parameterType="map">
+        DELETE FROM schedules
+        WHERE club_code = #{clubCode} and schedule_id = #{scheduleId}
+    </delete>
+</mapper>
