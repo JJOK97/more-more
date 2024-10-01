@@ -4,7 +4,6 @@ import com.ssafy.accountservice.account.controller.dto.request.AccountCreateRequ
 import com.ssafy.accountservice.account.controller.dto.request.AccountSelectNumberAndBalanceRequest;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.AccountService;
-import com.ssafy.accountservice.account.service.domain.AccountNumAndBalanceSelect;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

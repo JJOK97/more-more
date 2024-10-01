@@ -3,8 +3,8 @@
 
 <mapper namespace="com.ssafy.accountservice.account.infrastructure.repository.AccountMybatisMapper">
     <insert id="insertAccount" parameterType="com.ssafy.accountservice.account.infrastructure.repository.entity.AccountEntity" useGeneratedKeys="true" keyProperty="accountId">
-        INSERT INTO account (ssafy_account_number, club_code, club_password)
-        VALUES (#{ssafyAccountNumber}, #{clubCode}, #{clubPassword})
+        INSERT INTO account (ssafy_account_number, club_code, club_password, ssafy_user_key)
+        VALUES (#{ssafyAccountNumber}, #{clubCode}, #{clubPassword}, #{ssafyUserKey})
     </insert>
 
     <select id="selectAccountNumAndManagerKey" resultType="map" parameterType="String">

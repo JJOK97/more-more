@@ -1,8 +1,13 @@
 package com.ssafy.accountservice.account.controller.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 @Data
 public class AccountCreateApiRequest {
@@ -13,7 +18,11 @@ public class AccountCreateApiRequest {
     @JsonProperty("accountTypeUniqueNo")  // JSON에서 "accountTypeUniqueNo" 필드를 매핑
     private String accountTypeUniqueNo;
 
-    @Builder
+    // 기본 생성자에서 Header 객체 생성
+    public AccountCreateApiRequest() {
+        this.header = new Header(); // header 객체를 기본적으로 생성
+    }
+
     public AccountCreateApiRequest(Header header, String accountTypeUniqueNo) {
         this.header = header;
         this.accountTypeUniqueNo = accountTypeUniqueNo;
@@ -21,44 +30,62 @@ public class AccountCreateApiRequest {
 
     @Data
     public static class Header {
-        @JsonProperty("apiName")  // JSON에서 "apiName" 필드를 매핑
-        private String apiName;
+        @JsonProperty("apiName")
+        private final String apiName;
 
-        @JsonProperty("transmissionDate")  // JSON에서 "transmissionDate" 필드를 매핑
-        private String transmissionDate;
+        @JsonProperty("transmissionDate")
+        private final String transmissionDate;
 
-        @JsonProperty("transmissionTime")  // JSON에서 "transmissionTime" 필드를 매핑
-        private String transmissionTime;
+        @JsonProperty("transmissionTime")
+        private final String transmissionTime;
 
-        @JsonProperty("institutionCode")  // JSON에서 "institutionCode" 필드를 매핑
-        private String institutionCode;
+        @JsonProperty("institutionCode")
+        private final String institutionCode;
 
-        @JsonProperty("fintechAppNo")  // JSON에서 "fintechAppNo" 필드를 매핑
-        private String fintechAppNo;
+        @JsonProperty("fintechAppNo")
+        private final String fintechAppNo;
 
-        @JsonProperty("apiServiceCode")  // JSON에서 "apiServiceCode" 필드를 매핑
-        private String apiServiceCode;
+        @JsonProperty("apiServiceCode")
+        private final String apiServiceCode;
 
-        @JsonProperty("institutionTransactionUniqueNo")  // JSON에서 "institutionTransactionUniqueNo" 필드를 매핑
-        private String institutionTransactionUniqueNo;
+        @JsonProperty("institutionTransactionUniqueNo")
+        private final String institutionTransactionUniqueNo;
 
-        @JsonProperty("apiKey")  // JSON에서 "apiKey" 필드를 매핑
+        @JsonProperty("apiKey")
         private String apiKey;
 
-        @JsonProperty("userKey")  // JSON에서 "userKey" 필드를 매핑
+        @JsonProperty("userKey")
         private String userKey;
 
-        @Builder
-        public Header(String apiName, String transmissionDate, String transmissionTime, String institutionCode, String fintechAppNo, String apiServiceCode, String institutionTransactionUniqueNo, String apiKey, String userKey) {
-            this.apiName = apiName;
-            this.transmissionDate = transmissionDate;
-            this.transmissionTime = transmissionTime;
-            this.institutionCode = institutionCode;
-            this.fintechAppNo = fintechAppNo;
-            this.apiServiceCode = apiServiceCode;
-            this.institutionTransactionUniqueNo = institutionTransactionUniqueNo;
-            this.apiKey = apiKey;
-            this.userKey = userKey;
+        // 기본 생성자에서 상수 값 초기화
+        public Header() {
+            this.apiName = "createDemandDepositAccount";
+            this.transmissionDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            this.transmissionTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmmss"));
+            this.institutionCode = "00100";
+            this.fintechAppNo = "001";
+            this.apiServiceCode = "createDemandDepositAccount";
+            this.institutionTransactionUniqueNo = generateUniqueIdentifier(); // 고유한 Identifier 생성
+        }
+
+        // 고유한 Identifier 생성 메서드
+        private String generateUniqueIdentifier() {
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
+
+            String formattedDate = now.format(dateFormatter);
+            String formattedTime = now.format(timeFormatter);
+            String milliseconds = String.format("%03d", now.getNano() / 1_000_000).substring(0, 2);
+            String randomFourDigits = generateRandomFourDigits();
+
+            return formattedDate + formattedTime + milliseconds + randomFourDigits;
+        }
+
+        // 4자리 랜덤 숫자 생성
+        private String generateRandomFourDigits() {
+            Random random = new Random();
+            return String.format("%04d", random.nextInt(10000));
         }
     }
 }
