@@ -1,6 +1,5 @@
 package com.ssafy.accountservice.account.service.domain;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data

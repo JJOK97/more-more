@@ -8,6 +8,6 @@ import java.util.Map;
 @Mapper
 public interface AccountMybatisMapper {
     void insertAccount(AccountEntity accountEntity);
-
     Map<String, String> selectAccountNumAndManagerKey(String clubCode);
+    String selectAccountNum(String clubCode);
 }

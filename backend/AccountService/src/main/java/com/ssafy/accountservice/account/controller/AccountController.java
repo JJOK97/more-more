@@ -2,6 +2,7 @@ package com.ssafy.accountservice.account.controller;
 
 import com.ssafy.accountservice.account.controller.dto.request.AccountCreateRequest;
 import com.ssafy.accountservice.account.controller.dto.request.AccountSelectNumberAndBalanceRequest;
+import com.ssafy.accountservice.account.controller.dto.request.AccountTransferRequest;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,4 +36,12 @@ public class AccountController {
         Map<String, String> accountData = accountService.accountSelectNumberAndBalance(accountSelectNumberAndBalanceRequest.getClubCode());
         return new ResponseEntity<>(accountData, HttpStatus.OK);
     }
+
+    @Operation(summary = "계좌 이체")
+    @PostMapping("/transfer")
+    public  ResponseEntity<String> transferAccount(@RequestBody AccountTransferRequest accountTransferRequest) {
+        String responseMessage = accountService.accountTransfer(accountObjectMapper.fromTransferCreateRequestToDomain(accountTransferRequest));
+        return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
+    }
+
 }

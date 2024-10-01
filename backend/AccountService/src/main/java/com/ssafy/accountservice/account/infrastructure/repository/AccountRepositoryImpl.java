@@ -22,7 +22,12 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Map<String, String> selectAccountNumber(String clubCode) {
+    public Map<String, String> selectAccountNumberAndUserKey(String clubCode) {
         return accountMybatisMapper.selectAccountNumAndManagerKey(clubCode);
+    }
+
+    @Override
+    public String selectAccountNumber(String clubCode) {
+        return accountMybatisMapper.selectAccountNum(clubCode);
     }
 }

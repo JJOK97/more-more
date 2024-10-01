@@ -16,4 +16,13 @@
             club_code = #{clubCode}
     </select>
 
+    <select id="selectAccountNum" resultType="String" parameterType="String">
+        SELECT
+            ssafy_account_number
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
 </mapper>

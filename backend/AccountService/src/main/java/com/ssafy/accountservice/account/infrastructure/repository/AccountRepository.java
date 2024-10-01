@@ -5,5 +5,6 @@ import java.util.Map;
 
 public interface AccountRepository {
     void saveAccount(ArrayList<String> arrayList);
-    Map<String, String> selectAccountNumber(String clubCode);
+    Map<String, String> selectAccountNumberAndUserKey(String clubCode);
+    String selectAccountNumber(String clubCode);
 }
