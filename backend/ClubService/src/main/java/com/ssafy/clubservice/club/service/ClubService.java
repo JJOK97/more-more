@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ClubService {
-    Club createClub(Club club, Long creatorId, MultipartFile file);
+    Club createClub(Club club, Long creatorId, MultipartFile file, String ssafyUserKey);
 
     Club updateClub(String clubCode, Club club);
 

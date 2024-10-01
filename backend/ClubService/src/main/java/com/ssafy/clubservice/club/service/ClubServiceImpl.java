@@ -23,8 +23,9 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     @Transactional
-    public Club createClub(Club club, Long creatorId, MultipartFile file){
+    public Club createClub(Club club, Long creatorId, MultipartFile file, String ssafyuserKey){
         club = club.generateClubCode(uuidHolder);
+
         Club clubWithId = clubRepository.saveClub(club);
         clubWithId = addCreator(creatorId, clubWithId);
         return clubWithId.changeImageName(processImage(club, file));
