@@ -10,22 +10,38 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 @Data
-public class AccountCreateApiRequest {
+public class AccountTransferApiRequest {
 
     @JsonProperty("Header")  // JSON에서 "Header" 필드를 매핑
     private Header header;
 
-    @JsonProperty("accountTypeUniqueNo")  // JSON에서 "accountTypeUniqueNo" 필드를 매핑
-    private String accountTypeUniqueNo;
+    @JsonProperty("depositAccountNo")  // 입금 계좌 번호
+    private String depositAccountNo;
+
+    @JsonProperty("depositTransactionSummary")  // 입금 거래 요약 (고정값)
+    private final String depositTransactionSummary = "(수시입출금) : 입금(이체)";
+
+    @JsonProperty("transactionBalance")  // 거래 금액
+    private String transactionBalance;
+
+    @JsonProperty("withdrawalAccountNo")  // 출금 계좌 번호
+    private String withdrawalAccountNo;
+
+    @JsonProperty("withdrawalTransactionSummary")  // 출금 거래 요약 (고정값)
+    private final String withdrawalTransactionSummary = "(수시입출금) : 출금(이체)";
 
     // 기본 생성자에서 Header 객체 생성
-    public AccountCreateApiRequest() {
-        this.header = new Header(); // header 객체를 기본적으로 생성
+    public AccountTransferApiRequest() {
+        this.header = new Header();  // 기본적으로 header 객체를 생성
     }
 
-    public AccountCreateApiRequest(Header header, String accountTypeUniqueNo) {
-        this.header = header;
-        this.accountTypeUniqueNo = accountTypeUniqueNo;
+    // 매개변수가 있는 생성자
+    public AccountTransferApiRequest(String userKey, String depositAccountNo, String transactionBalance, String withdrawalAccountNo) {
+        this();  // 기본 생성자 호출해서 header 생성
+        this.header.setUserKey(userKey);  // 동적으로 설정된 userKey
+        this.depositAccountNo = depositAccountNo;
+        this.transactionBalance = transactionBalance;
+        this.withdrawalAccountNo = withdrawalAccountNo;
     }
 
     @Data
@@ -59,12 +75,12 @@ public class AccountCreateApiRequest {
 
         // 기본 생성자에서 상수 값 초기화
         public Header() {
-            this.apiName = "createDemandDepositAccount";
+            this.apiName = "updateDemandDepositAccountTransfer";
             this.transmissionDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             this.transmissionTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmmss"));
             this.institutionCode = "00100";
             this.fintechAppNo = "001";
-            this.apiServiceCode = "createDemandDepositAccount";
+            this.apiServiceCode = "updateDemandDepositAccountTransfer";
             this.institutionTransactionUniqueNo = generateUniqueIdentifier(); // 고유한 Identifier 생성
         }
 
@@ -89,3 +105,4 @@ public class AccountCreateApiRequest {
         }
     }
 }
+

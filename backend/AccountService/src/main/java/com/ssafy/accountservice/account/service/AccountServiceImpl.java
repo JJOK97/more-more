@@ -1,19 +1,24 @@
 package com.ssafy.accountservice.account.service;
 
 import com.ssafy.accountservice.account.controller.dto.request.AccountCreateApiRequest;
-import com.ssafy.accountservice.account.controller.dto.request.AccountCreateApiRequest.Header;
+import com.ssafy.accountservice.account.controller.dto.request.AccountSelectApiRequest;
+import com.ssafy.accountservice.account.controller.dto.request.AccountTransferApiRequest;
 import com.ssafy.accountservice.account.controller.dto.response.AccountCreateApiResponse;
+import com.ssafy.accountservice.account.controller.dto.response.AccountSelectBalanceApiResponse;
+import com.ssafy.accountservice.account.controller.dto.response.AccountTransferApiResponse;
 import com.ssafy.accountservice.account.infrastructure.repository.AccountRepository;
 import com.ssafy.accountservice.account.service.domain.Account;
+import com.ssafy.accountservice.account.service.domain.AccountTransfer;
+import com.ssafy.accountservice.account.service.domain.AccountUtils;
 import com.ssafy.accountservice.client.AccountFeignClient;
+import com.ssafy.accountservice.client.AccountTransferFeignClient;
+import com.ssafy.accountservice.client.SelectAccountNumFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -21,83 +26,84 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountFeignClient accountFeignClient;
+    private final SelectAccountNumFeignClient selectAccountNumFeignClient;
+    private final AccountTransferFeignClient accountTransferFeignClient;
 
     @Override
     public void accountCreate(Account account) {
-        AccountCreateApiRequest accountCreateApiRequest = createAccountRequest(account);
-        
+        String ssafyUserKey = account.getSsafyUserKey();
+        String apiKey = AccountUtils.getApiKey();
+
+        // Header 생성
+        AccountCreateApiRequest.Header header = new AccountCreateApiRequest.Header();
+        header.setApiKey(apiKey);
+        header.setUserKey(ssafyUserKey);
+
+        // 전체 API 요청 객체 생성
+        AccountCreateApiRequest accountCreateApiRequest = new AccountCreateApiRequest();
+        accountCreateApiRequest.setHeader(header);
+        accountCreateApiRequest.setAccountTypeUniqueNo("001-1-7c1e096a0f2d40");
+
         // Feign Client를 사용해 POST 요청 전송
         AccountCreateApiResponse accountCreateApiResponse = accountFeignClient.createAccount(accountCreateApiRequest);
         ArrayList<String> arr = new ArrayList<>();
 
         arr.add(accountCreateApiResponse.getRec().getAccountNo());
-        arr.add(generateTimestampBasedClubCode()); // 클럽코드 생성
+        arr.add(account.getClubCode());
         arr.add(account.getPwd());
+        arr.add(ssafyUserKey);
 
         accountRepository.saveAccount(arr);
     }
 
-    private String generateTimestampBasedClubCode() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
-        // 랜덤한 3개의 대문자 추가
-        String randomCode = generateRandomCode(3);
+    @Override
+    public Map<String, String> accountSelectNumberAndBalance(String clubCode) {
+        String apiKey = AccountUtils.getApiKey();
 
-        return now.format(formatter) + randomCode;
+        // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
+        Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(clubCode);
+
+        String managerKey = map.get("ssafy_user_key");
+        String accountNum = map.get("ssafy_account_number");
+
+        AccountSelectApiRequest accountSelectApiRequest = new AccountSelectApiRequest();
+        accountSelectApiRequest.getHeader().setApiKey(apiKey);
+        accountSelectApiRequest.getHeader().setUserKey(managerKey);
+        accountSelectApiRequest.setAccountNo(accountNum);
+
+        // Feign Client
+        AccountSelectBalanceApiResponse response = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
+
+        // account number, account balance만 담아서 return
+        Map<String, String> numAndBalance = new HashMap<>();
+        numAndBalance.put("account_num", accountNum);
+        numAndBalance.put("account_balance", response.getRec().getAccountBalance());
+
+        return numAndBalance;
     }
 
-    private String generateRandomCode(int length) {
-        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            sb.append(letters.charAt(random.nextInt(letters.length())));
-        }
-        return sb.toString();
-    }
+    @Override
+    public String accountTransfer(AccountTransfer accountTransfer) {
+        String apiKey = AccountUtils.getApiKey();
 
-    private AccountCreateApiRequest createAccountRequest(Account account) {
-        String ssafyUserKey = account.getSsafyUserKey();
+        // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
+        String withdrawalAccountNo = accountRepository.selectAccountNumber(accountTransfer.getClubCode());
+
+        AccountTransferApiRequest accountTransferApiRequest = new AccountTransferApiRequest();
+        accountTransferApiRequest.getHeader().setApiKey(apiKey);
+        accountTransferApiRequest.getHeader().setUserKey(accountTransfer.getUserKey());
+        accountTransferApiRequest.setDepositAccountNo(accountTransfer.getDepositAccountNo());
+        accountTransferApiRequest.setTransactionBalance(accountTransfer.getTransactionBalance());
+        accountTransferApiRequest.setWithdrawalAccountNo(withdrawalAccountNo);
+
+        System.out.println("accountTransferApiRequest = " + accountTransferApiRequest);
         
-        // 고유한 Identifier 생성
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String formattedDate = now.format(dateFormatter);
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
-        String formattedTime = now.format(timeFormatter);
-        String milliseconds = String.format("%03d", now.getNano() / 1_000_000).substring(0, 2);
-        String randomFourDigits = generateRandomFourDigits();
-        String uniqueIdentifier = generateAutoIncrementNumber(formattedDate, formattedTime, milliseconds, randomFourDigits);
+        // Feign Client
+        AccountTransferApiResponse accountTransferApiResponse = accountTransferFeignClient.transferAccountBalance(accountTransferApiRequest);
 
-        // Header 생성
-        Header header = Header.builder()
-                .apiName("createDemandDepositAccount")
-                .transmissionDate(formattedDate)
-                .transmissionTime(formattedTime)
-                .institutionCode("00100")
-                .fintechAppNo("001")
-                .apiServiceCode("createDemandDepositAccount")
-                .institutionTransactionUniqueNo(uniqueIdentifier)
-                .apiKey("41ab6a7e28bf4af7b799e70ef9441967")
-                .userKey(ssafyUserKey)
-                .build();
-
-        // 전체 API 요청 객체 생성
-        AccountCreateApiRequest accountCreateApiRequest = AccountCreateApiRequest.builder()
-                .header(header)
-                .accountTypeUniqueNo("001-1-7c1e096a0f2d40")
-                .build();
-
-        return accountCreateApiRequest;
-    }
-
-    private String generateRandomFourDigits() {
-        Random random = new Random();
-        return String.format("%04d", random.nextInt(10000));
-    }
-
-    private static synchronized String generateAutoIncrementNumber(String formattedDate, String formattedTime, String milliseconds, String randomFourDigits) {
-        return formattedDate + formattedTime + milliseconds + randomFourDigits;
+        System.out.println("accountTransferApiResponse = " + accountTransferApiResponse);
+        
+        return accountTransferApiResponse.getHeader().getResponseMessage();
     }
 }
