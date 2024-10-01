@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,5 +19,10 @@ public class AccountRepositoryImpl implements AccountRepository {
     public void saveAccount(ArrayList<String> arrayList) {
         AccountEntity accountEntity = accountObjectMapper.fromDomainToEntity(arrayList);
         accountMybatisMapper.insertAccount(accountEntity);
+    }
+
+    @Override
+    public Map<String, String> selectAccountNumber(String clubCode) {
+        return accountMybatisMapper.selectAccountNumAndManagerKey(clubCode);
     }
 }

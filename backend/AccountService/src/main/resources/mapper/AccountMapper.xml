@@ -7,4 +7,13 @@
         VALUES (#{ssafyAccountNumber}, #{clubCode}, #{clubPassword})
     </insert>
 
+    <select id="selectAccountNumAndManagerKey" resultType="map" parameterType="String">
+        SELECT
+            ssafy_user_key, ssafy_account_number
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
 </mapper>
