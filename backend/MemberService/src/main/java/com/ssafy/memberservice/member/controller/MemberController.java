@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
 @Tag(name = "Member", description = "회원 서비스 API")
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
@@ -76,9 +78,11 @@ public class MemberController {
 
             return ResponseEntity.ok("인증 번호가 이메일로 발송되었습니다.");
         } catch (MessagingException e) {
+            log.error("발송실패", e);
             // MessagingException 처리
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이메일 발송에 실패했습니다.");
         } catch (Exception e) {
+            log.error("예외", e);
             // 기타 예외 처리
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버에서 문제가 발생했습니다.");
         }
