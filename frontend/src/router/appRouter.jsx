@@ -29,6 +29,8 @@ import Notice from '../pages/notification/Notice';
 import UserHeader from '../components/common/UserHeader';
 import SearchPost from '../pages/searchPost/SearchPost';
 
+import GetFcmToken from '@/pages/GetFcmToken';
+
 const AppRouter = () => {
 	return (
 		<Router>
@@ -132,6 +134,11 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/account/:detail"
 						element={<TransactionDetail />}
+					/>
+
+					<Route
+						path="/get-fcm-token"
+						element={<GetFcmToken />} // FCM 토큰 받기 위한 페이지 추가
 					/>
 				</Routes>
 			</main>
