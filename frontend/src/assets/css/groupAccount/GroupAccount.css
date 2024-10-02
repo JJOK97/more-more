@@ -202,6 +202,7 @@
 	justify-content: space-between;
 	align-items: center;
 	height: 100%;
+	/* gap: 1rem; */
 }
 
 .deposit-detail-one {
@@ -237,7 +238,7 @@
 }
 
 .deposit-list-place {
-	font-size: 16px;
+	font-size: 1rem;
 	font-weight: 700;
 }
 
@@ -273,7 +274,7 @@
 	border-radius: 1rem;
 	height: 1rem;
 	border: 1px solid #ddd;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 	outline: none;
 }
 
@@ -627,8 +628,19 @@ div.account-check-top-component > div.transfer-info-area > div > div.transfer-ac
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	width: 320px;
-	height: 191px;
+	width: 100%;
+	padding: 1rem 0;
+	gap: 1rem;
+}
+
+.dues {
+	display: flex;
+	gap: 0.5rem;
+}
+
+span[name='account-due-list'] {
+	font-size: 0.75rem;
+	font-weight: 700;
 }
 
 .account-balance-info {
@@ -640,19 +652,23 @@ div.account-check-top-component > div.transfer-info-area > div > div.transfer-ac
 	border-radius: 20px;
 	width: 320px;
 	height: 100px;
-	box-shadow: 3px 6px 5px #1a19193e;
+	/* box-shadow: 3px 6px 5px #1a19193e; */
+	color: white;
+	gap: 0.5rem;
+	padding-bottom: 0.25rem;
 }
 
-text[name='account-number'] {
+span[name='account-number'] {
 	margin: 0px;
 	color: #eae5e5;
-	font-size: 12px;
+	font-size: 0.75rem;
 }
 
-text[name='account-balance'] {
+span[name='account-balance'] {
 	margin: 0px;
 	color: #ffffff;
-	font-size: 22px;
+	font-size: 1.5rem;
+	font-weight: 500;
 }
 
 .account-balance-button {
@@ -660,24 +676,26 @@ text[name='account-balance'] {
 	flex-direction: row;
 	width: 320px;
 	justify-content: space-between;
-	margin-top: 1rem;
 }
 
 .account-balance-button > button {
 	color: #ffffff;
 	width: 8.8rem;
-	border-radius: 14px;
-	box-shadow: 3px 6px 5px #1a19193e;
+	border-radius: 1rem;
+	font-size: 1rem;
+	font-weight: 700;
+	font-family: 'Pretendard';
+	border: none;
+	padding: 0.75rem 0;
+	/* box-shadow: 3px 6px 5px #1a19193e; */
 }
 
 button[name='fill'] {
 	background-color: #a8d7b0;
-	width: 8.8rem;
 }
 
 button[name='send'] {
 	background-color: #53b36c;
-	width: 8.8rem;
 }
 
 /* detail */
