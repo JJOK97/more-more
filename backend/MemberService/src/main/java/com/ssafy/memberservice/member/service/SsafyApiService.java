@@ -23,7 +23,7 @@ public class SsafyApiService {
     }
 
     public String fetchUserKeyFromApi(String email) {
-        String url = "https://finopenapi.ssafy.io/ssafy/api/v1/member/";
+        String url = "https://finopenapi.ssafy.io/ssafy/api/v1/member/search";
 
         // RestTemplate 인스턴스를 여기서 직접 생성
         RestTemplate restTemplate = new RestTemplate();
