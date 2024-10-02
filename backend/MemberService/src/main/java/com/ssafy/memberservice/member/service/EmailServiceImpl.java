@@ -2,6 +2,7 @@ package com.ssafy.memberservice.member.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,6 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
@@ -23,7 +25,7 @@ public class EmailServiceImpl implements EmailService {
         // MIME 타입의 이메일 메시지 생성
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
+        log.info("email: ", to);
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(text, true);  // HTML 형식 지원을 위해 true
