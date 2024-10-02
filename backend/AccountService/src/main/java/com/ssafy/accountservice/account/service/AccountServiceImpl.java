@@ -1,9 +1,11 @@
 package com.ssafy.accountservice.account.service;
 
 import com.ssafy.accountservice.account.controller.dto.request.AccountCreateApiRequest;
+import com.ssafy.accountservice.account.controller.dto.request.AccountHistoryApiRequest;
 import com.ssafy.accountservice.account.controller.dto.request.AccountSelectApiRequest;
 import com.ssafy.accountservice.account.controller.dto.request.AccountTransferApiRequest;
 import com.ssafy.accountservice.account.controller.dto.response.AccountCreateApiResponse;
+import com.ssafy.accountservice.account.controller.dto.response.AccountHistoryApiResponse;
 import com.ssafy.accountservice.account.controller.dto.response.AccountSelectBalanceApiResponse;
 import com.ssafy.accountservice.account.controller.dto.response.AccountTransferApiResponse;
 import com.ssafy.accountservice.account.infrastructure.repository.AccountRepository;
@@ -11,6 +13,7 @@ import com.ssafy.accountservice.account.service.domain.Account;
 import com.ssafy.accountservice.account.service.domain.AccountTransfer;
 import com.ssafy.accountservice.account.service.domain.AccountUtils;
 import com.ssafy.accountservice.client.AccountFeignClient;
+import com.ssafy.accountservice.client.AccountHistoryFeignClient;
 import com.ssafy.accountservice.client.AccountTransferFeignClient;
 import com.ssafy.accountservice.client.SelectAccountNumFeignClient;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -28,6 +32,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountFeignClient accountFeignClient;
     private final SelectAccountNumFeignClient selectAccountNumFeignClient;
     private final AccountTransferFeignClient accountTransferFeignClient;
+    private final AccountHistoryFeignClient accountHistoryFeignClient;
 
     @Override
     public void accountCreate(Account account) {
@@ -83,6 +88,7 @@ public class AccountServiceImpl implements AccountService {
         return numAndBalance;
     }
 
+
     @Override
     public ArrayList<String> accountTransfer(AccountTransfer accountTransfer) {
         String apiKey = AccountUtils.getApiKey();
@@ -131,5 +137,30 @@ public class AccountServiceImpl implements AccountService {
         arr.add(accountTransfer.getTransactionBalance());
         
         return arr;
+    }
+
+
+    @Override
+    public List<AccountHistoryApiResponse.REC.Transaction> accountHistory(String clubCode) {
+        String apiKey = AccountUtils.getApiKey();
+
+        // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
+        Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(clubCode);
+
+        String managerKey = map.get("ssafy_user_key");
+        String accountNum = map.get("ssafy_account_number");
+
+        AccountHistoryApiRequest accountHistoryApiRequest = new AccountHistoryApiRequest();
+        accountHistoryApiRequest.getHeader().setApiKey(apiKey);
+        accountHistoryApiRequest.getHeader().setUserKey(managerKey);
+        accountHistoryApiRequest.setAccountNo(accountNum);
+
+
+        // Feign Client
+        AccountHistoryApiResponse accountHistoryApiResponse = accountHistoryFeignClient.transferAccountHistory(accountHistoryApiRequest);
+
+        List<AccountHistoryApiResponse.REC.Transaction> transactions = accountHistoryApiResponse.getRec().getList();
+
+        return transactions;
     }
 }

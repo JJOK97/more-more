@@ -1,8 +1,8 @@
 package com.ssafy.accountservice.account.controller;
 
 import com.ssafy.accountservice.account.controller.dto.request.AccountCreateRequest;
-import com.ssafy.accountservice.account.controller.dto.request.AccountSelectNumberAndBalanceRequest;
 import com.ssafy.accountservice.account.controller.dto.request.AccountTransferRequest;
+import com.ssafy.accountservice.account.controller.dto.response.AccountHistoryApiResponse;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Tag(name = "Account API", description = "계좌 생성 API")
@@ -32,17 +33,23 @@ public class AccountController {
     }
 
     @Operation(summary = "계좌 번호 및 잔액 조회하기")
-    @PostMapping("/numAndBalance")
-    public ResponseEntity<Map<String, String>> selectAccountNumberAndBalance(@RequestBody AccountSelectNumberAndBalanceRequest accountSelectNumberAndBalanceRequest) {
-        Map<String, String> accountData = accountService.accountSelectNumberAndBalance(accountSelectNumberAndBalanceRequest.getClubCode());
+    @GetMapping("/{clubCode}")
+    public ResponseEntity<Map<String, String>> selectAccountNumberAndBalance(@PathVariable String clubCode) {
+        Map<String, String> accountData = accountService.accountSelectNumberAndBalance(clubCode);
         return new ResponseEntity<>(accountData, HttpStatus.OK);
     }
 
     @Operation(summary = "계좌 이체")
     @PostMapping("/transfer")
-    public  ResponseEntity<ArrayList<String>> transferAccount(@RequestBody AccountTransferRequest accountTransferRequest) {
+    public ResponseEntity<ArrayList<String>> transferAccount(@RequestBody AccountTransferRequest accountTransferRequest) {
         ArrayList<String> responseMessage = accountService.accountTransfer(accountObjectMapper.fromTransferCreateRequestToDomain(accountTransferRequest));
         return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "계좌 입출금 조회")
+    @GetMapping("/{clubCode}/history")
+    public ResponseEntity<List<AccountHistoryApiResponse.REC.Transaction>> historyAccount(@PathVariable("clubCode") String clubCode) {
+        List<AccountHistoryApiResponse.REC.Transaction> response = accountService.accountHistory(clubCode);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
