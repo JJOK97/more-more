@@ -14,5 +14,6 @@ public class MemberGetResponse {
     private Date birthDate;
     private String name;
     private String profileImageUrl;
+    private String userKey;
 
 }

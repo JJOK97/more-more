@@ -71,7 +71,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    @Operation(summary = "토큰발급 API", description = "핸드폰 번호로 로그아웃 (access token)")
+    @Operation(summary = "로그아웃 API", description = "핸드폰 번호로 로그아웃 (access token)")
     public ResponseEntity<?> logout(@RequestParam String phoneNumber) {
         // Redis에서 Refresh Token 삭제 (로그아웃 처리)
         jwtTokenProvider.deleteRefreshToken(phoneNumber);
