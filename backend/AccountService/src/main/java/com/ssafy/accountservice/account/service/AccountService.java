@@ -9,5 +9,5 @@ import java.util.Map;
 public interface AccountService {
     void accountCreate(Account account);
     Map<String, String> accountSelectNumberAndBalance(String clubCode);
-    String accountTransfer(AccountTransfer accountTransfer);
+    ArrayList<String> accountTransfer(AccountTransfer accountTransfer);
 }

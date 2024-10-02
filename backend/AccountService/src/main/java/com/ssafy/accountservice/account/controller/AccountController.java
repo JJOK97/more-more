@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Tag(name = "Account API", description = "계좌 생성 API")
@@ -39,8 +40,8 @@ public class AccountController {
 
     @Operation(summary = "계좌 이체")
     @PostMapping("/transfer")
-    public  ResponseEntity<String> transferAccount(@RequestBody AccountTransferRequest accountTransferRequest) {
-        String responseMessage = accountService.accountTransfer(accountObjectMapper.fromTransferCreateRequestToDomain(accountTransferRequest));
+    public  ResponseEntity<ArrayList<String>> transferAccount(@RequestBody AccountTransferRequest accountTransferRequest) {
+        ArrayList<String> responseMessage = accountService.accountTransfer(accountObjectMapper.fromTransferCreateRequestToDomain(accountTransferRequest));
         return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
     }
 

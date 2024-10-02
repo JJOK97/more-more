@@ -84,7 +84,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public String accountTransfer(AccountTransfer accountTransfer) {
+    public ArrayList<String> accountTransfer(AccountTransfer accountTransfer) {
         String apiKey = AccountUtils.getApiKey();
 
         // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
@@ -101,9 +101,35 @@ public class AccountServiceImpl implements AccountService {
         
         // Feign Client
         AccountTransferApiResponse accountTransferApiResponse = accountTransferFeignClient.transferAccountBalance(accountTransferApiRequest);
+        AccountTransferApiResponse.REC firstRec = accountTransferApiResponse.getRec().get(0);
 
-        System.out.println("accountTransferApiResponse = " + accountTransferApiResponse);
+
+        ArrayList<String> arr = new ArrayList<>();
+
+        // 계좌 잔고 들고 오는 로직
+        // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
+        Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(accountTransfer.getClubCode());
+
+        String managerKey = map.get("ssafy_user_key");
+        String accountNum = map.get("ssafy_account_number");
+
+        AccountSelectApiRequest accountSelectApiRequest = new AccountSelectApiRequest();
+        accountSelectApiRequest.getHeader().setApiKey(apiKey);
+        accountSelectApiRequest.getHeader().setUserKey(managerKey);
+        accountSelectApiRequest.setAccountNo(accountNum);
+
+        // Feign Client
+        AccountSelectBalanceApiResponse balanceResponse = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
+
+        // 계좌 잔고
+        arr.add(balanceResponse.getRec().getAccountBalance());
+
+        // 받는 계좌
+        arr.add(firstRec.getTransactionAccountNo());
+
+        // 송금 금액
+        arr.add(accountTransfer.getTransactionBalance());
         
-        return accountTransferApiResponse.getHeader().getResponseMessage();
+        return arr;
     }
 }
