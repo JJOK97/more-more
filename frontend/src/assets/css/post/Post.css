@@ -20,6 +20,7 @@
     padding: 0.75rem; /* 상하 좌우 패딩 추가 */
     /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);  */
     z-index: 1000; /* 푸터 위로 고정되도록 */
+    align-items: center;
 }
 
 .comment-input-box {
