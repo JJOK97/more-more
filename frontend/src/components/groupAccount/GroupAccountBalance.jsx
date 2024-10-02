@@ -33,15 +33,16 @@ const AccountBalance = () => {
 				onClick={handleDuesClick}
 				style={{ cursor: 'pointer' }}
 			>
-				<span>매 월 1일, 10만원씩 | 입금현황</span>
+				<span name="account-due-list">매 월 1일, 10만원씩 | 입금현황</span>
 				<img
+					className="account-due-list-icon"
 					src={arrow}
 					alt="move_to_deposit_list"
 				/>
 			</div>
 			<div className="account-balance-info">
-				<span>3333-02-123456</span>
-				<span>3,410,000 원</span>
+				<span name="account-number">3333-02-123456</span>
+				<span name="account-balance">3,410,000 원</span>
 			</div>
 			<div className="account-balance-button">
 				<button
