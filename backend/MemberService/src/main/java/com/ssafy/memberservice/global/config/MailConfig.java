@@ -19,8 +19,8 @@ public class MailConfig {
         JavaMailSenderImpl r = new JavaMailSenderImpl();
         r.setHost("smtp.gmail.com");
         r.setPort(587);
-        r.setUsername("moremoressafy@gmail.com");	// gmail계정을 설정합니다.
-        r.setPassword("pxqd qshr duoj oodw");  // <--- 발행된 암호를 여기에 넣어 주세요.
+        r.setUsername(userName);	// gmail계정을 설정합니다.
+        r.setPassword(password);  // <--- 발행된 암호를 여기에 넣어 주세요.
         r.setDefaultEncoding("UTF-8");
 
         Properties prop = new Properties();

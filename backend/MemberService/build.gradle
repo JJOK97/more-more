@@ -59,8 +59,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-//	implementation 'jakarta.mail:jakarta.mail-api:2.0.1'
-	//implementation 'com.sun.mail:jakarta.mail:1.6.7' // jakarta mail 용 com.sun.mail 패키지
 }
 
 tasks.named('test') {
