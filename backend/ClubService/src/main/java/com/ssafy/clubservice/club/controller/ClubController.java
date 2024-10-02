@@ -9,7 +9,6 @@ import com.ssafy.clubservice.club.mapper.ParticipantObjectMapper;
 import com.ssafy.clubservice.club.service.ClubService;
 import com.ssafy.clubservice.club.service.domain.Club;
 import com.ssafy.clubservice.club.service.domain.Participant;
-import com.ssafy.clubservice.global.util.JwtUtil;
 import com.ssafy.clubservice.global.validator.ParticipantListValid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,17 +30,13 @@ public class ClubController {
     private final ClubService clubService;
     private final ClubObjectMapper clubObjectMapper;
     private final ParticipantObjectMapper participantObjectMapper;
-    private final JwtUtil jwtUtil;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "모임 생성 API", description = "이미지, 생성자ID, 회비, 모임 이름, 모임 소개글을 입력하여 모임을 생성한다. (access token)")
-    public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file,
-                                         @Valid @RequestPart("clubCreateRequest") ClubCreateRequest clubCreateRequest,
-                                         @RequestHeader("Authorization") String token) {
+    public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file, @Valid @RequestPart("clubCreateRequest") ClubCreateRequest clubCreateRequest) {
         log.info("모임 생성 API");
-        String ssafyUserKey = jwtUtil.extractSsafyKeyFromToken(token);
-        Club club = clubService.createClub(clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file, ssafyUserKey);
+        Club club = clubService.createClub(clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
         log.info("모임 생성 API -> {}", club.getClubCode());
         return clubObjectMapper.fromDomainToCreateResponse(club);
     }
