@@ -11,11 +11,12 @@
 }
 
 .menu {
-	width: 21rem;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	max-width: 21rem;
+	max-width: 600px;
+	padding: 0 0.5rem;
 }
 
 .logo {
