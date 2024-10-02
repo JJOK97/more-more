@@ -65,8 +65,7 @@ public class MemberController {
     // 이메일 인증 코드 발송 API
     @PostMapping("/send-verification-code")
     @Operation(summary = "이메일 인증 코드 발송 API", description = "사용자의 이메일로 인증번호를 발송")
-    public ResponseEntity<String> sendVerificationCode(@RequestParam(value = "email") String email) {
-        log.info("email: {}", email);
+    public ResponseEntity<String> sendVerificationCode(@RequestParam String email) {
         try {
             // 인증 번호 생성
             String verificationCode = generateVerificationCode();
