@@ -2,6 +2,7 @@ package com.ssafy.memberservice.member.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -26,8 +27,6 @@ public class EmailServiceImpl implements EmailService {
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(text, true);  // HTML 형식 지원을 위해 true
-
-
 
         try {
             mailSender.send(message);
