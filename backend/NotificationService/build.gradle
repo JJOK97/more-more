@@ -38,8 +38,7 @@ dependencies {
 
 	implementation 'mysql:mysql-connector-java:8.0.32'
 
-	// Firebase Admin
-	implementation 'com.google.firebase:firebase-admin:9.1.1'
+	implementation 'com.google.firebase:firebase-admin:8.1.0' // Firebase Admin SDK
 
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

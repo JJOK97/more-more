@@ -14,6 +14,8 @@ public class FirebaseNotificationService {
 
     public void sendNotification(String token, String title, String body) {
         try {
+            logger.info("Sending notification to token: {}", token); // 토큰 로그 추가
+
             Message message = Message.builder()
                     .setToken(token)
                     .putData("title", title)

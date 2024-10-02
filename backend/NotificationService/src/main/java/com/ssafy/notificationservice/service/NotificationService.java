@@ -18,7 +18,15 @@ public class NotificationService {
         this.firebaseNotificationService = firebaseNotificationService;
     }
 
-    public void createNotification(Long receiverId, String notificationType, Long referenceId, Long actorId, String fcmToken) {
+    // FCM 토큰 저장
+    public void saveFcmToken(Long userId, String fcmToken) {
+        notificationMapper.updateFcmToken(userId, fcmToken);
+        // DB에 업데이트 결과를 로깅 또는 예외 처리를 통해 확인
+        System.out.println("FCM 토큰 저장 완료: " + userId + " -> " + fcmToken);
+    }
+
+    // 알림 생성
+    public void createNotification(Long receiverId, String notificationType, Long referenceId, Long actorId) {
         // 알림 생성 로직
         Notification notification = Notification.builder()
                 .receiverId(receiverId)
@@ -32,9 +40,12 @@ public class NotificationService {
         notificationMapper.insertNotification(notification);
 
         // Firebase 푸시 알림 전송
-        String title = "새로운 알림";
-        String body = "알림 내용";  // 알림 내용을 실제 데이터에 맞게 수정
-        firebaseNotificationService.sendNotification(fcmToken, title, body);
+        String fcmToken = notificationMapper.getFcmTokenByUserId(receiverId);  // DB에서 FCM 토큰 조회
+        if (fcmToken != null) {
+            String title = "새로운 알림";
+            String body = "알림 내용";  // 알림 내용을 실제 데이터에 맞게 수정
+            firebaseNotificationService.sendNotification(fcmToken, title, body);
+        }
     }
 
     public List<Notification> getNotificationsByUser(Long userId) {
