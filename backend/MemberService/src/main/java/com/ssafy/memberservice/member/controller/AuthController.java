@@ -4,6 +4,8 @@ package com.ssafy.memberservice.member.controller;
 import com.ssafy.memberservice.global.security.JwtTokenProvider;
 import com.ssafy.memberservice.member.controller.dto.request.LoginRequest;
 import com.ssafy.memberservice.member.controller.dto.response.JwtResponse;
+import com.ssafy.memberservice.member.controller.dto.response.LoginJwtResponse;
+import com.ssafy.memberservice.member.infrastructure.repository.MemberRepository;
 import com.ssafy.memberservice.member.service.CustomUserDetailsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,30 +26,31 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenProvider jwtTokenProvider;
-
     private final CustomUserDetailsService customUserDetailsService;
-
+    private final MemberRepository memberRepository;
 
     @Operation(summary = "로그인 API", description = "전화번호와 비밀번호로 로그인(성공시 token) (access token)")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 
-
         try {
             String phoneNumber = loginRequest.getPhoneNumber();
             String password = loginRequest.getPassword();
-
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(phoneNumber, password)
             );
 
             String accessToken = jwtTokenProvider.generateAccessToken(authentication);
             String refreshToken = jwtTokenProvider.generateAndStoreRefreshToken(authentication); // Refresh Token 저장
+            Long memberId= memberRepository.findByPhoneNumber(loginRequest.getPhoneNumber()).getMemberId();
 
-            return ResponseEntity.ok(new JwtResponse(accessToken, refreshToken));
+
+
+            return ResponseEntity.ok(new LoginJwtResponse(accessToken, refreshToken, memberId));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Invalid phone number or password");
         }
+
     }
     @Operation(summary = "토큰발급 API", description = "리프레시 토큰으로 해당(성공시 token) (access token)")
     @PostMapping("/refresh-token")
