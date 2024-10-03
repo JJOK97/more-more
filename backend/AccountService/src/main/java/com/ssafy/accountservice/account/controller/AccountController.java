@@ -3,6 +3,7 @@ package com.ssafy.accountservice.account.controller;
 import com.ssafy.accountservice.account.controller.dto.request.AccountCreateRequest;
 import com.ssafy.accountservice.account.controller.dto.request.AccountTransferFillRequest;
 import com.ssafy.accountservice.account.controller.dto.request.AccountTransferRequest;
+import com.ssafy.accountservice.account.controller.dto.request.CardRequest;
 import com.ssafy.accountservice.account.controller.dto.response.AccountHistoryApiResponse;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.AccountService;
@@ -59,5 +60,12 @@ public class AccountController {
     public ResponseEntity<List<AccountHistoryApiResponse.REC.Transaction>> historyAccount(@PathVariable("clubCode") String clubCode) {
         List<AccountHistoryApiResponse.REC.Transaction> response = accountService.accountHistory(clubCode);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Operation(summary = "카드 결제")
+    @PostMapping("/card")
+    public ResponseEntity<ArrayList<String>> useCard(@RequestBody CardRequest cardRequest) {
+        ArrayList<String> responseMessage = accountService.cardUse(cardRequest);
+        return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
     }
 }

@@ -46,4 +46,13 @@
                      #{accountBalance}
                  )
     </insert>
+
+    <select id="selectAccountNumByPg" resultType="String" parameterType="String">
+        SELECT
+            club_code
+        FROM
+            account_pg
+        WHERE
+            account_credit = #{cardNum}
+    </select>
 </mapper>

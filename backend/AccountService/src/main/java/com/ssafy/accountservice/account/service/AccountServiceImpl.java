@@ -1,24 +1,17 @@
 package com.ssafy.accountservice.account.service;
 
 import com.ssafy.accountservice.account.controller.dto.request.*;
-import com.ssafy.accountservice.account.controller.dto.response.AccountCreateApiResponse;
-import com.ssafy.accountservice.account.controller.dto.response.AccountHistoryApiResponse;
-import com.ssafy.accountservice.account.controller.dto.response.AccountSelectBalanceApiResponse;
-import com.ssafy.accountservice.account.controller.dto.response.AccountTransferApiResponse;
+import com.ssafy.accountservice.account.controller.dto.response.*;
 import com.ssafy.accountservice.account.infrastructure.repository.AccountRepository;
 import com.ssafy.accountservice.account.service.domain.Account;
 import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
 import com.ssafy.accountservice.account.service.domain.AccountTransfer;
 import com.ssafy.accountservice.account.service.domain.AccountUtils;
-import com.ssafy.accountservice.client.AccountFeignClient;
-import com.ssafy.accountservice.client.AccountHistoryFeignClient;
-import com.ssafy.accountservice.client.AccountTransferFeignClient;
-import com.ssafy.accountservice.client.SelectAccountNumFeignClient;
+import com.ssafy.accountservice.client.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +26,7 @@ public class AccountServiceImpl implements AccountService {
     private final SelectAccountNumFeignClient selectAccountNumFeignClient;
     private final AccountTransferFeignClient accountTransferFeignClient;
     private final AccountHistoryFeignClient accountHistoryFeignClient;
+    private final UseCardFeignClient useCardFeignClient;
 
     @Override
     public void accountCreate(Account account) {
@@ -106,7 +100,6 @@ public class AccountServiceImpl implements AccountService {
         // Feign Client
         AccountTransferApiResponse accountTransferApiResponse = accountTransferFeignClient.transferAccountBalance(accountTransferApiRequest);
         AccountTransferApiResponse.REC firstRec = accountTransferApiResponse.getRec().get(0);
-        AccountTransferApiResponse.REC secondRec = accountTransferApiResponse.getRec().get(1);
 
         // 계좌 잔고 들고 오는 로직
         Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(accountTransfer.getClubCode());
@@ -231,5 +224,75 @@ public class AccountServiceImpl implements AccountService {
         List<AccountHistoryApiResponse.REC.Transaction> transactions = accountHistoryApiResponse.getRec().getList();
 
         return transactions;
+    }
+
+
+    public ArrayList<String> cardUse(CardRequest cardRequest) {
+        // pg DB이용하여 클럽코드 가져옴
+        String clubCode = accountRepository.useAccountPg(cardRequest.getCardNo());
+        
+        String apiKey = AccountUtils.getApiKey();
+        String pgUserKey = AccountUtils.getUserKey();
+        String accountNo = AccountUtils.getAccountNo();
+        
+        // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
+        Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(clubCode);
+
+        String managerKey = map.get("ssafy_user_key");
+        String accountNum = map.get("ssafy_account_number");
+
+        AccountSelectApiRequest accountSelectApiRequest = new AccountSelectApiRequest();
+        accountSelectApiRequest.getHeader().setApiKey(apiKey);
+        accountSelectApiRequest.getHeader().setUserKey(managerKey);
+        accountSelectApiRequest.setAccountNo(accountNum);
+
+        // Feign Client
+        AccountSelectBalanceApiResponse response = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
+
+        // 결제 금액보다 계좌 잔고가 클 경우
+        Long accountBalance = Long.valueOf(response.getRec().getAccountBalance());
+        Long cardPayment = Long.valueOf(cardRequest.getPaymentBalance());
+
+        // PG사로 송금
+        if (accountBalance > cardPayment) {
+
+            AccountTransferApiRequest accountTransferApiRequest = new AccountTransferApiRequest();
+            accountTransferApiRequest.getHeader().setApiKey(apiKey);
+            accountTransferApiRequest.getHeader().setUserKey(managerKey);
+            accountTransferApiRequest.setDepositAccountNo(accountNo);
+            accountTransferApiRequest.setTransactionBalance(cardRequest.getPaymentBalance());
+            accountTransferApiRequest.setWithdrawalAccountNo(accountNum);
+
+            // Feign Client - 모임 계좌에서 PG로 돈 이동
+            accountTransferFeignClient.transferAccountBalance(accountTransferApiRequest);
+
+
+            // 카드 결제를 진행함, PG사에서 결제 대금 치루면 되는 로직
+            UseCardApiRequest useCardApiRequest = new UseCardApiRequest();
+            useCardApiRequest.getHeader().setApiKey(apiKey);
+            useCardApiRequest.getHeader().setUserKey(pgUserKey);
+            useCardApiRequest.setCardNo(cardRequest.getCardNo());
+            useCardApiRequest.setCvc(cardRequest.getCvc());
+            useCardApiRequest.setMerchantId(cardRequest.getMerchantId());
+            useCardApiRequest.setPaymentBalance(cardRequest.getPaymentBalance());
+
+            UseCardApiResponse useCardApiResponse = useCardFeignClient.useCardByPg(useCardApiRequest);
+
+            // 카드 결제 내역을 db에 저장함
+            AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
+            accountHistoryAll.setAccountId(Long.valueOf(response.getRec().getAccountNo()));  // 계좌 ID
+            accountHistoryAll.setTagName(LocalDate.now() + "." + useCardApiResponse.getRec().getCategoryName());  // 결제 태그
+            accountHistoryAll.setSsafyTransactionNumber(useCardApiResponse.getHeader().getInstitutionTransactionUniqueNo());  // SSAFY 거래번호
+            accountHistoryAll.setPaymentType(useCardApiResponse.getRec().getCategoryName());  // 결제 타입
+            accountHistoryAll.setPaymentAmount(useCardApiResponse.getRec().getPaymentBalance());  // 결제 금액
+            accountHistoryAll.setAccountBalance(response.getRec().getAccountBalance());  // 계좌 잔고
+
+            // accountRepository를 통해 내역 저장
+            accountRepository.insertAccountHistory(accountHistoryAll);
+        }
+
+
+        ArrayList<String> arr = new ArrayList<>();
+        return arr;
     }
 }

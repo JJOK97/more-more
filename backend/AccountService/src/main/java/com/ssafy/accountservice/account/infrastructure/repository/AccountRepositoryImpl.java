@@ -36,4 +36,9 @@ public class AccountRepositoryImpl implements AccountRepository {
     public void insertAccountHistory(AccountHistoryAll accountHistoryAll) {
         accountMybatisMapper.insertAccountHistory(accountHistoryAll);
     }
+
+    @Override
+    public String useAccountPg(String cardNum) {
+        return accountMybatisMapper.selectAccountNumByPg(cardNum);
+    }
 }

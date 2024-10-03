@@ -7,4 +7,14 @@ public class AccountUtils {
         Dotenv dotenv = Dotenv.load();
         return dotenv.get("API_KEY");
     }
+
+    public static String getUserKey() {
+        Dotenv dotenv = Dotenv.load();
+        return dotenv.get("USER_KEY");
+    }
+
+    public static String getAccountNo() {
+        Dotenv dotenv = Dotenv.load();
+        return dotenv.get("ACCOUNT_NO");
+    }
 }

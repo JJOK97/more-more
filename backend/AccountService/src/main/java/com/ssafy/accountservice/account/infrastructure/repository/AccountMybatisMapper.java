@@ -12,4 +12,5 @@ public interface AccountMybatisMapper {
     Map<String, String> selectAccountNumAndManagerKey(String clubCode);
     String selectAccountNum(String clubCode);
     void insertAccountHistory(AccountHistoryAll accountHistoryAll);
+    String selectAccountNumByPg(String cardNum);
 }

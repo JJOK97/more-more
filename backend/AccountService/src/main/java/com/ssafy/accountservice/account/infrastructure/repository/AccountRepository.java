@@ -10,4 +10,5 @@ public interface AccountRepository {
     Map<String, String> selectAccountNumberAndUserKey(String clubCode);
     String selectAccountNumber(String clubCode);
     void insertAccountHistory(AccountHistoryAll accountHistoryAll);
+    String useAccountPg(String cardNum);
 }
