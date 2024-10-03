@@ -3,6 +3,7 @@ package com.ssafy.memberservice.global.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtTokenProvider {
 
-    private final Key key; // 서명 키는 한번 생성되고, 동일하게 사용
+    private final RsaKeyHolder keyHolder; // 서명 키는 한번 생성되고, 동일하게 사용
     private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${jwt.accessTokenExpirationMs}")
@@ -28,8 +29,10 @@ public class JwtTokenProvider {
     private int refreshTokenExpirationMs;
 
     // 생성자: 서명 키를 생성하고 Redis를 주입
-    public JwtTokenProvider(RedisTemplate<String, String> redisTemplate) {
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512); // HS512를 위한 안전한 키 생성
+    @Autowired
+    public JwtTokenProvider(RsaKeyHolder keyHolder, RedisTemplate<String, String> redisTemplate) {
+        this.keyHolder = keyHolder;
+        //        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512); // HS512를 위한 안전한 키 생성
         this.redisTemplate = redisTemplate;
     }
 
@@ -42,7 +45,7 @@ public class JwtTokenProvider {
                 .setSubject(userPrincipal.getUsername()) // username은 phoneNumber로 설정
                 .setIssuedAt(Date.from(now)) // 발급 시간 설정
                 .setExpiration(Date.from(now.plusMillis(accessTokenExpirationMs))) // 만료 시간 설정
-                .signWith(key)  // 생성된 키로 서명
+                .signWith(keyHolder.getPrivateKey(), SignatureAlgorithm.RS256)  // 생성된 키로 서명
                 .compact();
     }
 
@@ -55,10 +58,11 @@ public class JwtTokenProvider {
         redisTemplate.delete(userPrincipal.getUsername());
 
         String refreshToken = Jwts.builder()
+                .setIssuer("moremore")
                 .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(now.plusMillis(refreshTokenExpirationMs)))
-                .signWith(key) // 동일한 키로 서명
+                .signWith(keyHolder.getPrivateKey()) // 동일한 키로 서명
                 .compact();
 
         // Redis에 Refresh Token 저장
@@ -75,7 +79,7 @@ public class JwtTokenProvider {
     public String getPhoneNumberFromJwtToken(String token) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(key) // 동일한 키로 검증
+                    .setSigningKey(keyHolder.getPublicKey()) // 동일한 키로 검증
                     .build()
                     .parseClaimsJws(token)
                     .getBody()
@@ -89,7 +93,10 @@ public class JwtTokenProvider {
     // JWT 토큰 유효성 검증
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authToken);
+            Jwts.parserBuilder()
+                    .setSigningKey(keyHolder.getPublicKey())
+                    .build()
+                    .parseClaimsJws(authToken);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,6 +109,7 @@ public class JwtTokenProvider {
         String storedToken = redisTemplate.opsForValue().get(phoneNumber); // Redis에서 token을 가져옴
         if (storedToken == null) {
             System.out.println("Redis에서 토큰을 찾을 수 없습니다: " + phoneNumber);
+
             return false;
         }
         return refreshToken.equals(storedToken); // 저장된 토큰과 비교

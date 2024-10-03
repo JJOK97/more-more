@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/refresh-token", "/api/member", "/swagger-ui/**", "/v3/api-docs/**"
-                        , "/api/member/verify-code", "/api/member/send-verification-code").permitAll()
+                        , "/api/member/verify-code", "/api/member/send-verification-code", "/.moremore/jwks.json").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
