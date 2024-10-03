@@ -25,4 +25,25 @@
             club_code = #{clubCode}
     </select>
 
+    <insert id="insertAccountHistory" parameterType="com.ssafy.accountservice.account.service.domain.AccountHistoryAll" useGeneratedKeys="true" keyProperty="accountHistoryId">
+        INSERT INTO account_history (
+            account_id,
+            tag_name,
+            ssafy_transaction_number,
+            account_date,
+            account_time,
+            payment_type,
+            payment_amount,
+            account_balance
+        ) VALUES (
+                     #{accountId},
+                     #{tagName},
+                     #{ssafyTransactionNumber},
+                     #{accountDate},
+                     #{accountTime},
+                     #{paymentType},
+                     #{paymentAmount},
+                     #{accountBalance}
+                 )
+    </insert>
 </mapper>

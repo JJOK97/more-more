@@ -2,6 +2,7 @@ package com.ssafy.accountservice.account.infrastructure.repository;
 
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountEntity;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
+import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -29,5 +30,10 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public String selectAccountNumber(String clubCode) {
         return accountMybatisMapper.selectAccountNum(clubCode);
+    }
+
+    @Override
+    public void insertAccountHistory(AccountHistoryAll accountHistoryAll) {
+        accountMybatisMapper.insertAccountHistory(accountHistoryAll);
     }
 }

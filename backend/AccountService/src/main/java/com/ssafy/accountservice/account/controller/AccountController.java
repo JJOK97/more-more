@@ -1,6 +1,7 @@
 package com.ssafy.accountservice.account.controller;
 
 import com.ssafy.accountservice.account.controller.dto.request.AccountCreateRequest;
+import com.ssafy.accountservice.account.controller.dto.request.AccountTransferFillRequest;
 import com.ssafy.accountservice.account.controller.dto.request.AccountTransferRequest;
 import com.ssafy.accountservice.account.controller.dto.response.AccountHistoryApiResponse;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
@@ -39,10 +40,17 @@ public class AccountController {
         return new ResponseEntity<>(accountData, HttpStatus.OK);
     }
 
-    @Operation(summary = "계좌 이체")
+    @Operation(summary = "계좌 이체 (보내기)")
     @PostMapping("/transfer")
     public ResponseEntity<ArrayList<String>> transferAccount(@RequestBody AccountTransferRequest accountTransferRequest) {
         ArrayList<String> responseMessage = accountService.accountTransfer(accountObjectMapper.fromTransferCreateRequestToDomain(accountTransferRequest));
+        return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "계좌 이체 (채우기)")
+    @PostMapping("/fill")
+    public ResponseEntity<ArrayList<String>> fillAccount(@RequestBody AccountTransferFillRequest accountTransferFillRequest) {
+        ArrayList<String> responseMessage = accountService.accountFill(accountTransferFillRequest);
         return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
     }
 
