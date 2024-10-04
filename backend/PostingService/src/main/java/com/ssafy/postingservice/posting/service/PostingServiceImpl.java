@@ -86,13 +86,11 @@ public class PostingServiceImpl implements PostingService {
             // Feign Client를 통해 Member 서비스에서 회원 정보 가져오기
             MemberGetResponse memberInfo = memberClient.getMember(memberId);
 
-
             // 각 게시물의 이미지 URL 목록을 가져옵니다.
             List<String> imageUrls = postImageRepository.findByPostingId(postingId)
                     .stream()
                     .map(PostImageEntity::getPostImageUrl)
                     .collect(Collectors.toList());
-
 
 
             // PostingGetAllResponse 객체 생성
@@ -119,6 +117,7 @@ public class PostingServiceImpl implements PostingService {
     @Override
     public PostingGetResponse findByPostId(Long postingId) {
 
+
         // 각 게시물의 이미지 URL 목록을 가져옵니다.
         List<String> imageUrls = postImageRepository.findByPostingId(postingId)
                 .stream()
@@ -127,10 +126,13 @@ public class PostingServiceImpl implements PostingService {
 
         PostingGetResponse postingGetResponse = postingRepository.findByPostId(postingId);
 
+
         // 이미지 URL 리스트 추가
         postingGetResponse.setImageUrls(imageUrls);
-        List<Comment> comments= commentRepository.getComment(postingId);
+        List<CommentFindResponse> comments= commentRepository.getComment(postingId);
+
         postingGetResponse.setComments(comments);
+
 
         return postingGetResponse;
     }

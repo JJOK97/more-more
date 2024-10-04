@@ -60,7 +60,7 @@ public class PostingController {
     @Operation(summary = "댓글 조회 API", description = "postingid를 통해 해당 게시글에 있는 댓글만 조회 (access token)")
     @GetMapping("/{postingId}/comment")
     public List<CommentFindResponse>getComment(@PathVariable Long postingId) {
-        return commentObjectMapper.fromDomainListToFindResponse(commentService.findBypostingId(postingId));
+        return commentService.findBypostingId(postingId);
     }
     @Operation(summary = "댓글 삭제 API", description = "commentid를 통해 해당 댓글 삭제 (access token)")
     @DeleteMapping("/comment/{commentId}")
@@ -130,15 +130,5 @@ public class PostingController {
         postingService.PostingDeleteByPostId(postingId);
         return postingId;
     }
-
-
-
-
-
-
-
-
-
-
 
 }

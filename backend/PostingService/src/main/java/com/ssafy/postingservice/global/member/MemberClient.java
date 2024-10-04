@@ -1,7 +1,8 @@
 package com.ssafy.postingservice.global.member;
 
-import com.ssafy.postingservice.posting.controller.dto.request.*;
+
 import com.ssafy.postingservice.posting.controller.dto.response.*;
+import com.ssafy.postingservice.posting.controller.dto.request.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

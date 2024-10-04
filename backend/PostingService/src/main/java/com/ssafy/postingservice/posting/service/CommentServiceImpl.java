@@ -1,11 +1,15 @@
 package com.ssafy.postingservice.posting.service;
 
+import com.ssafy.postingservice.global.member.MemberClient;
+import com.ssafy.postingservice.posting.controller.dto.response.CommentFindResponse;
+import com.ssafy.postingservice.posting.controller.dto.response.MemberGetResponse;
 import com.ssafy.postingservice.posting.infrastructure.repository.CommentRepository;
 import com.ssafy.postingservice.posting.infrastructure.repository.CommentRepositorylmpl;
 import com.ssafy.postingservice.posting.service.domain.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +27,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> findBypostingId(Long postingId) {
+    public List<CommentFindResponse> findBypostingId(Long postingId) {
+        // 댓글과 회원 정보를 포함한 CommentFindResponse 리스트를 직접 받아서 반환
         return commentRepository.getComment(postingId);
     }
 
