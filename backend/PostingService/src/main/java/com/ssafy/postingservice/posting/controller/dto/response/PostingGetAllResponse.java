@@ -16,5 +16,5 @@ public class PostingGetAllResponse {
     private Long commentCount;
     private Long likeCount;
     private List<String> imageUrls;
-
+    private MemberGetResponse memberInfo;
 }
