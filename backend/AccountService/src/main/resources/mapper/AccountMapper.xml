@@ -25,4 +25,53 @@
             club_code = #{clubCode}
     </select>
 
+    <insert id="insertAccountHistory" parameterType="com.ssafy.accountservice.account.service.domain.AccountHistoryAll" useGeneratedKeys="true" keyProperty="accountHistoryId">
+        INSERT INTO account_history (
+            account_id,
+            tag_name,
+            ssafy_transaction_number,
+            account_date,
+            account_time,
+            payment_type,
+            payment_amount,
+            account_balance
+        ) VALUES (
+                     #{accountId},
+                     #{tagName},
+                     #{ssafyTransactionNumber},
+                     #{accountDate},
+                     #{accountTime},
+                     #{paymentType},
+                     #{paymentAmount},
+                     #{accountBalance}
+                 )
+    </insert>
+
+    <select id="selectAccountNumByPg" resultType="String" parameterType="String">
+        SELECT
+            club_code
+        FROM
+            account_pg
+        WHERE
+            account_credit = #{cardNum}
+    </select>
+
+    <select id="selectAccountNumByClubCode" resultType="String" parameterType="String">
+        SELECT
+            ssafy_account_number
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
+    <select id="selectAccountHistoryByAccountNum" resultType="AccountHistoryEntity" parameterType="String">
+        SELECT
+            *
+        FROM
+            account_history
+        WHERE
+            account_id = #{accountNum}
+    </select>
+
 </mapper>
