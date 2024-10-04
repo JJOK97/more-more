@@ -4,6 +4,7 @@ import '@/assets/css/feed/Feed.css';
 import PostView from '@/components/postView/PostView';
 import datas from '@/pages/feed/data.json';
 import useGroupName from '@/store/useGroupName';
+import { getDatas } from './getData';
 
 const Feed = () => {
 	const { setGroupName } = useGroupName();
@@ -25,22 +26,12 @@ const Feed = () => {
 
 	useEffect(() => {
 		const getAllPosts = async () => {
-			try {
-				const response = await fetch(`https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`, {
-					method: 'GET',
-				});
-				if (!response.ok) {
-					throw new Error('Failed to fetch data');
-				}
-				console.log(response);
-				const data = await response.json();
-				console.log(data);
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			} 
+			const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
+			const data = await getDatas(url);
+			console.log(data);
 		};
 		getAllPosts();
-	}, []);
+	}, [groupId]);
 
 	if (!posts) {
 		return <div>Loading...</div>;
