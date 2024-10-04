@@ -17,7 +17,7 @@ const CreateGroup = () => {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [fee, setFee] = useState('');
-	const [dueDate, setDueDate] = useState('');
+	const [intro, setIntro] = useState('');
 	const { setPageName } = usePageName();
 
 	useEffect(() => {
@@ -28,11 +28,10 @@ const CreateGroup = () => {
 		const file = e.target.files[0];
 		if (file) {
 			setProfileImage(file);
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setImagePreview(reader.result);
-			};
-			reader.readAsDataURL(file);
+
+			// createObjectURL을 사용하여 미리보기 URL 생성
+			const imageUrl = URL.createObjectURL(file);
+			setImagePreview(imageUrl);
 		}
 	};
 
@@ -41,7 +40,7 @@ const CreateGroup = () => {
 		console.log('Group Name:', groupName);
 		console.log('Profile Image:', profileImage);
 		console.log('Fee:', fee);
-		console.log('Due Date:', dueDate);
+		console.log('Intro:', intro);
 		setStep(6);
 	};
 
@@ -100,8 +99,8 @@ const CreateGroup = () => {
 						handleImageChange={handleImageChange}
 						fee={fee}
 						setFee={setFee}
-						dueDate={dueDate}
-						setDueDate={setDueDate}
+						intro={intro}
+						setIntro={setIntro}
 					/>
 				);
 			case 6:
