@@ -65,14 +65,11 @@ const validationSchemas = [
 	}),
 	Yup.object({
 		birth_date: Yup.string()
-			.matches(/^\d{2}\d{2}\d{2}$/, '생년월일은 6자리 형식으로 작성해주세요')
+			.matches(/^\d{4}-\d{2}-\d{2}$/, '생년월일은 YYYY-MM-DD 형식으로 작성해주세요')
 			.test('isValidDate', '유효하지 않은 날짜입니다.', (value) => {
 				if (!value) return false;
-				const year = value.substring(0, 2);
-				const month = value.substring(2, 4);
-				const day = value.substring(4, 6);
-				const fullYear = `19${year}`;
-				const date = new Date(`${fullYear}-${month}-${day}`);
+				const [year, month, day] = value.split('-');
+				const date = new Date(`${year}-${month}-${day}`);
 				return !isNaN(date.getTime());
 			})
 			.required('생년월일은 필수 입력 항목입니다.'),
@@ -82,6 +79,7 @@ const validationSchemas = [
 const Signup = () => {
 	const [step, setStep] = useState(0);
 	const navigate = useNavigate();
+	const [userData, setUserData] = useState({});
 
 	const userValues = {
 		member_name: '',
@@ -106,20 +104,22 @@ const Signup = () => {
 		}
 	};
 
+	const handleSubmit = (values) => {
+		if (step === validationSchemas.length - 1) {
+			// 모든 단계 완료
+			setUserData(values);
+			navigate('/registeraccount', { state: { userData: values } });
+		} else {
+			setStep((prevStep) => prevStep + 1);
+		}
+	};
+
 	return (
 		<div className="signup-container">
 			<Formik
 				initialValues={userValues}
 				validationSchema={validationSchemas[step]}
-				onSubmit={(values) => {
-					// 마지막 단계일 경우 계좌 등록 페이지로 이동
-					if (step === validationSchemas.length) {
-						console.log('API에 데이터 제출:', values); // API로 제출할 데이터 확인
-						navigate('/registeraccount/:userId');
-					} else {
-						handleNext();
-					}
-				}}
+				onSubmit={handleSubmit}
 			>
 				{({ values }) => (
 					<Form className="signup-form">

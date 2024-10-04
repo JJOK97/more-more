@@ -54,7 +54,7 @@ const Step3 = () => {
 							placeholder="인증번호 입력"
 							type="text"
 							className="input-field"
-							disabled={!isCodeSent}
+							// disabled={!isCodeSent}
 						/>
 						<button
 							type="button"

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '@/api/userAPI';
 
 import LoadingPage from '@/components/common/LodingPage';
 
@@ -10,22 +11,33 @@ import icon from '@/assets/img/common/icon.svg';
 const Login = () => {
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [password, setPassword] = useState('');
-
 	const [loading, setLoading] = useState(true);
 	const [fadeOut, setFadeOut] = useState(false);
+	const [error, setError] = useState('');
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setTimeout(() => {
 			setFadeOut(true);
 			setTimeout(() => {
 				setLoading(false);
-			}, 150); // LoadingPage가 사라지는 데 걸리는 시간
-		}, 1000); // 데이터 로딩을 시뮬레이션하는 시간
+			}, 150);
+		}, 1000);
 	}, []);
 
-	const handleLogin = (e) => {
+	const handleLogin = async (e) => {
 		e.preventDefault();
-		console.log('로그인 시도:', phoneNumber, password);
+		setError('');
+		try {
+			const response = await loginUser(phoneNumber, password);
+			console.log('로그인 성공:', response);
+			// 로그인 성공 후 추가 작업
+			// 예: 사용자 정보 상태 업데이트, 리다이렉트 등
+			navigate('/'); // 로그인 후 메인 페이지로 이동
+		} catch (error) {
+			console.error('로그인 실패:', error);
+			setError('로그인에 실패했습니다. 휴대폰 번호와 비밀번호를 확인해주세요.');
+		}
 	};
 
 	return (
@@ -64,6 +76,7 @@ const Login = () => {
 								required
 							/>
 						</div>
+						{error && <div className="error-message">{error}</div>}
 						<div className="button-container">
 							<button
 								type="submit"

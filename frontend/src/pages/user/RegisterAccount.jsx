@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { registerMember } from '@/api/userAPI';
 
 import '@/assets/css/registerAccount/Account.css';
 
@@ -23,7 +24,7 @@ const validationSchemas = [
 			.required('계좌 번호는 필수 입력 항목입니다.'),
 	}),
 	Yup.object({
-		name: Yup.string().required('이름은 필수 입력 항목입니다.'),
+		member_name: Yup.string().required('이름은 필수 입력 항목입니다.'),
 		phone_number: Yup.string()
 			.matches(/^01[0|1|6|7|8|9]-?\d{3,4}-?\d{4}$/, '유효한 휴대폰 번호를 입력하세요.')
 			.required('휴대폰 번호는 필수 입력 항목입니다.'),
@@ -37,18 +38,16 @@ const validationSchemas = [
 
 const RegisterAccount = () => {
 	const [step, setStep] = useState(0);
-	const navigate = useNavigate();
 	const location = useLocation();
+	const navigate = useNavigate();
+	const userData = location.state?.userData || {};
 
-	const userValues = {
+	const initialValues = {
+		...userData,
 		bank: '',
 		account_number: '',
-		name: '',
-		phone_number: '',
-	};
-
-	const handleNext = () => {
-		setStep((prevStep) => prevStep + 1);
+		member_name: userData.member_name || '',
+		verification_code: '',
 	};
 
 	const handlePrevious = () => {
@@ -65,23 +64,43 @@ const RegisterAccount = () => {
 		}
 	};
 
-	const handleSubmit = (values) => {
-		if (step === validationSchemas.length) {
-			// 최종 스텝일 때 로그인 페이지로 이동
-			navigate('/login');
+	const handleSubmit = async (values, { setSubmitting }) => {
+		if (step < validationSchemas.length - 1) {
+			setStep((prevStep) => prevStep + 1);
 		} else {
-			handleNext();
+			try {
+				const formData = new FormData();
+				formData.append('accountNumber', values.account_number || '');
+				formData.append('address', values.address || '');
+				formData.append('email', values.email || '');
+				formData.append('phoneNumber', values.phone_number || '');
+				formData.append('password', values.pwd || '');
+				formData.append('birthDate', values.birth_date || '');
+				formData.append('name', values.member_name || '');
+
+				if (values.profile_image) {
+					formData.append('profileImage', values.profile_image);
+				}
+
+				console.log('Sending data:', Object.fromEntries(formData));
+				const response = await registerMember(formData);
+				console.log('회원가입 성공:', response);
+				navigate('/login');
+			} catch (error) {
+				console.error('회원가입 실패:', error);
+			}
 		}
+		setSubmitting(false);
 	};
 
 	return (
 		<div className="signup-container">
 			<Formik
-				initialValues={userValues}
+				initialValues={initialValues}
 				validationSchema={validationSchemas[step]}
 				onSubmit={handleSubmit}
 			>
-				{({ values }) => (
+				{({ isSubmitting }) => (
 					<Form className="signup-form">
 						{step === 0 && <RegisterAccountStep1 />}
 						{step === 1 && <RegisterAccountStep2 />}
@@ -93,9 +112,13 @@ const RegisterAccount = () => {
 							<img
 								src={arrowleft}
 								onClick={handlePrevious}
+								alt="Previous"
 							/>
-							<button type="submit">
-								{step === validationSchemas.length ? '로그인하러 가기' : '다음으로'}
+							<button
+								type="submit"
+								disabled={isSubmitting}
+							>
+								{step === validationSchemas.length - 1 ? '로그인하러 가기' : '다음으로'}
 							</button>
 						</div>
 					</Form>
