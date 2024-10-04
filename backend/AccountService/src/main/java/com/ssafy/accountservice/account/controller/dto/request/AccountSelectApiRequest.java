@@ -10,22 +10,22 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 @Data
-public class AccountCreateApiRequest {
+public class AccountSelectApiRequest {
 
-    @JsonProperty("Header")  // JSON에서 "Header" 필드를 매핑
+    @JsonProperty("Header")  // JSON에서 "Header"라는 필드를 "header"에 매핑
     private Header header;
 
-    @JsonProperty("accountTypeUniqueNo")  // JSON에서 "accountTypeUniqueNo" 필드를 매핑
-    private String accountTypeUniqueNo;
+    @JsonProperty("accountNo")  // JSON에서 "accountNo"라는 필드를 "accountNo"에 매핑
+    private String accountNo;
 
     // 기본 생성자에서 Header 객체 생성
-    public AccountCreateApiRequest() {
+    public AccountSelectApiRequest() {
         this.header = new Header(); // header 객체를 기본적으로 생성
     }
 
-    public AccountCreateApiRequest(Header header, String accountTypeUniqueNo) {
+    public AccountSelectApiRequest(Header header, String accountNo) {
         this.header = header;
-        this.accountTypeUniqueNo = accountTypeUniqueNo;
+        this.accountNo = accountNo;
     }
 
     @Data
@@ -59,12 +59,12 @@ public class AccountCreateApiRequest {
 
         // 기본 생성자에서 상수 값 초기화
         public Header() {
-            this.apiName = "createDemandDepositAccount";
+            this.apiName = "inquireDemandDepositAccount";
             this.transmissionDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             this.transmissionTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmmss"));
             this.institutionCode = "00100";
             this.fintechAppNo = "001";
-            this.apiServiceCode = "createDemandDepositAccount";
+            this.apiServiceCode = "inquireDemandDepositAccount";
             this.institutionTransactionUniqueNo = generateUniqueIdentifier(); // 고유한 Identifier 생성
         }
 

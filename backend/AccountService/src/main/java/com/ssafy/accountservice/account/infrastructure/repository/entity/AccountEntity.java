@@ -5,17 +5,19 @@ import lombok.Data;
 
 @Data
 public class AccountEntity {
-    private Integer accountId; // ID 필드 추가
+    private Long accountId; // ID 필드 추가
     private String ssafyAccountNumber;
     private String clubCode;
     private String clubPassword;
+    private String ssafyUserKey;
 
     @Builder
-    public AccountEntity(Integer accountId, String ssafyAccountNumber, String clubCode, String clubPassword) {
+    public AccountEntity(Long accountId, String ssafyAccountNumber, String clubCode, String clubPassword, String ssafyUserKey) {
         this.accountId = accountId;
         this.ssafyAccountNumber = ssafyAccountNumber;
         this.clubCode = clubCode;
         this.clubPassword = clubPassword;
+        this.ssafyUserKey = ssafyUserKey;
     }
 
     public AccountEntity() {
