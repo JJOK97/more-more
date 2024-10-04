@@ -2,7 +2,7 @@ package com.ssafy.accountservice.account.service;
 
 import com.ssafy.accountservice.account.controller.dto.request.AccountTransferFillRequest;
 import com.ssafy.accountservice.account.controller.dto.request.CardRequest;
-import com.ssafy.accountservice.account.controller.dto.response.AccountHistoryApiResponse;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
 import com.ssafy.accountservice.account.service.domain.Account;
 import com.ssafy.accountservice.account.service.domain.AccountTransfer;
 
@@ -15,6 +15,6 @@ public interface AccountService {
     Map<String, String> accountSelectNumberAndBalance(String clubCode);
     ArrayList<String> accountTransfer(AccountTransfer accountTransfer);
     ArrayList<String> accountFill(AccountTransferFillRequest accountTransferFillRequest);
-    List<AccountHistoryApiResponse.REC.Transaction> accountHistory(String clubCode);
-    ArrayList<String> cardUse(CardRequest cardRequest);
+    List<AccountHistoryEntity> accountHistory(String clubCode);
+    String cardUse(CardRequest cardRequest);
 }

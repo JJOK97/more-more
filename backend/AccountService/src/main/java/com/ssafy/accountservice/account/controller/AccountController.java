@@ -4,7 +4,7 @@ import com.ssafy.accountservice.account.controller.dto.request.AccountCreateRequ
 import com.ssafy.accountservice.account.controller.dto.request.AccountTransferFillRequest;
 import com.ssafy.accountservice.account.controller.dto.request.AccountTransferRequest;
 import com.ssafy.accountservice.account.controller.dto.request.CardRequest;
-import com.ssafy.accountservice.account.controller.dto.response.AccountHistoryApiResponse;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,15 +57,15 @@ public class AccountController {
 
     @Operation(summary = "계좌 입출금 조회")
     @GetMapping("/{clubCode}/history")
-    public ResponseEntity<List<AccountHistoryApiResponse.REC.Transaction>> historyAccount(@PathVariable("clubCode") String clubCode) {
-        List<AccountHistoryApiResponse.REC.Transaction> response = accountService.accountHistory(clubCode);
+    public ResponseEntity<List<AccountHistoryEntity>> historyAccount(@PathVariable("clubCode") String clubCode) {
+        List<AccountHistoryEntity> response = accountService.accountHistory(clubCode);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "카드 결제")
     @PostMapping("/card")
-    public ResponseEntity<ArrayList<String>> useCard(@RequestBody CardRequest cardRequest) {
-        ArrayList<String> responseMessage = accountService.cardUse(cardRequest);
+    public ResponseEntity<String> useCard(@RequestBody CardRequest cardRequest) {
+        String responseMessage = accountService.cardUse(cardRequest);
         return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
     }
 }

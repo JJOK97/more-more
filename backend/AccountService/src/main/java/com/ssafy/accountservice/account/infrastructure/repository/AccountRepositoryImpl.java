@@ -1,12 +1,14 @@
 package com.ssafy.accountservice.account.infrastructure.repository;
 
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -40,5 +42,15 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public String useAccountPg(String cardNum) {
         return accountMybatisMapper.selectAccountNumByPg(cardNum);
+    }
+
+    @Override
+    public String selectAccountNum(String clubCode) {
+        return accountMybatisMapper.selectAccountNumByClubCode(clubCode);
+    }
+
+    @Override
+    public List<AccountHistoryEntity> selectAccountHistory(String accountNum) {
+        return accountMybatisMapper.selectAccountHistoryByAccountNum(accountNum);
     }
 }
