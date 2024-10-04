@@ -50,7 +50,6 @@ public class MemberController {
     @GetMapping("/{memberId}")
     @Operation(summary = "회원정보 조회 API", description = "memberID로 계좌번호, 주소, 이메일, 핸드폰번호, 생년월일(yyyy-mm-dd),이름, 이미지파일을 받음. (access token)")
     public MemberGetResponse getMember(@PathVariable Long memberId) {
-
         return memberService.findByMemberId(memberId);
     }
 
@@ -69,10 +68,8 @@ public class MemberController {
         try {
             // 인증 번호 생성
             String verificationCode = generateVerificationCode();
-
             // 이메일 발송
             emailService.sendEmail(email, "이메일 인증 코드", "인증 번호: " + verificationCode);
-
             // Redis에 인증 번호 저장 (유효시간 5분)
             redisTemplate.opsForValue().set(email, verificationCode, 5, TimeUnit.MINUTES);
 
