@@ -34,7 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         log.info("apply jwt filter");
         String jwt = getJwtFromRequest(request);
         if (jwt != null && jwtTokenProvider.validateJwtToken(jwt)) {
-            log.info("test jwt filter");
             String phoneNumber = jwtTokenProvider.getPhoneNumberFromJwtToken(jwt);
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(phoneNumber);
 
