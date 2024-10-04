@@ -24,13 +24,11 @@ public interface ScheduleObjectMapper {
 
         List<ScheduleResponse> fromEntitiesToResponseDtos(List<ScheduleEntity> scheduleEntities);
 
-        @Mapping(source = "event", target = "event")
-        @Mapping(source = "date", target = "date")
-        @Mapping(source = "time", target = "time")
-        Schedule fromCommentUpdateRequestToDomain(ScheduleUpdateRequest scheduleUpdateRequest);
 
         ScheduleResponse fromDomainToUpdateResponse(Schedule schedule);
 
+
+        Schedule fromCommentUpdateRequestToDomain(ScheduleUpdateRequest scheduleUpdateRequest);
 
         // 수동 매핑 및 ID 생성 로직이 포함된 메서드
         default ScheduleEntity fromDomainToEntity(Schedule schedule) {

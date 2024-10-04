@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.accountservice.account.infrastructure.repository.AccountMybatisMapper">
+    <insert id="insertAccount" parameterType="com.ssafy.accountservice.account.infrastructure.repository.entity.AccountEntity" useGeneratedKeys="true" keyProperty="accountId">
+        INSERT INTO account (ssafy_account_number, club_code, club_password, ssafy_user_key)
+        VALUES (#{ssafyAccountNumber}, #{clubCode}, #{clubPassword}, #{ssafyUserKey})
+    </insert>
+
+    <select id="selectAccountNumAndManagerKey" resultType="map" parameterType="String">
+        SELECT
+            ssafy_user_key, ssafy_account_number
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
+    <select id="selectAccountNum" resultType="String" parameterType="String">
+        SELECT
+            ssafy_account_number
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
+</mapper>
