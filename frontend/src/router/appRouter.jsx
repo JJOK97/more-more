@@ -32,6 +32,8 @@ import React, { useEffect } from 'react';
 import data from '../pages/notification/data.json'; // data.json 경로
 import useNoticeState from '../store/useNoticeState'; // zustand 스토어
 
+import GetFcmToken from '@/pages/GetFcmToken';
+
 const AppRouter = () => {
 	const { setIsUnreadNotice } = useNoticeState();
 
@@ -143,6 +145,11 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/account/:detail"
 						element={<TransactionDetail />}
+					/>
+
+					<Route
+						path="/get-fcm-token"
+						element={<GetFcmToken />} // FCM 토큰 받기 위한 페이지 추가
 					/>
 				</Routes>
 			</main>
