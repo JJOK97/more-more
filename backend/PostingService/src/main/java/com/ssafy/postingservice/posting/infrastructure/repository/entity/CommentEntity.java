@@ -1,5 +1,6 @@
 package com.ssafy.postingservice.posting.infrastructure.repository.entity;
 
+import com.ssafy.postingservice.posting.controller.dto.response.MemberGetResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
