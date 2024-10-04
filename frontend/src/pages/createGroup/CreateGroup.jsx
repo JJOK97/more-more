@@ -26,12 +26,15 @@ const CreateGroup = () => {
 
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
+		console.log(file);
 		if (file) {
 			setProfileImage(file);
-
-			// createObjectURL을 사용하여 미리보기 URL 생성
-			const imageUrl = URL.createObjectURL(file);
-			setImagePreview(imageUrl);
+			console.log(profileImage);
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setImagePreview(reader.result);
+			};
+			reader.readAsDataURL(file);
 		}
 	};
 
@@ -96,6 +99,7 @@ const CreateGroup = () => {
 						groupName={groupName}
 						setGroupName={setGroupName}
 						imagePreview={imagePreview}
+						profileImage={profileImage}
 						handleImageChange={handleImageChange}
 						fee={fee}
 						setFee={setFee}

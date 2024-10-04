@@ -6,7 +6,7 @@ const createGroupAPI = async (groupName, profileImage, fee, intro, creatorId) =>
 		dues: Number(fee), // 회비를 숫자로 변환
 		creatorId: Number(creatorId), // creatorId를 숫자로 변환
 		clubName: groupName,
-		clubIntro: intro, // 모임 소개
+		clubIntro: intro // 모임 소개
 	};
 
 	// 요청 본문에 포함될 FormData 객체 생성
@@ -45,6 +45,7 @@ const Step5 = ({
 	groupName,
 	setGroupName,
 	imagePreview,
+    profileImage,
 	handleImageChange,
 	fee,
 	setFee,
@@ -64,7 +65,7 @@ const Step5 = ({
 			const creatorId = localStorage.getItem('memberId'); // localStorage에서 memberId 가져오기
 
 			// 모임 생성 API 호출
-			const groupResponse = await createGroupAPI(groupName, imagePreview, fee, intro, creatorId);
+			const groupResponse = await createGroupAPI(groupName, profileImage, fee, intro, creatorId);
 			if (groupResponse.success) {
 				const groupId = groupResponse.clubId; // 생성된 모임 ID
 
