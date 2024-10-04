@@ -14,15 +14,33 @@ const Feed = () => {
 		setGroupName(groupId);
 	}, []);
 
-	useEffect(() => {
-		const fetchPosts = () => {
-			// groupId에 해당하는 게시물만 필터링
-			const filteredPosts = datas.posts.filter((post) => post.groupId === parseInt(groupId, 10));
-			setPosts(filteredPosts);
-		};
+	// useEffect(() => {
+	// 	const fetchPosts = () => {
+	// 		const filteredPosts = datas.posts.filter((post) => post.groupId === parseInt(groupId, 10));
+	// 		setPosts(filteredPosts);
+	// 	};
 
-		fetchPosts();
-	}, [groupId]); // groupId가 변경될 때마다 실행
+	// 	fetchPosts();
+	// }, [groupId]);
+
+	useEffect(() => {
+		const getAllPosts = async () => {
+			try {
+				const response = await fetch(`https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`, {
+					method: 'GET',
+				});
+				if (!response.ok) {
+					throw new Error('Failed to fetch data');
+				}
+				console.log(response);
+				const data = await response.json();
+				console.log(data);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			} 
+		};
+		getAllPosts();
+	}, []);
 
 	if (!posts) {
 		return <div>Loading...</div>;
