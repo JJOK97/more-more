@@ -12,6 +12,9 @@ import com.ssafy.postingservice.posting.infrastructure.s3.S3Connector;
 import com.ssafy.postingservice.posting.mapper.PostingObjectMapper;
 import com.ssafy.postingservice.posting.service.domain.Comment;
 import com.ssafy.postingservice.posting.service.domain.Posting;
+import com.ssafy.postingservice.posting.controller.dto.request.*;
+import com.ssafy.postingservice.posting.controller.dto.response.*;
+import com.ssafy.postingservice.global.member.MemberClient;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +31,7 @@ public class PostingServiceImpl implements PostingService {
     private final S3Connector s3Connector;
     private final PostImageRepository postImageRepository;
     private final CommentRepository commentRepository;
-
+    private final MemberClient memberClient;
 
 
     public Posting create(Posting posting, MultipartFile[] files){
@@ -78,7 +81,10 @@ public class PostingServiceImpl implements PostingService {
 
         for (Posting posting : postings) {
             Long postingId = posting.getPostingId();
+            Long memberId = posting.getMemberId();  // 각 게시물의 memberId 가져오기
 
+            // Feign Client를 통해 Member 서비스에서 회원 정보 가져오기
+            MemberGetResponse memberInfo = memberClient.getMember(memberId);
 
 
             // 각 게시물의 이미지 URL 목록을 가져옵니다.
@@ -100,6 +106,9 @@ public class PostingServiceImpl implements PostingService {
 
             // 이미지 URL 리스트 추가
             postingGetAllResponse.setImageUrls(imageUrls);
+
+            // Member 정보 추가
+            postingGetAllResponse.setMemberInfo(memberInfo);
 
             postingGetAllResponses.add(postingGetAllResponse);
         }
