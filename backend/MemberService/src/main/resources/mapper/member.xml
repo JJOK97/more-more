@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.memberservice.member.infrastructure.repository.MemberMybatisMapper">
+    <!-- 회원 정보를 저장하는 INSERT 문 -->
+    <insert id="saveMember" parameterType="com.ssafy.memberservice.member.infrastructure.repository.entity.MemberEntity" useGeneratedKeys="true" keyProperty="memberId">
+        INSERT INTO members (account_number, address, email, phone_number, password, birth_date, name, profile_image_url, ssafy_user_key)
+        VALUES (#{accountNumber}, #{address}, #{email}, #{phoneNumber}, #{password}, #{birthDate}, #{name}, #{profileImageUrl}, #{userKey})
+    </insert>
+
+    <select id="findByMemberId" parameterType="Long" resultType="com.ssafy.memberservice.member.infrastructure.repository.entity.MemberEntity" useCache="false">
+        SELECT
+            member_id AS memberId,
+            account_number AS accountNumber,
+            address,
+            email,
+            phone_number AS phoneNumber,
+            password,
+            birth_date AS birthDate,
+            name,
+            profile_image_url AS profileImageUrl,
+            ssafy_user_key AS userKey
+        FROM members
+        WHERE member_id = #{memberId}
+    </select>
+
+    <select id="findByPhoneNumber" parameterType="String" resultType="com.ssafy.memberservice.member.infrastructure.repository.entity.MemberEntity" useCache="false">
+        SELECT
+            member_id AS memberId,
+            account_number AS accountNumber,
+            address,
+            email,
+            phone_number AS phoneNumber,
+            password,
+            birth_date AS birthDate,
+            name,
+            profile_image_url AS profileImageUrl,
+            ssafy_user_key AS userKey
+        FROM members
+        WHERE phone_number = #{phoneNumber}
+    </select>
+    <!-- resultMap을 사용하여 필요한 필드만 매핑 -->
+    <resultMap id="memberPartialMap" type="com.ssafy.memberservice.member.infrastructure.repository.entity.MemberEntity">
+        <id property="memberId" column="member_id"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <!-- 모든 회원 정보를 조회하는 SELECT 문 -->
+    <select id="findAllMembers" resultType="com.ssafy.memberservice.member.infrastructure.repository.entity.MemberEntity" useCache="false">
+        SELECT
+            member_id AS memberId,
+            account_number AS accountNumber,
+            address,
+            email,
+            phone_number AS phoneNumber,
+            password,
+            birth_date AS birthDate,
+            name,
+            profile_image_url AS profileImageUrl,
+            ssafy_user_key AS userKey
+        FROM members
+    </select>
+
+    <!-- 올리기용-->
+</mapper>
