@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.notificationservice.mapper.NotificationMapper">
+
+    <!-- 알림 생성 -->
+    <insert id="insertNotification" parameterType="com.ssafy.notificationservice.service.domain.Notification">
+        INSERT INTO local_db.NOTIFICATION (receiver_id, notification_type, reference_id, actor_id, status, created_at)
+        VALUES (#{receiverId}, #{notificationType}, #{referenceId}, #{actorId}, #{status}, #{createdAt});
+    </insert>
+
+    <!-- 특정 유저의 알림 조회 -->
+    <select id="getNotificationsByUser" parameterType="java.lang.Long" resultType="com.ssafy.notificationservice.service.domain.Notification">
+        SELECT * FROM local_db.NOTIFICATION
+        WHERE receiver_id = #{userId}
+        ORDER BY created_at DESC;
+    </select>
+
+    <!-- 알림 읽음 처리 -->
+    <update id="markNotificationAsRead" parameterType="java.lang.Long">
+        UPDATE local_db.NOTIFICATION
+        SET status = 'READ'
+        WHERE id = #{notificationId};
+    </update>
+
+    <!-- 유저의 FCM 토큰 저장 및 업데이트 -->
+    <update id="updateFcmToken" parameterType="map">
+        UPDATE local_db.MEMBERS
+        SET fcm_token = #{fcmToken}
+        WHERE member_id = #{userId};
+    </update>
+
+    <!-- 유저 ID로 FCM 토큰 조회 -->
+    <select id="getFcmTokenByUserId" resultType="string" parameterType="long">
+        SELECT fcm_token FROM local_db.MEMBERS WHERE member_id = #{userId};
+    </select>
+
+</mapper>
