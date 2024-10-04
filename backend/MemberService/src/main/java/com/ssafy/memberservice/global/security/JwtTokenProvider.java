@@ -32,7 +32,6 @@ public class JwtTokenProvider {
     @Autowired
     public JwtTokenProvider(RsaKeyHolder keyHolder, RedisTemplate<String, String> redisTemplate) {
         this.keyHolder = keyHolder;
-        //        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512); // HS512를 위한 안전한 키 생성
         this.redisTemplate = redisTemplate;
     }
 
@@ -42,6 +41,7 @@ public class JwtTokenProvider {
         Instant now = Instant.now();
 
         return Jwts.builder()
+                .setIssuer("moremore")
                 .setSubject(userPrincipal.getUsername()) // username은 phoneNumber로 설정
                 .setIssuedAt(Date.from(now)) // 발급 시간 설정
                 .setExpiration(Date.from(now.plusMillis(accessTokenExpirationMs))) // 만료 시간 설정
