@@ -26,15 +26,12 @@ const CreateGroup = () => {
 
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
-		console.log(file);
 		if (file) {
-			setProfileImage(file);
-			console.log(profileImage);
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setImagePreview(reader.result);
-			};
-			reader.readAsDataURL(file);
+			setProfileImage(file); // 파일 객체를 상태로 저장
+
+			// 이미지를 미리 보기 위한 Blob URL 생성 (UI 용도)
+			const imageUrl = URL.createObjectURL(file);
+			setImagePreview(imageUrl); // 이미지 미리보기 설정
 		}
 	};
 
