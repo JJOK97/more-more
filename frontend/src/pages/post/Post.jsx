@@ -6,6 +6,7 @@ import ContentInput from './ContentInput'; // ContentInput 컴포넌트 import
 import datas from '@/pages/feed/data.json';
 import '@/assets/css/post/Post.css';
 import useGroupName from '@/store/useGroupName';
+import { getDatas } from '../feed/getData';
 
 const Post = () => {
 	const { setGroupName } = useGroupName();
@@ -18,22 +19,31 @@ const Post = () => {
 		setGroupName(groupId);
 	}, []);
 
+	// useEffect(() => {
+	// 	const fetchPost = () => {
+	// 		// groupId와 postId로 게시물 찾기
+	// 		const fetchedPost = datas.posts.find(
+	// 			(post) => post.groupId === parseInt(groupId, 10) && post.postId === parseInt(postId, 10),
+	// 		);
+
+	// 		if (fetchedPost) {
+	// 			setPost(fetchedPost);
+	// 			setComments(fetchedPost.comments || []);
+	// 		} else {
+	// 			console.error('Invalid groupId or postId');
+	// 			// 여기에 에러 처리 로직을 추가할 수 있습니다 (예: 404 페이지로 리디렉션)
+	// 		}
+	// 	};
+
+	// 	fetchPost();
+	// }, [groupId, postId]); // groupId와 postId가 변경될 때마다 실행
+
 	useEffect(() => {
-		const fetchPost = () => {
-			// groupId와 postId로 게시물 찾기
-			const fetchedPost = datas.posts.find(
-				(post) => post.groupId === parseInt(groupId, 10) && post.postId === parseInt(postId, 10),
-			);
-
-			if (fetchedPost) {
-				setPost(fetchedPost);
-				setComments(fetchedPost.comments || []);
-			} else {
-				console.error('Invalid groupId or postId');
-				// 여기에 에러 처리 로직을 추가할 수 있습니다 (예: 404 페이지로 리디렉션)
-			}
+		const fetchPost = async () => {
+			const url = `https://j11a605.p.ssafy.io/api/posting/${postId}/aboutPosting`;
+			const data = await getDatas(url);
+			console.log(data);
 		};
-
 		fetchPost();
 	}, [groupId, postId]); // groupId와 postId가 변경될 때마다 실행
 
