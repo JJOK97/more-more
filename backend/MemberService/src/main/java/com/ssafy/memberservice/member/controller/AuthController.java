@@ -10,7 +10,6 @@ import com.ssafy.memberservice.member.service.CustomUserDetailsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 @Tag(name = "Auth", description = "인증 API")
-@Slf4j
 public class AuthController {
     private final AuthenticationManager authenticationManager;
 
@@ -34,7 +32,7 @@ public class AuthController {
     @Operation(summary = "로그인 API", description = "전화번호와 비밀번호로 로그인(성공시 token) (access token)")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        log.info("login test");
+
         try {
             String phoneNumber = loginRequest.getPhoneNumber();
             String password = loginRequest.getPassword();
