@@ -74,4 +74,43 @@
             account_id = #{accountNum}
     </select>
 
+    <select id="selectAccountHistoryOnly" resultType="AccountHistoryEntity" parameterType="String">
+        SELECT
+            *
+        FROM
+            account_history
+        WHERE
+            ssafy_transaction_number = #{ssafyTransactionNumber}
+    </select>
+
+
+    <insert id="insertByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest" useGeneratedKeys="true" keyProperty="accountHistoryImageId">
+        INSERT INTO account_history_verification ( account_history_memo, account_history_image, ssafy_transaction_number )
+        VALUES ( #{ accountHistoryMemo }, #{ accountHistoryImage }, #{ssafyTransactionNumber} )
+    </insert>
+
+
+    <select id="selectByTransactionNum" resultType="VerifyEntity" parameterType="String">
+        SELECT
+            *
+        FROM
+            account_history_verification
+        WHERE
+            ssafy_transaction_number = #{ssafyTransactionNumber}
+    </select>
+
+    <update id="updateByTransactionNum" parameterType="map">
+        UPDATE account_history_verification
+        SET
+            account_history_memo = #{verificationSaveRequest.accountHistoryMemo},
+            account_history_image = #{verificationSaveRequest.accountHistoryImage}
+        WHERE
+            ssafy_transaction_number = #{ssafyTransactionNumber}
+    </update>
+
+    <delete id="deleteByTransactionNum" parameterType="String">
+        DELETE FROM account_history_verification
+        WHERE ssafy_transaction_number = #{ssafyTransactionNumber}
+    </delete>
+
 </mapper>

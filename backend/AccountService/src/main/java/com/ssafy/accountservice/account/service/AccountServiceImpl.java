@@ -4,10 +4,8 @@ import com.ssafy.accountservice.account.controller.dto.request.*;
 import com.ssafy.accountservice.account.controller.dto.response.*;
 import com.ssafy.accountservice.account.infrastructure.repository.AccountRepository;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
-import com.ssafy.accountservice.account.service.domain.Account;
-import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
-import com.ssafy.accountservice.account.service.domain.AccountTransfer;
-import com.ssafy.accountservice.account.service.domain.AccountUtils;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
+import com.ssafy.accountservice.account.service.domain.*;
 import com.ssafy.accountservice.client.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -209,7 +207,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.selectAccountHistory(accountNum);
     }
 
-
+    @Override
     public String cardUse(CardRequest cardRequest) {
         // pg DB이용하여 클럽코드 가져옴
         String clubCode = accountRepository.useAccountPg(cardRequest.getCardNo());
@@ -277,5 +275,34 @@ public class AccountServiceImpl implements AccountService {
             // 결제 실패 (잔액 부족)
             return "결제 실패: 잔액이 부족합니다.";
         }
+    }
+
+
+    @Override
+    public AccountHistoryEntity historyGetOnly(String ssafyTransactionNumber) {
+        return accountRepository.selectHistoryOnly(ssafyTransactionNumber);
+    }
+
+
+    @Override
+    public void verifySave(VerificationSaveRequest verificationSaveRequest) {
+        accountRepository.insertVerify(verificationSaveRequest);
+    }
+
+
+    @Override
+    public VerifyEntity verifySelect(String ssafyTransactionNumber) {
+        return accountRepository.selectVerify(ssafyTransactionNumber);
+    }
+
+    @Override
+    public void verifyUpdate(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest) {
+        accountRepository.updateVerify(ssafyTransactionNumber, verificationSaveRequest);
+    }
+
+
+    @Override
+    public void verifyDelete(String ssafyTransactionNumber) {
+        accountRepository.deletetVerify(ssafyTransactionNumber);
     }
 }
