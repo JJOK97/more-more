@@ -27,6 +27,8 @@ dependencies {
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 	//actuator
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-core'
+
 	//aws sdk v2
 	implementation platform('software.amazon.awssdk:bom:2.17.230')
 	implementation 'software.amazon.awssdk:s3'
