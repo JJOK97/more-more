@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import DepositDetailOne from '@/components/groupAccount/DepositDetailOne';
-import data from '@/components/groupAccount/data.depositdetail.json';
 import '@/assets/css/groupAccount/GroupAccount.css';
 import { useParams } from 'react-router-dom';
 
-const GroupAccountDepositList = () => {
+const GroupAccountDepositList = ({ selectedDate }) => {
 	const [accountHistories, setAccountHistories] = useState([]);
 	const [page, setPage] = useState(1);
 	const [loading, setLoading] = useState(false);
@@ -55,6 +54,12 @@ const GroupAccountDepositList = () => {
 		fetchAccountHistories(page);
 	}, [page, fetchAccountHistories]);
 
+	const filteredHistories = selectedDate
+		? accountHistories.filter(
+				(item) => new Date(item.date).toLocaleDateString() === selectedDate.toLocaleDateString(),
+		  )
+		: accountHistories;
+
 	return (
 		<div className="group-account-deposit-list-area">
 			{accountHistories
@@ -71,6 +76,7 @@ const GroupAccountDepositList = () => {
 						balance={item.balance}
 					/>
 				))}
+			{loading && <div>Loading...</div>}
 		</div>
 	);
 };
