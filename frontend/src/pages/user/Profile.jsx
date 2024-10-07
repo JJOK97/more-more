@@ -30,7 +30,7 @@ const Profile = () => {
 		{ label: '이메일', value: info.email },
 		{ label: '주소', value: info.address },
 		{ label: '계좌', value: info.accountNumber },
-	  ];
+	];
 
 	return (
 		<div className="profile-container">
@@ -40,13 +40,14 @@ const Profile = () => {
 				alt="프로필 이미지"
 			/>
 			<div className="profile-info">
-				{userInfo && formatUserInfo(userInfo).map((item, index) => (
-					<ProfileItem
-						key={index}
-						label={item.label}
-						value={item.value}
-					/>
-				))}
+				{userInfo &&
+					formatUserInfo(userInfo).map((item, index) => (
+						<ProfileItem
+							key={index}
+							label={item.label}
+							value={item.value}
+						/>
+					))}
 			</div>
 			{/* <button className="profile-edit-button">프로필 수정하기</button> */}
 		</div>
