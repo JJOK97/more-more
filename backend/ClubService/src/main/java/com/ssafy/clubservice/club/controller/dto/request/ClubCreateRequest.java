@@ -17,8 +17,8 @@ public class ClubCreateRequest {
 
     @NotNull(message = "모임 생성자 ID는 필수값입니다.")
     private Long creatorId;
-
     private String clubName;
     private String clubIntro;
     private String ssafyUserKey;
+    private String accountPwd;
 }
