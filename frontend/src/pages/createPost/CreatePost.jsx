@@ -7,12 +7,14 @@ import FinishButton from '@/components/createPost/FinishButton';
 import '@/assets/css/createPost/CreatePost.css';
 import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
+import AddTagModal from './AddTagModal';
 
 const CreatePost = () => {
 	const { setGroupName } = useGroupName();
 	const { groupId } = useParams(); // URL에서 groupId를 추출
 	const [images, setImages] = useState([]);
 	const [content, setContent] = useState('');
+	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
 
 	useEffect(() => {
 		setGroupName(groupId);
@@ -26,9 +28,17 @@ const CreatePost = () => {
 		setImages((prevImages) => prevImages.filter((_, i) => i !== index));
 	};
 
+	const openModal = () => {
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
 	return (
 		<div className="create-post-container">
-			<Header />
+			<Header onBillIconClick={openModal} /> {/* Bill icon 클릭 시 모달 열기 */}
 			<ContentInput
 				content={content}
 				setContent={setContent}
@@ -39,6 +49,8 @@ const CreatePost = () => {
 			/>
 			<ImageUpload onImageUpload={handleImageUpload} />
 			<FinishButton />
+			{/* 모달 */}
+			{isModalOpen && <AddTagModal onClose={closeModal} />}
 		</div>
 	);
 };

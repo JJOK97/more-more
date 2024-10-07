@@ -210,6 +210,10 @@
 	margin: 1rem;
 }
 
+.deposit-detail-container {
+	text-decoration: none;
+}
+
 .deposit-list-place-price {
 	display: flex;
 	flex-direction: row;
@@ -231,7 +235,7 @@
 }
 
 .deposit-list-date {
-	font-size: 14px;
+	font-size: 0.875rem;
 	font-weight: 700;
 	margin-left: 1rem;
 }
@@ -239,11 +243,15 @@
 .deposit-list-place {
 	font-size: 1rem;
 	font-weight: 700;
+	color: black;
+	text-decoration: none;
 }
 
 .deposit-list-price {
-	font-size: 16px;
+	font-size: 1rem;
 	font-weight: 700;
+	color: black;
+	text-decoration: none;
 }
 
 .deposit-list-time {
