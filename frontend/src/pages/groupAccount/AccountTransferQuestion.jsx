@@ -6,6 +6,8 @@ const AccountTransferQuestion = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
+	const amount = location.state?.amount || '0';
+
 	const groupId = location.pathname.match(/^\/group\/(\d+)/)?.[1];
 
 	const handleSendClick = () => {
@@ -22,7 +24,7 @@ const AccountTransferQuestion = () => {
 				</div>
 				<div className="account-question">
 					<div className="account-question-message">
-						100,000원을 <br /> 송금하시겠어요?
+						{Number(amount).toLocaleString()}원을 <br /> 송금하시겠어요?
 					</div>
 				</div>
 			</div>
