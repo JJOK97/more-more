@@ -34,13 +34,13 @@ const validationSchemas = [
 			.required('인증번호는 필수 입력 항목입니다.'),
 	}),
 	Yup.object({
-		pwd: Yup.string()
+		password: Yup.string()
 			.min(8, '비밀번호는 최소 8자 이상이어야 합니다.')
 			.matches(/[a-zA-Z]/, '비밀번호는 영문자를 포함해야 합니다.')
 			.matches(/\d/, '비밀번호는 숫자를 포함해야 합니다.')
 			.required('비밀번호는 필수 입력 항목입니다.'),
 		confirm_pwd: Yup.string()
-			.oneOf([Yup.ref('pwd'), null], '비밀번호가 일치하지 않습니다.')
+			.oneOf([Yup.ref('password'), null], '비밀번호가 일치하지 않습니다.')
 			.required('비밀번호 확인은 필수 입력 항목입니다.'),
 	}),
 	Yup.object({
@@ -65,14 +65,11 @@ const validationSchemas = [
 	}),
 	Yup.object({
 		birth_date: Yup.string()
-			.matches(/^\d{2}\d{2}\d{2}$/, '생년월일은 6자리 형식으로 작성해주세요')
+			.matches(/^\d{4}-\d{2}-\d{2}$/, '생년월일은 YYYY-MM-DD 형식으로 작성해주세요')
 			.test('isValidDate', '유효하지 않은 날짜입니다.', (value) => {
 				if (!value) return false;
-				const year = value.substring(0, 2);
-				const month = value.substring(2, 4);
-				const day = value.substring(4, 6);
-				const fullYear = `19${year}`;
-				const date = new Date(`${fullYear}-${month}-${day}`);
+				const [year, month, day] = value.split('-');
+				const date = new Date(`${year}-${month}-${day}`);
 				return !isNaN(date.getTime());
 			})
 			.required('생년월일은 필수 입력 항목입니다.'),
@@ -82,28 +79,51 @@ const validationSchemas = [
 const Signup = () => {
 	const [step, setStep] = useState(0);
 	const navigate = useNavigate();
+	const [userData, setUserData] = useState({});
+	const [isVerified, setIsVerified] = useState(false);
 
 	const userValues = {
 		member_name: '',
 		birth_date: '',
 		phone_number: '',
-		pwd: '',
+		password: '',
 		profile_image: null,
 		profile_image_preview: null,
 		email: '',
 		address: '',
+		verification_code: '',
 	};
 
-	const handleNext = () => {
+	const handleNext = (values) => {
+		if (step === 2 && !isVerified) {
+			alert('이메일 인증을 완료해야 합니다.');
+			return;
+		}
 		setStep((prevStep) => prevStep + 1);
 	};
 
 	const handlePrevious = () => {
 		if (step === 0) {
-			navigate(-1); // 이전 페이지로 이동
+			navigate(-1);
 		} else {
 			setStep((prevStep) => prevStep - 1);
 		}
+	};
+
+	const handleSubmit = (values, { setSubmitting }) => {
+		if (step === 2 && !isVerified) {
+			alert('이메일 인증을 완료해야 합니다.');
+			setSubmitting(false);
+			return;
+		}
+
+		if (step === validationSchemas.length - 1) {
+			setUserData(values);
+			navigate('/registeraccount', { state: { userData: values } });
+		} else {
+			handleNext(values);
+		}
+		setSubmitting(false);
 	};
 
 	return (
@@ -111,21 +131,13 @@ const Signup = () => {
 			<Formik
 				initialValues={userValues}
 				validationSchema={validationSchemas[step]}
-				onSubmit={(values) => {
-					// 마지막 단계일 경우 계좌 등록 페이지로 이동
-					if (step === validationSchemas.length) {
-						console.log('API에 데이터 제출:', values); // API로 제출할 데이터 확인
-						navigate('/registeraccount/:userId');
-					} else {
-						handleNext();
-					}
-				}}
+				onSubmit={handleSubmit}
 			>
-				{({ values }) => (
+				{({ values, isSubmitting }) => (
 					<Form className="signup-form">
 						{step === 0 && <Step1 />}
 						{step === 1 && <Step2 />}
-						{step === 2 && <Step3 />}
+						{step === 2 && <Step3 setIsVerified={setIsVerified} />}
 						{step === 3 && <Step4 />}
 						{step === 4 && <Step5 />}
 						{step === 5 && <Step6 />}
@@ -137,15 +149,18 @@ const Signup = () => {
 								onRegisterLater={() => navigate('/login')}
 							/>
 						)}
-
 						<div className="signup-nav-button">
 							<img
 								src={arrowleft}
 								onClick={handlePrevious}
+								alt="이전"
 							/>
 							{step < 8 && (
-								<button type="submit">
-									{step === validationSchemas.length ? '계좌 등록하기' : '다음으로'}
+								<button
+									type="submit"
+									disabled={isSubmitting}
+								>
+									{step === validationSchemas.length - 1 ? '계좌 등록하기' : '다음으로'}
 								</button>
 							)}
 						</div>

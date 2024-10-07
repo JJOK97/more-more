@@ -71,7 +71,7 @@ const AppRouter = () => {
 						element={<AccountSetup />}
 					/>
 					<Route
-						path="/registeraccount/:userId"
+						path="/registeraccount"
 						element={<RegisterAccount />}
 					/>
 					<Route

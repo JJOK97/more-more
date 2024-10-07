@@ -1,8 +1,10 @@
-import { FastField, useField, ErrorMessage } from 'formik';
+import React from 'react';
+import { Field, ErrorMessage, useFormikContext } from 'formik';
 
 const RegisterAccountStep3 = () => {
-	// phone_number 필드에 대해 useField 사용
-	const [, meta] = useField('phone_number');
+	const { values, setFieldValue } = useFormikContext();
+
+	console.log('Current values in AccountStep3:', values); // 디버깅용 로그
 
 	return (
 		<div className="registration-step-container">
@@ -10,26 +12,22 @@ const RegisterAccountStep3 = () => {
 			<div className="registration-step-content">
 				<div className="welcome-message">본인 확인을 위한 개인 정보를 입력해주세요.</div>
 				<div className="input-group">
-					{/* 이름 필드 */}
-					<label htmlFor="name">이름</label>
-					<FastField
-						id="name"
-						name="name"
+					<label htmlFor="member_name">이름</label>
+					<Field
+						id="member_name"
+						name="member_name"
 						placeholder="이름을 입력하세요"
 						type="text"
 						className="input-field"
 					/>
 					<ErrorMessage
-						name="name"
+						name="member_name"
 						component="div"
 						className="error-message"
 					/>
 
-					<br />
-
-					{/* 휴대폰 번호 필드 */}
 					<label htmlFor="phone_number">휴대폰 번호</label>
-					<FastField
+					<Field
 						id="phone_number"
 						name="phone_number"
 						placeholder="010-1234-5678"
@@ -42,7 +40,7 @@ const RegisterAccountStep3 = () => {
 						className="error-message"
 					/>
 
-					{!meta.error && meta.touched && <div className="input-note">'-' 없이 숫자만 입력해주세요.</div>}
+					<div className="input-note">'-' 없이 숫자만 입력해주세요.</div>
 				</div>
 			</div>
 		</div>
