@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostingCreateRequest {
     private Long memberId;
     private String clubCode;
-    private Long accountHistoryId;
+    private String accountHistoryTag;
     private String postingContent;
     private MultipartFile[] files;
 }

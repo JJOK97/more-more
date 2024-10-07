@@ -4,14 +4,14 @@
 
 <mapper namespace="com.ssafy.postingservice.posting.infrastructure.repository.PostingMybatisMapper">
     <insert id="save" parameterType="PostingEntity" useGeneratedKeys="true" keyProperty="postingId">
-        insert into posting (member_id, account_history_id, club_code, posting_content)
-        values(#{memberId}, #{accountHistoryId}, #{clubCode}, #{postingContent});
+        insert into posting (member_id, account_history_tag, club_code, posting_content)
+        values(#{memberId}, #{accountHistoryTag}, #{clubCode}, #{postingContent});
     </insert>
 
     <select id="findByClubCode" resultType="com.ssafy.postingservice.posting.infrastructure.repository.entity.PostingEntity" parameterType="string">
         SELECT p.posting_id,
         p.member_id,
-        p.account_history_id,
+        p.account_history_tag,
         p.club_code,
         p.posting_content,
         p.posting_created_time,
@@ -21,7 +21,7 @@
         WHERE p.club_code = #{clubCode}
         GROUP BY p.posting_id,
         p.member_id,
-        p.account_history_id,
+        p.account_history_tag,
         p.club_code,
         p.posting_content,
         p.posting_created_time
@@ -31,7 +31,7 @@
     <select id="findByPostingId" parameterType="Long" resultType="com.ssafy.postingservice.posting.infrastructure.repository.entity.PostingEntity">
         SELECT posting_id AS postingId,
                member_id AS memberId,
-               account_history_id AS accountHistoryId,
+               account_history_tag AS accountHistoryTag,
                club_code AS clubCode,
                posting_content AS postingContent,
                posting_created_time AS postingCreatedTime,
@@ -46,8 +46,8 @@
             <if test="memberId != null">
                 member_id = #{memberId},
             </if>
-            <if test="accountHistoryId != null">
-                account_history_id = #{accountHistoryId},
+            <if test="accountHistoryTag != null">
+                account_history_tag = #{accountHistoryTag},
             </if>
             <if test="clubCode != null">
                 club_code = #{clubCode},
@@ -70,7 +70,7 @@
     <select id="searchPostsByClubCodeAndKeyword" resultType="com.ssafy.postingservice.posting.infrastructure.repository.entity.PostingEntity">
         SELECT DISTINCT p.posting_id AS postingId,
                         p.member_id AS memberId,
-                        p.account_history_id AS accountHistoryId,
+                        p.account_history_tag AS accountHistoryTag,
                         p.club_code AS clubCode,
                         p.posting_content AS postingContent,
                         p.posting_created_time AS postingCreatedTime,
@@ -80,7 +80,7 @@
         FROM posting p
         WHERE p.club_code = #{clubCode}
           AND (p.posting_content LIKE CONCAT('%', #{keyword}, '%')
-            OR p.account_history_id LIKE CONCAT('%', #{keyword}, '%'))
+            OR p.account_history_Tag LIKE CONCAT('%', #{keyword}, '%'))
         ORDER BY p.posting_id DESC;
     </select>
 
