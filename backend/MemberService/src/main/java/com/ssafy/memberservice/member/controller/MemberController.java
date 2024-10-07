@@ -68,8 +68,24 @@ public class MemberController {
         try {
             // 인증 번호 생성
             String verificationCode = generateVerificationCode();
-            // 이메일 발송
-            emailService.sendEmail(email, "이메일 인증 코드", "인증 번호: " + verificationCode);
+            // 이메일 제목 고정
+            String subject = "모아모아 : 회원가입 인증번호";
+
+            // 이미지 URL
+            String imageUrl = "https://jumsun-bucket.s3.ap-northeast-2.amazonaws.com/member/ssh2957@naver.com_ca819d52-99fd-4dd9-bad1-a80fd8c7aa9b";
+
+            // HTML 이메일 본문 작성
+            String content = "<html><body>"
+                    + "<h2>모아모아 : 회원가입 인증번호</h2>"
+                    + "<p>안녕하세요? 아래의 인증 번호를 입력해 주세요:</p>"
+                    + "<h3>" + verificationCode + "</h3>"
+                    + "<p>감사합니다.</p>"
+                    + "<img src='" + imageUrl + "' alt='인증 이미지' style='max-width: 100%; height: auto;'/>"  // 이미지 추가
+                    + "</body></html>";
+
+            // 이메일 발송 (이미지 URL을 사용)
+            emailService.sendEmail(email, subject, content);
+
             // Redis에 인증 번호 저장 (유효시간 5분)
             redisTemplate.opsForValue().set(email, verificationCode, 5, TimeUnit.MINUTES);
 

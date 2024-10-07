@@ -43,10 +43,10 @@ public class AuthController {
             String accessToken = jwtTokenProvider.generateAccessToken(authentication);
             String refreshToken = jwtTokenProvider.generateAndStoreRefreshToken(authentication); // Refresh Token 저장
             Long memberId= memberRepository.findByPhoneNumber(loginRequest.getPhoneNumber()).getMemberId();
+            String userKey= memberRepository.findByPhoneNumber(loginRequest.getPhoneNumber()).getUserKey();
 
 
-
-            return ResponseEntity.ok(new LoginJwtResponse(accessToken, refreshToken, memberId));
+            return ResponseEntity.ok(new LoginJwtResponse(accessToken, refreshToken, memberId, userKey));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Invalid phone number or password");
         }
