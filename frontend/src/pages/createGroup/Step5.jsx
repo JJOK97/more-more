@@ -6,7 +6,7 @@ const createGroupAPI = async (groupName, profileImage, fee, intro, creatorId) =>
 		dues: Number(fee), // 회비를 숫자로 변환
 		creatorId: Number(creatorId), // creatorId를 숫자로 변환
 		clubName: groupName,
-		clubIntro: intro // 모임 소개
+		clubIntro: intro, // 모임 소개
 	};
 
 	// 요청 본문에 포함될 FormData 객체 생성
@@ -28,16 +28,17 @@ const createGroupAPI = async (groupName, profileImage, fee, intro, creatorId) =>
 	return response.json();
 };
 
-const createAccountAPI = async (groupId) => {
-	const response = await fetch('/api/account', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({ groupId }),
-	});
-	return response.json();
-};
+// const createAccountAPI = async (groupId) => {
+// 	const response = await fetch('/api/account', {
+// 		method: 'POST',
+// 		headers: {
+// 			'Content-Type': 'application/json',
+// 		},
+// 		body: JSON.stringify({ groupId }),
+// 	});
+// 	const data = await response.json();
+// 	return data;
+// };
 
 const Step5 = ({
 	handlePrevStep,
@@ -45,7 +46,7 @@ const Step5 = ({
 	groupName,
 	setGroupName,
 	imagePreview,
-    profileImage,
+	profileImage,
 	handleImageChange,
 	fee,
 	setFee,
