@@ -7,6 +7,7 @@ import FinishButton from '@/components/createPost/FinishButton';
 import '@/assets/css/createPost/CreatePost.css';
 import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
+import AddTagModal from './AddTagModal';
 
 const CreatePost = () => {
 	const { setGroupName } = useGroupName();
@@ -49,25 +50,7 @@ const CreatePost = () => {
 			<ImageUpload onImageUpload={handleImageUpload} />
 			<FinishButton />
 			{/* 모달 */}
-			{isModalOpen && (
-				<div
-					className="invite-modal-overlay"
-					onClick={closeModal}
-				>
-					<div
-						className="modal-content"
-						onClick={(e) => e.stopPropagation()}
-					>
-						<span
-							className="close-button"
-							onClick={closeModal}
-						>
-							&times;
-						</span>
-						<p>모달 콘텐츠</p>
-					</div>
-				</div>
-			)}
+			{isModalOpen && <AddTagModal onClose={closeModal} />}
 		</div>
 	);
 };
