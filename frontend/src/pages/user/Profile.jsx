@@ -18,23 +18,31 @@ const Profile = () => {
 			const memberId = localStorage.getItem('memberId');
 			const url = `https://j11a605.p.ssafy.io/api/member/${memberId}`;
 			const data = await getDatas(url);
-			console.log(data);
 			setUserInfo(data);
 		};
 		getUserInfo();
 	}, []);
 
+	const formatUserInfo = (info) => [
+		{ label: '이름', value: info.name },
+		{ label: '전화번호', value: info.phoneNumber },
+		{ label: '생일', value: info.birthDate },
+		{ label: '이메일', value: info.email },
+		{ label: '주소', value: info.address },
+		{ label: '계좌', value: info.accountNumber },
+	  ];
+
 	return (
 		<div className="profile-container">
 			<img
 				className="profile-image-user"
-				src={userInfo && userInfo.profile.profileImageUrl}
+				src={userInfo && userInfo.profileImageUrl}
 				alt="프로필 이미지"
 			/>
 			<div className="profile-info">
-				{userInfo && userInfo.profile.map((item, index) => (
+				{userInfo && formatUserInfo(userInfo).map((item, index) => (
 					<ProfileItem
-						key={index} // 고유 key
+						key={index}
 						label={item.label}
 						value={item.value}
 					/>
