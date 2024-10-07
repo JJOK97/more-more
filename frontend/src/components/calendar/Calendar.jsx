@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import '@/assets/css/schedule/calendar/calendar.css';
 import moment from 'moment';
 
-function Calendar() {
+function Calendar({ onSelectDate }) {
 	const today = new Date();
 	const [date, setDate] = useState(today);
 
@@ -16,6 +16,9 @@ function Calendar() {
 
 	const handleDateChange = (newDate) => {
 		setDate(newDate);
+		if (onSelectDate) {
+			onSelectDate(newDate);
+		}
 	};
 
 	const getButtonText = () => {
