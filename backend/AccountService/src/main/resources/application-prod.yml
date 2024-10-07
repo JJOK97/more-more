@@ -49,9 +49,9 @@ logging:
               BasicBinder: TRACE
 
 ssafy:
+  account:
+    number: "0016458849793120"
   api:
     key: "41ab6a7e28bf4af7b799e70ef9441967"
   user:
     key: "1bd1f427-19bb-40d0-bd3f-684133996793"
-  account:
-    no: "0016458849793120"
