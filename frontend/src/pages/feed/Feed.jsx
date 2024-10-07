@@ -4,6 +4,7 @@ import '@/assets/css/feed/Feed.css';
 import PostView from '@/components/postView/PostView';
 import datas from '@/pages/feed/data.json';
 import useGroupName from '@/store/useGroupName';
+import { getDatas } from './getData';
 
 const Feed = () => {
 	const { setGroupName } = useGroupName();
@@ -14,15 +15,23 @@ const Feed = () => {
 		setGroupName(groupId);
 	}, []);
 
-	useEffect(() => {
-		const fetchPosts = () => {
-			// groupId에 해당하는 게시물만 필터링
-			const filteredPosts = datas.posts.filter((post) => post.groupId === parseInt(groupId, 10));
-			setPosts(filteredPosts);
-		};
+	// useEffect(() => {
+	// 	const fetchPosts = () => {
+	// 		const filteredPosts = datas.posts.filter((post) => post.groupId === parseInt(groupId, 10));
+	// 		setPosts(filteredPosts);
+	// 	};
 
-		fetchPosts();
-	}, [groupId]); // groupId가 변경될 때마다 실행
+	// 	fetchPosts();
+	// }, [groupId]);
+
+	useEffect(() => {
+		const getAllPosts = async () => {
+			const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
+			const data = await getDatas(url);
+			console.log(data);
+		};
+		getAllPosts();
+	}, [groupId]);
 
 	if (!posts) {
 		return <div>Loading...</div>;
