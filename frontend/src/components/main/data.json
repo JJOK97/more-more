@@ -1,0 +1,24 @@
+{
+    "groups" : [
+        {
+            "groupId":1,
+            "groupCode":"asdf",
+            "dues":10000,
+            "groupName":"옥냥이네 가족",
+            "introduction":"행복한 하루@",
+            "createdDate":"2024.08.31",
+            "profileImage":"/feed/profile_icon2.png",
+            "numberOfPeople":6
+        },
+        {
+            "groupId":2,
+            "groupCode":"qwer",
+            "dues":100000,
+            "groupName":"ssafy 11기 6반",
+            "introduction":"취업해보자~",
+            "createdDate":"2024.01.01",
+            "profileImage":"/feed/회식.webp",
+            "numberOfPeople":12
+        }
+    ]
+}

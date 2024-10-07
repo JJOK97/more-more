@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.clubservice.club.infrastructure.repository.ClubMybatisMapper">
+    <insert id="saveClub" parameterType="clubEntity" useGeneratedKeys="true" keyProperty="clubId">
+        insert into club (dues, club_code, club_name, club_intro)
+        values(#{dues}, #{clubCode}, #{clubName}, #{clubIntro});
+    </insert>
+    <select id="findClubByClubCode" parameterType="string" resultType="clubEntity">
+        select * from club where club_code = #{clubCode};
+    </select>
+    <update id="updateClub" parameterType="clubEntity">
+        update club
+        set club_name = #{clubName},
+            dues = #{dues}
+        where club_id = #{clubId};
+    </update>
+    <select id="findClubByMemberId" resultType="clubEntity">
+        SELECT c.club_id, c.dues, c.club_code, c.club_name, c.club_intro, c.created_date
+        FROM club c join participant p
+        on p.club_code = c.club_code
+        WHERE p.user_id = #{userId}
+    </select>
+
+</mapper>

@@ -6,15 +6,36 @@ import com.ssafy.clubservice.club.service.domain.Club;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class ClubRepositoryImpl implements ClubRepository {
     private final ClubMybatisMapper clubMybatisMapper;
     private final ClubObjectMapper clubObjectMapper;
     @Override
-    public Club save(Club club) {
-        System.out.println(club.getClubName());
-        clubMybatisMapper.save(clubObjectMapper.from(club));
-        return club;
+    public Club saveClub(Club club) {
+        ClubEntity entity = clubObjectMapper.fromDomainToEntity(club);
+        clubMybatisMapper.saveClub(entity);
+        return clubObjectMapper.fromEntityToDomain(entity);
+    }
+
+    @Override
+    public Club updateClub(Club club) {
+        ClubEntity entity = clubObjectMapper.fromDomainToEntity(club);
+        clubMybatisMapper.updateClub(entity);
+        return clubObjectMapper.fromEntityToDomain(entity);
+    }
+
+    @Override
+    public Club findClubByClubCode(String clubCode) {
+        ClubEntity entity = clubMybatisMapper.findClubByClubCode(clubCode);
+        return clubObjectMapper.fromEntityToDomain(entity);
+    }
+
+    @Override
+    public List<Club> findClubByMemberId(String memberId) {
+        List<ClubEntity> clubEntities = clubMybatisMapper.findClubByMemberId(memberId);
+        return clubObjectMapper.fromEntityToDomain(clubEntities);
     }
 }

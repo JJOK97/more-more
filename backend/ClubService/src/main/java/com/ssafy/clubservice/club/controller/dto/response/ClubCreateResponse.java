@@ -1,6 +1,10 @@
 package com.ssafy.clubservice.club.controller.dto.response;
 
+import com.ssafy.clubservice.club.service.domain.Participant;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class ClubCreateResponse {
@@ -9,4 +13,7 @@ public class ClubCreateResponse {
     private Long dues;
     private String clubCode;
     private String clubName;
+    private String clubIntro;
+    List<ParticipantCreateResponse> participants;
 }
+
