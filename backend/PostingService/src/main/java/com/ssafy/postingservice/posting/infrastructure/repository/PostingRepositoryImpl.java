@@ -1,4 +1,5 @@
 package com.ssafy.postingservice.posting.infrastructure.repository;
+import com.ssafy.postingservice.posting.controller.dto.response.PostingGetAllResponse;
 import com.ssafy.postingservice.posting.controller.dto.response.PostingGetResponse;
 import com.ssafy.postingservice.posting.infrastructure.repository.entity.PostingEntity;
 import com.ssafy.postingservice.posting.mapper.PostingObjectMapper;
@@ -44,6 +45,11 @@ public class PostingRepositoryImpl implements PostingRepository {
     @Override
     public void deleteByPostingId(Long postingId) {
         postingMybatisMapper.deleteByPostingId(postingId);
+    }
+
+    @Override
+    public List<Posting> searchPostsByClubCodeAndKeyword(String clubCode, String keyword) {
+        return postingObjectMapper.fromEntitiesToDomainList(postingMybatisMapper.searchPostsByClubCodeAndKeyword(clubCode, keyword));
     }
 
 
