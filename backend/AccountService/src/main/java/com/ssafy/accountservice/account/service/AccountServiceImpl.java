@@ -212,11 +212,14 @@ public class AccountServiceImpl implements AccountService {
 
     public String cardUse(CardRequest cardRequest) {
         // pg DB이용하여 클럽코드 가져옴
-        String clubCode = accountRepository.useAccountPg(cardRequest.getCardNo());
 
         String apiKey = AccountUtils.getApiKey();
         String pgUserKey = AccountUtils.getUserKey();
         String accountNo = AccountUtils.getAccountNo();
+        System.out.println("accountNo = " + accountNo);
+        System.out.println("apiKey = " + apiKey);
+        System.out.println("pgUserKey = " + pgUserKey);
+        String clubCode = accountRepository.useAccountPg(cardRequest.getCardNo());
 
         // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
         Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(clubCode);
