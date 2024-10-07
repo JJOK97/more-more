@@ -43,6 +43,7 @@ const Post = () => {
 	// 		const url = `https://j11a605.p.ssafy.io/api/posting/${postId}/aboutPosting`;
 	// 		const data = await getDatas(url);
 	// 		console.log(data);
+	// 		setPost(data);
 	// 	};
 	// 	fetchPost();
 	// }, [groupId, postId]); 
