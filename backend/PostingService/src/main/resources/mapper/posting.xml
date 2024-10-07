@@ -80,7 +80,8 @@
         FROM posting p
         WHERE p.club_code = #{clubCode}
           AND (p.posting_content LIKE CONCAT('%', #{keyword}, '%')
-            OR p.account_history_id LIKE CONCAT('%', #{keyword}, '%'));
+            OR p.account_history_id LIKE CONCAT('%', #{keyword}, '%'))
+        ORDER BY p.posting_id DESC;
     </select>
 
 </mapper>
