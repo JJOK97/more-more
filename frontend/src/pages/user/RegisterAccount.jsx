@@ -64,30 +64,17 @@ const RegisterAccount = () => {
 		}
 	};
 
-	const handleSubmit = async (values, { setSubmitting }) => {
+	const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
 		if (step < validationSchemas.length - 1) {
 			setStep((prevStep) => prevStep + 1);
 		} else {
 			try {
-				const formData = new FormData();
-				formData.append('accountNumber', values.account_number || '');
-				formData.append('address', values.address || '');
-				formData.append('email', values.email || '');
-				formData.append('phoneNumber', values.phone_number || '');
-				formData.append('password', values.pwd || '');
-				formData.append('birthDate', values.birth_date || '');
-				formData.append('name', values.member_name || '');
-
-				if (values.profile_image) {
-					formData.append('profileImage', values.profile_image);
-				}
-
-				console.log('Sending data:', Object.fromEntries(formData));
-				const response = await registerMember(formData);
+				const response = await registerMember(values);
 				console.log('회원가입 성공:', response);
 				navigate('/login');
 			} catch (error) {
 				console.error('회원가입 실패:', error);
+				setFieldError('submit', '회원가입에 실패했습니다. 다시 시도해 주세요.');
 			}
 		}
 		setSubmitting(false);

@@ -4,6 +4,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const api = axios.create({
 	baseURL: API_BASE_URL,
+	headers: {
+		'Content-Type': 'application/json',
+	},
 });
 
 // 액세스 토큰을 요청 헤더에 추가하는 인터셉터
@@ -52,16 +55,17 @@ export const loginUser = async (phoneNumber, password) => {
 			phoneNumber,
 			password,
 		});
+
 		const { accessToken, refreshToken } = response.data;
 		localStorage.setItem('accessToken', accessToken);
 		localStorage.setItem('refreshToken', refreshToken);
+
 		return response.data;
 	} catch (error) {
-		console.error('Login error:', error.response?.data);
+		console.error('로그인 오류:', error.response?.data || error.message);
 		throw error;
 	}
 };
-
 // 토큰 갱신 API
 export const refreshAccessToken = async (refreshToken) => {
 	try {
@@ -74,13 +78,31 @@ export const refreshAccessToken = async (refreshToken) => {
 };
 
 // 회원가입 API
-export const registerMember = async (formData) => {
+export const registerMember = async (userData) => {
 	try {
-		const response = await api.post('/api/member', formData, {
+		// FormData 객체 생성
+		const formData = new FormData();
+
+		// 각 필드를 개별적으로 FormData에 추가
+		formData.append('accountNumber', userData.account_number);
+		formData.append('address', userData.address);
+		formData.append('email', userData.email);
+		formData.append('phoneNumber', userData.phone_number);
+		formData.append('password', userData.password);
+		formData.append('birthDate', userData.birth_date);
+		formData.append('name', userData.member_name);
+
+		// 프로필 이미지가 있다면 추가
+		if (userData.profile_image) {
+			formData.append('profileImage', userData.profile_image);
+		}
+
+		const response = await axios.post(`${API_BASE_URL}/api/member`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
 		});
+
 		return response.data;
 	} catch (error) {
 		console.error('Registration error:', error.response?.data);
@@ -91,7 +113,7 @@ export const registerMember = async (formData) => {
 // 인증번호 발송 API
 export const sendVerificationCode = async (email) => {
 	try {
-		const response = await api.post('/api/member/send-verification-code', { email });
+		const response = await api.post(`/api/member/send-verification-code?email=${email}`);
 		return response.data;
 	} catch (error) {
 		console.error('Verification code send error:', error.response?.data);
@@ -102,11 +124,34 @@ export const sendVerificationCode = async (email) => {
 // 인증번호 확인 API
 export const verifyEmailCode = async (email, code) => {
 	try {
-		const response = await api.post('/api/member/verify-code', { email, code });
-		return response.data;
+		const response = await api.post(`/api/member/verify-code?email=${email}&verificationCode=${code}`);
+
+		// API가 단순히 true/false를 반환하는 경우를 처리
+		if (typeof response.data === 'boolean') {
+			return {
+				success: response.data,
+				message: response.data ? '인증이 성공적으로 완료되었습니다.' : '인증번호가 일치하지 않습니다.',
+			};
+		}
+		// 기존의 객체 형태 응답 처리 (혹시 나중에 API가 변경될 경우를 대비)
+		else if (response.data && typeof response.data.success === 'boolean') {
+			return {
+				success: response.data.success,
+				message: response.data.message || '',
+			};
+		} else {
+			console.error('Unexpected API response format:', response.data);
+			return {
+				success: false,
+				message: '서버 응답 형식이 올바르지 않습니다.',
+			};
+		}
 	} catch (error) {
 		console.error('Verification code check error:', error.response?.data);
-		throw error;
+		return {
+			success: false,
+			message: error.response?.data?.message || '인증 과정에서 오류가 발생했습니다.',
+		};
 	}
 };
 

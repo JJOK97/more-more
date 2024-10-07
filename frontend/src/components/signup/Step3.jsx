@@ -1,33 +1,45 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Field, ErrorMessage, useFormikContext } from 'formik';
 import { sendVerificationCode, verifyEmailCode } from '@/api/userAPI';
 
-const Step3 = () => {
-	const { values, setFieldError } = useFormikContext();
+const Step3 = ({ setIsVerified }) => {
+	const { values, setFieldError, setFieldValue } = useFormikContext();
 	const [isCodeSent, setIsCodeSent] = useState(false);
+	const [verificationError, setVerificationError] = useState('');
+	const [isVerificationSuccessful, setIsVerificationSuccessful] = useState(false);
 
-	console.log(import.meta.env.VITE_API_BASE_URL);
-
-	// 인증번호 발송 함수
 	const handleSendVerificationCode = async () => {
 		try {
 			await sendVerificationCode(values.email);
 			alert('인증번호가 발송되었습니다.');
 			setIsCodeSent(true);
+			setFieldValue('verification_code', '');
+			setIsVerificationSuccessful(false);
+			setIsVerified(false);
 		} catch (error) {
 			console.error('인증번호 발송 실패:', error);
 			setFieldError('email', '인증번호 발송에 실패했습니다. 다시 시도해 주세요.');
 		}
 	};
 
-	// 인증번호 확인 함수
 	const handleVerifyEmailCode = async () => {
 		try {
-			await verifyEmailCode(values.email, values.verification_code);
-			alert('인증이 완료되었습니다.');
+			const result = await verifyEmailCode(values.email, values.verification_code);
+			if (result.success) {
+				alert(result.message);
+				setIsVerificationSuccessful(true);
+				setIsVerified(true);
+				setVerificationError('');
+			} else {
+				setVerificationError(result.message);
+				setIsVerificationSuccessful(false);
+				setIsVerified(false);
+			}
 		} catch (error) {
 			console.error('인증 실패:', error);
-			setFieldError('verification_code', '인증번호가 일치하지 않습니다.');
+			setVerificationError('인증 과정에서 오류가 발생했습니다. 다시 시도해 주세요.');
+			setIsVerificationSuccessful(false);
+			setIsVerified(false);
 		}
 	};
 
@@ -54,20 +66,28 @@ const Step3 = () => {
 							placeholder="인증번호 입력"
 							type="text"
 							className="input-field"
-							// disabled={!isCodeSent}
+							disabled={!isCodeSent || isVerificationSuccessful}
 						/>
 						<button
 							type="button"
 							className="verify-button"
-							onClick={isCodeSent ? handleVerifyEmailCode : handleSendVerificationCode}
+							onClick={
+								isCodeSent && !isVerificationSuccessful
+									? handleVerifyEmailCode
+									: handleSendVerificationCode
+							}
+							disabled={isVerificationSuccessful}
 						>
-							{isCodeSent ? '인증' : '발송'}
+							{isCodeSent && !isVerificationSuccessful ? '인증' : '발송'}
 						</button>
 					</div>
 					<ErrorMessage
 						name="verification_code"
-						render={(msg) => <div className="error-message">{msg}</div>}
+						component="div"
+						className="error-message"
 					/>
+					{verificationError && <div className="error-message">{verificationError}</div>}
+					{isVerificationSuccessful && <div className="success-message">인증이 완료되었습니다.</div>}
 				</div>
 			</div>
 		</div>

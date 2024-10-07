@@ -34,13 +34,13 @@ const validationSchemas = [
 			.required('인증번호는 필수 입력 항목입니다.'),
 	}),
 	Yup.object({
-		pwd: Yup.string()
+		password: Yup.string()
 			.min(8, '비밀번호는 최소 8자 이상이어야 합니다.')
 			.matches(/[a-zA-Z]/, '비밀번호는 영문자를 포함해야 합니다.')
 			.matches(/\d/, '비밀번호는 숫자를 포함해야 합니다.')
 			.required('비밀번호는 필수 입력 항목입니다.'),
 		confirm_pwd: Yup.string()
-			.oneOf([Yup.ref('pwd'), null], '비밀번호가 일치하지 않습니다.')
+			.oneOf([Yup.ref('password'), null], '비밀번호가 일치하지 않습니다.')
 			.required('비밀번호 확인은 필수 입력 항목입니다.'),
 	}),
 	Yup.object({
@@ -80,38 +80,50 @@ const Signup = () => {
 	const [step, setStep] = useState(0);
 	const navigate = useNavigate();
 	const [userData, setUserData] = useState({});
+	const [isVerified, setIsVerified] = useState(false);
 
 	const userValues = {
 		member_name: '',
 		birth_date: '',
 		phone_number: '',
-		pwd: '',
+		password: '',
 		profile_image: null,
 		profile_image_preview: null,
 		email: '',
 		address: '',
+		verification_code: '',
 	};
 
-	const handleNext = () => {
+	const handleNext = (values) => {
+		if (step === 2 && !isVerified) {
+			alert('이메일 인증을 완료해야 합니다.');
+			return;
+		}
 		setStep((prevStep) => prevStep + 1);
 	};
 
 	const handlePrevious = () => {
 		if (step === 0) {
-			navigate(-1); // 이전 페이지로 이동
+			navigate(-1);
 		} else {
 			setStep((prevStep) => prevStep - 1);
 		}
 	};
 
-	const handleSubmit = (values) => {
+	const handleSubmit = (values, { setSubmitting }) => {
+		if (step === 2 && !isVerified) {
+			alert('이메일 인증을 완료해야 합니다.');
+			setSubmitting(false);
+			return;
+		}
+
 		if (step === validationSchemas.length - 1) {
-			// 모든 단계 완료
 			setUserData(values);
 			navigate('/registeraccount', { state: { userData: values } });
 		} else {
-			setStep((prevStep) => prevStep + 1);
+			handleNext(values);
 		}
+		setSubmitting(false);
 	};
 
 	return (
@@ -121,11 +133,11 @@ const Signup = () => {
 				validationSchema={validationSchemas[step]}
 				onSubmit={handleSubmit}
 			>
-				{({ values }) => (
+				{({ values, isSubmitting }) => (
 					<Form className="signup-form">
 						{step === 0 && <Step1 />}
 						{step === 1 && <Step2 />}
-						{step === 2 && <Step3 />}
+						{step === 2 && <Step3 setIsVerified={setIsVerified} />}
 						{step === 3 && <Step4 />}
 						{step === 4 && <Step5 />}
 						{step === 5 && <Step6 />}
@@ -137,15 +149,18 @@ const Signup = () => {
 								onRegisterLater={() => navigate('/login')}
 							/>
 						)}
-
 						<div className="signup-nav-button">
 							<img
 								src={arrowleft}
 								onClick={handlePrevious}
+								alt="이전"
 							/>
 							{step < 8 && (
-								<button type="submit">
-									{step === validationSchemas.length ? '계좌 등록하기' : '다음으로'}
+								<button
+									type="submit"
+									disabled={isSubmitting}
+								>
+									{step === validationSchemas.length - 1 ? '계좌 등록하기' : '다음으로'}
 								</button>
 							)}
 						</div>
