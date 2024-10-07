@@ -1,17 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import DepositDetailOne from '@/components/groupAccount/DepositDetailOne';
+import data from '@/components/groupAccount/data.depositdetail.json';
 import '@/assets/css/groupAccount/GroupAccount.css';
+import { useParams } from 'react-router-dom';
 
 const GroupAccountDepositList = () => {
 	const [accountHistories, setAccountHistories] = useState([]);
 	const [page, setPage] = useState(1);
 	const [loading, setLoading] = useState(false);
 	const [hasMore, setHasMore] = useState(true);
+	const { groupId } = useParams();
 
 	// API 데이터를 불러오는 함수
 	const fetchAccountHistories = useCallback(async (page) => {
 		setLoading(true);
 		try {
-			const response = await fetch(`/api/group/account/history?page=${page}`);
+			const response = await fetch(`https://j11a605.p.ssafy.io/api/account/${groupId}/history`, {
+				method: 'GET',
+			});
 			const data = await response.json();
 
 			setAccountHistories((prev) => [...prev, ...data]);
@@ -51,31 +57,20 @@ const GroupAccountDepositList = () => {
 
 	return (
 		<div className="group-account-deposit-list-area">
-			{accountHistories.length > 0 ? (
-				accountHistories.map((history) => (
-					<div
-						key={history.accountHistoryId}
-						className="deposit-detail-one"
-					>
-						<div className="deposit-list-place-price">
-							<div className="deposit-list-place">{history.tagName}</div>
-							<div className={`deposit-list-price ${history.paymentType === 'IN' ? 'plus' : ''}`}>
-								{history.paymentType === 'IN'
-									? `+${history.paymentAmount}원`
-									: `-${history.paymentAmount}원`}
-							</div>
-						</div>
-						<div className="deposit-list-time-balance">
-							<div className="deposit-list-time">{history.accountTime}</div>
-							<div className="deposit-list-balance">{history.accountBalance}원</div>
-						</div>
-					</div>
-				))
-			) : (
-				<div>데이터가 없습니다.</div>
-			)}
-
-			{loading && <div>Loading...</div>}
+			{accountHistories
+				.slice()
+				.reverse()
+				.map((item, index) => (
+					<DepositDetailOne
+						key={index}
+						id={item.id}
+						place={item.place}
+						price={item.price}
+						date={item.date}
+						time={item.time}
+						balance={item.balance}
+					/>
+				))}
 		</div>
 	);
 };

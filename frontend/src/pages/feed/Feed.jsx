@@ -15,23 +15,23 @@ const Feed = () => {
 		setGroupName(groupId);
 	}, []);
 
-	// useEffect(() => {
-	// 	const fetchPosts = () => {
-	// 		const filteredPosts = datas.posts.filter((post) => post.groupId === parseInt(groupId, 10));
-	// 		setPosts(filteredPosts);
-	// 	};
-
-	// 	fetchPosts();
-	// }, [groupId]);
-
 	useEffect(() => {
-		const getAllPosts = async () => {
-			const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
-			const data = await getDatas(url);
-			console.log(data);
+		const fetchPosts = () => {
+			const filteredPosts = datas.posts.filter((post) => post.groupId === parseInt(groupId, 10));
+			setPosts(filteredPosts);
 		};
-		getAllPosts();
+
+		fetchPosts();
 	}, [groupId]);
+
+	// useEffect(() => {
+	// 	const getAllPosts = async () => {
+	// 		const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
+	// 		const data = await getDatas(url);
+	// 		console.log(data);
+	// 	};
+	// 	getAllPosts();
+	// }, [groupId]);
 
 	if (!posts) {
 		return <div>Loading...</div>;
