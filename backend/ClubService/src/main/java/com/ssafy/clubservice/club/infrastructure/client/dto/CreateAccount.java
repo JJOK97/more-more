@@ -7,11 +7,13 @@ import lombok.Data;
 public class CreateAccount {
     private String ssafyUserKey;
     private String clubCode;
+    private String pwd;
 
     @Builder
-    CreateAccount(String ssafyUserKey, String clubCode) {
+    CreateAccount(String ssafyUserKey, String clubCode, String pwd) {
         this.ssafyUserKey = ssafyUserKey;
         this.clubCode = clubCode;
+        this.pwd = pwd;
     }
 
 }

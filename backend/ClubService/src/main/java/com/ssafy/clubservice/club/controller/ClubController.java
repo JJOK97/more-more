@@ -7,6 +7,7 @@ import com.ssafy.clubservice.club.controller.dto.response.*;
 import com.ssafy.clubservice.club.mapper.ClubObjectMapper;
 import com.ssafy.clubservice.club.mapper.ParticipantObjectMapper;
 import com.ssafy.clubservice.club.service.ClubService;
+import com.ssafy.clubservice.club.service.domain.Account;
 import com.ssafy.clubservice.club.service.domain.Club;
 import com.ssafy.clubservice.club.service.domain.Participant;
 import com.ssafy.clubservice.global.validator.ParticipantListValid;
@@ -36,7 +37,10 @@ public class ClubController {
     @Operation(summary = "모임 생성 API", description = "이미지, 생성자ID, 회비, 모임 이름, 모임 소개글을 입력하여 모임을 생성한다. (access token)")
     public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file, @Valid @RequestPart("clubCreateRequest") ClubCreateRequest clubCreateRequest) {
         log.info("모임 생성 API");
-        Club club = clubService.createClub(clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
+        Club club = clubService.createClub(
+                clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest),
+                new Account(clubCreateRequest.getSsafyUserKey(), clubCreateRequest.getAccountPwd()),
+                clubCreateRequest.getCreatorId(), file);
         log.info("모임 생성 API -> {}", club.getClubCode());
         return clubObjectMapper.fromDomainToCreateResponse(club);
     }

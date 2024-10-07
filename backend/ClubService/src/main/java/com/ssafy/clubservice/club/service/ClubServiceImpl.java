@@ -4,6 +4,7 @@ import com.ssafy.clubservice.club.infrastructure.client.ClientConnector;
 import com.ssafy.clubservice.club.infrastructure.repository.ClubRepository;
 import com.ssafy.clubservice.club.infrastructure.repository.ParticipantRepository;
 import com.ssafy.clubservice.club.infrastructure.s3.S3Connector;
+import com.ssafy.clubservice.club.service.domain.Account;
 import com.ssafy.clubservice.club.service.domain.Club;
 import com.ssafy.clubservice.club.service.domain.Participant;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,9 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     @Transactional
-    public Club createClub(Club club, Long creatorId, MultipartFile file){
+    public Club createClub(Club club, Account account, Long creatorId, MultipartFile file){
         club = club.generateClubCode(uuidHolder);
-        clientConnector.createAccount(club.getSsafyUserKey(), club.getClubCode());
+        clientConnector.createAccount(account, club.getClubCode());
         Club clubWithId = clubRepository.saveClub(club);
         clubWithId = addCreator(creatorId, clubWithId);
         clubWithId = clubWithId.changeImageName(processImage(club, file));
@@ -63,7 +64,13 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public List<Club> findClubs(String memberId) {
-        return clubRepository.findClubByMemberId(memberId);
+        List<Club> findClubs = clubRepository.findClubByMemberId(memberId);
+        return changeClubImages(findClubs);
+    }
+
+    private List<Club> changeClubImages(List<Club> clubs) {
+        clubs.forEach(club -> club.changeImageName(s3Connector.getImageURL(club.getClubCode())));
+        return clubs;
     }
 
     private Club addCreator(Long creatorId, Club club) {
