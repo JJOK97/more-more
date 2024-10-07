@@ -47,6 +47,16 @@ public class PostingController {
         return postingService.findByClubCode(clubCode);
     }
 
+    // 새로운 게시글 검색 API
+    @Operation(summary = "게시글 검색 API", description = "클럽코드를 입력하고 검색어를 입력하여 해당 클럽의 게시글을 검색한다. (access token)")
+    @GetMapping("/{clubCode}/search")
+    public List<PostingGetAllResponse> searchPostsByClubCodeAndKeyword(
+            @PathVariable String clubCode,
+            @RequestParam String keyword) {
+
+        return postingService.searchByClubCodeAndKeyword(clubCode, keyword);
+    }
+
 
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "댓글 생성 API", description = "맴버id, postingid, 댓글 내용을 입력하여 댓글을 생성한다. (access token)")
