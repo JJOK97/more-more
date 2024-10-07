@@ -149,8 +149,8 @@ public class PostingServiceImpl implements PostingService {
         }
 
         // 3. accountHistoryId 수정 처리
-        if (postingUpdateRequest.getAccountHistoryId() != null) {
-            existingPosting.setAccountHistoryId(postingUpdateRequest.getAccountHistoryId());
+        if (postingUpdateRequest.getAccountHistoryTag() != null) {
+            existingPosting.setAccountHistoryTag(postingUpdateRequest.getAccountHistoryTag());
         }
 
 

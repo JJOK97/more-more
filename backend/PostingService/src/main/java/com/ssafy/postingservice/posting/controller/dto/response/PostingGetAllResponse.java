@@ -10,7 +10,7 @@ public class PostingGetAllResponse {
     private Long postingId;
     private Long memberId;
     private String clubCode;
-    private Long accountHistoryId;
+    private String accountHistoryTag;
     private String postingContent;
     private Timestamp postingCreatedTime;
     private Long commentCount;
