@@ -12,12 +12,13 @@ const GroupAccountDepositList = () => {
 
 	return (
 		<div className="group-account-deposit-list-area">
-			{depositList.map((item, index) => (
+			{depositList.slice().reverse().map((item, index) => (
 				<DepositDetailOne
-					key={item.id}
+					key={index}
 					id={item.id}
 					place={item.place}
 					price={item.price}
+					date={item.date}
 					time={item.time}
 					balance={item.balance}
 				/>
