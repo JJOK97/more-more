@@ -17,6 +17,7 @@ public class Club {
     private String clubName;
     private String clubIntro;
     private LocalDate createdDate;
+    private String ssafyUserKey;
     List<Participant> participants = new ArrayList<>();
 
     @Builder

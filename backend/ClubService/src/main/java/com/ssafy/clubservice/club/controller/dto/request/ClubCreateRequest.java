@@ -20,4 +20,5 @@ public class ClubCreateRequest {
 
     private String clubName;
     private String clubIntro;
+    private String ssafyUserKey;
 }

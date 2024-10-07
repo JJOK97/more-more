@@ -5,6 +5,10 @@ plugins {
 	id "org.sonarqube" version "4.0.0.2929"
 }
 
+ext {
+	springCloudVersion = "2023.0.3"
+}
+
 sonar {
 	properties {
 		property "sonar.projectKey", "S11P21A605"
@@ -37,6 +41,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'io.micrometer:micrometer-core'
 
+
 	//aws sdk v2
 	implementation platform('software.amazon.awssdk:bom:2.17.230')
 	implementation 'software.amazon.awssdk:s3'
@@ -45,6 +50,8 @@ dependencies {
 	//lombok
 	implementation 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	//feign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	//mapper
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
@@ -56,6 +63,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+	}
 }
 
 tasks.named('test') {

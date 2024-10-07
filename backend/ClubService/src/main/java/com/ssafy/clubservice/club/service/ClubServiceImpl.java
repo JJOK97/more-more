@@ -1,5 +1,6 @@
 package com.ssafy.clubservice.club.service;
 
+import com.ssafy.clubservice.club.infrastructure.client.ClientConnector;
 import com.ssafy.clubservice.club.infrastructure.repository.ClubRepository;
 import com.ssafy.clubservice.club.infrastructure.repository.ParticipantRepository;
 import com.ssafy.clubservice.club.infrastructure.s3.S3Connector;
@@ -20,14 +21,17 @@ public class ClubServiceImpl implements ClubService {
     private final ParticipantRepository participantRepository;
     private final S3Connector s3Connector;
     private final UUIDHolder uuidHolder;
+    private final ClientConnector clientConnector;
 
     @Override
     @Transactional
     public Club createClub(Club club, Long creatorId, MultipartFile file){
         club = club.generateClubCode(uuidHolder);
+        clientConnector.createAccount(club.getSsafyUserKey(), club.getClubCode());
         Club clubWithId = clubRepository.saveClub(club);
         clubWithId = addCreator(creatorId, clubWithId);
-        return clubWithId.changeImageName(processImage(club, file));
+        clubWithId = clubWithId.changeImageName(processImage(club, file));
+        return clubWithId;
     }
 
     private String processImage(Club club, MultipartFile file) {
