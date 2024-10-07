@@ -1,10 +1,8 @@
 package com.ssafy.accountservice.account.controller;
 
-import com.ssafy.accountservice.account.controller.dto.request.AccountCreateRequest;
-import com.ssafy.accountservice.account.controller.dto.request.AccountTransferFillRequest;
-import com.ssafy.accountservice.account.controller.dto.request.AccountTransferRequest;
-import com.ssafy.accountservice.account.controller.dto.request.CardRequest;
+import com.ssafy.accountservice.account.controller.dto.request.*;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,5 +65,54 @@ public class AccountController {
     public ResponseEntity<String> useCard(@RequestBody CardRequest cardRequest) {
         String responseMessage = accountService.cardUse(cardRequest);
         return new ResponseEntity<>(responseMessage, HttpStatus.CREATED);
+    }
+
+
+    @Operation(summary = "계좌 내역 단일 조회")
+    @GetMapping("/history/{ssafy_transaction_number}")
+    public ResponseEntity<AccountHistoryEntity> getHistoryOnly(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber) {
+        AccountHistoryEntity accountHistoryEntity = accountService.historyGetOnly(ssafyTransactionNumber);
+        return new ResponseEntity<>(accountHistoryEntity, HttpStatus.CREATED);
+    }
+
+
+    @Operation(summary = "입출금 증빙 내역 생성")
+    @PostMapping("/{ssafy_transaction_number}/verification")
+    public ResponseEntity<String> saveVerify(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber, @RequestBody VerificationRequest verificationRequest) {
+        // 객체 생성 후 세터를 사용해 값 설정
+        VerificationSaveRequest verificationSaveRequest = new VerificationSaveRequest();
+        verificationSaveRequest.setSsafyTransactionNumber(ssafyTransactionNumber);
+        verificationSaveRequest.setAccountHistoryMemo(verificationRequest.getAccountHistoryMemo());
+        verificationSaveRequest.setAccountHistoryImage(verificationRequest.getAccountHistoryImage());
+
+        System.out.println("verificationSaveRequest = " + verificationSaveRequest);
+
+        accountService.verifySave(verificationSaveRequest);
+        return ResponseEntity.ok("저장에 성공했습니다");
+    }
+
+    @Operation(summary = "입출금 증빙 내역 조회")
+    @GetMapping("{ssafy_transaction_number}/verification")
+    public VerifyEntity selectVerification(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber) {
+        return accountService.verifySelect(ssafyTransactionNumber);
+    }
+
+    @Operation(summary = "입출금 증빙 내역 업데이트")
+    @PutMapping("/{ssafy_transaction_number}/verification")
+    public ResponseEntity<String> updateVerification(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber, @RequestBody VerificationRequest verificationRequest) {
+        VerificationSaveRequest verificationSaveRequest = new VerificationSaveRequest();
+        verificationSaveRequest.setSsafyTransactionNumber(ssafyTransactionNumber);
+        verificationSaveRequest.setAccountHistoryMemo(verificationRequest.getAccountHistoryMemo());
+        verificationSaveRequest.setAccountHistoryImage(verificationRequest.getAccountHistoryImage());
+
+        accountService.verifyUpdate(ssafyTransactionNumber, verificationSaveRequest);
+        return ResponseEntity.ok("업데이트에 성공했습니다");
+    }
+
+    @Operation(summary = "입출금 증빙 내역 삭제")
+    @DeleteMapping("/{ssafy_transaction_number}/verification")
+    public ResponseEntity<String> deleteVerification(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber) {
+        accountService.verifyDelete(ssafyTransactionNumber);
+        return ResponseEntity.ok("삭제에 성공했습니다");
     }
 }

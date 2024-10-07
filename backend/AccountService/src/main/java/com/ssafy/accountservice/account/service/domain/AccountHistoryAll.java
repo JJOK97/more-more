@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class AccountHistoryAll {
     private Long accountHistoryId;           // 계좌 내역 ID
-    private Long accountId;                  // 계좌 ID
+    private String accountId;                  // 계좌 ID
     private String tagName;                  // 결제 태그
     private String ssafyTransactionNumber;   // SSAFY 거래 번호
     private String accountDate;              // 결제 날짜 (YYYYMMDD 형식)
@@ -26,7 +26,7 @@ public class AccountHistoryAll {
     }
 
     // 모든 필드를 초기화하는 생성자
-    public AccountHistoryAll(Long accountId, String tagName, String ssafyTransactionNumber,
+    public AccountHistoryAll(String accountId, String tagName, String ssafyTransactionNumber,
                              String paymentType, String paymentAmount, String accountBalance,
                              String accountHistoryVerificationContent) {
         this.accountId = accountId;

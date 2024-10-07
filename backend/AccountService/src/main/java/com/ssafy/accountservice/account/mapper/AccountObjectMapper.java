@@ -12,7 +12,13 @@ import java.util.ArrayList;
 @Mapper(componentModel = "spring")
 public interface AccountObjectMapper {
 
-    Account fromCreateRequestToDomain(AccountCreateRequest accountCreateRequest);
+    default Account fromCreateRequestToDomain(AccountCreateRequest accountCreateRequest) {
+        return new Account(
+                accountCreateRequest.getSsafyUserKey(),
+                accountCreateRequest.getClubCode(),
+                accountCreateRequest.getPwd()
+        );
+    }
 
     default AccountEntity fromDomainToEntity(ArrayList<String> arrayList) {
         if (arrayList == null || arrayList.size() < 4) {

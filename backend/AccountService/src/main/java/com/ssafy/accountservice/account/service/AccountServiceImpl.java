@@ -4,10 +4,8 @@ import com.ssafy.accountservice.account.controller.dto.request.*;
 import com.ssafy.accountservice.account.controller.dto.response.*;
 import com.ssafy.accountservice.account.infrastructure.repository.AccountRepository;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
-import com.ssafy.accountservice.account.service.domain.Account;
-import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
-import com.ssafy.accountservice.account.service.domain.AccountTransfer;
-import com.ssafy.accountservice.account.service.domain.AccountUtils;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
+import com.ssafy.accountservice.account.service.domain.*;
 import com.ssafy.accountservice.client.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -132,7 +130,7 @@ public class AccountServiceImpl implements AccountService {
 
         // account_history 테이블에 저장할 AccountHistoryAll 객체 생성 및 데이터 설정
         AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
-        accountHistoryAll.setAccountId(Long.valueOf(balanceResponse.getRec().getAccountNo()));   // 계좌 ID
+        accountHistoryAll.setAccountId(balanceResponse.getRec().getAccountNo());   // 계좌 ID
         accountHistoryAll.setTagName(LocalDate.now() + "." + firstRec.getTransactionType());  // 결제 태그
         accountHistoryAll.setSsafyTransactionNumber(balanceResponse.getHeader().getInstitutionTransactionUniqueNo());  // SSAFY 거래번호
         accountHistoryAll.setPaymentType(firstRec.getTransactionTypeName());       // 결제 타입
@@ -162,6 +160,8 @@ public class AccountServiceImpl implements AccountService {
         accountTransferApiRequest.setTransactionBalance(accountTransferFillRequest.getTransactionBalance());
         accountTransferApiRequest.setWithdrawalAccountNo(accountTransferFillRequest.getWithdrawalAccountNo()); // 출금 계좌
 
+        System.out.println("accountTransferApiRequest = " + accountTransferApiRequest);
+        
         // Feign Client 사용하여 이체 API 호출
         AccountTransferApiResponse accountTransferApiResponse = accountTransferFeignClient.transferAccountBalance(accountTransferApiRequest);
         AccountTransferApiResponse.REC secondRec = accountTransferApiResponse.getRec().get(1);
@@ -181,6 +181,8 @@ public class AccountServiceImpl implements AccountService {
         accountSelectApiRequest.getHeader().setUserKey(managerKey);
         accountSelectApiRequest.setAccountNo(accountNum);
 
+        System.out.println("accountSelectApiRequest = " + accountSelectApiRequest);
+        
         // Feign Client로 잔고 조회
         AccountSelectBalanceApiResponse balanceResponse = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
 
@@ -189,13 +191,15 @@ public class AccountServiceImpl implements AccountService {
 
         // 이체 내역을 기록할 AccountHistoryAll 객체 생성
         AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
-        accountHistoryAll.setAccountId(Long.valueOf(balanceResponse.getRec().getAccountNo()));  // 계좌 ID
+        accountHistoryAll.setAccountId(balanceResponse.getRec().getAccountNo());  // 계좌 ID
         accountHistoryAll.setTagName(LocalDate.now() + "." + secondRec.getTransactionType());  // 결제 태그
         accountHistoryAll.setSsafyTransactionNumber(balanceResponse.getHeader().getInstitutionTransactionUniqueNo());  // SSAFY 거래번호
         accountHistoryAll.setPaymentType(secondRec.getTransactionTypeName()); // 결제 타입
         accountHistoryAll.setPaymentAmount(accountTransferFillRequest.getTransactionBalance()); // 이체 금액
         accountHistoryAll.setAccountBalance(balanceResponse.getRec().getAccountBalance());  // 계좌 잔고
 
+        System.out.println("accountHistoryAll = " + accountHistoryAll);
+        
         // accountRepository를 통해 내역 저장
         accountRepository.insertAccountHistory(accountHistoryAll);
 
@@ -209,7 +213,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.selectAccountHistory(accountNum);
     }
 
-
+    @Override
     public String cardUse(CardRequest cardRequest) {
         // pg DB이용하여 클럽코드 가져옴
 
@@ -231,7 +235,7 @@ public class AccountServiceImpl implements AccountService {
         accountSelectApiRequest.getHeader().setApiKey(apiKey);
         accountSelectApiRequest.getHeader().setUserKey(managerKey);
         accountSelectApiRequest.setAccountNo(accountNum);
-
+        
         // Feign Client를 통해 계좌 잔액 조회
         AccountSelectBalanceApiResponse response = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
 
@@ -260,16 +264,26 @@ public class AccountServiceImpl implements AccountService {
             useCardApiRequest.setMerchantId(cardRequest.getMerchantId());
             useCardApiRequest.setPaymentBalance(cardRequest.getPaymentBalance());
 
+
             UseCardApiResponse useCardApiResponse = useCardFeignClient.useCardByPg(useCardApiRequest);
+
+
+            // Feign Client를 통해 계좌 잔액 다시 조회
+            AccountSelectApiRequest accountSelectReApiRequest = new AccountSelectApiRequest();
+            accountSelectReApiRequest.getHeader().setApiKey(apiKey);
+            accountSelectReApiRequest.getHeader().setUserKey(managerKey);
+            accountSelectReApiRequest.setAccountNo(accountNum);
+
+            AccountSelectBalanceApiResponse apiResponse = selectAccountNumFeignClient.selectAccountBalance(accountSelectReApiRequest);
 
             // 카드 결제 내역을 DB에 저장
             AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
-            accountHistoryAll.setAccountId(Long.valueOf(response.getRec().getAccountNo()));  // 계좌 ID
-            accountHistoryAll.setTagName(LocalDate.now() + "." + useCardApiResponse.getRec().getMerchantName());  // 결제 태그
+            accountHistoryAll.setAccountId(apiResponse.getRec().getAccountNo());  // 계좌 ID
+            accountHistoryAll.setTagName(LocalDate.now() + "." + useCardApiResponse.getRec().getMerchantName() + "." + useCardApiResponse.getRec().getTransactionTime());  // 결제 태그
             accountHistoryAll.setSsafyTransactionNumber(useCardApiResponse.getHeader().getInstitutionTransactionUniqueNo());  // SSAFY 거래번호
             accountHistoryAll.setPaymentType(useCardApiResponse.getRec().getMerchantName());  // 결제 타입
             accountHistoryAll.setPaymentAmount(useCardApiResponse.getRec().getPaymentBalance());  // 결제 금액
-            accountHistoryAll.setAccountBalance(response.getRec().getAccountBalance());  // 계좌 잔고
+            accountHistoryAll.setAccountBalance(apiResponse.getRec().getAccountBalance());  // 계좌 잔고
 
             // accountRepository를 통해 내역 저장
             accountRepository.insertAccountHistory(accountHistoryAll);
@@ -280,5 +294,34 @@ public class AccountServiceImpl implements AccountService {
             // 결제 실패 (잔액 부족)
             return "결제 실패: 잔액이 부족합니다.";
         }
+    }
+
+
+    @Override
+    public AccountHistoryEntity historyGetOnly(String ssafyTransactionNumber) {
+        return accountRepository.selectHistoryOnly(ssafyTransactionNumber);
+    }
+
+
+    @Override
+    public void verifySave(VerificationSaveRequest verificationSaveRequest) {
+        accountRepository.insertVerify(verificationSaveRequest);
+    }
+
+
+    @Override
+    public VerifyEntity verifySelect(String ssafyTransactionNumber) {
+        return accountRepository.selectVerify(ssafyTransactionNumber);
+    }
+
+    @Override
+    public void verifyUpdate(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest) {
+        accountRepository.updateVerify(ssafyTransactionNumber, verificationSaveRequest);
+    }
+
+
+    @Override
+    public void verifyDelete(String ssafyTransactionNumber) {
+        accountRepository.deletetVerify(ssafyTransactionNumber);
     }
 }

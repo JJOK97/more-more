@@ -1,6 +1,5 @@
 package com.ssafy.accountservice.account.service.domain;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
