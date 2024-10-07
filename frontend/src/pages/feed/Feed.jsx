@@ -52,7 +52,7 @@ const Feed = () => {
 						.reverse() // 복사한 배열을 역순으로
 						.map((post) => (
 							<PostView
-								key={post.postId}
+								key={post.postingId}
 								post={post}
 							/>
 						))

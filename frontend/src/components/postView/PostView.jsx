@@ -45,12 +45,12 @@ const PostView = ({ post }) => {
 				<div className="feed-profile-area">
 					<img
 						className="feed-profile-image"
-						src={post.userProfile}
+						src={post.memberInfo.profileImageUrl}
 						alt="프로필"
 					/>
 					<div className="feed-profile-data">
-						<div className="feed-profile-name">{post.userName}</div>
-						<div className="feed-profile-date">{formatDate(post.date)}</div>
+						<div className="feed-profile-name">{post.memberInfo.name}</div>
+						<div className="feed-profile-date">{formatDate(post.postingCreatedTime)}</div>
 					</div>
 				</div>
 				<div className="feed-account-history">#{post.accountHistory}</div>
@@ -62,12 +62,12 @@ const PostView = ({ post }) => {
 					to={`/group/${post.groupId}/${post.postId}`}
 					className="feed-post-area"
 				>
-					<div className={`feed-post-content ${isFeedPage ? 'line-clamp' : ''}`}>{post.postContent}</div>
+					<div className={`feed-post-content ${isFeedPage ? 'line-clamp' : ''}`}>{post.postingContent}</div>
 					{/* 첫 번째 이미지 렌더링 */}
-					{post.postImage.length > 0 && (
+					{post.imageUrls.length > 0 && (
 						<img
 							className="feed-post-image"
-							src={post.postImage[0]}
+							src={post.imageUrls[0]}
 							alt="사진"
 						/>
 					)}
@@ -76,7 +76,7 @@ const PostView = ({ post }) => {
 				<div className="feed-post-area">
 					<div className="feed-post-content">{post.postContent}</div>
 					{/* 모든 이미지 렌더링 */}
-					{post.postImage.map((image, index) => (
+					{post.imageUrls.map((image, index) => (
 						<img
 							key={index}
 							className="feed-post-image"
