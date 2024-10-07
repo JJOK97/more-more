@@ -40,7 +40,7 @@ const Profile = () => {
 					/>
 				))}
 			</div>
-			<button className="profile-edit-button">프로필 수정하기</button>
+			{/* <button className="profile-edit-button">프로필 수정하기</button> */}
 		</div>
 	);
 };
