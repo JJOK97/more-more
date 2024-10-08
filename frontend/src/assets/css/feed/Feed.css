@@ -38,6 +38,20 @@
 	align-items: center;
 }
 
+.feed-head-right {
+	display: flex;
+}
+
+.feed-delete-button {
+	border: none;
+	border-radius: 0.5rem;
+	padding: 0 0.5rem;
+	background-color: red;
+	color: white;
+	font-size: 0.75rem;
+	font-family: 'Pretendard';
+}
+
 .feed-profile-image {
 	width: 2.5rem;
 	height: 2.5rem;

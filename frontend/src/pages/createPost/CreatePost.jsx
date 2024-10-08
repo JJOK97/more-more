@@ -4,23 +4,42 @@ import ContentInput from '@/components/createPost/ContentInput';
 import ImageGrid from '@/components/createPost/ImageGrid';
 import ImageUpload from '@/components/createPost/ImageUpload';
 import FinishButton from '@/components/createPost/FinishButton';
-import '@/assets/css/createPost/CreatePost.css';
+import './CreatePost.css';
 import useGroupName from '@/store/useGroupName';
 import { useNavigate, useParams } from 'react-router-dom';
 import AddTagModal from './AddTagModal';
+import { getDatas } from '../feed/getData';
 
 const CreatePost = () => {
 	const { setGroupName } = useGroupName();
 	const { groupId } = useParams(); // URL에서 groupId를 추출
+	const [groupInfo, setGroupInfo] = useState(null);
 	const [images, setImages] = useState([]);
 	const [content, setContent] = useState('');
 	const [accountHistoryTag, setAccountHistoryTag] = useState(''); // 추가 태그 상태 관리
 	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
 	const navigate = useNavigate();
 
+	// 그룹 정보를 불러오는 useEffect
 	useEffect(() => {
-		setGroupName(groupId);
-	}, [groupId, setGroupName]);
+		const getGroupInfo = async () => {
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
+				const data = await getDatas(url);
+				setGroupInfo(data);
+			} catch (error) {
+				console.error('Error fetching group info:', error);
+			}
+		};
+		getGroupInfo();
+	}, [groupId]);
+
+	// groupInfo가 업데이트될 때, groupName 상태를 업데이트
+	useEffect(() => {
+		if (groupInfo && groupInfo.clubName) {
+			setGroupName(groupInfo.clubName);
+		}
+	}, [groupInfo, setGroupName]);
 
 	const handleImageUpload = (newImages) => {
 		setImages((prevImages) => [...prevImages, ...newImages]);
