@@ -6,7 +6,7 @@ import ContentInput from './ContentInput'; // ContentInput 컴포넌트 import
 import '@/assets/css/post/Post.css';
 import useGroupName from '@/store/useGroupName';
 import { getDatas } from '../feed/getData';
-import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postApi'; // 좋아요 관련 API 함수 import
+import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postAPI'; // 좋아요 관련 API 함수 import
 
 const Post = () => {
 	const { setGroupName } = useGroupName();
