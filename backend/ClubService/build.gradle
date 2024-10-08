@@ -30,6 +30,9 @@ jacocoTestReport {
 	reports {
 		xml.required = true  // Required for Jenkins integration
 		html.required = true
+		xml.destination file("${buildDir}/jacoco/index.xml")
+        csv.destination file("${buildDir}/jacoco/index.csv")
+        html.destination file("${buildDir}/jacoco/index.html")
 	}
 }
 
