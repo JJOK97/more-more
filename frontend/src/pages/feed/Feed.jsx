@@ -2,39 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '@/assets/css/feed/Feed.css';
 import PostView from '@/components/postView/PostView';
-import datas from '@/pages/feed/data.json';
 import useGroupName from '@/store/useGroupName';
 import { getDatas } from './getData';
 
 const Feed = () => {
-	const { setGroupName } = useGroupName();
 	const { groupId } = useParams(); // URL에서 groupId를 추출
+	const [groupInfo, setGroupInfo] = useState(null);
+	const { setGroupName } = useGroupName();
 	const [posts, setPosts] = useState([]);
+	const [loading, setLoading] = useState(true);
 
+	// 그룹 정보를 불러오는 useEffect
 	useEffect(() => {
-		setGroupName(groupId);
-	}, []);
+		const getGroupInfo = async () => {
+			setLoading(true); // 로딩 시작
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
+				const data = await getDatas(url);
+				setGroupInfo(data);
+			} catch (error) {
+				console.error('Error fetching group info:', error);
+			} finally {
+				setLoading(false);
+			}
+		};
+		getGroupInfo();
+	}, [groupId]);
 
-	// useEffect(() => {
-	// 	const fetchPosts = () => {
-	// 		const filteredPosts = datas.posts.filter((post) => post.groupId === parseInt(groupId, 10));
-	// 		setPosts(filteredPosts);
-	// 	};
+	// groupInfo가 업데이트될 때, groupName 상태를 업데이트
+	useEffect(() => {
+		if (groupInfo && groupInfo.clubName) {
+			setGroupName(groupInfo.clubName);
+		}
+	}, [groupInfo, setGroupName]);
 
-	// 	fetchPosts();
-	// }, [groupId]);
-
+	// 게시물들을 불러오는 useEffect
 	useEffect(() => {
 		const getAllPosts = async () => {
-			const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
-			const data = await getDatas(url);
-			console.log(data);
-			setPosts(data);
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
+				const data = await getDatas(url);
+				console.log(data);
+				setPosts(data);
+			} catch (error) {
+				console.error('Error fetching posts:', error);
+			}
 		};
 		getAllPosts();
 	}, [groupId]);
 
-	if (!posts) {
+	if (loading) {
 		return <div>Loading...</div>;
 	}
 
@@ -42,14 +59,12 @@ const Feed = () => {
 		<div className="group-feed">
 			<img
 				className="group-background-image"
-				src="/feed/배경사진.png"
+				src={groupInfo && groupInfo.clubImage}
 				alt="배경사진"
 			/>
 			<div className="feed-container">
 				{posts.length > 0 ? (
 					posts
-						.slice() // 원본 배열을 유지하기 위해 복사
-						.reverse() // 복사한 배열을 역순으로
 						.map((post) => (
 							<PostView
 								key={post.postingId}
@@ -57,7 +72,7 @@ const Feed = () => {
 							/>
 						))
 				) : (
-					<p>모임에 아직 게시물이 없습니다.</p>
+					<p>Loading...</p>
 				)}
 			</div>
 			<Link to={`/group/${groupId}/create`}>

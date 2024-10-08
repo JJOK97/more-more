@@ -59,7 +59,7 @@ const PostView = ({ post }) => {
 			{/* feed-post-area를 링크로 감싸고, /group/:groupId일 때만 Link를 사용 */}
 			{isFeedPage ? (
 				<Link
-					to={`/group/${post.groupId}/${post.postId}`}
+					to={`/group/${post.clubCode}/${post.postingId}`}
 					className="feed-post-area"
 				>
 					<div className={`feed-post-content ${isFeedPage ? 'line-clamp' : ''}`}>{post.postingContent}</div>
@@ -74,7 +74,7 @@ const PostView = ({ post }) => {
 				</Link>
 			) : (
 				<div className="feed-post-area">
-					<div className="feed-post-content">{post.postContent}</div>
+					<div className="feed-post-content">{post.postingContent}</div>
 					{/* 모든 이미지 렌더링 */}
 					{post.imageUrls.map((image, index) => (
 						<img
