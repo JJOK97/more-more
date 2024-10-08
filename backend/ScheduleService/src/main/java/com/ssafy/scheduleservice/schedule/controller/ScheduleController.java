@@ -56,7 +56,6 @@ public class ScheduleController {
                 .scheduleId(scheduleId)
                 .build();
 
-        System.out.println("schedule.getEvent() = " + schedule.getEvent());
         Schedule updatedSchedule = scheduleService.updateSchedule(schedule);
         return scheduleObjectMapper.fromDomainToUpdateResponse(updatedSchedule);
     }
@@ -82,12 +81,5 @@ public class ScheduleController {
     public List<ScheduleResponse> findScheduleByFullDate(@PathVariable String clubCode, @PathVariable String date) {
         return scheduleService.findSchedulesByClubCodeAndFullDate(clubCode, date);
     }
-
-
-
-
-
-
-
 
 }
