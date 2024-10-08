@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postApi'; // getLikeCount 추가
+import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postAPI'; // getLikeCount 추가
 
 const formatDate = (dateString) => {
 	const postDate = new Date(dateString);
