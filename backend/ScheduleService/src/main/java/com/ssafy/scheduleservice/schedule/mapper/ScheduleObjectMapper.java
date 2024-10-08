@@ -14,7 +14,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ScheduleObjectMapper {
 
-        Schedule fromRequestDtoToDomain(ScheduleCreateRequest scheduleCreateRequest);
+        Schedule fromCreateRequestToDomain(ScheduleCreateRequest scheduleCreateRequest);
 
         Schedule fromEntityToDomain(ScheduleEntity scheduleEntity);
 
@@ -45,4 +45,8 @@ public interface ScheduleObjectMapper {
                         return fromDomainToEntity(schedule); // 기본 자동 매핑 메서드 호출
                 }
         }
+
+
+
+
 }

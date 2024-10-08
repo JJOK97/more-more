@@ -11,5 +11,9 @@ public interface ScheduleService {
     Schedule saveSchedule(Schedule schedule); // 스케줄 생성
     Schedule updateSchedule(Schedule schedule);
     void deleteBySchedule(String clubCode, Long scheduleId);
+
+    List<String> findSchedulesByClubCodeAndDate(String clubCode, String date);
+
+    List<ScheduleResponse> findSchedulesByClubCodeAndFullDate(String clubCode, String date);
 }
 

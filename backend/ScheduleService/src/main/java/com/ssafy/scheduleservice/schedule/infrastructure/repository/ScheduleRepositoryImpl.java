@@ -56,4 +56,14 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         scheduleMybatisMapper.deleteSchedule(clubCode, scheduleId);
     }
 
+    @Override
+    public List<String> findSchedulesByClubCodeAndDate(String clubCode, String date) {
+        return scheduleMybatisMapper.findSchedulesByClubCodeAndDate(clubCode, date);
+    }
+
+    @Override
+    public List<ScheduleEntity> findSchedulesByClubCodeAndFullDate(String clubCode, String date) {
+        return scheduleMybatisMapper.findSchedulesByClubCodeAndFullDate(clubCode, date);
+    }
+
 }

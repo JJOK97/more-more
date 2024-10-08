@@ -10,7 +10,7 @@
     </select>
 
     <!-- 전체 스케줄 조회 -->
-    <select id="findAllScheduleEntities" parameterType="String" resultType="com.ssafy.scheduleservice.schedule.infrastructure.repository.entity.ScheduleEntity">
+    <select id="findAllSchedules" parameterType="String" resultType="com.ssafy.scheduleservice.schedule.infrastructure.repository.entity.ScheduleEntity">
         SELECT *
         FROM schedules
         WHERE club_code = #{clubCode}
@@ -34,4 +34,22 @@
         DELETE FROM schedules
         WHERE club_code = #{clubCode} and schedule_id = #{scheduleId}
     </delete>
+
+
+    <select id="findSchedulesByClubCodeAndDate" resultType="java.lang.String">
+        SELECT DISTINCT date
+        FROM schedules
+        WHERE club_code = #{clubCode}
+          AND date LIKE CONCAT(#{date}, '%')
+        ORDER BY date ASC
+    </select>
+
+    <select id="findSchedulesByClubCodeAndFullDate" resultType="com.ssafy.scheduleservice.schedule.infrastructure.repository.entity.ScheduleEntity">
+        SELECT *
+        FROM schedules
+        WHERE club_code = #{clubCode}
+          AND date LIKE CONCAT(#{date}, '%')
+        ORDER BY time ASC
+    </select>
+
 </mapper>
