@@ -16,9 +16,10 @@ const Schedule = () => {
 	const [schedules, setSchedules] = useState([]);
 	const [monthlySchedules, setMonthlySchedules] = useState([]);
 	const [selectedDateSchedules, setSelectedDateSchedules] = useState([]);
-	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [selectedDate, setSelectedDate] = useState(new Date()); // 사용자가 클릭한 날짜를 저장
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [attendDay, setAttendDay] = useState([]);
 
 	const fetchSchedules = useCallback(async () => {
 		setIsLoading(true);
@@ -38,7 +39,7 @@ const Schedule = () => {
 		async (yearMonth) => {
 			try {
 				const response = await getMonthlySchedules(groupId, yearMonth);
-				setMonthlySchedules(response);
+				setAttendDay(response);
 			} catch (error) {
 				console.error('월간 스케줄을 가져오는데 실패했습니다:', error);
 			}
@@ -72,10 +73,16 @@ const Schedule = () => {
 			if (isNaN(memberId)) {
 				throw new Error('유효한 memberId가 없습니다.');
 			}
+
+			// 스케줄 생성 API 호출
 			await createSchedule({ ...newScheduleData, clubCode: groupId, memberId });
-			fetchSchedules();
-			fetchMonthlySchedules(moment(newScheduleData.date).format('YYYY-MM'));
-			fetchDailySchedules(selectedDate);
+
+			// 상태를 새로고침 없이 업데이트
+			fetchSchedules(); // 모든 스케줄 다시 가져오기
+			fetchMonthlySchedules(moment(newScheduleData.date).format('YYYY-MM')); // 월간 스케줄 가져오기
+			fetchDailySchedules(selectedDate); // 현재 선택된 날짜의 스케줄 가져오기
+
+			// 글쓰기 모드 종료
 			setIsWriting(false);
 		} catch (error) {
 			console.error('스케줄 생성에 실패했습니다:', error);
@@ -93,7 +100,7 @@ const Schedule = () => {
 
 	const handleDateSelect = useCallback(
 		(date) => {
-			setSelectedDate(date);
+			setSelectedDate(date); // 사용자가 클릭한 날짜를 저장
 			fetchDailySchedules(date);
 		},
 		[fetchDailySchedules],
@@ -114,7 +121,7 @@ const Schedule = () => {
 			<Calendar
 				onMonthChange={handleMonthChange}
 				onSelectDate={handleDateSelect}
-				scheduleDates={monthlySchedules.map((schedule) => schedule.date)}
+				scheduleDates={attendDay}
 			/>
 			<div className="schedule-container">
 				<div className="selected-date-info">
@@ -137,6 +144,7 @@ const Schedule = () => {
 			</div>
 			{isWriting && (
 				<WriteComponent
+					selectedDate={selectedDate} // 클릭한 날짜를 WriteComponent로 전달
 					onClose={() => setIsWriting(false)}
 					onSubmit={handleCreateSchedule}
 				/>

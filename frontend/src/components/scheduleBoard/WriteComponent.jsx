@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Rolldate from 'rolldate';
 import '@/assets/css/schedule/scheduleBoard/writeComponent.css';
+import moment from 'moment'; // 날짜 형식 처리를 위해 moment.js를 사용
 
-const WriteComponent = ({ onClose, onSubmit }) => {
+const WriteComponent = ({ onClose, onSubmit, selectedDate }) => {
 	const [isSelectingDateTime, setIsSelectingDateTime] = useState(false);
 	const [selectedDateTime, setSelectedDateTime] = useState('');
 	const [content, setContent] = useState('');
+
+	// 컴포넌트가 마운트될 때 selectedDate를 기본값으로 설정
+	useEffect(() => {
+		if (selectedDate) {
+			const formattedDate = moment(selectedDate).format('YYYY-MM-DD HH:mm');
+			setSelectedDateTime(formattedDate);
+		}
+	}, [selectedDate]);
 
 	const handleDateTimeClick = () => {
 		setIsSelectingDateTime(true);
@@ -25,9 +34,19 @@ const WriteComponent = ({ onClose, onSubmit }) => {
 				min: '분',
 				sec: '초',
 			},
+			init: (date) => {
+				// 기본값 설정 (selectedDate가 있는 경우 해당 날짜로)
+				if (selectedDateTime) {
+					return new Date(selectedDateTime);
+				}
+				return date; // 기본 날짜
+			},
 			confirm: (date) => {
-				console.log('선택된 날짜 및 시간:', date);
-				setSelectedDateTime(date);
+				// 선택된 날짜 및 시간을 5분 단위로 반올림
+				const roundedDate = roundToFiveMinutes(date);
+				const formattedDate = moment(roundedDate).format('YYYY-MM-DD HH:mm');
+				console.log('선택된 날짜 및 시간 (5분 단위):', formattedDate);
+				setSelectedDateTime(formattedDate);
 				setIsSelectingDateTime(false);
 			},
 			cancel: () => {
@@ -37,9 +56,14 @@ const WriteComponent = ({ onClose, onSubmit }) => {
 		rolldate.show();
 	};
 
-	const handleRegister = (e) => {
-		e.preventDefault();
-		const [date, time] = selectedDateTime.split(' ');
+	// 5분 단위로 시간을 반올림하는 함수
+	const roundToFiveMinutes = (date) => {
+		const ms = 1000 * 60 * 5; // 5분을 밀리초로 변환
+		return new Date(Math.round(date.getTime() / ms) * ms); // 시간 반올림
+	};
+
+	const handleRegister = () => {
+		const [date, time] = selectedDateTime.split(' '); // 날짜와 시간 분리
 		onSubmit({
 			event: content,
 			date,
@@ -57,47 +81,43 @@ const WriteComponent = ({ onClose, onSubmit }) => {
 					className="write-component"
 					onClick={(e) => e.stopPropagation()}
 				>
-					<form
-						onSubmit={handleRegister}
-						className="write-form"
-					>
-						<div className="form-group">
-							<label htmlFor="content">내용</label>
-							<textarea
-								id="content"
-								placeholder="내용을 입력하세요"
-								required
-								value={content}
-								onChange={(e) => setContent(e.target.value)}
-							></textarea>
-						</div>
-						<div className="form-group">
-							<input
-								id="dateTime"
-								type="text"
-								value={selectedDateTime}
-								placeholder="날짜 및 시간을 선택하세요"
-								readOnly
-								required
-								onClick={handleDateTimeClick}
-							/>
-						</div>
-						<div className="button-group">
-							<button
-								type="button"
-								className="cancel-button"
-								onClick={onClose}
-							>
-								취소
-							</button>
-							<button
-								type="submit"
-								className="submit-button"
-							>
-								등록
-							</button>
-						</div>
-					</form>
+					<div className="form-group">
+						<label htmlFor="content">내용</label>
+						<textarea
+							id="content"
+							placeholder="내용을 입력하세요"
+							required
+							value={content}
+							onChange={(e) => setContent(e.target.value)}
+						></textarea>
+					</div>
+					<div className="form-group">
+						<input
+							id="dateTime"
+							type="text"
+							value={selectedDateTime}
+							placeholder="날짜 및 시간을 선택하세요"
+							readOnly
+							required
+							onClick={handleDateTimeClick}
+						/>
+					</div>
+					<div className="button-group">
+						<button
+							type="button"
+							className="cancel-button"
+							onClick={onClose}
+						>
+							취소
+						</button>
+						<button
+							type="button"
+							className="submit-button"
+							onClick={handleRegister}
+						>
+							등록
+						</button>
+					</div>
 				</div>
 			)}
 		</div>
