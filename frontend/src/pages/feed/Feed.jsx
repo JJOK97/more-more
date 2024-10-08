@@ -15,15 +15,12 @@ const Feed = () => {
 	// 그룹 정보를 불러오는 useEffect
 	useEffect(() => {
 		const getGroupInfo = async () => {
-			setLoading(true); // 로딩 시작
 			try {
 				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
 				const data = await getDatas(url);
 				setGroupInfo(data);
 			} catch (error) {
 				console.error('Error fetching group info:', error);
-			} finally {
-				setLoading(false);
 			}
 		};
 		getGroupInfo();
@@ -39,13 +36,15 @@ const Feed = () => {
 	// 게시물들을 불러오는 useEffect
 	useEffect(() => {
 		const getAllPosts = async () => {
+			setLoading(true); // 로딩 시작
 			try {
 				const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
 				const data = await getDatas(url);
-				console.log(data);
 				setPosts(data);
 			} catch (error) {
 				console.error('Error fetching posts:', error);
+			} finally {
+				setLoading(false);
 			}
 		};
 		getAllPosts();
@@ -72,7 +71,7 @@ const Feed = () => {
 							/>
 						))
 				) : (
-					<p>Loading...</p>
+					<p>게시물이 없습니다</p>
 				)}
 			</div>
 			<Link to={`/group/${groupId}/create`}>

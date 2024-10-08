@@ -90,6 +90,8 @@ textarea::placeholder {
     flex-direction: column;
     /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
     gap: 0.5rem;
+    max-height: 200px; /* 원하는 최대 높이 설정 */
+    overflow-y: auto; /* 스크롤 추가 */
 }
 
 .create-post-image-item {
