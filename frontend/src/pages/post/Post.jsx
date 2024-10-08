@@ -6,6 +6,7 @@ import ContentInput from './ContentInput'; // ContentInput 컴포넌트 import
 import '@/assets/css/post/Post.css';
 import useGroupName from '@/store/useGroupName';
 import { getDatas } from '../feed/getData';
+import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postApi'; // 좋아요 관련 API 함수 import
 
 const Post = () => {
 	const { setGroupName } = useGroupName();
@@ -14,6 +15,11 @@ const Post = () => {
 	const [post, setPost] = useState(null);
 	const [comments, setComments] = useState([]);
 	const [content, setContent] = useState(''); // 댓글 내용을 저장할 상태
+
+	// 좋아요 관련 상태 추가
+	const [memberId, setMemberId] = useState(null);
+	const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
+	const [likeCount, setLikeCount] = useState(0); // 좋아요 수 관리
 
 	// 그룹 정보를 불러오는 useEffect
 	useEffect(() => {
@@ -36,18 +42,70 @@ const Post = () => {
 		}
 	}, [groupInfo, setGroupName]);
 
+	// 게시물 데이터와 좋아요 상태 및 좋아요 수 불러오기
 	useEffect(() => {
 		const fetchPost = async () => {
 			const url = `https://j11a605.p.ssafy.io/api/posting/${postId}/aboutPosting`;
 			const data = await getDatas(url);
-			console.log(data);
 			setPost(data);
 		};
 		fetchPost();
-	}, [groupId, postId]); 
+	}, [groupId, postId]);
+
+	// 로컬 스토리지에서 memberId 가져오기
+	useEffect(() => {
+		const storedMemberId = localStorage.getItem('memberId');
+		if (storedMemberId) {
+			setMemberId(storedMemberId);
+		} else {
+			console.error('No memberId found in localStorage');
+		}
+	}, []);
+
+	// 좋아요 수와 상태 확인
+	useEffect(() => {
+		const fetchLikeData = async () => {
+			try {
+				if (post && memberId) {
+					// 좋아요 수 가져오기
+					const likeCountData = await getLikeCount(post.postingId);
+					setLikeCount(likeCountData); // 가져온 좋아요 수 설정
+
+					// 좋아요 여부 확인
+					const status = await checkLikeStatus(post.postingId, memberId);
+					setIsLiked(status); // true or false
+				}
+			} catch (error) {
+				console.error('Failed to fetch like data:', error);
+			}
+		};
+
+		if (memberId) {
+			fetchLikeData();
+		}
+	}, [post, memberId]);
+
+	// 좋아요 버튼 클릭 핸들러
+	const handleLike = async () => {
+		try {
+			if (isLiked) {
+				// 좋아요 취소 API 호출
+				await unlikePost(post.postingId, memberId);
+				setIsLiked(false); // 좋아요 상태 변경
+				setLikeCount((prevCount) => prevCount - 1); // 좋아요 수 감소
+			} else {
+				// 좋아요 추가 API 호출
+				await likePost(post.postingId, memberId);
+				setIsLiked(true); // 좋아요 상태 변경
+				setLikeCount((prevCount) => prevCount + 1); // 좋아요 수 증가
+			}
+		} catch (error) {
+			console.error('Failed to toggle like status:', error);
+		}
+	};
 
 	if (!post) {
-		return <div>Loading...</div>; // 또는 다른 로딩 상태 표시
+		return <div>Loading...</div>; // 로딩 상태 표시
 	}
 
 	return (
@@ -55,6 +113,9 @@ const Post = () => {
 			<PostView
 				key={post.postId}
 				post={post}
+				isLiked={isLiked}
+				likeCount={likeCount}
+				onLike={handleLike} // 좋아요 토글 함수 전달
 			/>
 
 			<div className="comment-list-area">
