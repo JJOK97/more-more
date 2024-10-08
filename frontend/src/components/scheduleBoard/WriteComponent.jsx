@@ -1,12 +1,11 @@
-// WriteComponent.jsx
 import React, { useState } from 'react';
 import Rolldate from 'rolldate';
-
 import '@/assets/css/schedule/scheduleBoard/writeComponent.css';
 
-const WriteComponent = ({ onClose }) => {
+const WriteComponent = ({ onClose, onSubmit }) => {
 	const [isSelectingDateTime, setIsSelectingDateTime] = useState(false);
 	const [selectedDateTime, setSelectedDateTime] = useState('');
+	const [content, setContent] = useState('');
 
 	const handleDateTimeClick = () => {
 		setIsSelectingDateTime(true);
@@ -40,12 +39,12 @@ const WriteComponent = ({ onClose }) => {
 
 	const handleRegister = (e) => {
 		e.preventDefault();
-		console.log('선택된 날짜 및 시간:', selectedDateTime);
-		onClose();
-	};
-
-	const handleCancel = () => {
-		onClose();
+		const [date, time] = selectedDateTime.split(' ');
+		onSubmit({
+			event: content,
+			date,
+			time,
+		});
 	};
 
 	return (
@@ -68,6 +67,8 @@ const WriteComponent = ({ onClose }) => {
 								id="content"
 								placeholder="내용을 입력하세요"
 								required
+								value={content}
+								onChange={(e) => setContent(e.target.value)}
 							></textarea>
 						</div>
 						<div className="form-group">
@@ -85,7 +86,7 @@ const WriteComponent = ({ onClose }) => {
 							<button
 								type="button"
 								className="cancel-button"
-								onClick={handleCancel}
+								onClick={onClose}
 							>
 								취소
 							</button>

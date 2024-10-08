@@ -1,32 +1,67 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '@/assets/css/schedule/scheduleBoard/scheduleBoard.css';
-
 import dots from '@/assets/img/common/dots.svg';
+import { updateSchedule, deleteSchedule } from '@/api/scheduleApi';
+import { getMemberInfo } from '@/api/userAPI';
+import { useParams } from 'react-router-dom';
 
-const ScheduleBoard = ({ schedule }) => {
+const ScheduleBoard = ({ schedule, onUpdate, onDelete }) => {
+	const { groupId } = useParams();
+	const [memberInfo, setMemberInfo] = useState(null); // State to hold member info
+
+	// Function to fetch member info when the component mounts
+	const fetchMemberInfo = async () => {
+		try {
+			const info = await getMemberInfo(schedule.memberId); // Fetch member info using memberId
+			setMemberInfo(info); // Store the fetched info in state
+		} catch (error) {
+			console.error('Failed to fetch member info:', error);
+		}
+	};
+
+	useEffect(() => {
+		fetchMemberInfo(); // Fetch member info when the component mounts
+	}, [schedule.memberId]);
+
+	const handleUpdate = async () => {
+		await updateSchedule(schedule.clubCode, schedule.scheduleId, updatedScheduleData);
+		onUpdate(new Date(schedule.date));
+	};
+
+	const handleDelete = async () => {
+		await deleteSchedule(schedule.clubCode, schedule.scheduleId);
+		onDelete(new Date(schedule.date));
+	};
+
 	return (
 		<div className="post-body f">
 			<div className="img-area">
-				<img
-					className="profile-image"
-					src={schedule.userProfile}
-					alt={`${schedule.userName} 프로필`}
-				/>
+				{memberInfo ? (
+					<img
+						className="profile-image"
+						src={memberInfo.profileImageUrl} // Use the profile image URL from memberInfo
+						alt={`${memberInfo.name} 프로필`}
+					/>
+				) : (
+					// Fallback if image is not available
+					<div className="placeholder-profile">Loading...</div>
+				)}
 			</div>
 			<div className="post-area">
 				<div className="post-top f">
 					<div className="info-area f">
 						<div className="name-area">{schedule.userName}</div>
-						<div className="time-area">{schedule.scheduleTime}</div>
+						<div className="time-area">{schedule.time}</div>
 					</div>
 					<div className="setting-area f">
 						<img
 							className="dots"
 							src={dots}
+							onClick={handleUpdate}
 						/>
 					</div>
 				</div>
-				<div className="post-bottom">{schedule.scheduleEvent}</div>
+				<div className="post-bottom">{schedule.event}</div>
 			</div>
 		</div>
 	);

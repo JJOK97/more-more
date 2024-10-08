@@ -56,9 +56,11 @@ export const loginUser = async (phoneNumber, password) => {
 			password,
 		});
 
-		const { accessToken, refreshToken } = response.data;
+		const { accessToken, refreshToken, memberId, userKey } = response.data;
 		localStorage.setItem('accessToken', accessToken);
 		localStorage.setItem('refreshToken', refreshToken);
+		localStorage.setItem('memberId', memberId);
+		localStorage.setItem('userKey', userKey);
 
 		return response.data;
 	} catch (error) {
@@ -70,7 +72,11 @@ export const loginUser = async (phoneNumber, password) => {
 export const refreshAccessToken = async (refreshToken) => {
 	try {
 		const response = await api.post('/api/auth/refresh-token', { token: refreshToken });
-		return response.data;
+		if (response.data && response.data.accessToken) {
+			return { accessToken: response.data.accessToken };
+		} else {
+			throw new Error('Invalid response format');
+		}
 	} catch (error) {
 		console.error('Token refresh error:', error.response?.data);
 		throw error;
@@ -152,6 +158,16 @@ export const verifyEmailCode = async (email, code) => {
 			success: false,
 			message: error.response?.data?.message || '인증 과정에서 오류가 발생했습니다.',
 		};
+	}
+};
+
+export const getMemberInfo = async (memberId) => {
+	try {
+		const response = await api.get(`/api/member/${memberId}`);
+		return response.data;
+	} catch (error) {
+		console.error('회원 정보 조회 오류:', error.response?.data || error.message);
+		throw error;
 	}
 };
 
