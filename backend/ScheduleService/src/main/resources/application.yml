@@ -2,9 +2,10 @@ spring:
   application:
     name: schedule-service
   profiles:
-    active: prod
+    active: local
 
 server:
   port: 80
+
 
 

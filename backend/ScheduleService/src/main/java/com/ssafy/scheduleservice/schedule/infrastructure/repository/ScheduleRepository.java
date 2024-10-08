@@ -11,4 +11,8 @@ public interface ScheduleRepository {
     Schedule save(Schedule schedule);  // 스케줄 저장 메서드
     Schedule update(Schedule schedule);
     void delete(String clubCode, Long scheduleId);
+
+    List<String> findSchedulesByClubCodeAndDate(String clubCode, String date);
+
+    List<ScheduleEntity> findSchedulesByClubCodeAndFullDate(String clubCode, String date);
 }

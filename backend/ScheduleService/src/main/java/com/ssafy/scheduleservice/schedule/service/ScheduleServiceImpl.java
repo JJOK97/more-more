@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -45,6 +47,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void deleteBySchedule(String clubCode, Long scheduleId) {
         scheduleRepository.delete(clubCode, scheduleId);
+    }
+
+    @Override
+    public List<String> findSchedulesByClubCodeAndDate(String clubCode, String date) {
+
+
+        return scheduleRepository.findSchedulesByClubCodeAndDate(clubCode, date);
+    }
+
+    @Override
+    public List<ScheduleResponse> findSchedulesByClubCodeAndFullDate(String clubCode, String date) {
+        List<ScheduleEntity> scheduleEntities = scheduleRepository.findSchedulesByClubCodeAndFullDate(clubCode, date);
+        return scheduleObjectMapper.fromEntitiesToResponseDtos(scheduleEntities);
     }
 
 }
