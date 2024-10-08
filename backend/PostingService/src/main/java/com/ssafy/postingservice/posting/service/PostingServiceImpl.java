@@ -45,8 +45,6 @@ public class PostingServiceImpl implements PostingService {
                 String randomString = UUID.randomUUID().toString();  // 난수 생성
                 String fileName = savedPosting.getPostingId() + "_" + randomString;
 
-                System.out.println(fileName);
-
                 // S3에 파일 업로드 (파일 이름으로 저장)
                 s3Connector.upload(fileName, file);
 
@@ -117,8 +115,6 @@ public class PostingServiceImpl implements PostingService {
 
     @Override
     public PostingGetResponse findByPostId(Long postingId) {
-
-
         // 각 게시물의 이미지 URL 목록을 가져옵니다.
         List<String> imageUrls = postImageRepository.findByPostingId(postingId)
                 .stream()
@@ -127,14 +123,11 @@ public class PostingServiceImpl implements PostingService {
 
         PostingGetResponse postingGetResponse = postingRepository.findByPostId(postingId);
 
-
         // 이미지 URL 리스트 추가
         postingGetResponse.setImageUrls(imageUrls);
         List<CommentFindResponse> comments= commentRepository.getComment(postingId);
-
+        postingGetResponse.setMemberInfo(memberClient.getMember(postingGetResponse.getMemberId()));
         postingGetResponse.setComments(comments);
-
-
         return postingGetResponse;
     }
 

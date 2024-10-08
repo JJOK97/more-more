@@ -18,5 +18,6 @@ public class PostingGetResponse {
     private Timestamp postingCreatedTime;
     private List<CommentFindResponse> comments;
     private List<String> imageUrls;
+    private MemberGetResponse memberInfo;
 
 }
