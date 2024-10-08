@@ -5,7 +5,7 @@ import '@/assets/css/schedule/calendar/calendar.css';
 import moment from 'moment';
 
 function Calendar({ onSelectDate, onMonthChange, scheduleDates }) {
-	const today = new Date();
+	const today = new Date(); // 오늘 날짜
 	const [date, setDate] = useState(today);
 	const [activeStartDate, setActiveStartDate] = useState(today);
 	const [view, setView] = useState('month');
@@ -69,11 +69,9 @@ function Calendar({ onSelectDate, onMonthChange, scheduleDates }) {
 				}}
 				tileContent={({ date, view }) => {
 					let html = [];
-					if (
-						view === 'month' &&
-						date.getMonth() === today.getMonth() &&
-						date.getDate() === today.getDate()
-					) {
+
+					// 오늘 날짜에 "오늘" 표시
+					if (view === 'month' && moment(date).isSame(today, 'day')) {
 						html.push(
 							<div
 								key="today"
@@ -82,8 +80,8 @@ function Calendar({ onSelectDate, onMonthChange, scheduleDates }) {
 								오늘
 							</div>,
 						);
-					}
-					if (scheduleDates.includes(moment(date).format('YYYY-MM-DD'))) {
+					} else if (scheduleDates.includes(moment(date).format('YYYY-MM-DD'))) {
+						// 오늘이 아닌 날짜에만 점 표시
 						html.push(
 							<div
 								key={moment(date).format('YYYY-MM-DD')}
@@ -91,6 +89,7 @@ function Calendar({ onSelectDate, onMonthChange, scheduleDates }) {
 							/>,
 						);
 					}
+
 					return <>{html}</>;
 				}}
 			/>
