@@ -49,6 +49,7 @@ public class Club {
     public Club updateClub(Club club){
         this.dues = (club.getDues() != null) ? club.getDues() : this.dues;
         this.clubName = (club.getClubName() != null) ? club.getClubName() : this.clubName;
+        this.clubIntro = (club.getClubIntro() != null) ? club.getClubIntro() : this.clubIntro;
         return this;
     }
 
