@@ -8,8 +8,7 @@ import com.ssafy.clubservice.club.controller.dto.request.ClubUpdateRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ParticipantCreateRequest;
 import com.ssafy.clubservice.club.infrastructure.repository.ClubRepository;
 import com.ssafy.clubservice.club.infrastructure.repository.ParticipantRepository;
-import com.ssafy.clubservice.club.mapper.ClubObjectMapper;
-import com.ssafy.clubservice.club.mapper.ParticipantObjectMapper;
+import com.ssafy.clubservice.club.mapper.CustomObjectMapper;
 import com.ssafy.clubservice.club.service.ClubService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,18 +35,16 @@ public class ClubControllerValidationTest {
     private ClubService clubService;
 
     @MockBean
-    private ClubObjectMapper clubObjectMapper;
+    private CustomObjectMapper customObjectMapper;
 
     @MockBean
     private ClubRepository clubRepository;
 
-    @MockBean
-    private ParticipantObjectMapper participantObjectMapper;
 
     @MockBean
     private ParticipantRepository participantRepository;
 
-    private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper().registerModule(new JavaTimeModule());
 
     @DisplayName("새로운 모임을 등록할 때, 회비는 0원보다 커야한다.")
     @Test

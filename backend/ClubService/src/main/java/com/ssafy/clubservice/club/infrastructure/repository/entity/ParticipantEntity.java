@@ -3,10 +3,12 @@ package com.ssafy.clubservice.club.infrastructure.repository.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class ParticipantEntity {
