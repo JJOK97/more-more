@@ -14,8 +14,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ScheduleObjectMapper {
 
-        Schedule fromCreateRequestToDomain(ScheduleCreateRequest scheduleCreateRequest);
 
+        Schedule fromCreateRequestToDomain(ScheduleCreateRequest scheduleCreateRequest);
         Schedule fromEntityToDomain(ScheduleEntity scheduleEntity);
 
         ScheduleResponse fromDomainToResponseDto(Schedule schedule);

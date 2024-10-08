@@ -3,7 +3,6 @@ package com.ssafy.scheduleservice.schedule.service.domain;
 import lombok.*;
 
 @Getter
-@Setter
   // 기존 객체에서 빌더 패턴을 이용해 수정할 수 있도록 설정
 public class Schedule {
     private Long scheduleId;
