@@ -24,4 +24,5 @@ public interface AccountService {
     VerifyEntity verifySelect(String ssafyTransactionNumber);
     void verifyUpdate(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest);
     void verifyDelete(String ssafyTransactionNumber);
+    Map<String, String> accountBalanceMemberId(Long memberId);
 }
