@@ -168,11 +168,17 @@ public class AccountController {
     }
 
 
-
     @Operation(summary = "입출금 증빙 내역 삭제")
     @DeleteMapping("/{ssafy_transaction_number}/verification")
     public ResponseEntity<String> deleteVerification(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber) {
         accountService.verifyDelete(ssafyTransactionNumber);
         return ResponseEntity.ok("삭제에 성공했습니다");
+    }
+
+
+    @Operation(summary = "멤버 id로 잔액 조회하기")
+    @GetMapping("/{member_id}/accountBalance")
+    public Map<String, String> memberIdAccountBalance(@PathVariable("member_id") Long memberId) {
+        return accountService.accountBalanceMemberId(memberId);
     }
 }

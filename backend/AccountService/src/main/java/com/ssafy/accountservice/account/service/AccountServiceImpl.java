@@ -25,6 +25,7 @@ public class AccountServiceImpl implements AccountService {
     private final SelectAccountNumFeignClient selectAccountNumFeignClient;
     private final AccountTransferFeignClient accountTransferFeignClient;
     private final UseCardFeignClient useCardFeignClient;
+    private final MemberClient memberClient;
 
     @Override
     public void accountCreate(Account account) {
@@ -318,5 +319,28 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void verifyDelete(String ssafyTransactionNumber) {
         accountRepository.deletetVerify(ssafyTransactionNumber);
+    }
+
+
+    @Override
+    public Map<String, String> accountBalanceMemberId(Long memberId) {
+        String apiKey = AccountUtils.getApiKey();
+
+        MemberGetResponse MemberGetResponse = memberClient.getMember(memberId);
+        String userKey = MemberGetResponse.getUserKey();
+        String accountNum = MemberGetResponse.getAccountNumber();
+
+        AccountSelectApiRequest accountSelectApiRequest = new AccountSelectApiRequest();
+        accountSelectApiRequest.getHeader().setApiKey(apiKey);
+        accountSelectApiRequest.getHeader().setUserKey(userKey);
+        accountSelectApiRequest.setAccountNo(accountNum);
+
+        // Feign Client로 잔고 조회
+        AccountSelectBalanceApiResponse balanceResponse = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
+        Map<String, String> map = new HashMap<>();
+        map.put("accountNo", accountNum);
+        map.put("balance", balanceResponse.getRec().getAccountBalance());
+
+        return map;
     }
 }
