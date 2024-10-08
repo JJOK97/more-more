@@ -124,9 +124,9 @@ public class AccountServiceImpl implements AccountService {
 
         // 이체 정보를 기록할 ArrayList
         ArrayList<String> arr = new ArrayList<>();
-        arr.add(accountBalance);
         arr.add(depositAccountNo);
         arr.add(transactionBalance);
+        arr.add(accountBalance);
 
         // account_history 테이블에 저장할 AccountHistoryAll 객체 생성 및 데이터 설정
         AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
@@ -160,8 +160,6 @@ public class AccountServiceImpl implements AccountService {
         accountTransferApiRequest.setTransactionBalance(accountTransferFillRequest.getTransactionBalance());
         accountTransferApiRequest.setWithdrawalAccountNo(accountTransferFillRequest.getWithdrawalAccountNo()); // 출금 계좌
 
-        System.out.println("accountTransferApiRequest = " + accountTransferApiRequest);
-        
         // Feign Client 사용하여 이체 API 호출
         AccountTransferApiResponse accountTransferApiResponse = accountTransferFeignClient.transferAccountBalance(accountTransferApiRequest);
         AccountTransferApiResponse.REC secondRec = accountTransferApiResponse.getRec().get(1);
@@ -181,8 +179,6 @@ public class AccountServiceImpl implements AccountService {
         accountSelectApiRequest.getHeader().setUserKey(managerKey);
         accountSelectApiRequest.setAccountNo(accountNum);
 
-        System.out.println("accountSelectApiRequest = " + accountSelectApiRequest);
-        
         // Feign Client로 잔고 조회
         AccountSelectBalanceApiResponse balanceResponse = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
 
@@ -198,8 +194,6 @@ public class AccountServiceImpl implements AccountService {
         accountHistoryAll.setPaymentAmount(accountTransferFillRequest.getTransactionBalance()); // 이체 금액
         accountHistoryAll.setAccountBalance(balanceResponse.getRec().getAccountBalance());  // 계좌 잔고
 
-        System.out.println("accountHistoryAll = " + accountHistoryAll);
-        
         // accountRepository를 통해 내역 저장
         accountRepository.insertAccountHistory(accountHistoryAll);
 
@@ -305,6 +299,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void verifySave(VerificationSaveRequest verificationSaveRequest) {
+        System.out.println(verificationSaveRequest.getAccountHistoryImage());
         accountRepository.insertVerify(verificationSaveRequest);
     }
 
