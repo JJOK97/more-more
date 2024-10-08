@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar as ReactCalendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '@/assets/css/schedule/calendar/calendar.css';
 import moment from 'moment';
 
-function Calendar({ onSelectDate }) {
+function Calendar({ onSelectDate, onMonthChange, scheduleDates }) {
 	const today = new Date();
 	const [date, setDate] = useState(today);
-
 	const [activeStartDate, setActiveStartDate] = useState(today);
-
 	const [view, setView] = useState('month');
 
-	const attendDay = ['2024-09-11', '2024-09-06'];
+	useEffect(() => {
+		if (onMonthChange) {
+			onMonthChange(activeStartDate);
+		}
+	}, [activeStartDate, onMonthChange]);
 
 	const handleDateChange = (newDate) => {
 		setDate(newDate);
@@ -35,6 +37,9 @@ function Calendar({ onSelectDate }) {
 		} else if (view === 'month') {
 			setActiveStartDate(today);
 			setDate(today);
+			if (onSelectDate) {
+				onSelectDate(today);
+			}
 		}
 	};
 
@@ -56,8 +61,11 @@ function Calendar({ onSelectDate }) {
 					setActiveStartDate(activeStartDate);
 					setView(view);
 				}}
-				onViewChange={({ activesStartDate, view }) => {
+				onViewChange={({ activeStartDate, view }) => {
 					setView(view);
+					if (view === 'month') {
+						setActiveStartDate(activeStartDate);
+					}
 				}}
 				tileContent={({ date, view }) => {
 					let html = [];
@@ -75,7 +83,7 @@ function Calendar({ onSelectDate }) {
 							</div>,
 						);
 					}
-					if (attendDay.includes(moment(date).format('YYYY-MM-DD'))) {
+					if (scheduleDates.includes(moment(date).format('YYYY-MM-DD'))) {
 						html.push(
 							<div
 								key={moment(date).format('YYYY-MM-DD')}

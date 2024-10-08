@@ -18,20 +18,20 @@ const Footer = () => {
 
 	if (
 		['/', '/login', '/signup', '/profile', '/notice', '/create'].includes(location.pathname) ||
-		location.pathname.match(/^\/group\/\d+\/account\/transfer/) ||
-		location.pathname.match(/^\/group\/\d+\/account\/withDrawal/)
+		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withDrawal/)
 	) {
 		return null;
 	}
 
-	const isAccountActive = /^\/group\/\d+\/account(\/.*)?$/.test(location.pathname);
-	const isCalendarActive = /^\/group\/\d+\/schedule(\/.*)?$/.test(location.pathname);
-	const isSettingActive = /^\/group\/\d+\/info(\/.*)?$/.test(location.pathname);
+	const isAccountActive = /^\/group\/[^\/]+\/account(\/.*)?$/.test(location.pathname);
+	const isCalendarActive = /^\/group\/[^\/]+\/schedule(\/.*)?$/.test(location.pathname);
+	const isSettingActive = /^\/group\/[^\/]+\/info(\/.*)?$/.test(location.pathname);
 	const isBoardActive =
-		/^\/group\/\d+(\/.*)?$/.test(location.pathname) && !isAccountActive && !isCalendarActive && !isSettingActive;
+		/^\/group\/[^\/]+(\/.*)?$/.test(location.pathname) && !isAccountActive && !isCalendarActive && !isSettingActive;
 
 	const handleNavigation = (path) => {
-		const groupId = location.pathname.match(/^\/group\/(\d+)/)?.[1];
+		const groupId = location.pathname.split('/')[2]; // 그룹 ID 추출
 		if (groupId) {
 			navigate(path.replace(':groupId', groupId));
 		}
