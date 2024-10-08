@@ -1,12 +1,14 @@
 package com.ssafy.clubservice.club.controller.dto.response;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString
 public class ClubReadResponse {
     private Long clubId;
     private String clubImage;

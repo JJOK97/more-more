@@ -59,8 +59,8 @@ class ClubControllerTest {
                 .andReturn();
         String response = mvcResult.getResponse().getContentAsString();
         List<ParticipantCreateResponse> participants = JsonPath.parse(response).read("$.participants");
-        assertThat(participants).extracting("participantId").contains(1, 8);
-        assertThat(participants).extracting("clubCode").contains("test1", "test1");
+        assertThat(participants).extracting("participantId").containsExactlyInAnyOrder(1, 8);
+        assertThat(participants).extracting("clubCode").containsExactlyInAnyOrder("test1", "test1");
     }
 
     @DisplayName("전체 모임 조회시, 멤버 ID에 해당하는 모임의 코드, 이름, 소개 문구를 모두 반환한다.")
@@ -70,9 +70,17 @@ class ClubControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         List<ClubReadResponse> clubReadResponses = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ClubReadResponse>>() {});
-        assertThat(clubReadResponses).extracting("clubCode").contains("test1", "test2", "test3");
-        assertThat(clubReadResponses).extracting("clubName").contains("test1", "test2", "test3");
-        assertThat(clubReadResponses).extracting("clubIntro").contains("test1", "test2", "test3");
+        assertThat(clubReadResponses).extracting("clubName").containsExactlyInAnyOrder("test1", "test2", "test3");
+        assertThat(clubReadResponses).extracting("clubCode").containsExactlyInAnyOrder("test1", "test2", "test3");
+        assertThat(clubReadResponses).extracting("clubIntro").containsExactlyInAnyOrder("test1", "test2", "test3");
+        assertThat(clubReadResponses)
+                .flatExtracting(ClubReadResponse::getParticipants)
+                .extracting("participantId")
+                .containsExactlyInAnyOrder(1L, 2L, 3L);
+        assertThat(clubReadResponses)
+                .flatExtracting(ClubReadResponse::getParticipants)
+                .extracting("userId")
+                .containsExactly(1L, 1L, 1L);
     }
 
     @DisplayName("모임 코드로 전체 멤버 조회 시, 멤버ID, 참석자ID를 반환한다.")
@@ -83,9 +91,9 @@ class ClubControllerTest {
                 .andReturn();
         List<ParticipantReadResponse> participantReadResponses = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ParticipantReadResponse>>() {});
         assertThat(participantReadResponses).size().isEqualTo(2);
-        assertThat(participantReadResponses).extracting("participantId").contains(1L, 8L);
-        assertThat(participantReadResponses).extracting("userId").contains(1L, 6L);
-        assertThat(participantReadResponses).extracting("clubCode").contains("test1", "test1");
+        assertThat(participantReadResponses).extracting("participantId").containsExactlyInAnyOrder(1L, 8L);
+        assertThat(participantReadResponses).extracting("userId").containsExactlyInAnyOrder(1L, 6L);
+        assertThat(participantReadResponses).extracting("clubCode").containsExactlyInAnyOrder("test1", "test1");
     }
 
     @DisplayName("모임 정보 변경 시, 변경된 회비와 이름을 반환한다.")
