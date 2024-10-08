@@ -51,8 +51,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<String> findSchedulesByClubCodeAndDate(String clubCode, String date) {
-
-
         return scheduleRepository.findSchedulesByClubCodeAndDate(clubCode, date);
     }
 
