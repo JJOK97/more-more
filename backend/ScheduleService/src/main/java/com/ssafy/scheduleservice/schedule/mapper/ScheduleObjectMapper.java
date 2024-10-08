@@ -31,20 +31,8 @@ public interface ScheduleObjectMapper {
         Schedule fromCommentUpdateRequestToDomain(ScheduleUpdateRequest scheduleUpdateRequest);
 
         // 수동 매핑 및 ID 생성 로직이 포함된 메서드
-        default ScheduleEntity fromDomainToEntity(Schedule schedule) {
-                if (schedule.getScheduleId() == null) {
-                        return new ScheduleEntity(
-                                1L,
-                                schedule.getClubCode(),
-                                schedule.getEvent(),
-                                schedule.getDate(),
-                                schedule.getTime(),
-                                schedule.getMemberId()
-                        );
-                } else {
-                        return fromDomainToEntity(schedule); // 기본 자동 매핑 메서드 호출
-                }
-        }
+         ScheduleEntity fromDomainToEntity(Schedule schedule) ;
+
 
 
 

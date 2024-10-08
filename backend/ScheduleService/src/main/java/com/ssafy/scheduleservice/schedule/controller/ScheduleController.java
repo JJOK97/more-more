@@ -37,10 +37,7 @@ public class ScheduleController {
     @Operation(summary = "스케줄 생성 API", description = "새로운 스케줄을 생성한다.")
     @PostMapping
     public ScheduleResponse createSchedule(@RequestBody ScheduleCreateRequest scheduleCreateRequest) {
-
-
         Schedule schedule = scheduleObjectMapper.fromCreateRequestToDomain(scheduleCreateRequest);
-        System.out.println(schedule.getClubCode());
         Schedule savedSchedule = scheduleService.saveSchedule(schedule);
         return scheduleObjectMapper.fromDomainToResponseDto(savedSchedule);
     }
