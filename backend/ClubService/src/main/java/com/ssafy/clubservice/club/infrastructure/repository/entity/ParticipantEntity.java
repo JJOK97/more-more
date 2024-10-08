@@ -1,15 +1,11 @@
 package com.ssafy.clubservice.club.infrastructure.repository.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class ParticipantEntity {
     private Long participantId;
@@ -18,4 +14,14 @@ public class ParticipantEntity {
     private String clubRole;
     private Long userId;
     private LocalDateTime createdDate;
+
+    @Builder
+    public ParticipantEntity(Long participantId, String clubCode, String acceptanceStatus, String clubRole, Long userId, LocalDateTime createdDate) {
+        this.participantId = participantId;
+        this.clubCode = clubCode;
+        this.acceptanceStatus = acceptanceStatus;
+        this.clubRole = clubRole;
+        this.userId = userId;
+        this.createdDate = createdDate;
+    }
 }

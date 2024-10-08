@@ -3,7 +3,6 @@ package com.ssafy.clubservice.club.service.domain;
 import com.ssafy.clubservice.club.service.UUIDHolder;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class Club {
     private List<Participant> participants;
 
     @Builder
-    public Club(Long clubId, String clubImage, Long dues, String clubCode, String clubName, String clubIntro, LocalDate createdDate, List<Participant> participants) {
+    public Club(Long clubId, String clubImage, Long dues, String clubCode, String clubName, String clubIntro, LocalDate createdDate, List <Participant> participants) {
         this.clubId = clubId;
         this.clubImage = clubImage;
         this.dues = dues;
@@ -29,12 +28,11 @@ public class Club {
         this.clubName = clubName;
         this.clubIntro = clubIntro;
         this.createdDate = createdDate;
-        this.participants = participants;
+        this.participants =  participants;
     }
 
-
-
-    public Club makeCreator(Long creatorId) {
+    public Club makeClubCreator(Long creatorId) {
+        if(this.participants == null) participants = new ArrayList<>();
         this.participants.add(Participant.createClubCreator(this.clubCode, creatorId));
         return this;
     }

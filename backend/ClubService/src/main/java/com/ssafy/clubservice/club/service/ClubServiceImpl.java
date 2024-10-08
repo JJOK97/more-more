@@ -74,7 +74,7 @@ public class ClubServiceImpl implements ClubService {
     }
 
     private Club addCreator(Long creatorId, Club club) {
-        Club clubWithCreator = club.makeCreator(creatorId);
+        Club clubWithCreator = club.makeClubCreator(creatorId);
         List<Participant> creatorWithId = participantRepository.addMember(clubWithCreator.getClubCode(), clubWithCreator.getParticipants());
         return clubWithCreator.changeParticipant(creatorWithId);
     }
