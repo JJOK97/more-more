@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '@/assets/css/common/Main.css';
 import datas from '@/components/main/data.json';
 import Group from '../components/main/Group';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useGroupName from '@/store/useGroupName';
 import { getDatas } from './feed/getData';
 
@@ -11,6 +11,7 @@ const Main = () => {
 	const groups = datas.groups;
 	const [userInfo, setUserInfo] = useState();
 	const [allGroups, setAllGroups] = useState([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setGroupName('');
@@ -19,9 +20,14 @@ const Main = () => {
 	useEffect(() => {
 		const getUserInfo = async () => {
 			const memberId = localStorage.getItem('memberId');
-			const url = `https://j11a605.p.ssafy.io/api/member/${memberId}`;
-			const data = await getDatas(url);
-			setUserInfo(data);
+			if (!memberId) {
+				navigate('/login'); // 로그인 페이지로 이동
+				return; // 함수 종료
+			} else {
+				const url = `https://j11a605.p.ssafy.io/api/member/${memberId}`;
+				const data = await getDatas(url);
+				setUserInfo(data);
+			}
 		};
 		getUserInfo();
 	}, []);
@@ -29,13 +35,19 @@ const Main = () => {
 	useEffect(() => {
 		const getAllGroups = async () => {
 			const memberId = localStorage.getItem('memberId');
-			const url = `https://j11a605.p.ssafy.io/api/club?memberId=${memberId}`;
-			const data = await getDatas(url);
-			setAllGroups(data);
-			console.log(data);
+			// memberId가 null이면 '/login'으로 리다이렉트
+			if (!memberId) {
+				navigate('/login'); // 로그인 페이지로 이동
+				return; // 함수 종료
+			} else {
+				const url = `https://j11a605.p.ssafy.io/api/club?memberId=${memberId}`;
+				const data = await getDatas(url);
+				setAllGroups(data);
+			}
 		};
+
 		getAllGroups();
-	}, []);
+	}, [navigate]); // navigate를 의존성 배열에 추가
 
 	return (
 		<div className="main-container">
