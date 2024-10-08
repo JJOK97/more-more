@@ -6,15 +6,12 @@ import com.ssafy.scheduleservice.schedule.controller.dto.response.ScheduleRespon
 import com.ssafy.scheduleservice.schedule.infrastructure.repository.entity.ScheduleEntity;
 import com.ssafy.scheduleservice.schedule.service.domain.Schedule;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ScheduleObjectMapper {
-
-
         Schedule fromCreateRequestToDomain(ScheduleCreateRequest scheduleCreateRequest);
         Schedule fromEntityToDomain(ScheduleEntity scheduleEntity);
 

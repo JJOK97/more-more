@@ -11,4 +11,5 @@ public class ScheduleCreateRequest {
     private String date;
     private String time;
     private Long memberId;
+
 }
