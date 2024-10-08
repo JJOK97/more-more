@@ -23,15 +23,18 @@ const formatDate = (dateString) => {
 const CommentItem = ({ comment }) => {
 	return (
 		<div className="comment-detail-area">
+			{/* 프로필 이미지 */}
 			<img
 				className="comment-detail-profile"
-				src="/feed/profile_icon3.png"
+				src={comment.memberInfo.profileImageUrl || '/feed/default_profile.png'}
 				alt="프로필 이미지"
 			/>
+			{/* 댓글 작성자 정보 */}
 			<div className="comment-detail-data">
-				<div className="comment-detail-name">{comment.memberName}</div>
-				<div className="comment-detail-date">{formatDate(comment.commentDate)}</div>
+				<div className="comment-detail-name">{comment.memberInfo.name}</div>
+				<div className="comment-detail-date">{formatDate(comment.commentCreatedTime)}</div>
 			</div>
+			{/* 댓글 내용 */}
 			<div className="comment-detail-content">{comment.commentContent}</div>
 		</div>
 	);

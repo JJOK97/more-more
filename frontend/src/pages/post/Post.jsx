@@ -7,6 +7,7 @@ import '@/assets/css/post/Post.css';
 import useGroupName from '@/store/useGroupName';
 import { getDatas } from '../feed/getData';
 import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postApi'; // 좋아요 관련 API 함수 import
+import { getComments, createComment } from '@/api/commentApi';
 
 const Post = () => {
 	const { setGroupName } = useGroupName();
@@ -20,6 +21,33 @@ const Post = () => {
 	const [memberId, setMemberId] = useState(null);
 	const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
 	const [likeCount, setLikeCount] = useState(0); // 좋아요 수 관리
+
+	// 댓글 목록 불러오기
+	useEffect(() => {
+		const fetchComments = async () => {
+			try {
+				const commentsData = await getComments(postId);
+				setComments(commentsData); // 가져온 댓글 리스트 설정
+			} catch (error) {
+				console.error('Error fetching comments:', error);
+			}
+		};
+
+		fetchComments();
+	}, [postId]);
+
+	// 댓글 생성 핸들러
+	const handleCreateComment = async () => {
+		if (!content.trim()) return; // 빈 내용일 경우 처리 안함
+
+		try {
+			const newComment = await createComment(postId, memberId, content);
+			setComments((prevComments) => [...prevComments, newComment]); // 기존 댓글 목록에 새 댓글 추가
+			setContent(''); // 입력창 초기화
+		} catch (error) {
+			console.error('Error creating comment:', error);
+		}
+	};
 
 	// 그룹 정보를 불러오는 useEffect
 	useEffect(() => {
@@ -119,12 +147,16 @@ const Post = () => {
 			/>
 
 			<div className="comment-list-area">
-				{comments.map((comment, index) => (
-					<CommentItem
-						key={index}
-						comment={comment}
-					/>
-				))}
+				{comments.length > 0 ? (
+					comments.map((comment, index) => (
+						<CommentItem
+							key={index}
+							comment={comment}
+						/>
+					))
+				) : (
+					<p>댓글이 없습니다.</p>
+				)}
 			</div>
 
 			{/* 댓글 입력 박스 */}
@@ -137,6 +169,7 @@ const Post = () => {
 					className="comment-input-button"
 					src="/feed/paper-airplane.svg"
 					alt="댓글쓰기"
+					onClick={handleCreateComment} // 클릭 시 댓글 작성 핸들러 호출
 				/>
 			</div>
 		</div>
