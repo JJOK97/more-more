@@ -84,9 +84,9 @@
     </select>
 
 
-    <insert id="insertByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest" useGeneratedKeys="true" keyProperty="accountHistoryImageId">
-        INSERT INTO account_history_verification ( account_history_memo, account_history_image, ssafy_transaction_number )
-        VALUES ( #{ accountHistoryMemo }, #{ accountHistoryImage }, #{ssafyTransactionNumber} )
+    <insert id="insertByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest">
+        INSERT INTO account_history_verification (account_history_memo, account_history_image, ssafy_transaction_number)
+        VALUES (#{accountHistoryMemo}, #{accountHistoryImage}, #{ssafyTransactionNumber} )
     </insert>
 
 
