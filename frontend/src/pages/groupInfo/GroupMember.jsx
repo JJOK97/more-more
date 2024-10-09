@@ -28,15 +28,28 @@ const GroupMember = ({ userId, status, groupId, participantId }) => {
 	const handleApprove = async () => {
 		try {
 			const response = await fetch(`https://j11a605.p.ssafy.io/api/club/${groupId}/accept/${participantId}`, {
-				method:"PUT",
+				method: 'PUT',
 			});
-			const data=await response.json();
+			const data = await response.json();
 			console.log(data);
 			window.location.reload();
 		} catch (error) {
 			console.log(error);
 		}
-	}
+	};
+
+	const handleReject = async () => {
+		try {
+			const response = await fetch(`https://j11a605.p.ssafy.io/api/club/${groupId}/reject/${participantId}`, {
+				method: 'DELETE',
+			});
+			const data = await response.json();
+			console.log(data);
+			window.location.reload();
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	if (loading) return <div>Loading...</div>; // 로딩 중일 때 표시
 
@@ -65,6 +78,7 @@ const GroupMember = ({ userId, status, groupId, participantId }) => {
 						<img
 							src="/info/close.svg"
 							alt="Reject"
+							onClick={handleReject}
 						/>
 					</button>
 				</div>
