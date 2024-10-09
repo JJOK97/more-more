@@ -33,6 +33,7 @@ import data from '../pages/notification/data.json'; // data.json 경로
 import useNoticeState from '../store/useNoticeState'; // zustand 스토어
 
 import GetFcmToken from '@/pages/GetFcmToken';
+import InviteMember from '../pages/inviteMember/InviteMember';
 
 const AppRouter = () => {
 	const { setIsUnreadNotice } = useNoticeState();
@@ -101,6 +102,10 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/info"
 						element={<GroupInfo />}
+					/>
+					<Route
+						path="/group/:groupId/invite"
+						element={<InviteMember />}
 					/>
 					<Route
 						path="/group/:groupId"
