@@ -26,13 +26,19 @@
         insert into club (dues, club_code, club_name, club_intro)
         values(#{dues}, #{clubCode}, #{clubName}, #{clubIntro});
     </insert>
-    <select id="findClubByClubCode" parameterType="string" resultType="clubEntity">
-        select * from club where club_code = #{clubCode};
+    <select id="findClubByClubCode" parameterType="string" resultMap="ClubEntityResultMap">
+        select c.club_id, c.dues, c.club_code, c.club_name, c.club_intro, c.created_date,
+            p.participant_id, p.acceptance_status, p.club_role, p.user_id, p.created_date AS participant_created_date
+        FROM
+            club c INNER JOIN participant p
+        ON p.club_code = c.club_code
+        where c.club_code = #{clubCode}
     </select>
     <update id="updateClub" parameterType="clubEntity">
         update club
         set club_name = #{clubName},
-            dues = #{dues}
+            dues = #{dues},
+            club_intro = #{clubIntro}
         where club_id = #{clubId};
     </update>
     <select id="findClubByMemberId" resultMap="ClubEntityResultMap">

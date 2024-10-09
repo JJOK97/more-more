@@ -62,7 +62,7 @@ public class ClubController {
     }
 
     @PutMapping("/{clubCode}")
-    @Operation(summary = "모임 이름 / 회비 수정 API", description = "회비, 모임 이름을 입력하여 모임 코드에 해당하는 모임의 이름과 회비를 수정한다. (access token)")
+    @Operation(summary = "모임 이름 / 회비 / 소개 수정 API", description = "회비, 모임 이름을 입력하여 모임 코드에 해당하는 모임의 이름과 회비를 수정한다. (access token)")
     public ClubUpdateResponse updateClub(@PathVariable("clubCode") String clubCode, @Valid @RequestBody ClubUpdateRequest clubUpdateRequest){
         log.info("모임 이름 / 회비 수정 API");
         Club club = clubService.updateClub(clubCode, customObjectMapper.fromUpdateRequestToDomain(clubUpdateRequest));

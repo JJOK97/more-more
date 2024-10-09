@@ -3,12 +3,14 @@ package com.ssafy.clubservice.club.service.domain;
 import com.ssafy.clubservice.club.service.UUIDHolder;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@ToString
 public class Club {
     private Long clubId;
     private String clubImage;

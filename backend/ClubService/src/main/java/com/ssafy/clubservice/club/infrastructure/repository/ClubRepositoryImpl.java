@@ -23,11 +23,9 @@ public class ClubRepositoryImpl implements ClubRepository {
 
     @Override
     public Club updateClub(Club club) {
-        System.out.println(club);
         ClubEntity entity = customObjectMapper.fromDomainToEntity(club);
-        System.out.println(entity);
         clubMybatisMapper.updateClub(entity);
-        return customObjectMapper.fromEntityToDomain(entity);
+        return club;
     }
 
     @Override

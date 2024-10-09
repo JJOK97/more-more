@@ -96,13 +96,14 @@ class ClubControllerTest {
         assertThat(participantReadResponses).extracting("clubCode").containsExactlyInAnyOrder("test1", "test1");
     }
 
-    @DisplayName("모임 정보 변경 시, 변경된 회비와 이름을 반환한다.")
+    @DisplayName("모임 정보 변경 시, 변경된 회비와 이름, 소개를 반환한다.")
     @Test
     void updateClubs() throws Exception {
         ClubUpdateRequest clubUpdateRequest = ClubUpdateRequest.builder()
                 .clubId(1L)
                 .clubCode("test1")
                 .clubName("test11")
+                .clubIntro("test11")
                 .dues(1500L)
                 .build();
         mockMvc.perform(put("/api/club/test1")
@@ -110,12 +111,14 @@ class ClubControllerTest {
                         .content(objectMapper.writeValueAsString(clubUpdateRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.clubName").value("test11"))
-                .andExpect(jsonPath("$.dues").value(1500L));
+                .andExpect(jsonPath("$.dues").value(1500L))
+                .andExpect(jsonPath("$.clubIntro").value("test11"));
         mockMvc.perform(get("/api/club/test1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.clubCode").value("test1"))
                 .andExpect(jsonPath("$.clubName").value("test11"))
-                .andExpect(jsonPath("$.dues").value(1500L));
+                .andExpect(jsonPath("$.dues").value(1500L))
+                .andExpect(jsonPath("$.clubIntro").value("test11"));
     }
     @DisplayName("이미지 이름 변경 시, 변경된 이미지 URL을 반환한다.")
     @Test

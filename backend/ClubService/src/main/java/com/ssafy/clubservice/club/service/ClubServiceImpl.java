@@ -43,7 +43,7 @@ public class ClubServiceImpl implements ClubService {
     @Override
     @Transactional
     public Club updateClub(String clubCode, Club club) {
-        Club findClub = clubRepository.findClubByClubCode(clubCode);
+        Club findClub = clubRepository.findClubByClubCode(clubCode).changeImageName(s3Connector.getImageURL(clubCode));
         Club updateClub = findClub.updateClub(club);
         return clubRepository.updateClub(updateClub);
     }
