@@ -1,33 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; // useParams 추가
 import './SearchPost.css';
-import datas from '../feed/data.json'; // 데이터 가져오기
 import PostView from '@/components/postView/PostView'; // PostView 컴포넌트 가져오기
 import useGroupName from '@/store/useGroupName';
+import { getDatas } from '../feed/getData';
 
 const SearchPost = () => {
 	const { setGroupName } = useGroupName();
 	const { groupId } = useParams(); // groupId 가져오기
+	const [groupInfo, setGroupInfo] = useState(null);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [results, setResults] = useState([]);
 
+	// 그룹 정보를 불러오는 useEffect
 	useEffect(() => {
-		setGroupName(groupId);
-	}, []);
+		const getGroupInfo = async () => {
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
+				const data = await getDatas(url);
+				setGroupInfo(data);
+			} catch (error) {
+				console.error('Error fetching group info:', error);
+			}
+		};
+		getGroupInfo();
+	}, [groupId]);
 
-	const handleSearch = () => {
-		if (!searchTerm) return;
-
-		// 검색어에 맞는 게시물 필터링 (groupId에 맞는 게시물만)
-		const filteredResults = datas.posts.filter(
-			(post) =>
-				post.groupId === parseInt(groupId, 10) && // groupId로 필터링
-				(post.postContent.includes(searchTerm) ||
-					post.userName.includes(searchTerm) ||
-					post.accountHistory.includes(searchTerm)),
-		);
-
-		setResults(filteredResults); // 필터링된 결과 설정
+	// groupInfo가 업데이트될 때, groupName 상태를 업데이트
+	useEffect(() => {
+		if (groupInfo && groupInfo.clubName) {
+			setGroupName(groupInfo.clubName);
+		}
+	}, [groupInfo, setGroupName]);
+	// };
+	const handleSearch = async () => {
+		try {
+			const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/search?keyword=${searchTerm}`;
+			const data = await getDatas(url);
+			setResults(data);
+			console.log(data);
+		} catch (error) {
+			console.log('Error fetching search result', error);
+		}
 	};
 
 	const handleKeyDown = (e) => {
@@ -56,7 +70,7 @@ const SearchPost = () => {
 				</button>
 			</div>
 
-			{results.length > 0 && (
+			{results.length > 0 ? (
 				<div className="search-results">
 					{results.map((post) => (
 						<PostView
@@ -65,6 +79,8 @@ const SearchPost = () => {
 						/> // PostView 컴포넌트로 표시
 					))}
 				</div>
+			) : (
+				<div>검색결과가 없습니다.</div>
 			)}
 		</div>
 	);

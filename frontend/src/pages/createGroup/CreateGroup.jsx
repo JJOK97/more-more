@@ -35,21 +35,9 @@ const CreateGroup = () => {
 		}
 	};
 
-	const handleSubmit = (e) => {
-		if (e) e.preventDefault();
-		console.log('Group Name:', groupName);
-		console.log('Profile Image:', profileImage);
-		console.log('Fee:', fee);
-		console.log('Intro:', intro);
-		setStep(6);
-	};
-
 	const handleNextStep = () => {
-		if (step === 5) {
-			handleSubmit();
-		} else {
-			setStep((prev) => prev + 1);
-		}
+		console.log(step);
+		setStep((prev) => prev + 1);
 	};
 
 	const handlePrevStep = () => {

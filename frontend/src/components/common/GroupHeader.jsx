@@ -29,7 +29,7 @@ const Header = () => {
 	}
 
 	// 현재 경로가 그룹의 메인 페이지(Feed)인지 확인
-	const isGroupFeedPage = location.pathname.match(/^\/group\/[^\/]+$/);
+	const isGroupFeedPage = location.pathname.match(/^\/group\/[^/]+$/);
 
 	return (
 		<header className="common-header">
@@ -47,7 +47,7 @@ const Header = () => {
 				</div>
 				<div className="headerRight">
 					{isGroupFeedPage && (
-						<Link to={`/group/${groupName}/search`}>
+						<Link to={`${location.pathname}/search`}>
 							<img
 								src={search}
 								alt="Search"

@@ -1,6 +1,6 @@
 import '@/assets/css/groupInfo/GroupInfo.css';
 import React, { useEffect, useState } from 'react';
-import GroupMember from '@/components/groupInfo/GroupMember.jsx';
+import GroupMember from './GroupMember.jsx';
 import InviteModal from './InviteModal';
 import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
@@ -116,6 +116,12 @@ const GroupInfo = () => {
 		}
 	};
 
+	// ACCEPTED 상태의 멤버 수 계산
+	const acceptedMembers = groupInfo?.participants?.filter((user) => user.acceptanceStatus === 'ACCEPTED');
+
+	// WAITING 상태의 멤버 리스트 구분
+	const waitingMembers = groupInfo?.participants?.filter((user) => user.acceptanceStatus === 'WAITING');
+
 	const openModal = () => setIsModalOpen(true); // 모달 열기
 	const closeModal = () => setIsModalOpen(false); // 모달 닫기
 
@@ -212,7 +218,8 @@ const GroupInfo = () => {
 				<div className="group-info-members-header">
 					<div className="group-info-members-info">
 						<div className="group-info-members-label">모임원</div>
-						<div className="group-info-members-count">{groupInfo?.participants?.length}명</div>
+						<div className="group-info-members-count">{acceptedMembers?.length}명</div>{' '}
+						{/* ACCEPTED 멤버 수 */}
 					</div>
 					<div className="group-info-members-actions">
 						{isMembersOpen && (
@@ -232,23 +239,47 @@ const GroupInfo = () => {
 					</div>
 				</div>
 
-				{isMembersOpen && groupInfo?.participants && (
+				{isMembersOpen && (
 					<div className="group-info-members-list">
-						{/* 일반 멤버 */}
-						{groupInfo.participants.length > 0 ? (
-							groupInfo.participants.map((user) => (
+						{/* ACCEPTED 멤버 */}
+						<h3>모임원 목록</h3>
+						{acceptedMembers.length > 0 ? (
+							acceptedMembers.map((user) => (
 								<GroupMember
 									key={user.userId}
-									user={user}
+									userId={user.userId}
+									status={user.acceptanceStatus}
+									groupId={groupId}
 								/>
 							))
 						) : (
 							<div>모임원이 없습니다.</div>
 						)}
+
+						{/* WAITING 멤버 */}
+						{waitingMembers?.length > 0 && (
+							<>
+								<h3>가입 대기</h3>
+								{waitingMembers.map((user) => (
+									<GroupMember
+										key={user.userId}
+										userId={user.userId}
+										status={user.acceptanceStatus}
+										groupId={groupId}
+										participantId={user.participantId}
+									/>
+								))}
+							</>
+						)}
 					</div>
 				)}
 			</div>
-			{isModalOpen && <InviteModal onClose={closeModal} />}
+			{isModalOpen && (
+				<InviteModal
+					onClose={closeModal}
+					groupId={groupId}
+				/>
+			)}
 		</div>
 	);
 };
