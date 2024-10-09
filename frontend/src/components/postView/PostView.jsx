@@ -23,7 +23,7 @@ const formatDate = (dateString) => {
 	}
 };
 
-const PostView = ({ post, onDelete }) => {
+const PostView = ({ post, onDelete, commentCount }) => {
 	const location = useLocation(); // 현재 경로 가져오기
 	const navigate = useNavigate(); // 페이지 이동을 위한 훅
 	const [isFeedPage, setIsFeedPage] = useState(false); // 경로 상태를 관리
@@ -209,7 +209,7 @@ const PostView = ({ post, onDelete }) => {
 						src="/feed/chat.svg"
 						alt="댓글 아이콘"
 					/>
-					<div className="feed-att-comment-count">{post.commentCount || 0}</div>
+					<div className="feed-att-comment-count">{commentCount || 0}</div>
 				</div>
 			</div>
 		</div>
