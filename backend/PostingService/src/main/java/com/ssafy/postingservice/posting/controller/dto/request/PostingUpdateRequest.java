@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class PostingUpdateRequest {
 
-    private Long accountHistoryId;
+    private String accountHistoryTag;
     private String postingContent;
     private MultipartFile[] files;
     private List<String> imageUrls;

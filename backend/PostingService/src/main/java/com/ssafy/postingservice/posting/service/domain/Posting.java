@@ -11,18 +11,18 @@ public class Posting {
     private Long postingId;
     private Long memberId;
     private String clubCode;
-    private Long accountHistoryId;
+    private String accountHistoryTag;
     private String postingContent;
     private Timestamp postingCreatedTime;
     private Long commentCount;
     private List<String> imageUrls;
 
     @Builder
-    public Posting(Long postingId, Long memberId, String clubCode, Long accountHistoryId, String postingContent, Timestamp postingCreatedTime, Long commentCount, List<String> imageUrls) {
+    public Posting(Long postingId, Long memberId, String clubCode, String accountHistoryTag, String postingContent, Timestamp postingCreatedTime, Long commentCount, List<String> imageUrls) {
         this.postingId = postingId;
         this.memberId = memberId;
         this.clubCode = clubCode;
-        this.accountHistoryId = accountHistoryId;
+        this.accountHistoryTag = accountHistoryTag;
         this.postingContent = postingContent;
         this.postingCreatedTime = postingCreatedTime;
         this.commentCount = commentCount;

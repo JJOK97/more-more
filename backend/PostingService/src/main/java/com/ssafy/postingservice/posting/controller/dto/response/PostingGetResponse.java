@@ -12,11 +12,12 @@ public class PostingGetResponse {
 
     private Long postingId;
     private Long memberId;
-    private Long accountHistoryId;
+    private String accountHistoryTag;
     private String clubCode;
     private String postingContent;
     private Timestamp postingCreatedTime;
-    private List<Comment> comments;
+    private List<CommentFindResponse> comments;
     private List<String> imageUrls;
+    private MemberGetResponse memberInfo;
 
 }
