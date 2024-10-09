@@ -7,17 +7,18 @@ import '@/assets/css/post/Post.css';
 import useGroupName from '@/store/useGroupName';
 import { getDatas } from '../feed/getData';
 import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postApi'; // 좋아요 관련 API 함수 import
-import { getComments, createComment } from '@/api/commentApi';
+import { getComments, createComment } from '@/api/commentApi'; // 댓글 관련 API import
+import { getMemberInfo } from '@/api/userAPI'; // 유저 정보 조회 API 추가
 
 const Post = () => {
 	const { setGroupName } = useGroupName();
 	const { groupId, postId } = useParams(); // groupId와 postId를 URL에서 추출
 	const [groupInfo, setGroupInfo] = useState(null);
 	const [post, setPost] = useState(null);
-	const [comments, setComments] = useState([]);
-	const [content, setContent] = useState(''); // 댓글 내용을 저장할 상태
+	const [comments, setComments] = useState([]); // 댓글 리스트 상태
+	const [content, setContent] = useState(''); // 댓글 입력 상태
 
-	// 좋아요 관련 상태 추가
+	// 좋아요 관련 상태
 	const [memberId, setMemberId] = useState(null);
 	const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
 	const [likeCount, setLikeCount] = useState(0); // 좋아요 수 관리
@@ -27,7 +28,7 @@ const Post = () => {
 		const fetchComments = async () => {
 			try {
 				const commentsData = await getComments(postId);
-				setComments(commentsData); // 가져온 댓글 리스트 설정
+				setComments(commentsData); // 댓글 리스트 설정
 			} catch (error) {
 				console.error('Error fetching comments:', error);
 			}
@@ -38,12 +39,24 @@ const Post = () => {
 
 	// 댓글 생성 핸들러
 	const handleCreateComment = async () => {
-		if (!content.trim()) return; // 빈 내용일 경우 처리 안함
+		if (!content.trim()) return;
 
 		try {
+			// memberId에 해당하는 유저 정보를 가져온다.
+			const memberInfo = await getMemberInfo(memberId);
+
+			// 댓글 생성 요청을 보내고, 응답 데이터를 기존 댓글 리스트에 추가
 			const newComment = await createComment(postId, memberId, content);
-			setComments((prevComments) => [...prevComments, newComment]); // 기존 댓글 목록에 새 댓글 추가
-			setContent(''); // 입력창 초기화
+
+			// 생성된 댓글에 memberInfo를 추가해서 업데이트
+			const commentWithUserInfo = {
+				...newComment,
+				memberInfo, // 유저 정보를 댓글에 추가
+			};
+
+			// 댓글 리스트 업데이트
+			setComments((prevComments) => [...prevComments, commentWithUserInfo]);
+			setContent(''); // 입력 필드 초기화
 		} catch (error) {
 			console.error('Error creating comment:', error);
 		}
@@ -97,7 +110,7 @@ const Post = () => {
 				if (post && memberId) {
 					// 좋아요 수 가져오기
 					const likeCountData = await getLikeCount(post.postingId);
-					setLikeCount(likeCountData); // 가져온 좋아요 수 설정
+					setLikeCount(likeCountData); // 좋아요 수 설정
 
 					// 좋아요 여부 확인
 					const status = await checkLikeStatus(post.postingId, memberId);
@@ -138,14 +151,17 @@ const Post = () => {
 
 	return (
 		<div className="post-page-container">
+			{/* 게시물 정보 표시 */}
 			<PostView
 				key={post.postId}
 				post={post}
 				isLiked={isLiked}
 				likeCount={likeCount}
+				commentCount={post.comments.length}
 				onLike={handleLike} // 좋아요 토글 함수 전달
 			/>
 
+			{/* 댓글 리스트 */}
 			<div className="comment-list-area">
 				{comments.length > 0 ? (
 					comments.map((comment, index) => (
@@ -165,6 +181,7 @@ const Post = () => {
 					content={content}
 					setContent={setContent}
 				/>
+				{/* 댓글 작성 버튼 */}
 				<img
 					className="comment-input-button"
 					src="/feed/paper-airplane.svg"
