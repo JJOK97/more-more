@@ -51,11 +51,12 @@ const GroupAccountDepositList = ({ selectedDate, searchTerm }) => {
 		fetchAccountHistories(page);
 	}, [page, fetchAccountHistories]);
 
+	// 필터링 로직 수정
 	const filteredHistories = accountHistories
 		.filter((item) =>
-			selectedDate ? new Date(item.date).toLocaleDateString() === selectedDate.toLocaleDateString() : true,
+			selectedDate ? new Date(item.accountDate).toLocaleDateString() === selectedDate.toLocaleDateString() : true,
 		)
-		.filter((item) => (searchTerm ? item.place.toLowerCase().includes(searchTerm.toLowerCase()) : true));
+		.filter((item) => (searchTerm ? item.paymentData.toLowerCase().includes(searchTerm.toLowerCase()) : true));
 
 	return (
 		<div className="group-account-deposit-list-area">
@@ -66,12 +67,13 @@ const GroupAccountDepositList = ({ selectedDate, searchTerm }) => {
 				.map((item, index) => (
 					<DepositDetailOne
 						key={index}
-						id={item.id}
-						place={item.place}
-						price={item.price}
-						date={item.date}
-						time={item.time}
-						balance={item.balance}
+						id={item.accountHistoryId}
+						paymentData={item.paymentData} // place 대신 paymentData 전달
+						paymentAmount={item.paymentAmount} // 금액 전달
+						date={item.accountDate}
+						time={item.accountTime}
+						balance={item.accountBalance}
+						paymentType={item.paymentType} // 출금/입금 여부 전달
 						searchTerm={searchTerm}
 					/>
 				))}
