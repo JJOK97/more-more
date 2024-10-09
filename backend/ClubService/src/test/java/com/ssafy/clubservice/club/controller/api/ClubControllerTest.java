@@ -70,17 +70,17 @@ class ClubControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         List<ClubReadResponse> clubReadResponses = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ClubReadResponse>>() {});
-        assertThat(clubReadResponses).extracting("clubName").containsExactlyInAnyOrder("test1", "test2", "test3");
-        assertThat(clubReadResponses).extracting("clubCode").containsExactlyInAnyOrder("test1", "test2", "test3");
-        assertThat(clubReadResponses).extracting("clubIntro").containsExactlyInAnyOrder("test1", "test2", "test3");
+        assertThat(clubReadResponses).extracting("clubName").containsExactlyInAnyOrder("test1", "test3");
+        assertThat(clubReadResponses).extracting("clubCode").containsExactlyInAnyOrder("test1", "test3");
+        assertThat(clubReadResponses).extracting("clubIntro").containsExactlyInAnyOrder("test1", "test3");
         assertThat(clubReadResponses)
                 .flatExtracting(ClubReadResponse::getParticipants)
                 .extracting("participantId")
-                .containsExactlyInAnyOrder(1L, 2L, 3L);
+                .containsExactlyInAnyOrder(1L, 3L, 5L, 7L, 8L);
         assertThat(clubReadResponses)
                 .flatExtracting(ClubReadResponse::getParticipants)
                 .extracting("userId")
-                .containsExactly(1L, 1L, 1L);
+                .containsExactlyInAnyOrder(1L, 1L, 3L, 5L, 6L);
     }
 
     @DisplayName("모임 코드로 전체 멤버 조회 시, 멤버ID, 참석자ID를 반환한다.")
@@ -125,6 +125,19 @@ class ClubControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.clubImage").value("https://test.s3.test.amazonaws.com/test/test1"));
 
+    }
+
+    @Test
+    @DisplayName("참석자 수락 시, 모임 정보와 변경된 참석자 정보를 변경한다.")
+    void acceptParticipants() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(put("/api/club/test2/accept/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.participantId").value(2L))
+                .andExpect(jsonPath("$.clubCode").value("test2"))
+                .andExpect(jsonPath("$.acceptanceStatus").value("ACCEPTED"))
+                .andExpect(jsonPath("$.clubRole").value("PARTICIPANT"))
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andReturn();
     }
 
 

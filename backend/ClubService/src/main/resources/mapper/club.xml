@@ -43,8 +43,16 @@
             club c
                 INNER JOIN
             participant p ON p.club_code = c.club_code
-        WHERE
-            p.user_id = #{userId} and p.acceptance_status = 'ACCEPTED';
+		where c.club_code in(
+			SELECT
+				sub_c.club_code
+			FROM
+				club sub_c
+					INNER JOIN
+				participant sub_p ON sub_c.club_code = sub_p.club_code
+			WHERE
+				sub_p.user_id = #{userId} and sub_p.acceptance_status = 'ACCEPTED'
+		);
 
     </select>
 
