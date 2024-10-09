@@ -6,7 +6,7 @@ const TransferKeypad = ({ setAmount, amount }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const groupId = location.pathname.match(/^\/group\/(\d+)/)?.[1];
+	const groupId = location.pathname.match(/^\/group\/([^\/]+)\/account/)?.[1];
 
 	const handleNumberClick = (value) => {
 		setAmount((prevAmount) => prevAmount + value);

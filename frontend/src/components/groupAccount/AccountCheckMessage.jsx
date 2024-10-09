@@ -1,10 +1,10 @@
 import React from 'react';
 
-const AccountCheckMessage = () => {
+const AccountCheckMessage = ({ amount }) => {
 	return (
 		<div className="account-check">
 			<div className="account-check-message">
-				100,000원을 <br /> 송금했습니다!
+				{Number(amount).toLocaleString()}원을 <br /> 송금했습니다!
 			</div>
 		</div>
 	);

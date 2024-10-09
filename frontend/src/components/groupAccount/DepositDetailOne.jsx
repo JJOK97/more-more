@@ -1,38 +1,66 @@
 import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-const DepositDetailOne = ({ id, place, price, date, time, balance, searchTerm }) => {
-	const location = useLocation(); // 현재 경로 가져오기
+const DepositDetailOne = ({ id, paymentData, paymentAmount, date, time, balance, searchTerm, paymentType }) => {
+	const location = useLocation();
 	const { groupId } = useParams();
 
-	// 시간을 변환하는 함수
-	const formatTime = () => {
+	// 날짜를 'YYYY-MM-DD' 형식으로 변환하는 함수
+	const formatDate = (dateString) => {
+		const year = dateString.slice(0, 4);
+		const month = dateString.slice(4, 6);
+		const day = dateString.slice(6, 8);
+		return `${year}-${month}-${day}`;
+	};
+
+	// 시간을 'HH:MM:SS' 형식으로 변환하는 함수
+	const formatTime = (timeString) => {
+		const hour = timeString.slice(0, 2);
+		const minute = timeString.slice(2, 4);
+		const second = timeString.slice(4, 6);
+		return `${hour}:${minute}:${second}`;
+	};
+
+	// 시간을 현재 시각과 비교하여 표현하는 함수
+	const calculateTimeAgo = () => {
 		const currentDate = new Date();
-		const depositDate = new Date(`${date}T${time}`);
+		const depositDate = new Date(`${formatDate(date)}T${formatTime(time)}`);
 		const diffInMilliseconds = currentDate - depositDate;
 		const diffInMinutes = Math.floor(diffInMilliseconds / 1000 / 60);
 		const diffInHours = Math.floor(diffInMinutes / 60);
 
 		if (diffInMinutes < 60) {
-			// 1시간 이내
 			return `${diffInMinutes}분 전`;
 		} else if (diffInHours < 24) {
-			// 24시간 이내
 			return `${diffInHours}시간 전`;
 		} else {
-			// 그보다 이전
-			const depositMonth = depositDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줌
+			const depositMonth = depositDate.getMonth() + 1;
 			const depositDay = depositDate.getDate();
-			const depositHour = depositDate.getHours();
-			const depositMinute = depositDate.getMinutes();
 			return `${depositMonth}월 ${depositDay}일`;
 		}
 	};
 
+	// 금액을 포맷하는 함수 (숫자에 콤마 추가)
+	const formatAmount = (amount) => {
+		return parseInt(amount, 10).toLocaleString();
+	};
+
+	// paymentType에 따라 금액에 + 또는 - 부호를 추가하고 입금 시 초록색으로 표시
+	const formattedAmount = () => {
+		if (paymentType === '출금(이체)') {
+			return `-${formatAmount(paymentAmount)}`;
+		} else if (paymentType === '입금(이체)') {
+			return `+${formatAmount(paymentAmount)}`;
+		}
+		return formatAmount(paymentAmount);
+	};
+
+	// 금액 스타일을 설정하는 함수 (입금 시 초록색)
+	const amountStyle = paymentType === '입금(이체)' ? { color: 'green' } : {};
+
 	const handleClick = () => {
 		if (location.pathname.includes('/group') && location.pathname.includes('/create')) {
-			// '/group/:groupId/create' 페이지인 경우, place와 time을 리턴
-			alert(`${place} ${time}`);
+			alert(`${paymentData} ${time}`);
 		}
 	};
 
@@ -60,30 +88,38 @@ const DepositDetailOne = ({ id, place, price, date, time, balance, searchTerm })
 			onClick={handleClick}
 		>
 			{location.pathname.includes('/group') && location.pathname.includes('/create') ? (
-				// '/group/:groupId/create' 페이지에서는 alert로 출력
 				<div className="deposit-detail-container">
 					<div className="deposit-list-place-price">
-						<div className="deposit-list-place"> {highlightText(place, searchTerm)}</div>
-						<div className={`deposit-list-price ${price.startsWith('+') ? 'plus' : ''}`}>{price}</div>
+						<div className="deposit-list-place"> {highlightText(paymentData, searchTerm)}</div>
+						<div
+							className="deposit-list-price"
+							style={amountStyle}
+						>
+							{formattedAmount()}
+						</div>
 					</div>
 					<div className="deposit-list-time-balance">
-						<div className="deposit-list-time">{formatTime()}</div>
-						<div className="deposit-list-balance">{balance}</div>
+						<div className="deposit-list-time">{calculateTimeAgo()}</div>
+						<div className="deposit-list-balance">{formatAmount(balance)}</div>
 					</div>
 				</div>
 			) : (
-				// 그 외의 경우 Link로 동작
 				<Link
 					className="deposit-detail-container"
 					to={`/group/${groupId}/account/${id}`}
 				>
 					<div className="deposit-list-place-price">
-						<div className="deposit-list-place"> {place} </div>
-						<div className={`deposit-list-price ${price.startsWith('+') ? 'plus' : ''}`}>{price}</div>
+						<div className="deposit-list-place"> {paymentData} </div>
+						<div
+							className="deposit-list-price"
+							style={amountStyle}
+						>
+							{formattedAmount()}
+						</div>
 					</div>
 					<div className="deposit-list-time-balance">
-						<div className="deposit-list-time">{formatTime()}</div>
-						<div className="deposit-list-balance">{balance}</div>
+						<div className="deposit-list-time">{calculateTimeAgo()}</div>
+						<div className="deposit-list-balance">{formatAmount(balance)}</div>
 					</div>
 				</Link>
 			)}
