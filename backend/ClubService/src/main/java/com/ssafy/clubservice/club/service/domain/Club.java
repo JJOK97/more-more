@@ -3,12 +3,14 @@ package com.ssafy.clubservice.club.service.domain;
 import com.ssafy.clubservice.club.service.UUIDHolder;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@ToString
 public class Club {
     private Long clubId;
     private String clubImage;
@@ -17,20 +19,22 @@ public class Club {
     private String clubName;
     private String clubIntro;
     private LocalDate createdDate;
-    List<Participant> participants = new ArrayList<>();
+    private List<Participant> participants;
 
     @Builder
-    public Club(String clubName, String clubCode, Long dues, String clubImage, Long clubId, LocalDate createdDate, String clubIntro) {
-        this.createdDate = createdDate;
-        this.clubIntro = clubIntro;
-        this.clubName = clubName;
-        this.clubCode = clubCode;
-        this.dues = dues;
-        this.clubImage = clubImage;
+    public Club(Long clubId, String clubImage, Long dues, String clubCode, String clubName, String clubIntro, LocalDate createdDate, List <Participant> participants) {
         this.clubId = clubId;
+        this.clubImage = clubImage;
+        this.dues = dues;
+        this.clubCode = clubCode;
+        this.clubName = clubName;
+        this.clubIntro = clubIntro;
+        this.createdDate = createdDate;
+        this.participants =  participants;
     }
 
-    public Club makeCreator(Long creatorId) {
+    public Club makeClubCreator(Long creatorId) {
+        if(this.participants == null) participants = new ArrayList<>();
         this.participants.add(Participant.createClubCreator(this.clubCode, creatorId));
         return this;
     }
@@ -49,6 +53,7 @@ public class Club {
     public Club updateClub(Club club){
         this.dues = (club.getDues() != null) ? club.getDues() : this.dues;
         this.clubName = (club.getClubName() != null) ? club.getClubName() : this.clubName;
+        this.clubIntro = (club.getClubIntro() != null) ? club.getClubIntro() : this.clubIntro;
         return this;
     }
 

@@ -15,4 +15,6 @@ public class ClubUpdateRequest {
     @NotBlank(message = "모임 코드는 필수값입니다.")
     private String clubCode;
     private String clubName;
+    private String clubIntro;
+
 }

@@ -6,12 +6,14 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ssafy.clubservice.club.controller.dto.request.ClubCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ParticipantCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.response.ParticipantCreateResponse;
+import com.ssafy.clubservice.club.infrastructure.client.AccountClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
@@ -40,6 +42,9 @@ public class ClubCreateControllerTest {
     @Autowired
     private MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+    @MockBean
+    private AccountClient accountClient;
 
     @DisplayName("모임 생성 시 생성된 모임 정보와 참석자 정보를 반환한다.")
     @Test

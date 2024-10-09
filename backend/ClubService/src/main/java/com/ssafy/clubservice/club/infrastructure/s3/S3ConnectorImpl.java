@@ -45,7 +45,8 @@ public class S3ConnectorImpl implements S3Connector {
 
     @Override
     public String getImageURL(String clubCode) {
-        return "https://" + bucketName + ".s3." + regionName + ".amazonaws.com/" + prefix + clubCode;
+        return "https://" + bucketName + ".s3." + regionName
+                + ".amazonaws.com/" + prefix + clubCode + "?" + System.currentTimeMillis();
     }
 
     private String putS3(String key, MultipartFile file) throws IOException {

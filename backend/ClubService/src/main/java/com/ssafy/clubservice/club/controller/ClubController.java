@@ -4,9 +4,9 @@ import com.ssafy.clubservice.club.controller.dto.request.ClubCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ClubUpdateRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ParticipantCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.response.*;
-import com.ssafy.clubservice.club.mapper.ClubObjectMapper;
-import com.ssafy.clubservice.club.mapper.ParticipantObjectMapper;
+import com.ssafy.clubservice.club.mapper.CustomObjectMapper;
 import com.ssafy.clubservice.club.service.ClubService;
+import com.ssafy.clubservice.club.service.domain.Account;
 import com.ssafy.clubservice.club.service.domain.Club;
 import com.ssafy.clubservice.club.service.domain.Participant;
 import com.ssafy.clubservice.global.validator.ParticipantListValid;
@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,17 +29,19 @@ import java.util.List;
 @Slf4j
 public class ClubController {
     private final ClubService clubService;
-    private final ClubObjectMapper clubObjectMapper;
-    private final ParticipantObjectMapper participantObjectMapper;
+    private final CustomObjectMapper customObjectMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "모임 생성 API", description = "이미지, 생성자ID, 회비, 모임 이름, 모임 소개글을 입력하여 모임을 생성한다. (access token)")
     public ClubCreateResponse createClub(@RequestPart("file") MultipartFile file, @Valid @RequestPart("clubCreateRequest") ClubCreateRequest clubCreateRequest) {
         log.info("모임 생성 API");
-        Club club = clubService.createClub(clubObjectMapper.fromCreateRequestToDomain(clubCreateRequest), clubCreateRequest.getCreatorId(), file);
+        Club club = clubService.createClub(
+                customObjectMapper.fromCreateRequestToDomain(clubCreateRequest),
+                new Account(clubCreateRequest.getSsafyUserKey(), clubCreateRequest.getAccountPwd()),
+                clubCreateRequest.getCreatorId(), file);
         log.info("모임 생성 API -> {}", club.getClubCode());
-        return clubObjectMapper.fromDomainToCreateResponse(club);
+        return customObjectMapper.fromDomainToCreateResponse(club);
     }
 
 
@@ -47,7 +50,7 @@ public class ClubController {
     public ClubReadResponse findClub(@PathVariable("clubCode") String clubCode){
         log.info("모임 조회 API");
         Club club = clubService.findClub(clubCode);
-        return clubObjectMapper.fromDomainToReadResponse(club);
+        return customObjectMapper.fromDomainToReadResponse(club);
     }
 
     @GetMapping
@@ -55,15 +58,15 @@ public class ClubController {
     public List<ClubReadResponse> findClubs(@RequestParam("memberId") String memberId) {
         log.info("전체 모임 조회 API");
         List<Club> clubs = clubService.findClubs(memberId);
-        return clubObjectMapper.fromDomainToReadResponse(clubs);
+        return customObjectMapper.fromClubDomainsToReadResponses(clubs);
     }
 
     @PutMapping("/{clubCode}")
-    @Operation(summary = "모임 이름 / 회비 수정 API", description = "회비, 모임 이름을 입력하여 모임 코드에 해당하는 모임의 이름과 회비를 수정한다. (access token)")
+    @Operation(summary = "모임 이름 / 회비 / 소개 수정 API", description = "회비, 모임 이름을 입력하여 모임 코드에 해당하는 모임의 이름과 회비를 수정한다. (access token)")
     public ClubUpdateResponse updateClub(@PathVariable("clubCode") String clubCode, @Valid @RequestBody ClubUpdateRequest clubUpdateRequest){
         log.info("모임 이름 / 회비 수정 API");
-        Club club = clubService.updateClub(clubCode, clubObjectMapper.fromUpdateRequestToDomain(clubUpdateRequest));
-        return clubObjectMapper.fromDomainToUpdatesResponse(club);
+        Club club = clubService.updateClub(clubCode, customObjectMapper.fromUpdateRequestToDomain(clubUpdateRequest));
+        return customObjectMapper.fromDomainToUpdatesResponse(club);
     }
 
     @PostMapping("/{clubCode}/image")
@@ -80,8 +83,8 @@ public class ClubController {
     public List<ParticipantCreateResponse> addParticipant(@PathVariable("clubCode") String clubCode,
                                                           @ParticipantListValid @RequestBody List<ParticipantCreateRequest> participantCreateRequestList){
         log.info("참석자 등록 API");
-        List<Participant> participants = clubService.addParticipant(clubCode, participantObjectMapper.fromCreateRequestToDomain(participantCreateRequestList));
-        return participantObjectMapper.fromDomainToCreateResponse(participants);
+        List<Participant> participants = clubService.addParticipant(clubCode, customObjectMapper.fromCreateRequestToDomain(participantCreateRequestList));
+        return customObjectMapper.fromParticipantDomainsToCreateResponses(participants);
     }
 
     @GetMapping("/{clubCode}/participants")
@@ -89,8 +92,22 @@ public class ClubController {
     public List<ParticipantReadResponse> findParticipants(@PathVariable("clubCode") String clubCode){
         log.info("참석자 조회 API");
         List<Participant> participants = clubService.findParticipants(clubCode);
-        return participantObjectMapper.fromDomainToReadResponse(participants);
+        return customObjectMapper.fromParticipantDomainsToReadResponses(participants);
+    }
+
+    @PutMapping("/{clubCode}/accept/{participantId}")
+    @Operation(summary = "참석자 수락 API", description = "모임 코드와 첨석자 ID에 해당하는 참석자를 수락한다. (access token)")
+    public ParticipantAcceptResponse acceptParticipant(@PathVariable("clubCode") String clubCode, @PathVariable("participantId") String participantId ){
+        Participant participant = clubService.acceptParticipant(clubCode, participantId);
+        return customObjectMapper.fromDomainToAcceptResponse(participant);
     }
 
 
+    @Transactional
+    @DeleteMapping("/{clubCode}/reject/{participantId}")
+    @Operation(summary = "참석자 거절 API", description = "모임 코드와 첨석자 ID에 해당하는 참석자를 거절한다.. (access token)")
+    public ParticipantRejectResponse rejectParticipant(@PathVariable("clubCode") String clubCode, @PathVariable("participantId") String participantId ){
+        Participant participant = clubService.rejectParticipant(clubCode, participantId);
+        return customObjectMapper.fromDomainToRejectResponse(participant);
+    }
 }

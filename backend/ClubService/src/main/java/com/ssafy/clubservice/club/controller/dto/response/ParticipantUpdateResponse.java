@@ -1,15 +1,14 @@
 package com.ssafy.clubservice.club.controller.dto.response;
 
+
 import com.ssafy.clubservice.club.enumeration.AcceptanceStatus;
 import com.ssafy.clubservice.club.enumeration.ClubRole;
 import lombok.Data;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Data
-@ToString
-public class ParticipantReadResponse {
+public class ParticipantUpdateResponse {
     private Long participantId;
     private String clubCode;
     private Long userId;

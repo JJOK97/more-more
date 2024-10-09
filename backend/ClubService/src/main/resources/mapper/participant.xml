@@ -26,4 +26,20 @@
             </if>
         </where>
     </select>
+
+    <update id="updateAcceptanceStatus">
+        update participant set acceptance_status = 'ACCEPTED'
+                           where participant_id = #{participantId}
+                            and club_code = #{clubCode};
+    </update>
+
+    <select id="findByParticipantId" resultType="participantEntity">
+        SELECT participant_id, club_code, acceptance_status, club_role, user_id, created_date
+            FROM participant where participant_id = #{participantId};
+    </select>
+
+    <delete id="removeParticipant">
+        delete from participant where participant_id = #{participantId}
+                            and club_code = #{clubCode};
+    </delete>
 </mapper>

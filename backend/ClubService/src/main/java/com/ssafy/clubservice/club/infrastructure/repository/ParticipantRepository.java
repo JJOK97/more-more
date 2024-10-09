@@ -11,5 +11,8 @@ public interface ParticipantRepository {
 
     List<Participant> findParticipants(String clubCode);
 
+    Participant acceptParticipant(String clubCode, String participantId);
+
+    Participant rejectParticipant(String clubCode, String participantId);
 }
 

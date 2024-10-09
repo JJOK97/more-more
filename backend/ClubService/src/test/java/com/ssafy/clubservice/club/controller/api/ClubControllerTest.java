@@ -59,8 +59,8 @@ class ClubControllerTest {
                 .andReturn();
         String response = mvcResult.getResponse().getContentAsString();
         List<ParticipantCreateResponse> participants = JsonPath.parse(response).read("$.participants");
-        assertThat(participants).extracting("participantId").contains(1, 8);
-        assertThat(participants).extracting("clubCode").contains("test1", "test1");
+        assertThat(participants).extracting("participantId").containsExactlyInAnyOrder(1, 8);
+        assertThat(participants).extracting("clubCode").containsExactlyInAnyOrder("test1", "test1");
     }
 
     @DisplayName("전체 모임 조회시, 멤버 ID에 해당하는 모임의 코드, 이름, 소개 문구를 모두 반환한다.")
@@ -70,9 +70,17 @@ class ClubControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         List<ClubReadResponse> clubReadResponses = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ClubReadResponse>>() {});
-        assertThat(clubReadResponses).extracting("clubCode").contains("test1", "test2", "test3");
-        assertThat(clubReadResponses).extracting("clubName").contains("test1", "test2", "test3");
-        assertThat(clubReadResponses).extracting("clubIntro").contains("test1", "test2", "test3");
+        assertThat(clubReadResponses).extracting("clubName").containsExactlyInAnyOrder("test1", "test3");
+        assertThat(clubReadResponses).extracting("clubCode").containsExactlyInAnyOrder("test1", "test3");
+        assertThat(clubReadResponses).extracting("clubIntro").containsExactlyInAnyOrder("test1", "test3");
+        assertThat(clubReadResponses)
+                .flatExtracting(ClubReadResponse::getParticipants)
+                .extracting("participantId")
+                .containsExactlyInAnyOrder(1L, 3L, 5L, 7L, 8L);
+        assertThat(clubReadResponses)
+                .flatExtracting(ClubReadResponse::getParticipants)
+                .extracting("userId")
+                .containsExactlyInAnyOrder(1L, 1L, 3L, 5L, 6L);
     }
 
     @DisplayName("모임 코드로 전체 멤버 조회 시, 멤버ID, 참석자ID를 반환한다.")
@@ -83,18 +91,19 @@ class ClubControllerTest {
                 .andReturn();
         List<ParticipantReadResponse> participantReadResponses = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ParticipantReadResponse>>() {});
         assertThat(participantReadResponses).size().isEqualTo(2);
-        assertThat(participantReadResponses).extracting("participantId").contains(1L, 8L);
-        assertThat(participantReadResponses).extracting("userId").contains(1L, 6L);
-        assertThat(participantReadResponses).extracting("clubCode").contains("test1", "test1");
+        assertThat(participantReadResponses).extracting("participantId").containsExactlyInAnyOrder(1L, 8L);
+        assertThat(participantReadResponses).extracting("userId").containsExactlyInAnyOrder(1L, 6L);
+        assertThat(participantReadResponses).extracting("clubCode").containsExactlyInAnyOrder("test1", "test1");
     }
 
-    @DisplayName("모임 정보 변경 시, 변경된 회비와 이름을 반환한다.")
+    @DisplayName("모임 정보 변경 시, 변경된 회비와 이름, 소개를 반환한다.")
     @Test
     void updateClubs() throws Exception {
         ClubUpdateRequest clubUpdateRequest = ClubUpdateRequest.builder()
                 .clubId(1L)
                 .clubCode("test1")
                 .clubName("test11")
+                .clubIntro("test11")
                 .dues(1500L)
                 .build();
         mockMvc.perform(put("/api/club/test1")
@@ -102,12 +111,14 @@ class ClubControllerTest {
                         .content(objectMapper.writeValueAsString(clubUpdateRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.clubName").value("test11"))
-                .andExpect(jsonPath("$.dues").value(1500L));
+                .andExpect(jsonPath("$.dues").value(1500L))
+                .andExpect(jsonPath("$.clubIntro").value("test11"));
         mockMvc.perform(get("/api/club/test1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.clubCode").value("test1"))
                 .andExpect(jsonPath("$.clubName").value("test11"))
-                .andExpect(jsonPath("$.dues").value(1500L));
+                .andExpect(jsonPath("$.dues").value(1500L))
+                .andExpect(jsonPath("$.clubIntro").value("test11"));
     }
     @DisplayName("이미지 이름 변경 시, 변경된 이미지 URL을 반환한다.")
     @Test
@@ -119,6 +130,31 @@ class ClubControllerTest {
 
     }
 
+    @Test
+    @DisplayName("참석자 수락 시, 수락된 참석자 정보를 변경한다.")
+    void acceptParticipants() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(put("/api/club/test2/accept/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.participantId").value(2L))
+                .andExpect(jsonPath("$.clubCode").value("test2"))
+                .andExpect(jsonPath("$.acceptanceStatus").value("ACCEPTED"))
+                .andExpect(jsonPath("$.clubRole").value("PARTICIPANT"))
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andReturn();
+    }
+
+    @Test
+    @DisplayName("참석자 거절 시, 거절된 참석자 정보를 변경한다.")
+    void rejectParticipants() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(delete("/api/club/test2/reject/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.participantId").value(2L))
+                .andExpect(jsonPath("$.clubCode").value("test2"))
+                .andExpect(jsonPath("$.acceptanceStatus").value("REFUSED"))
+                .andExpect(jsonPath("$.clubRole").value("PARTICIPANT"))
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andReturn();
+    }
 
     private static MockMultipartFile getMockMultipartFile() {
         return new MockMultipartFile(

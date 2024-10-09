@@ -1,12 +1,14 @@
 package com.ssafy.clubservice.club.controller.dto.response;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString
 public class ClubReadResponse {
     private Long clubId;
     private String clubImage;
@@ -15,5 +17,5 @@ public class ClubReadResponse {
     private String clubName;
     private String clubIntro;
     private LocalDate createdDate;
-    List<ParticipantReadResponse> participants = new ArrayList<>();
+    private List<ParticipantReadResponse> participants = new ArrayList<>();
 }
