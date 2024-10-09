@@ -80,4 +80,10 @@ public class AccountRepositoryImpl implements AccountRepository {
     public void deletetVerify(String ssafyTransactionNumber) {
         accountMybatisMapper.deleteByTransactionNum(ssafyTransactionNumber);
     }
+
+    @Override
+    public String selectUserKey(String clubCode) {
+        return accountMybatisMapper.selectUserKeyByClubCode(clubCode);
+    }
+
 }

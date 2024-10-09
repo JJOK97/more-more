@@ -16,6 +16,7 @@ public class AccountHistoryAll {
     private String accountTime;              // 결제 시각 (HHmmss 형식)
     private String paymentType;              // 결제 타입
     private String paymentAmount;            // 결제 금액
+    private String paymentData;              // 결제 내역
     private String accountBalance;           // 계좌 잔고
     private String accountHistoryVerificationContent; // 계좌 내역 증빙 내용
 
@@ -27,8 +28,8 @@ public class AccountHistoryAll {
 
     // 모든 필드를 초기화하는 생성자
     public AccountHistoryAll(String accountId, String tagName, String ssafyTransactionNumber,
-                             String paymentType, String paymentAmount, String accountBalance,
-                             String accountHistoryVerificationContent) {
+                             String paymentType, String paymentAmount, String paymentData,
+                             String accountBalance, String accountHistoryVerificationContent) {
         this.accountId = accountId;
         this.tagName = tagName;
         this.ssafyTransactionNumber = ssafyTransactionNumber;
@@ -36,6 +37,7 @@ public class AccountHistoryAll {
         this.accountTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmmss"));   // 현재 시간 (HHmmss 형식)
         this.paymentType = paymentType;
         this.paymentAmount = paymentAmount;
+        this.paymentData = paymentData;
         this.accountBalance = accountBalance;
         this.accountHistoryVerificationContent = accountHistoryVerificationContent;
     }

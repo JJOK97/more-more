@@ -24,4 +24,5 @@ public interface AccountMybatisMapper {
     VerifyEntity selectByTransactionNum(String ssafyTransactionNumber);
     void updateByTransactionNum(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest);
     void deleteByTransactionNum(String ssafyTransactionNumber);
+    String selectUserKeyByClubCode(String clubCode);
 }

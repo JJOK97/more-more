@@ -4,15 +4,13 @@ import lombok.Data;
 
 @Data
 public class AccountTransfer {
-    String depositAccountNo;
+    String memberId;
     String transactionBalance;
-    String userKey;
     String clubCode;
 
-    public AccountTransfer(String depositAccountNo, String transactionBalance, String userKey, String clubCode) {
-        this.depositAccountNo = depositAccountNo;
+    public AccountTransfer(String memberId, String transactionBalance, String clubCode) {
+        this.memberId = memberId;
         this.transactionBalance = transactionBalance;
-        this.userKey = userKey;
         this.clubCode = clubCode;
     }
 }

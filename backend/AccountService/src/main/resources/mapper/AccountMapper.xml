@@ -34,6 +34,7 @@
             account_time,
             payment_type,
             payment_amount,
+            payment_data,
             account_balance
         ) VALUES (
                      #{accountId},
@@ -43,6 +44,7 @@
                      #{accountTime},
                      #{paymentType},
                      #{paymentAmount},
+                     #{paymentData},
                      #{accountBalance}
                  )
     </insert>
@@ -113,4 +115,12 @@
         WHERE ssafy_transaction_number = #{ssafyTransactionNumber}
     </delete>
 
+    <select id="selectUserKeyByClubCode" resultType="String" parameterType="String">
+        SELECT
+            ssafy_user_key
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
 </mapper>

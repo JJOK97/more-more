@@ -6,8 +6,7 @@ import lombok.Data;
 @Data
 public class AccountTransferFillRequest {
     // 출금 계좌, 이체 금액, 입금자 userKey, 클럽코드
-    private String withdrawalAccountNo;
+    private String memberId;
     private String transactionBalance;
-    private String userKey;
     private String clubCode;
 }

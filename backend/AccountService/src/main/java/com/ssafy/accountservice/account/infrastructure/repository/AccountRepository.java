@@ -22,4 +22,5 @@ public interface AccountRepository {
     VerifyEntity selectVerify(String ssafyTransactionNumber);
     void updateVerify(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest);
     void deletetVerify(String ssafyTransactionNumber);
+    String selectUserKey(String clubCode);
 }
