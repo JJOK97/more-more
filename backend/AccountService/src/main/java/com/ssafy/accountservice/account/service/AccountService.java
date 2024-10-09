@@ -7,6 +7,7 @@ import com.ssafy.accountservice.account.infrastructure.repository.entity.Account
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.service.domain.Account;
 import com.ssafy.accountservice.account.service.domain.AccountTransfer;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,4 +27,5 @@ public interface AccountService {
     void verifyDelete(String ssafyTransactionNumber);
     Map<String, String> accountBalanceMemberId(Long memberId);
     List<AccountHistoryEntity> accountHistoryByDate(String clubCode, String date);
+//    String accountNumberIsValid(String accountNumber);
 }

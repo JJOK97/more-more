@@ -197,4 +197,10 @@ public class AccountController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+//    @Operation(summary = "계좌번호 유효한지 확인")
+//    @GetMapping("accountNumber/isValid")
+//    public String isValidAccountNumber(@PathVariable("accountNumber") String accountNumber) {
+//        return accountService.accountNumberIsValid(accountNumber);
+//    }
+
 }
