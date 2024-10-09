@@ -29,6 +29,7 @@ public class AccountServiceImpl implements AccountService {
     private final UseCardFeignClient useCardFeignClient;
     private final MemberClient memberClient;
     private final MemberClientByAccountNumber memberClientByAccountNumber;
+    private final SelectClubFeignClient selectClubFeignClient;
 
     @Override
     public void accountCreate(Account account) {
@@ -76,11 +77,16 @@ public class AccountServiceImpl implements AccountService {
         // Feign Client
         AccountSelectBalanceApiResponse response = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
 
+        // Feign CLient - club에 접근
+        ClubReadResponse clubReadResponse = selectClubFeignClient.findClub(clubCode);
+
         // account number, account balance만 담아서 return
         Map<String, String> numAndBalance = new HashMap<>();
         numAndBalance.put("account_num", accountNum);
         numAndBalance.put("account_balance", response.getRec().getAccountBalance());
         numAndBalance.put("bankName", response.getRec().getBankName());
+        numAndBalance.put("dues", String.valueOf(clubReadResponse.getDues()));
+        numAndBalance.put("createDate", String.valueOf(clubReadResponse.getCreatedDate()));
 
         return numAndBalance;
     }
@@ -138,7 +144,7 @@ public class AccountServiceImpl implements AccountService {
         arr.add(accountBalance);
 
         LocalTime time = LocalTime.now();
-        String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("HHmmss"));
 
         // account_history 테이블에 저장할 AccountHistoryAll 객체 생성 및 데이터 설정
         AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
@@ -205,7 +211,7 @@ public class AccountServiceImpl implements AccountService {
         arr.add(balanceResponse.getRec().getAccountBalance());
 
         LocalTime time = LocalTime.now();
-        String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("HHmmss"));
 
         // 이체 내역을 기록할 AccountHistoryAll 객체 생성
         AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
@@ -367,4 +373,10 @@ public class AccountServiceImpl implements AccountService {
         String accountNum = accountRepository.selectAccountNum(clubCode);
         return accountRepository.selectAccountNumByDate(accountNum, date);
     }
+
+//    @Override
+//    public String accountNumberIsValid(String accountNumber) {
+//        String accountNum = accountRepository.selectAccountNum(accountNumber);
+//        return accountNum;
+//    }
 }
