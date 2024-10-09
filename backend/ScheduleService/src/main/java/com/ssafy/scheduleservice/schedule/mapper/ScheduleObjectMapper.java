@@ -6,16 +6,13 @@ import com.ssafy.scheduleservice.schedule.controller.dto.response.ScheduleRespon
 import com.ssafy.scheduleservice.schedule.infrastructure.repository.entity.ScheduleEntity;
 import com.ssafy.scheduleservice.schedule.service.domain.Schedule;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ScheduleObjectMapper {
-
-        Schedule fromRequestDtoToDomain(ScheduleCreateRequest scheduleCreateRequest);
-
+        Schedule fromCreateRequestToDomain(ScheduleCreateRequest scheduleCreateRequest);
         Schedule fromEntityToDomain(ScheduleEntity scheduleEntity);
 
         ScheduleResponse fromDomainToResponseDto(Schedule schedule);
@@ -31,18 +28,10 @@ public interface ScheduleObjectMapper {
         Schedule fromCommentUpdateRequestToDomain(ScheduleUpdateRequest scheduleUpdateRequest);
 
         // 수동 매핑 및 ID 생성 로직이 포함된 메서드
-        default ScheduleEntity fromDomainToEntity(Schedule schedule) {
-                if (schedule.getScheduleId() == null) {
-                        return new ScheduleEntity(
-                                1L,
-                                schedule.getClubCode(),
-                                schedule.getEvent(),
-                                schedule.getDate(),
-                                schedule.getTime(),
-                                schedule.getMemberId()
-                        );
-                } else {
-                        return fromDomainToEntity(schedule); // 기본 자동 매핑 메서드 호출
-                }
-        }
+         ScheduleEntity fromDomainToEntity(Schedule schedule) ;
+
+
+
+
+
 }

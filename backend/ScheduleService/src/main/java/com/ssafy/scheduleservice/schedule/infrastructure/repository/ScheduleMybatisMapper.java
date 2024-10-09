@@ -13,4 +13,8 @@ public interface ScheduleMybatisMapper {
     void saveSchedule(ScheduleEntity scheduleEntity);  // 스케줄 저장 메서드
     void updateSchedule(ScheduleEntity scheduleEntity);
     void deleteSchedule(String clubCode, Long scheduleId);
+
+    List<String> findSchedulesByClubCodeAndDate(String clubCode, String date);
+
+    List<ScheduleEntity> findSchedulesByClubCodeAndFullDate(String clubCode, String date);
 }

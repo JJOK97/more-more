@@ -19,12 +19,12 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
     private final ScheduleObjectMapper scheduleObjectMapper;
 
-    @Operation(summary = "스케줄 클럽 코드 및 ID로 조회 API", description = "clubCode와 scheduleId를 통해 해당 스케줄을 조회")
-    @GetMapping("/{clubCode}/{scheduleId}")
-    public ScheduleResponse findScheduleByCodeAndId(@PathVariable String clubCode, @PathVariable Long scheduleId) {
-        Schedule schedule = scheduleService.findSchedule(clubCode, scheduleId);
-        return scheduleObjectMapper.fromDomainToResponseDto(schedule);  // Schedule 객체를 반환
-    }
+//    @Operation(summary = "스케줄 클럽 코드 및 ID로 조회 API", description = "clubCode와 scheduleId를 통해 해당 스케줄을 조회")
+//    @GetMapping("/{clubCode}/{scheduleId}")
+//    public ScheduleResponse findScheduleByCodeAndId(@PathVariable String clubCode, @PathVariable Long scheduleId) {
+//        Schedule schedule = scheduleService.findSchedule(clubCode, scheduleId);
+//        return scheduleObjectMapper.fromDomainToResponseDto(schedule);  // Schedule 객체를 반환
+//    }
 
 
     @Operation(summary = "모든 스케줄을 클럽 코드로 조회 API", description = "clubCode를 통해 모든 스케줄을 조회")
@@ -37,7 +37,7 @@ public class ScheduleController {
     @Operation(summary = "스케줄 생성 API", description = "새로운 스케줄을 생성한다.")
     @PostMapping
     public ScheduleResponse createSchedule(@RequestBody ScheduleCreateRequest scheduleCreateRequest) {
-        Schedule schedule = scheduleObjectMapper.fromRequestDtoToDomain(scheduleCreateRequest);
+        Schedule schedule = scheduleObjectMapper.fromCreateRequestToDomain(scheduleCreateRequest);
         Schedule savedSchedule = scheduleService.saveSchedule(schedule);
         return scheduleObjectMapper.fromDomainToResponseDto(savedSchedule);
     }
@@ -56,7 +56,6 @@ public class ScheduleController {
                 .scheduleId(scheduleId)
                 .build();
 
-        System.out.println("schedule.getEvent() = " + schedule.getEvent());
         Schedule updatedSchedule = scheduleService.updateSchedule(schedule);
         return scheduleObjectMapper.fromDomainToUpdateResponse(updatedSchedule);
     }
@@ -68,6 +67,19 @@ public class ScheduleController {
     public Long deleteByScheduleByCodeAndId(@PathVariable String clubCode, @PathVariable Long scheduleId){
         scheduleService.deleteBySchedule(clubCode, scheduleId);
         return scheduleId;
+    }
+
+
+    @Operation(summary = "스케줄 클럽 코드 및 년-달(yyyy-mm)로 조회 API", description = "clubCode와 String 타입 날짜를 통해 해당 스케줄을 조회")
+    @GetMapping("/{clubCode}/{date}")
+    public List<String> findScheduleByDate(@PathVariable String clubCode, @PathVariable String date) {
+        return scheduleService.findSchedulesByClubCodeAndDate(clubCode, date);
+    }
+
+    @Operation(summary = "스케줄 클럽 코드 및 년-달(yyyy-mm-dd)로 조회 API", description = "clubCode와 String 타입 날짜타입 통해 해당 스케줄을 조회")
+    @GetMapping("/{clubCode}/{date}/daySchedule")
+    public List<ScheduleResponse> findScheduleByFullDate(@PathVariable String clubCode, @PathVariable String date) {
+        return scheduleService.findSchedulesByClubCodeAndFullDate(clubCode, date);
     }
 
 }

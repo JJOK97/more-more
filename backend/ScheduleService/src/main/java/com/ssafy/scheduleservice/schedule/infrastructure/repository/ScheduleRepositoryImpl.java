@@ -39,7 +39,6 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     public Schedule update(Schedule schedule) {
         ScheduleEntity existingEntity = scheduleMybatisMapper.findSchedule(schedule.getClubCode(), schedule.getScheduleId());
-
         ScheduleEntity updatedEntity = existingEntity.toBuilder()
                 .event(schedule.getEvent())  // 수정할 필드만 업데이트
                 .date(schedule.getDate())
@@ -54,6 +53,16 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     public void delete(String clubCode, Long scheduleId) {
         scheduleMybatisMapper.deleteSchedule(clubCode, scheduleId);
+    }
+
+    @Override
+    public List<String> findSchedulesByClubCodeAndDate(String clubCode, String date) {
+        return scheduleMybatisMapper.findSchedulesByClubCodeAndDate(clubCode, date);
+    }
+
+    @Override
+    public List<ScheduleEntity> findSchedulesByClubCodeAndFullDate(String clubCode, String date) {
+        return scheduleMybatisMapper.findSchedulesByClubCodeAndFullDate(clubCode, date);
     }
 
 }
