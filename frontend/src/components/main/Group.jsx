@@ -13,12 +13,10 @@ const Group = ({ group }) => {
 				className="group-profile-image"
 			/>
 			<div className="group-info-container">
-				<div className="group-name">
-					{group.clubName}({group.participants.length})
-				</div>
-				<div className="group-created-date">{group.createdDate}</div>
-				<div className="group-introduction">{group.clubIntro}</div>
-				{/* <div className="group-member-count"></div> */}
+				<div className="group-name">{group.clubName}</div>
+				<div className="group-introduction">모임 소개 : {group.clubIntro}</div>
+				<div className="group-created-date">개설일 : {group.createdDate}</div>
+				<div className="group-member-count">{group.participants.length}</div>
 			</div>
 		</Link>
 	);

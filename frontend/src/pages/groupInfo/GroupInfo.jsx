@@ -1,4 +1,4 @@
-import '@/assets/css/groupInfo/GroupInfo.css';
+import './GroupInfo.css';
 import React, { useEffect, useState } from 'react';
 import GroupMember from './GroupMember.jsx';
 import InviteModal from './InviteModal';
@@ -242,24 +242,24 @@ const GroupInfo = () => {
 				{isMembersOpen && (
 					<div className="group-info-members-list">
 						{/* ACCEPTED 멤버 */}
-						<h3>모임원 목록</h3>
-						{acceptedMembers.length > 0 ? (
-							acceptedMembers.map((user) => (
-								<GroupMember
-									key={user.userId}
-									userId={user.userId}
-									status={user.acceptanceStatus}
-									groupId={groupId}
-								/>
-							))
-						) : (
-							<div>모임원이 없습니다.</div>
+						{acceptedMembers.length > 0 && (
+							<>
+								<div className='group-info-members-list-accepted'>모임원 목록</div>
+								{acceptedMembers.map((user) => (
+									<GroupMember
+										key={user.userId}
+										userId={user.userId}
+										status={user.acceptanceStatus}
+										groupId={groupId}
+									/>
+								))}
+							</>
 						)}
 
 						{/* WAITING 멤버 */}
 						{waitingMembers?.length > 0 && (
 							<>
-								<h3>가입 대기</h3>
+								<div className='group-info-members-list-waiting'>가입 대기</div>
 								{waitingMembers.map((user) => (
 									<GroupMember
 										key={user.userId}
