@@ -4,6 +4,7 @@ import './SearchPost.css';
 import datas from '../feed/data.json'; // 데이터 가져오기
 import PostView from '@/components/postView/PostView'; // PostView 컴포넌트 가져오기
 import useGroupName from '@/store/useGroupName';
+import { getDatas } from '../feed/getData';
 
 const SearchPost = () => {
 	const { setGroupName } = useGroupName();
@@ -15,19 +16,29 @@ const SearchPost = () => {
 		setGroupName(groupId);
 	}, []);
 
-	const handleSearch = () => {
-		if (!searchTerm) return;
+	// const handleSearch = () => {
+	// 	if (!searchTerm) return;
 
-		// 검색어에 맞는 게시물 필터링 (groupId에 맞는 게시물만)
-		const filteredResults = datas.posts.filter(
-			(post) =>
-				post.groupId === parseInt(groupId, 10) && // groupId로 필터링
-				(post.postContent.includes(searchTerm) ||
-					post.userName.includes(searchTerm) ||
-					post.accountHistory.includes(searchTerm)),
-		);
+	// 	// 검색어에 맞는 게시물 필터링 (groupId에 맞는 게시물만)
+	// 	const filteredResults = datas.posts.filter(
+	// 		(post) =>
+	// 			post.groupId === parseInt(groupId, 10) && // groupId로 필터링
+	// 			(post.postContent.includes(searchTerm) ||
+	// 				post.userName.includes(searchTerm) ||
+	// 				post.accountHistory.includes(searchTerm)),
+	// 	);
 
-		setResults(filteredResults); // 필터링된 결과 설정
+	// 	setResults(filteredResults); // 필터링된 결과 설정
+	// };
+	const handleSearch = async () => {
+		try {
+			const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/search?keyword=${searchTerm}`;
+			const data = await getDatas(url);
+			setResults(data);
+			console.log(data);
+		} catch (error) {
+			console.log('Error fetching search result', error);
+		}
 	};
 
 	const handleKeyDown = (e) => {
@@ -56,7 +67,7 @@ const SearchPost = () => {
 				</button>
 			</div>
 
-			{results.length > 0 && (
+			{results.length > 0 ? (
 				<div className="search-results">
 					{results.map((post) => (
 						<PostView
@@ -65,6 +76,8 @@ const SearchPost = () => {
 						/> // PostView 컴포넌트로 표시
 					))}
 				</div>
+			) : (
+				<div>검색결과가 없습니다.</div>
 			)}
 		</div>
 	);
