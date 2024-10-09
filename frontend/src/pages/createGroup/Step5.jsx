@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
-const createGroupAPI = async (groupName, profileImage, fee, intro, creatorId) => {
+const createGroupAPI = async (groupName, profileImage, fee, intro, creatorId, ssafyUserKey, password) => {
 	// clubCreateRequest 객체 생성
 	const clubCreateRequest = {
 		dues: Number(fee), // 회비를 숫자로 변환
 		creatorId: Number(creatorId), // creatorId를 숫자로 변환
 		clubName: groupName,
 		clubIntro: intro, // 모임 소개
+		ssafyUserKey: ssafyUserKey,
+		accountPwd: password,
 	};
 
 	// 요청 본문에 포함될 FormData 객체 생성
@@ -18,6 +20,8 @@ const createGroupAPI = async (groupName, profileImage, fee, intro, creatorId) =>
 			type: 'application/json', // clubCreateRequest를 JSON 형식으로 추가
 		}),
 	);
+
+	console.log(clubCreateRequest);
 
 	// Fetch API 호출
 	const response = await fetch('https://j11a605.p.ssafy.io/api/club', {
@@ -52,6 +56,7 @@ const Step5 = ({
 	setFee,
 	intro,
 	setIntro,
+	password,
 }) => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -64,9 +69,18 @@ const Step5 = ({
 
 		try {
 			const creatorId = localStorage.getItem('memberId'); // localStorage에서 memberId 가져오기
+			const ssafyUserKey = localStorage.getItem('userKey');
 
 			// 모임 생성 API 호출
-			const groupResponse = await createGroupAPI(groupName, profileImage, fee, intro, creatorId);
+			const groupResponse = await createGroupAPI(
+				groupName,
+				profileImage,
+				fee,
+				intro,
+				creatorId,
+				ssafyUserKey,
+				password,
+			);
 			if (groupResponse.success) {
 				const groupId = groupResponse.clubId; // 생성된 모임 ID
 

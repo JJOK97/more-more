@@ -4,6 +4,7 @@ const Step3 = ({ handlePrevStep, handleNextStep, password, setPassword }) => {
 	const handlePasswordInput = (value) => {
 		if (password.length < 4) {
 			setPassword((prev) => (prev + value).slice(0, 4));
+			console.log(password);
 		}
 	};
 

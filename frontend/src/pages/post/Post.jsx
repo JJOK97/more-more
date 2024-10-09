@@ -6,8 +6,8 @@ import ContentInput from './ContentInput'; // ContentInput 컴포넌트 import
 import '@/assets/css/post/Post.css';
 import useGroupName from '@/store/useGroupName';
 import { getDatas } from '../feed/getData';
-import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postApi'; // 좋아요 관련 API 함수 import
-import { getComments, createComment } from '@/api/commentApi'; // 댓글 관련 API import
+import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postAPI'; // 좋아요 관련 API 함수 import
+import { getComments, createComment } from '@/api/commentAPI'; // 댓글 관련 API import
 import { getMemberInfo } from '@/api/userAPI'; // 유저 정보 조회 API 추가
 
 const Post = () => {
