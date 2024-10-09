@@ -35,7 +35,7 @@ public class MemberController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "회원가입 API", description = "계좌번호, 주소, 이메일, 핸드폰번호, 비밀번호, 생년월일(yyyy-mm-dd),이름, 이미지파일로 회원가입. (access token)")
+    @Operation(summary = "회원가입 API", description = "계좌번호, 주소, 이메일, 핸드폰번호, 비밀번호, 생년월일(yyyy-mm-dd),이름, 이미지파일로, 은행명 회원가입. (access token)")
     public String registerMember(@ModelAttribute MemberCreateRequest memberRequest) {
         try {
             memberService.registerMember(memberRequest);
@@ -48,7 +48,7 @@ public class MemberController {
 
 
     @GetMapping("/{memberId}")
-    @Operation(summary = "회원정보 조회 API", description = "memberID로 계좌번호, 주소, 이메일, 핸드폰번호, 생년월일(yyyy-mm-dd),이름, 이미지파일을 받음. (access token)")
+    @Operation(summary = "회원정보 조회 API", description = "memberID로 계좌번호, 주소, 이메일, 핸드폰번호, 생년월일(yyyy-mm-dd),이름, 이미지파일 은행명을 받음. (access token)")
     public MemberGetResponse getMember(@PathVariable Long memberId) {
         return memberService.findByMemberId(memberId);
     }

@@ -5,8 +5,8 @@
 <mapper namespace="com.ssafy.memberservice.member.infrastructure.repository.MemberMybatisMapper">
     <!-- 회원 정보를 저장하는 INSERT 문 -->
     <insert id="saveMember" parameterType="com.ssafy.memberservice.member.infrastructure.repository.entity.MemberEntity" useGeneratedKeys="true" keyProperty="memberId">
-        INSERT INTO members (account_number, address, email, phone_number, password, birth_date, name, profile_image_url, ssafy_user_key)
-        VALUES (#{accountNumber}, #{address}, #{email}, #{phoneNumber}, #{password}, #{birthDate}, #{name}, #{profileImageUrl}, #{userKey})
+        INSERT INTO members (account_number, address, email, phone_number, password, birth_date, name, profile_image_url, ssafy_user_key, bank)
+        VALUES (#{accountNumber}, #{address}, #{email}, #{phoneNumber}, #{password}, #{birthDate}, #{name}, #{profileImageUrl}, #{userKey}, #{bank})
     </insert>
 
     <select id="findByMemberId" parameterType="Long" resultType="com.ssafy.memberservice.member.infrastructure.repository.entity.MemberEntity" useCache="false">
@@ -20,7 +20,8 @@
             birth_date AS birthDate,
             name,
             profile_image_url AS profileImageUrl,
-            ssafy_user_key AS userKey
+            ssafy_user_key AS userKey,
+            bank AS bank
         FROM members
         WHERE member_id = #{memberId}
     </select>

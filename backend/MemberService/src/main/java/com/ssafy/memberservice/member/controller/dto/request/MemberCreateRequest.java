@@ -17,4 +17,5 @@ public class MemberCreateRequest {
     private Date birthDate;
     private String name;
     private MultipartFile profileImage;
+    private String bank;
 }
