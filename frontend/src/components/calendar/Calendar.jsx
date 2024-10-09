@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import '@/assets/css/schedule/calendar/calendar.css';
 import moment from 'moment';
 
-function Calendar({ onSelectDate, onMonthChange, scheduleDates }) {
+function Calendar({ onSelectDate, onMonthChange, scheduleDates = [] }) {
 	const today = new Date(); // 오늘 날짜
 	const [date, setDate] = useState(today);
 	const [activeStartDate, setActiveStartDate] = useState(today);
@@ -80,8 +80,10 @@ function Calendar({ onSelectDate, onMonthChange, scheduleDates }) {
 								오늘
 							</div>,
 						);
-					} else if (scheduleDates.includes(moment(date).format('YYYY-MM-DD'))) {
-						// 오늘이 아닌 날짜에만 점 표시
+					}
+
+					// scheduleDates 배열에 포함된 날짜에 점 표시
+					if (scheduleDates && scheduleDates.includes(moment(date).format('YYYY-MM-DD'))) {
 						html.push(
 							<div
 								key={moment(date).format('YYYY-MM-DD')}
