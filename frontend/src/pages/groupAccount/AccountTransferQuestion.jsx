@@ -1,18 +1,51 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import TransferInfo from '@/components/groupAccount/TransferInfo';
 
 const AccountTransferQuestion = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const { groupId } = useParams();
 
 	const amount = location.state?.amount || '0';
 
-	const groupId = location.pathname.match(/^\/group\/(\d+)/)?.[1];
+	const handleSendClick = async () => {
+		const memberId = localStorage.getItem('memberId');
+		if (!memberId || !groupId) {
+			alert('회원 정보 또는 모임 정보가 없습니다.');
+			return;
+		}
 
-	const handleSendClick = () => {
-		if (groupId) {
-			navigate(`/group/${groupId}/account`);
+		if (parseInt(amount) === 0) {
+			alert('송금 금액이 유효하지 않습니다.');
+		}
+
+		const requestData = {
+			memberId: memberId,
+			transactionBalance: amount.toString(),
+			clubCode: groupId,
+		};
+
+		try {
+			const response = await fetch(`https://j11a605.p.ssafy.io/api/account/fill`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(requestData),
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
+			const responseData = await response.json();
+			console.log('송금 성공: ', responseData);
+
+			navigate(`/group/${groupId}/account/transfer-check`);
+		} catch (error) {
+			console.error('송금 중 오류 발생: ', error.message);
+			alert('송금 중 오류가 발생했습니다.');
 		}
 	};
 
