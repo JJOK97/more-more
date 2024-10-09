@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountTransferFeignClient accountTransferFeignClient;
     private final UseCardFeignClient useCardFeignClient;
     private final MemberClient memberClient;
+    private final MemberClientByAccountNumber memberClientByAccountNumber;
 
     @Override
     public void accountCreate(Account account) {
@@ -87,10 +90,9 @@ public class AccountServiceImpl implements AccountService {
     public ArrayList<String> accountTransfer(AccountTransfer accountTransfer) {
         String apiKey = AccountUtils.getApiKey();
 
-        MemberGetResponse memberGetResponse = memberClient.getMember(Long.valueOf(accountTransfer.getMemberId()));
         String userKey = accountRepository.selectUserKey(accountTransfer.getClubCode());
-        String postAccountNum = memberGetResponse.getAccountNumber();
-        String name = memberGetResponse.getName();
+        String postAccountNum = accountTransfer.getSsafyAccountNumber();
+        String name = memberClientByAccountNumber.findName(accountTransfer.getSsafyAccountNumber());
 
         // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
         String withdrawalAccountNo = accountRepository.selectAccountNumber(accountTransfer.getClubCode());
@@ -101,7 +103,7 @@ public class AccountServiceImpl implements AccountService {
         accountTransferApiRequest.setDepositAccountNo(postAccountNum);
         accountTransferApiRequest.setTransactionBalance(accountTransfer.getTransactionBalance());
         accountTransferApiRequest.setWithdrawalAccountNo(withdrawalAccountNo);
-        
+
         // Feign Client
         AccountTransferApiResponse accountTransferApiResponse = accountTransferFeignClient.transferAccountBalance(accountTransferApiRequest);
         AccountTransferApiResponse.REC firstRec = accountTransferApiResponse.getRec().get(0);
@@ -135,10 +137,14 @@ public class AccountServiceImpl implements AccountService {
         arr.add(transactionBalance);
         arr.add(accountBalance);
 
+        LocalTime time = LocalTime.now();
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+
         // account_history 테이블에 저장할 AccountHistoryAll 객체 생성 및 데이터 설정
         AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
         accountHistoryAll.setAccountId(balanceResponse.getRec().getAccountNo());   // 계좌 ID
-        accountHistoryAll.setTagName(LocalDate.now() + "." + firstRec.getTransactionType());  // 결제 태그
+        accountHistoryAll.setTagName(LocalDate.now() + "." + name + "_이체(출금)." + formattedTime);  // 결제 태그
+
         accountHistoryAll.setSsafyTransactionNumber(balanceResponse.getHeader().getInstitutionTransactionUniqueNo());  // SSAFY 거래번호
         accountHistoryAll.setPaymentType(firstRec.getTransactionTypeName());       // 결제 타입
         accountHistoryAll.setPaymentAmount(transactionBalance);   // 송금 금액
@@ -198,10 +204,13 @@ public class AccountServiceImpl implements AccountService {
         // 잔고 추가
         arr.add(balanceResponse.getRec().getAccountBalance());
 
+        LocalTime time = LocalTime.now();
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+
         // 이체 내역을 기록할 AccountHistoryAll 객체 생성
         AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
         accountHistoryAll.setAccountId(balanceResponse.getRec().getAccountNo());  // 계좌 ID
-        accountHistoryAll.setTagName(LocalDate.now() + "." + secondRec.getTransactionType());  // 결제 태그
+        accountHistoryAll.setTagName(LocalDate.now() + "." + name + "_이체(입금)." + formattedTime);  // 결제 태그
         accountHistoryAll.setSsafyTransactionNumber(balanceResponse.getHeader().getInstitutionTransactionUniqueNo());  // SSAFY 거래번호
         accountHistoryAll.setPaymentType(secondRec.getTransactionTypeName()); // 결제 타입
         accountHistoryAll.setPaymentAmount(accountTransferFillRequest.getTransactionBalance()); // 이체 금액
