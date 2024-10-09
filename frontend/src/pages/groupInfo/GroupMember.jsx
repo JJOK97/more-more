@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const GroupMember = ({ userId, status }) => {
+const GroupMember = ({ userId, status, groupId, participantId }) => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
@@ -25,6 +25,18 @@ const GroupMember = ({ userId, status }) => {
 		fetchUserData();
 	}, [userId]);
 
+	const handleApprove = async () => {
+		try {
+			const response = await fetch(`https://j11a605.p.ssafy.io/api/club/${groupId}/accept/${participantId}`, {
+				method:"PUT",
+			});
+			const data=await response.json();
+			console.log(data);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	if (loading) return <div>Loading...</div>; // 로딩 중일 때 표시
 
 	if (!user) return null; // 데이터가 없을 때 렌더링 방지
@@ -45,6 +57,7 @@ const GroupMember = ({ userId, status }) => {
 						<img
 							src="/info/ok.svg"
 							alt="Approve"
+							onClick={handleApprove}
 						/>
 					</button>
 					<button className="group-info-member-reject">

@@ -249,6 +249,7 @@ const GroupInfo = () => {
 									key={user.userId}
 									userId={user.userId}
 									status={user.acceptanceStatus}
+									groupId={groupId}
 								/>
 							))
 						) : (
@@ -264,6 +265,8 @@ const GroupInfo = () => {
 										key={user.userId}
 										userId={user.userId}
 										status={user.acceptanceStatus}
+										groupId={groupId}
+										participantId={user.participantId}
 									/>
 								))}
 							</>
