@@ -6,8 +6,10 @@ import { useNavigate, useLocation, useParams } from 'react-router-dom';
 const AccountTransferCheck = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const amount = location.state?.amount || '0';
 	const { groupId } = useParams();
+
+	console.log('location.state: ', location.state);
+	const amount = location.state?.amount || '0';
 
 	const handleSendClick = async () => {
 		try {

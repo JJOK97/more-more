@@ -18,6 +18,7 @@ const AccountTransferQuestion = () => {
 
 		if (parseInt(amount) === 0) {
 			alert('송금 금액이 유효하지 않습니다.');
+			return;
 		}
 
 		const requestData = {
@@ -42,7 +43,7 @@ const AccountTransferQuestion = () => {
 			const responseData = await response.json();
 			console.log('송금 성공: ', responseData);
 
-			navigate(`/group/${groupId}/account/transfer-check`);
+			navigate(`/group/${groupId}/account/transfer-check`, { state: { amount } });
 		} catch (error) {
 			console.error('송금 중 오류 발생: ', error.message);
 			alert('송금 중 오류가 발생했습니다.');
