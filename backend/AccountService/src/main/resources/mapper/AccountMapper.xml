@@ -74,6 +74,7 @@
             account_history
         WHERE
             account_id = #{accountNum}
+        ORDER BY account_date DESC, account_time DESC
     </select>
 
     <select id="selectAccountHistoryOnly" resultType="AccountHistoryEntity" parameterType="String">
@@ -132,5 +133,6 @@
         WHERE
             account_id = #{accountNum}
           AND account_date LIKE CONCAT(#{date}, '%')
+        ORDER BY account_date DESC, account_time DESC
     </select>
 </mapper>
