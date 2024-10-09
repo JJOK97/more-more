@@ -25,4 +25,114 @@
             club_code = #{clubCode}
     </select>
 
+    <insert id="insertAccountHistory" parameterType="com.ssafy.accountservice.account.service.domain.AccountHistoryAll" useGeneratedKeys="true" keyProperty="accountHistoryId">
+        INSERT INTO account_history (
+            account_id,
+            tag_name,
+            ssafy_transaction_number,
+            account_date,
+            account_time,
+            payment_type,
+            payment_amount,
+            payment_data,
+            account_balance
+        ) VALUES (
+                     #{accountId},
+                     #{tagName},
+                     #{ssafyTransactionNumber},
+                     #{accountDate},
+                     #{accountTime},
+                     #{paymentType},
+                     #{paymentAmount},
+                     #{paymentData},
+                     #{accountBalance}
+                 )
+    </insert>
+
+    <select id="selectAccountNumByPg" resultType="String" parameterType="String">
+        SELECT
+            club_code
+        FROM
+            account_pg
+        WHERE
+            account_credit = #{cardNum}
+    </select>
+
+    <select id="selectAccountNumByClubCode" resultType="String" parameterType="String">
+        SELECT
+            ssafy_account_number
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
+    <select id="selectAccountHistoryByAccountNum" resultType="AccountHistoryEntity" parameterType="String">
+        SELECT
+            *
+        FROM
+            account_history
+        WHERE
+            account_id = #{accountNum}
+        ORDER BY account_date DESC, account_time DESC
+    </select>
+
+    <select id="selectAccountHistoryOnly" resultType="AccountHistoryEntity" parameterType="String">
+        SELECT
+            *
+        FROM
+            account_history
+        WHERE
+            ssafy_transaction_number = #{ssafyTransactionNumber}
+    </select>
+
+
+    <insert id="insertByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest">
+        INSERT INTO account_history_verification (account_history_memo, account_history_image, ssafy_transaction_number)
+        VALUES (#{accountHistoryMemo}, #{accountHistoryImage}, #{ssafyTransactionNumber} )
+    </insert>
+
+
+    <select id="selectByTransactionNum" resultType="VerifyEntity" parameterType="String">
+        SELECT
+            *
+        FROM
+            account_history_verification
+        WHERE
+            ssafy_transaction_number = #{ssafyTransactionNumber}
+    </select>
+
+    <update id="updateByTransactionNum" parameterType="map">
+        UPDATE account_history_verification
+        SET
+            account_history_memo = #{verificationSaveRequest.accountHistoryMemo},
+            account_history_image = #{verificationSaveRequest.accountHistoryImage}
+        WHERE
+            ssafy_transaction_number = #{ssafyTransactionNumber}
+    </update>
+
+    <delete id="deleteByTransactionNum" parameterType="String">
+        DELETE FROM account_history_verification
+        WHERE ssafy_transaction_number = #{ssafyTransactionNumber}
+    </delete>
+
+    <select id="selectUserKeyByClubCode" resultType="String" parameterType="String">
+        SELECT
+            ssafy_user_key
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
+    <select id="selectAccountHistoryByAccountNumByDate" resultType="AccountHistoryEntity" parameterType="map">
+        SELECT
+            *
+        FROM
+            account_history
+        WHERE
+            account_id = #{accountNum}
+          AND account_date LIKE CONCAT(#{date}, '%')
+        ORDER BY account_history_id DESC
+    </select>
 </mapper>

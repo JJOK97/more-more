@@ -6,13 +6,11 @@ import lombok.Data;
 public class Account {
     private String ssafyUserKey;
     private String clubCode;
-    private String memberId;
     private String pwd;
 
-    public Account(String ssafyUserKey, String clubCode, String memberId, String pwd) {
+    public Account(String ssafyUserKey, String clubCode, String pwd) {
         this.ssafyUserKey = ssafyUserKey;
         this.clubCode = clubCode;
-        this.memberId = memberId;
         this.pwd = pwd;
     }
 }
