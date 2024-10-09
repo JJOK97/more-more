@@ -133,6 +133,6 @@
         WHERE
             account_id = #{accountNum}
           AND account_date LIKE CONCAT(#{date}, '%')
-        ORDER BY account_date DESC, account_time DESC
+        ORDER BY account_history_id DESC
     </select>
 </mapper>
