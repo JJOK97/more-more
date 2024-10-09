@@ -21,4 +21,6 @@ public interface ClubService {
     Club findClub(String clubCode);
 
     List<Club> findClubs(String memberId);
+
+    Participant acceptParticipant(String clubCod, String participantId);
 }

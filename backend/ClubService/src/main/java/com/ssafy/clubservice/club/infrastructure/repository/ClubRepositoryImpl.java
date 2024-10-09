@@ -3,6 +3,7 @@ package com.ssafy.clubservice.club.infrastructure.repository;
 import com.ssafy.clubservice.club.infrastructure.repository.entity.ClubEntity;
 import com.ssafy.clubservice.club.mapper.CustomObjectMapper;
 import com.ssafy.clubservice.club.service.domain.Club;
+import com.ssafy.clubservice.club.service.domain.Participant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -40,4 +41,5 @@ public class ClubRepositoryImpl implements ClubRepository {
         List<ClubEntity> clubEntities = clubMybatisMapper.findClubByMemberId(memberId);
         return customObjectMapper.fromClubEntitiesToDomains(clubEntities);
     }
+
 }

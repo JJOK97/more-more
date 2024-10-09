@@ -2,6 +2,7 @@ package com.ssafy.clubservice.club.controller;
 
 import com.ssafy.clubservice.club.controller.dto.request.ClubCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ClubUpdateRequest;
+import com.ssafy.clubservice.club.controller.dto.request.ParticipantAcceptRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ParticipantCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.response.*;
 import com.ssafy.clubservice.club.mapper.CustomObjectMapper;
@@ -94,5 +95,11 @@ public class ClubController {
         return customObjectMapper.fromParticipantDomainsToReadResponses(participants);
     }
 
+    @PutMapping("/{clubCode}/accept/{participantId}")
+    @Operation(summary = "참석자 수락 API", description = "모임 코드에 해당하는 모임의 모든 참석자를 조회한다. (access token)")
+    public ParticipantAcceptResponse acceptParticipant(@PathVariable("clubCode") String clubCode, @PathVariable("participantId") String participantId ){
+        Participant participant = clubService.acceptParticipant(clubCode, participantId);
+        return customObjectMapper.fromDomainToAcceptResponse(participant);
+    }
 
 }

@@ -36,5 +36,5 @@ public interface CustomObjectMapper {
    List<ParticipantCreateResponse> fromParticipantDomainsToCreateResponses(List<Participant> participants);
    ParticipantReadResponse fromDomainToReadResponse(Participant participant);
    List<ParticipantReadResponse> fromParticipantDomainsToReadResponses(List<Participant> participants);
-
+   ParticipantAcceptResponse fromDomainToAcceptResponse(Participant participant);
 }

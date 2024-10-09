@@ -26,7 +26,7 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     @Transactional
-    public Club createClub(Club club, Account account, Long creatorId, MultipartFile file){
+    public Club createClub(Club club, Account account, Long creatorId, MultipartFile file) {
         club = club.generateClubCode(uuidHolder);
         clientConnector.createAccount(account, club.getClubCode());
         Club clubWithId = clubRepository.saveClub(club);
@@ -66,6 +66,13 @@ public class ClubServiceImpl implements ClubService {
     public List<Club> findClubs(String memberId) {
         List<Club> findClubs = clubRepository.findClubByMemberId(memberId);
         return changeClubImages(findClubs);
+    }
+
+
+    @Override
+    @Transactional
+    public Participant acceptParticipant(String clubCode, String participantId) {
+        return participantRepository.acceptParticipant(clubCode, participantId);
     }
 
     private List<Club> changeClubImages(List<Club> clubs) {

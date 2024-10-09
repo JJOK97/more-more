@@ -32,5 +32,11 @@ public class ParticipantRepositoryImpl implements ParticipantRepository {
         return customObjectMapper.fromParticipantEntitiesToDomains(participantMybatisMapper.findParticipantsInUserId(clubCode, null));
     }
 
+    @Override
+    public Participant acceptParticipant(String clubCode, String participantId) {
+        participantMybatisMapper.updateAcceptanceStatus(clubCode, participantId);
+        return customObjectMapper.fromEntityToDomain(participantMybatisMapper.findByParticipantId(participantId));
+    }
+
 
 }
