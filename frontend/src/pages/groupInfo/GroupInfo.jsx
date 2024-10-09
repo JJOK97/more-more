@@ -1,6 +1,6 @@
 import '@/assets/css/groupInfo/GroupInfo.css';
 import React, { useEffect, useState } from 'react';
-import GroupMember from '@/components/groupInfo/GroupMember.jsx';
+import GroupMember from './GroupMember.jsx';
 import InviteModal from './InviteModal';
 import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
@@ -239,7 +239,7 @@ const GroupInfo = () => {
 							groupInfo.participants.map((user) => (
 								<GroupMember
 									key={user.userId}
-									user={user}
+									userId={user.userId}
 								/>
 							))
 						) : (
