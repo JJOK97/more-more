@@ -35,7 +35,7 @@ public class MemberController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "회원가입 API", description = "계좌번호, 주소, 이메일, 핸드폰번호, 비밀번호, 생년월일(yyyy-mm-dd),이름, 이미지파일로 회원가입. (access token)")
+    @Operation(summary = "회원가입 API", description = "계좌번호, 주소, 이메일, 핸드폰번호, 비밀번호, 생년월일(yyyy-mm-dd),이름, 이미지파일로, 은행명 회원가입. (access token)")
     public String registerMember(@ModelAttribute MemberCreateRequest memberRequest) {
         try {
             memberService.registerMember(memberRequest);
@@ -48,7 +48,7 @@ public class MemberController {
 
 
     @GetMapping("/{memberId}")
-    @Operation(summary = "회원정보 조회 API", description = "memberID로 계좌번호, 주소, 이메일, 핸드폰번호, 생년월일(yyyy-mm-dd),이름, 이미지파일을 받음. (access token)")
+    @Operation(summary = "회원정보 조회 API", description = "memberID로 계좌번호, 주소, 이메일, 핸드폰번호, 생년월일(yyyy-mm-dd),이름, 이미지파일 은행명을 받음. (access token)")
     public MemberGetResponse getMember(@PathVariable Long memberId) {
         return memberService.findByMemberId(memberId);
     }
@@ -68,8 +68,24 @@ public class MemberController {
         try {
             // 인증 번호 생성
             String verificationCode = generateVerificationCode();
-            // 이메일 발송
-            emailService.sendEmail(email, "이메일 인증 코드", "인증 번호: " + verificationCode);
+            // 이메일 제목 고정
+            String subject = "모아모아 : 회원가입 인증번호";
+
+            // 이미지 URL
+            String imageUrl = "https://jumsun-bucket.s3.ap-northeast-2.amazonaws.com/member/ssh2957@naver.com_ca819d52-99fd-4dd9-bad1-a80fd8c7aa9b";
+
+            // HTML 이메일 본문 작성
+            String content = "<html><body>"
+                    + "<h2>모아모아 : 회원가입 인증번호</h2>"
+                    + "<p>안녕하세요? 아래의 인증 번호를 입력해 주세요:</p>"
+                    + "<h3>" + verificationCode + "</h3>"
+                    + "<p>감사합니다.</p>"
+                    + "<img src='" + imageUrl + "' alt='인증 이미지' style='max-width: 100%; height: auto;'/>"  // 이미지 추가
+                    + "</body></html>";
+
+            // 이메일 발송 (이미지 URL을 사용)
+            emailService.sendEmail(email, subject, content);
+
             // Redis에 인증 번호 저장 (유효시간 5분)
             redisTemplate.opsForValue().set(email, verificationCode, 5, TimeUnit.MINUTES);
 
@@ -103,6 +119,14 @@ public class MemberController {
         Random random = new Random();
         return String.format("%06d", random.nextInt(1000000));
     }
+
+    @GetMapping("/{ssafyAccountNumber}/account")
+    String getMemberByAccountNumber(@PathVariable("ssafyAccountNumber") String accountNumber) {
+        return memberService.findName(accountNumber);
+
+    };
+
+
 
 
 }

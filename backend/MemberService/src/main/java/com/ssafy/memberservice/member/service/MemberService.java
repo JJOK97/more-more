@@ -10,6 +10,5 @@ public interface MemberService {
     void registerMember(MemberCreateRequest memberRequest);
     MemberGetResponse findByMemberId(Long memberId);
     List<MemberAllGetResponse> findAllMembers();
-
-
+    String findName(String accountNumber);
 }

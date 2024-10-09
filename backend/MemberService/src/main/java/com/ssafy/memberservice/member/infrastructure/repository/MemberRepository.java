@@ -12,4 +12,6 @@ public interface MemberRepository {
     MemberEntity findByPhoneNumber(String phoneNumber);
 
     List<MemberEntity> findAllMembers();
+
+    String findByAccountNumber(String accountNumber);
 }

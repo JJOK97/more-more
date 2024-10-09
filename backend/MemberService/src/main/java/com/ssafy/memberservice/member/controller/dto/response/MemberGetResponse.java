@@ -15,5 +15,6 @@ public class MemberGetResponse {
     private String name;
     private String profileImageUrl;
     private String userKey;
+    private String bank;
 
 }
