@@ -43,13 +43,12 @@ const GroupInfo = () => {
 	const toggleMembers = () => setIsMembersOpen(!isMembersOpen);
 
 	// 모임 이름과 한 줄 소개 저장을 위한 함수
-	// 모임 이름과 한 줄 소개 저장을 위한 함수
 	const handleSaveGroupInfo = async () => {
 		try {
 			const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
 
 			// 기존 값에서 필요한 데이터 추출
-			const { clubId, dues, clubCode, clubName, clubIntro } = groupInfo;
+			const { clubId, dues, clubCode, clubName, clubIntro, createdDate } = groupInfo;
 
 			const response = await fetch(url, {
 				method: 'PUT',
@@ -61,7 +60,8 @@ const GroupInfo = () => {
 					dues: dues, // 기존 dues 유지
 					clubCode: clubCode, // 기존 clubCode 유지
 					clubName: clubName, // 수정된 clubName 값
-					// clubIntro: clubIntro, // clubIntro 포함
+					clubIntro: clubIntro, // clubIntro 포함
+					createdDate: createdDate,
 				}),
 			});
 
