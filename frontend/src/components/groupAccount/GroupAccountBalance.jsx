@@ -1,47 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import arrow from '@/assets/img/account/arrow_right.svg';
 
 const AccountBalance = () => {
 	const navigate = useNavigate();
-	const location = useLocation();
 	const [accountInfo, setAccountInfo] = useState({
-		accountNumber: '',
-		balance: 0,
+		account_num: '',
+		account_balance: 0,
 		createdDate: '01',
 		dues: 0,
 	});
 	const [loading, setLoading] = useState(true);
 
-	const groupId = location.pathname.match(/^\/group\/(\d+)/)?.[1];
+	const { groupId } = useParams();
 
 	useEffect(() => {
 		const fetchAccountInfo = async () => {
-			console.log('groupId:', groupId);
 			if (groupId) {
 				try {
 					const response = await fetch(`https://j11a605.p.ssafy.io/api/account/${groupId}`, {
 						method: 'GET',
 					});
+
 					if (!response.ok) {
-						// Handle response errors
 						throw new Error('Failed to fetch account information');
 					}
 					const data = await response.json();
-					console.log(data);
+					console.log('Fetched Data:', data); // 응답 데이터 확인
 
+					// 응답 데이터에서 정확한 키 사용
 					setAccountInfo({
-						accountNumber: data.accountNumber || '',
-						balance: data.balance || 0,
+						account_num: data.account_num || '',
+						account_balance: data.account_balance || 0,
 						createdDate: data.createdDate || '01',
 						dues: data.dues || 0,
 					});
 				} catch (e) {
 					console.error('Error fetching account info:', e);
-					// In case of an error, you can set default or fallback values here
 					setAccountInfo({
-						accountNumber: '',
-						balance: 0,
+						account_num: '',
+						account_balance: 0,
 						createdDate: '01',
 						dues: 0,
 					});
@@ -93,8 +91,10 @@ const AccountBalance = () => {
 						/>
 					</div>
 					<div className="account-balance-info">
-						<span name="account-number">{accountInfo.accountNumber || 'N/A'}</span>
-						<span name="account-balance">{accountInfo.balance?.toLocaleString() || '0'} 원</span>
+						{/* 계좌번호는 문자열 그대로 표시 */}
+						<span name="account-number">{accountInfo.account_num || 'N/A'}</span>
+						{/* 잔액은 숫자로 변환해 포맷 적용 */}
+						<span name="account-balance">{Number(accountInfo.account_balance).toLocaleString()} 원</span>
 					</div>
 					<div className="account-balance-button">
 						<button

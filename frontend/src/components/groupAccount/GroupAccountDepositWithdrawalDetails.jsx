@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import GroupAccountDepositList from '@/components/groupAccount/GroupAccountDepositList';
 import account_search from '@/assets/img/account/account_search.svg';
 
@@ -7,12 +7,13 @@ const GroupAccountDepositWithDrawalDetails = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	// URL에서 groupId 추출
-	const groupId = location.pathname.match(/^\/group\/(\d+)/)?.[1];
+	const { groupId } = useParams();
+	console.log('groupId: ', groupId);
 
 	// 이미지 클릭 시 실행되는 함수
 	const handleSearchClick = () => {
 		if (groupId) {
+			console.log(`Navigating to: /group/${groupId}/account/search`);
 			navigate(`/group/${groupId}/account/search`);
 		}
 	};
