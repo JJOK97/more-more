@@ -149,7 +149,7 @@ const PostView = ({ post, onDelete, commentCount }) => {
 					</div>
 				</div>
 				<div className="feed-head-right">
-					<div className="feed-account-history">#{post.accountHistory}</div>
+					{post.accountHistory ? <div className="feed-account-history">#{post.accountHistory}</div> : null}
 					{/* 삭제 버튼 추가 */}
 					<button
 						onClick={handleDelete}

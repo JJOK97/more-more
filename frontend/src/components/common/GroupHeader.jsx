@@ -20,16 +20,16 @@ const Header = () => {
 		location.pathname === '/signup' ||
 		location.pathname === '/profile' ||
 		location.pathname === '/notice' ||
-		location.pathname.match(/^\/group\/\d+\/account\/withDrawal/) ||
-		location.pathname.match(/^\/group\/\d+\/account\/transfer/) ||
-		location.pathname.match(/^\/group\/\d+\/account\/transfer-question/) ||
-		location.pathname.match(/^\/group\/\d+\/account\/transfer-check/)
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withDrawal/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer-question/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer-check/)
 	) {
 		return null;
 	}
 
 	// 현재 경로가 그룹의 메인 페이지(Feed)인지 확인
-	const isGroupFeedPage = location.pathname.match(/^\/group\/\d+$/);
+	const isGroupFeedPage = location.pathname.match(/^\/group\/[^\/]+$/);
 
 	return (
 		<header className="common-header">
@@ -48,15 +48,24 @@ const Header = () => {
 				<div className="headerRight">
 					{isGroupFeedPage && (
 						<Link to={`/group/${groupName}/search`}>
-							<img src={search} alt="Search" />
+							<img
+								src={search}
+								alt="Search"
+							/>
 						</Link>
 					)}
 					<Link to={'/profile'}>
-						<img src={user} alt="User" />
+						<img
+							src={user}
+							alt="User"
+						/>
 					</Link>
 					<div className="notification-icon-wrapper">
 						<Link to={'/notice'}>
-							<img src={bell} alt="Notifications" />
+							<img
+								src={bell}
+								alt="Notifications"
+							/>
 							{isUnreadNotice && <div className="red-dot" />}
 						</Link>
 					</div>
