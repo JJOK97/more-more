@@ -77,6 +77,7 @@ public class AccountServiceImpl implements AccountService {
         Map<String, String> numAndBalance = new HashMap<>();
         numAndBalance.put("account_num", accountNum);
         numAndBalance.put("account_balance", response.getRec().getAccountBalance());
+        numAndBalance.put("bankName", response.getRec().getBankName());
 
         return numAndBalance;
     }
@@ -268,8 +269,6 @@ public class AccountServiceImpl implements AccountService {
             useCardApiRequest.setMerchantId(cardRequest.getMerchantId());
             useCardApiRequest.setPaymentBalance(cardRequest.getPaymentBalance());
 
-            System.out.println("useCardApiRequest = " + useCardApiRequest);
-            
             UseCardApiResponse useCardApiResponse = useCardFeignClient.useCardByPg(useCardApiRequest);
 
 
@@ -350,7 +349,7 @@ public class AccountServiceImpl implements AccountService {
         Map<String, String> map = new HashMap<>();
         map.put("accountNo", accountNum);
         map.put("balance", balanceResponse.getRec().getAccountBalance());
-
+        map.put("bankName", balanceResponse.getRec().getBankName());
         return map;
     }
 
