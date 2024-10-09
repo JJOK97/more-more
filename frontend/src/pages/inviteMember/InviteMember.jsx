@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { getDatas } from '../feed/getData';
 
 const InviteMember = () => {
-	const { clubCode } = useParams();
+	const { groupId } = useParams();
 	const memberId = localStorage.getItem('memberId');
 	const [groupInfo, setGroupInfo] = useState();
 	const [isAccepted, setIsAccepted] = useState(false); // 초대 수락 상태 관리
@@ -11,7 +11,8 @@ const InviteMember = () => {
 	useEffect(() => {
 		const getGroupInfo = async () => {
 			try {
-				const url = `https://j11a605.p.ssafy.io/api/club/${clubCode}`;
+				console.log(groupId);
+				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
 				const data = await getDatas(url);
 				console.log(data);
 				setGroupInfo(data);
@@ -20,18 +21,20 @@ const InviteMember = () => {
 			}
 		};
 		getGroupInfo();
-	}, [clubCode]);
+	}, [groupId]);
 
 	const handleClick = async () => {
 		try {
-			const response = await fetch(`https://j11a605.p.ssafy.io/api/club/${clubCode}/participants`, {
+			const response = await fetch(`https://j11a605.p.ssafy.io/api/club/${groupId}/participants`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({
-					userId: memberId,
-				}),
+				body: JSON.stringify([
+					{
+						userId: parseInt(memberId),
+					},
+				]),
 			});
 			if (!response.ok) {
 				console.log('전송은 했지만 발생한 에러', response);

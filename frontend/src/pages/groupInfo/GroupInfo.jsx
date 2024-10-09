@@ -248,7 +248,12 @@ const GroupInfo = () => {
 					</div>
 				)}
 			</div>
-			{isModalOpen && <InviteModal onClose={closeModal} />}
+			{isModalOpen && (
+				<InviteModal
+					onClose={closeModal}
+					groupId={groupId}
+				/>
+			)}
 		</div>
 	);
 };

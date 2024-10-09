@@ -1,8 +1,8 @@
 import React from 'react';
 import './InviteModal.css';
 
-const InviteModal = ({ onClose }) => {
-	const inviteLink = 'https://your-app.com/invite/group-id';
+const InviteModal = ({ onClose, groupId }) => {
+	const inviteLink = `https://j11a605.p.ssafy.io/group/${groupId}/invite`;
 
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(inviteLink);
