@@ -41,10 +41,10 @@
             p.participant_id, p.acceptance_status, p.club_role, p.user_id, p.created_date AS participant_created_date
         FROM
             club c
-                LEFT JOIN
+                INNER JOIN
             participant p ON p.club_code = c.club_code
         WHERE
-            p.user_id = #{userId}
+            p.user_id = #{userId} and p.acceptance_status = 'ACCEPTED';
 
     </select>
 
