@@ -34,11 +34,13 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 
         try {
+            System.out.println(loginRequest);
             String phoneNumber = loginRequest.getPhoneNumber();
             String password = loginRequest.getPassword();
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(phoneNumber, password)
             );
+
 
             String accessToken = jwtTokenProvider.generateAccessToken(authentication);
             String refreshToken = jwtTokenProvider.generateAndStoreRefreshToken(authentication); // Refresh Token 저장

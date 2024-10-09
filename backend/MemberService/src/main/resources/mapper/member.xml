@@ -37,7 +37,8 @@
             birth_date AS birthDate,
             name,
             profile_image_url AS profileImageUrl,
-            ssafy_user_key AS userKey
+            ssafy_user_key AS userKey,
+            bank AS bank
         FROM members
         WHERE phone_number = #{phoneNumber}
     </select>

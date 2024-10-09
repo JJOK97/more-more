@@ -123,6 +123,7 @@ public class MemberController {
     @GetMapping("/{ssafyAccountNumber}/account")
     String getMemberByAccountNumber(@PathVariable("ssafyAccountNumber") String accountNumber) {
         return memberService.findName(accountNumber);
+
     };
 
 
