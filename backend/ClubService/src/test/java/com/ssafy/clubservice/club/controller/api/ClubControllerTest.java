@@ -128,7 +128,7 @@ class ClubControllerTest {
     }
 
     @Test
-    @DisplayName("참석자 수락 시, 모임 정보와 변경된 참석자 정보를 변경한다.")
+    @DisplayName("참석자 수락 시, 수락된 참석자 정보를 변경한다.")
     void acceptParticipants() throws Exception{
         MvcResult mvcResult = mockMvc.perform(put("/api/club/test2/accept/2"))
                 .andExpect(status().isOk())
@@ -140,6 +140,18 @@ class ClubControllerTest {
                 .andReturn();
     }
 
+    @Test
+    @DisplayName("참석자 거절 시, 거절된 참석자 정보를 변경한다.")
+    void rejectParticipants() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(delete("/api/club/test2/reject/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.participantId").value(2L))
+                .andExpect(jsonPath("$.clubCode").value("test2"))
+                .andExpect(jsonPath("$.acceptanceStatus").value("REFUSED"))
+                .andExpect(jsonPath("$.clubRole").value("PARTICIPANT"))
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andReturn();
+    }
 
     private static MockMultipartFile getMockMultipartFile() {
         return new MockMultipartFile(

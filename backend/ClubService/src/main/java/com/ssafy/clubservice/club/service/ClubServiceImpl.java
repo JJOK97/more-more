@@ -75,6 +75,12 @@ public class ClubServiceImpl implements ClubService {
         return participantRepository.acceptParticipant(clubCode, participantId);
     }
 
+    @Override
+    public Participant rejectParticipant(String clubCode, String participantId) {
+        Participant participant = participantRepository.rejectParticipant(clubCode, participantId);
+       return participant.reject();
+    }
+
     private List<Club> changeClubImages(List<Club> clubs) {
         clubs.forEach(club -> club.changeImageName(s3Connector.getImageURL(club.getClubCode())));
         return clubs;

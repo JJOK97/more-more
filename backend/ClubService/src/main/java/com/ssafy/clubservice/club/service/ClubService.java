@@ -23,4 +23,6 @@ public interface ClubService {
     List<Club> findClubs(String memberId);
 
     Participant acceptParticipant(String clubCod, String participantId);
+
+    Participant rejectParticipant(String clubCode, String participantId);
 }

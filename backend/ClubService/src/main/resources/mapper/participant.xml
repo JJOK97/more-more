@@ -37,4 +37,9 @@
         SELECT participant_id, club_code, acceptance_status, club_role, user_id, created_date
             FROM participant where participant_id = #{participantId};
     </select>
+
+    <delete id="removeParticipant">
+        delete from participant where participant_id = #{participantId}
+                            and club_code = #{clubCode};
+    </delete>
 </mapper>

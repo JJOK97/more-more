@@ -66,4 +66,8 @@ public class Participant {
         return true;
     }
 
+    public Participant reject() {
+        this.acceptanceStatus = AcceptanceStatus.REFUSED;
+        return this;
+    }
 }

@@ -16,4 +16,5 @@ public interface ParticipantMybatisMapper {
 
     ParticipantEntity findByParticipantId(@Param("participantId")String participantId);
 
+    void removeParticipant(String clubCode, String participantId);
 }

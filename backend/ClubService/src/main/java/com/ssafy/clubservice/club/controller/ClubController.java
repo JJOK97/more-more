@@ -2,7 +2,6 @@ package com.ssafy.clubservice.club.controller;
 
 import com.ssafy.clubservice.club.controller.dto.request.ClubCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ClubUpdateRequest;
-import com.ssafy.clubservice.club.controller.dto.request.ParticipantAcceptRequest;
 import com.ssafy.clubservice.club.controller.dto.request.ParticipantCreateRequest;
 import com.ssafy.clubservice.club.controller.dto.response.*;
 import com.ssafy.clubservice.club.mapper.CustomObjectMapper;
@@ -17,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -96,10 +96,18 @@ public class ClubController {
     }
 
     @PutMapping("/{clubCode}/accept/{participantId}")
-    @Operation(summary = "참석자 수락 API", description = "모임 코드에 해당하는 모임의 모든 참석자를 조회한다. (access token)")
+    @Operation(summary = "참석자 수락 API", description = "모임 코드와 첨석자 ID에 해당하는 참석자를 수락한다. (access token)")
     public ParticipantAcceptResponse acceptParticipant(@PathVariable("clubCode") String clubCode, @PathVariable("participantId") String participantId ){
         Participant participant = clubService.acceptParticipant(clubCode, participantId);
         return customObjectMapper.fromDomainToAcceptResponse(participant);
     }
 
+
+    @Transactional
+    @DeleteMapping("/{clubCode}/reject/{participantId}")
+    @Operation(summary = "참석자 거절 API", description = "모임 코드와 첨석자 ID에 해당하는 참석자를 거절한다.. (access token)")
+    public ParticipantRejectResponse rejectParticipant(@PathVariable("clubCode") String clubCode, @PathVariable("participantId") String participantId ){
+        Participant participant = clubService.rejectParticipant(clubCode, participantId);
+        return customObjectMapper.fromDomainToRejectResponse(participant);
+    }
 }
