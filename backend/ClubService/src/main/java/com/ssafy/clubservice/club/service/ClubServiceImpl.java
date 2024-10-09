@@ -80,6 +80,7 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
+    @Transactional
     public List<Participant> addParticipant(String clubCode, List<Participant> participants) {
         return participantRepository.addMember(clubCode, makeParticipantList(clubCode, participants));
     }
