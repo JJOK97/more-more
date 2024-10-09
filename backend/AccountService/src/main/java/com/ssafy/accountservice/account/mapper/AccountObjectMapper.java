@@ -39,9 +39,8 @@ public interface AccountObjectMapper {
         }
 
         return new AccountTransfer(
-                accountTransferRequest.getDepositAccountNo(),
+                accountTransferRequest.getMemberId(),
                 accountTransferRequest.getTransactionBalance(),
-                accountTransferRequest.getUserKey(),
                 accountTransferRequest.getClubCode()
         );
     }
