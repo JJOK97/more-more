@@ -9,6 +9,11 @@ const GroupAccountSearch = () => {
 	const { setGroupName } = useGroupName();
 	const { groupId } = useParams(); // URL에서 groupId를 추출
 	const [selectedDate, setSelectedDate] = useState(null);
+	const [searchTerm, setSearchTerm] = useState('');
+
+	const handleSearch = (term) => {
+		setSearchTerm(term);
+	};
 
 	useEffect(() => {
 		setGroupName(groupId);
@@ -21,7 +26,10 @@ const GroupAccountSearch = () => {
 			</div>
 			<div className="search-deposit-list-area">
 				<div>
-					<SearchBar selectedDate={selectedDate} />
+					<SearchBar
+						selectedDate={selectedDate}
+						onSearch={handleSearch}
+					/>
 				</div>
 				<div>
 					<GroupAccountDepositList selectedDate={selectedDate} />

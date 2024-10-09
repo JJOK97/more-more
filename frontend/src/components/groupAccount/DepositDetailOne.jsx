@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-const DepositDetailOne = ({ id, place, price, date, time, balance }) => {
+const DepositDetailOne = ({ id, place, price, date, time, balance, searchTerm }) => {
 	const location = useLocation(); // 현재 경로 가져오기
 	const { groupId } = useParams();
 
@@ -36,6 +36,24 @@ const DepositDetailOne = ({ id, place, price, date, time, balance }) => {
 		}
 	};
 
+	const highlightText = (text, searchTerm) => {
+		if (!searchTerm) return text;
+		const regex = new RegExp(`(${searchTerm})`, 'gi');
+		const parts = text.split(regex);
+		return parts.map((part, index) =>
+			regex.test(part) ? (
+				<span
+					key={index}
+					style={{ backgroundColor: 'yellow' }}
+				>
+					{part}
+				</span>
+			) : (
+				part
+			),
+		);
+	};
+
 	return (
 		<div
 			className="deposit-detail-one"
@@ -45,7 +63,7 @@ const DepositDetailOne = ({ id, place, price, date, time, balance }) => {
 				// '/group/:groupId/create' 페이지에서는 alert로 출력
 				<div className="deposit-detail-container">
 					<div className="deposit-list-place-price">
-						<div className="deposit-list-place">{place}</div>
+						<div className="deposit-list-place"> {highlightText(place, searchTerm)}</div>
 						<div className={`deposit-list-price ${price.startsWith('+') ? 'plus' : ''}`}>{price}</div>
 					</div>
 					<div className="deposit-list-time-balance">
@@ -60,7 +78,7 @@ const DepositDetailOne = ({ id, place, price, date, time, balance }) => {
 					to={`/group/${groupId}/account/${id}`}
 				>
 					<div className="deposit-list-place-price">
-						<div className="deposit-list-place">{place}</div>
+						<div className="deposit-list-place"> {place} </div>
 						<div className={`deposit-list-price ${price.startsWith('+') ? 'plus' : ''}`}>{price}</div>
 					</div>
 					<div className="deposit-list-time-balance">

@@ -2,40 +2,37 @@ import React, { useState, useEffect, useCallback } from 'react';
 import DepositDetailOne from '@/components/groupAccount/DepositDetailOne';
 import '@/assets/css/groupAccount/GroupAccount.css';
 import { useParams } from 'react-router-dom';
+import { getAccountHistories } from '@/api/accountAPI'; // API 호출 함수 임포트
 
-const GroupAccountDepositList = ({ selectedDate }) => {
+const GroupAccountDepositList = ({ selectedDate, searchTerm }) => {
 	const [accountHistories, setAccountHistories] = useState([]);
 	const [page, setPage] = useState(1);
 	const [loading, setLoading] = useState(false);
 	const [hasMore, setHasMore] = useState(true);
 	const { groupId } = useParams();
 
-	// API 데이터를 불러오는 함수
-	const fetchAccountHistories = useCallback(async (page) => {
-		setLoading(true);
-		try {
-			const response = await fetch(`https://j11a605.p.ssafy.io/api/account/${groupId}/history`, {
-				method: 'GET',
-			});
-			const data = await response.json();
+	const fetchAccountHistories = useCallback(
+		async (page) => {
+			setLoading(true);
+			try {
+				const data = await getAccountHistories(groupId, page); // Axios API 호출
+				setAccountHistories((prev) => [...prev, ...data]);
+				setHasMore(data.length > 0); // 데이터가 없으면 더 불러오지 않음
+			} catch (e) {
+				console.error('Error fetching account history:', e);
+			} finally {
+				setLoading(false);
+			}
+		},
+		[groupId],
+	);
 
-			setAccountHistories((prev) => [...prev, ...data]);
-			setHasMore(data.length > 0); // 데이터가 없으면 더 불러오지 않음
-		} catch (e) {
-			console.error('Error fetching account history:', e);
-		} finally {
-			setLoading(false);
-		}
-	}, []);
-
-	// 무한 스크롤 로딩 함수
 	const loadMore = () => {
 		if (!loading && hasMore) {
 			setPage((prev) => prev + 1);
 		}
 	};
 
-	// 스크롤 이벤트 처리
 	useEffect(() => {
 		const handleScroll = () => {
 			if (
@@ -54,15 +51,16 @@ const GroupAccountDepositList = ({ selectedDate }) => {
 		fetchAccountHistories(page);
 	}, [page, fetchAccountHistories]);
 
-	const filteredHistories = selectedDate
-		? accountHistories.filter(
-				(item) => new Date(item.date).toLocaleDateString() === selectedDate.toLocaleDateString(),
-		  )
-		: accountHistories;
+	const filteredHistories = accountHistories
+		.filter((item) =>
+			selectedDate ? new Date(item.date).toLocaleDateString() === selectedDate.toLocaleDateString() : true,
+		)
+		.filter((item) => (searchTerm ? item.place.toLowerCase().includes(searchTerm.toLowerCase()) : true));
 
 	return (
 		<div className="group-account-deposit-list-area">
-			{accountHistories
+			{filteredHistories.length === 0 && !loading && <div>해당 날짜에 거래 내역이 없습니다.</div>}
+			{filteredHistories
 				.slice()
 				.reverse()
 				.map((item, index) => (
@@ -74,6 +72,7 @@ const GroupAccountDepositList = ({ selectedDate }) => {
 						date={item.date}
 						time={item.time}
 						balance={item.balance}
+						searchTerm={searchTerm}
 					/>
 				))}
 			{loading && <div>Loading...</div>}
