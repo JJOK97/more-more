@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import arrow from '@/assets/img/account/arrow_left.svg';
 
-const TransferKeypad = ({ setAmount, amount }) => {
+const TransferKeypad = ({ setAmount, amount, mode, accountNumber }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -18,8 +18,15 @@ const TransferKeypad = ({ setAmount, amount }) => {
 
 	const handleSendClick = () => {
 		console.log(`보낼 금액: ${amount}원`);
-		if (groupId) {
-			navigate(`/group/${groupId}/account/transfer-question`, { state: { amount } });
+
+		let targetPath = '';
+		if (mode === 'withdrawal') {
+			targetPath = `/group/${groupId}/account/withdrawal-question`;
+		} else if (mode === 'transfer') {
+			targetPath = `/group/${groupId}/account/transfer-question`;
+		}
+		if (groupId && targetPath) {
+			navigate(targetPath, { state: { amount, accountNumber } });
 		}
 	};
 

@@ -3,7 +3,7 @@ import TransferInfo from '@/components/groupAccount/TransferInfo';
 import AccountCheckMessage from '@/components/groupAccount/AccountCheckMessage';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
-const AccountTransferCheck = () => {
+const AccountWithdrawalCheck = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { groupId } = useParams();
@@ -27,7 +27,7 @@ const AccountTransferCheck = () => {
 				</div>
 				<div>
 					<AccountCheckMessage amount={amount} />
-					{/* <div>보낼 금액: {Number(amount).toLocaleString()}원</div> */}
+					<div>보낼 금액: {Number(amount).toLocaleString()}원</div>
 				</div>
 			</div>
 			<div className="account-check-button">
@@ -42,4 +42,4 @@ const AccountTransferCheck = () => {
 	);
 };
 
-export default AccountTransferCheck;
+export default AccountWithdrawalCheck;

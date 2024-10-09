@@ -59,13 +59,13 @@ const AccountBalance = () => {
 
 	const handleFillClick = () => {
 		if (groupId) {
-			navigate(`/group/${groupId}/account/transfer`);
+			navigate(`/group/${groupId}/account/transfer`, { status: { mode: 'transfer' } });
 		}
 	};
 
 	const handleSendClick = () => {
 		if (groupId) {
-			navigate(`/group/${groupId}/account/withDrawal`);
+			navigate(`/group/${groupId}/account/withdrawal`, { status: { mode: 'withdrawal' } });
 		}
 	};
 
