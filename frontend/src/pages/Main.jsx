@@ -6,6 +6,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import useGroupName from '@/store/useGroupName';
 import { getDatas } from './feed/getData';
 
+import NHBank from '@/assets/img/bank/NHBank.svg';
+import KBBank from '@/assets/img/bank/KBBank.svg';
+import ShinhanBank from '@/assets/img/bank/ShinhanBank.svg';
+import WooriBank from '@/assets/img/bank/WooriBank.svg';
+import IBKBank from '@/assets/img/bank/IBKBank.svg';
+import HanaBank from '@/assets/img/bank/HanaBank.svg';
+
 const Main = () => {
 	const { setGroupName } = useGroupName();
 	const groups = datas.groups;
@@ -49,6 +56,26 @@ const Main = () => {
 		getAllGroups();
 	}, [navigate]); // navigate를 의존성 배열에 추가
 
+	// userInfo.bank에 따라 은행 로고를 설정하는 함수
+	const getBankLogo = (bank) => {
+		switch (bank) {
+			case '농협':
+				return NHBank;
+			case '국민':
+				return KBBank;
+			case '신한':
+				return ShinhanBank;
+			case '우리':
+				return WooriBank;
+			case '기업':
+				return IBKBank;
+			case '하나':
+				return HanaBank;
+			default:
+				return '/main/DefaultBank.svg'; // 기본 로고 설정
+		}
+	};
+
 	return (
 		<div className="main-container">
 			<div className="main-profile-area">
@@ -67,10 +94,10 @@ const Main = () => {
 						<div className="main-profile-bank-info">
 							<img
 								className="main-bank-logo"
-								src="/main/BNK.png"
-								alt="은행로고"
+								src={userInfo && getBankLogo(userInfo.bank)}
+								alt="은행 로고"
 							/>
-							<div className="main-bank-name">경남</div>
+							<div className="main-bank-name">{userInfo?.bank}</div>
 							<div className="main-account-number">{userInfo && userInfo.accountNumber}</div>
 						</div>
 						{/* <div className="main-profile-balance">394,227원</div> */}
@@ -97,6 +124,7 @@ const Main = () => {
 						<img
 							className="main-create-icon"
 							src="/main/Plus circle.svg"
+							alt="새 모임 만들기"
 						/>
 						<div className="main-create-title">새로운 모임 만들기</div>
 					</Link>
