@@ -39,7 +39,7 @@ public interface AccountObjectMapper {
         }
 
         return new AccountTransfer(
-                accountTransferRequest.getMemberId(),
+                accountTransferRequest.getSsafyAccountNumber(),
                 accountTransferRequest.getTransactionBalance(),
                 accountTransferRequest.getClubCode()
         );
