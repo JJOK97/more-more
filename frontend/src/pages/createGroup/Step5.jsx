@@ -32,18 +32,6 @@ const createGroupAPI = async (groupName, profileImage, fee, intro, creatorId, ss
 	return response.json();
 };
 
-// const createAccountAPI = async (groupId) => {
-// 	const response = await fetch('/api/account', {
-// 		method: 'POST',
-// 		headers: {
-// 			'Content-Type': 'application/json',
-// 		},
-// 		body: JSON.stringify({ groupId }),
-// 	});
-// 	const data = await response.json();
-// 	return data;
-// };
-
 const Step5 = ({
 	handlePrevStep,
 	handleNextStep,
@@ -82,16 +70,8 @@ const Step5 = ({
 				password,
 			);
 			if (groupResponse.success) {
-				const groupId = groupResponse.clubId; // 생성된 모임 ID
-
-				// 계좌 생성 API 호출
-				const accountResponse = await createAccountAPI(groupId);
-				if (accountResponse.success) {
-					setSuccess(true);
-					handleNextStep(); // 성공 시 다음 단계로 이동
-				} else {
-					throw new Error(accountResponse.message);
-				}
+				setSuccess(true);
+				handleNextStep(); // 성공 시 다음 단계로 이동
 			} else {
 				throw new Error(groupResponse.message);
 			}
