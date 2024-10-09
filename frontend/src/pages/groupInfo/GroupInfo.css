@@ -74,6 +74,14 @@
 	flex-direction: column;
 }
 
+.group-info-members-list-accepted {
+	padding: 0.5rem 1rem;
+}
+
+.group-info-members-list-waiting {
+	padding: 0.5rem 1rem;
+}
+
 .group-info-name,
 .group-info-intro {
 	display: flex;

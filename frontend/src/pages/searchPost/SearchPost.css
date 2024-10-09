@@ -2,6 +2,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	gap: 0.5rem;
 }
 
 .search-post-header {
@@ -19,6 +20,8 @@
 	padding: 0.5rem;
 	border: 1px solid #ccc;
 	border-radius: 5px;
+	font-size: 1rem;
+	font-family: 'Pretendard';
 }
 
 .search-input:focus {
@@ -32,6 +35,8 @@
 	color: white;
 	width: 20%;
 	padding: 0.5rem;
+	font-size: 1rem;
+	font-family: 'Pretendard';
 }
 
 .search-results {
