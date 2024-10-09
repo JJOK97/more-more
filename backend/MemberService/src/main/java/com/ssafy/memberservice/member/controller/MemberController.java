@@ -120,5 +120,12 @@ public class MemberController {
         return String.format("%06d", random.nextInt(1000000));
     }
 
+    @GetMapping("/{ssafyAccountNumber}/account")
+    String getMemberByAccountNumber(@PathVariable("ssafyAccountNumber") String accountNumber) {
+        return memberService.findName(accountNumber);
+    };
+
+
+
 
 }

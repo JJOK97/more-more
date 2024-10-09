@@ -31,4 +31,9 @@ public class MemberRepositorylmpl implements MemberRepository {
     public List<MemberEntity> findAllMembers() {
         return memberMybatisMapper.findAllMembers();
     }
+
+    @Override
+    public String findByAccountNumber(String accountNumber) {
+        return memberMybatisMapper.findByAccountNumber(accountNumber);
+    }
 }

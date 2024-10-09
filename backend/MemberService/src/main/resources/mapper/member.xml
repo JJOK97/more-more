@@ -64,5 +64,11 @@
         FROM members
     </select>
 
-    <!-- 올리기용-->
+    <select id="findByAccountNumber" resultType="String" parameterType="String">
+        SELECT name
+        FROM members
+        WHERE account_number = #{accountNumber}
+    </select>
+
+
 </mapper>

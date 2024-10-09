@@ -66,4 +66,9 @@ public class MemberServicelmpl implements MemberService{
     public List<MemberAllGetResponse> findAllMembers() {
         return memberObjectMapper.fromEntitysToMemberAllGetResponses(memberRepository.findAllMembers());
     }
+
+    @Override
+    public String findName(String accountNumber) {
+        return memberRepository.findByAccountNumber(accountNumber);
+    }
 }
