@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '@/assets/css/schedule/scheduleBoard/scheduleBoard.css';
 import dots from '@/assets/img/common/dots.svg';
-import { updateSchedule, deleteSchedule } from '@/api/scheduleApi';
+import { updateSchedule, deleteSchedule } from '@/api/scheduleAPI';
 import { getMemberInfo } from '@/api/userAPI';
 import { useParams } from 'react-router-dom';
 

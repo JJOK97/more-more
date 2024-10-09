@@ -6,7 +6,7 @@ import '@/assets/css/schedule/schedule.css';
 import PostButton from '@/assets/img/common/post-button.svg';
 import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
-import { getAllSchedules, createSchedule, getMonthlySchedules, getDailySchedules } from '@/api/scheduleApi';
+import { getAllSchedules, createSchedule, getMonthlySchedules, getDailySchedules } from '@/api/scheduleAPI';
 import moment from 'moment';
 import { getDatas } from '../feed/getData';
 

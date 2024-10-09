@@ -63,13 +63,13 @@ const Feed = () => {
 			/>
 			<div className="feed-container">
 				{posts.length > 0 ? (
-					posts
-						.map((post) => (
-							<PostView
-								key={post.postingId}
-								post={post}
-							/>
-						))
+					posts.map((post) => (
+						<PostView
+							key={post.postingId}
+							post={post}
+							commentCount={post.commentCount != 0 ? post.commentCount : 0}
+						/>
+					))
 				) : (
 					<p>게시물이 없습니다</p>
 				)}

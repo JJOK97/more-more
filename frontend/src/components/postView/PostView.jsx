@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postAPI'; // getLikeCount 추가
 
 const formatDate = (dateString) => {
 	const postDate = new Date(dateString);
@@ -22,13 +23,75 @@ const formatDate = (dateString) => {
 	}
 };
 
-const PostView = ({ post, onDelete }) => {
+const PostView = ({ post, onDelete, commentCount }) => {
 	const location = useLocation(); // 현재 경로 가져오기
 	const navigate = useNavigate(); // 페이지 이동을 위한 훅
 	const [isFeedPage, setIsFeedPage] = useState(false); // 경로 상태를 관리
 
+	const [memberId, setMemberId] = useState(null);
+	const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
+	const [likeCount, setLikeCount] = useState(0); // 초기값 0으로 설정
+
+	// 로컬스토리지에서 memberId 가져오기
 	useEffect(() => {
-		// 경로가 /group/:groupId 또는 /group/:groupId/search인지 확인하여 상태 업데이트
+		const storedMemberId = localStorage.getItem('memberId');
+		if (storedMemberId) {
+			setMemberId(storedMemberId);
+		} else {
+			console.error('No userId found in localStorage');
+		}
+	}, []);
+
+	// 좋아요 상태 및 좋아요 수 가져오기
+	useEffect(() => {
+		const fetchLikeData = async () => {
+			try {
+				if (post && memberId) {
+					// 좋아요 수 가져오기
+					const likeCountData = await getLikeCount(post.postingId);
+					setLikeCount(likeCountData); // likeCount를 API 응답으로 설정
+
+					// 좋아요 여부 확인
+					const status = await checkLikeStatus(post.postingId, memberId);
+					setIsLiked(status); // true or false
+				}
+			} catch (error) {
+				console.error('Failed to fetch like status or count:', error);
+			}
+		};
+
+		if (memberId) {
+			fetchLikeData();
+		}
+	}, [post.postingId, memberId]);
+
+	// 좋아요 처리
+	const handleLike = async () => {
+		try {
+			if (isLiked) {
+				// 좋아요 취소 API 호출
+				const response = await unlikePost(post.postingId, memberId);
+				if (response) {
+					// API 응답이 성공적일 때만 상태 변경
+					setIsLiked(false); // 좋아요 상태 변경
+					setLikeCount((prevCount) => prevCount - 1); // 이전 값에서 1 감소
+				}
+			} else {
+				// 좋아요 추가 API 호출
+				const response = await likePost(post.postingId, memberId);
+				if (response) {
+					// API 응답이 성공적일 때만 상태 변경
+					setIsLiked(true); // 좋아요 상태 변경
+					setLikeCount((prevCount) => prevCount + 1); // 이전 값에서 1 증가
+				}
+			}
+		} catch (error) {
+			console.error('Failed to toggle like status:', error);
+		}
+	};
+
+	// 경로 확인 후 상태 업데이트
+	useEffect(() => {
 		const pathArray = location.pathname.split('/');
 		if (
 			(pathArray.length === 3 && pathArray[1] === 'group') ||
@@ -38,8 +101,9 @@ const PostView = ({ post, onDelete }) => {
 		} else {
 			setIsFeedPage(false);
 		}
-	}, [location.pathname]); // 경로가 바뀔 때마다 실행
+	}, [location.pathname]);
 
+	// 게시글 삭제 처리
 	const handleDelete = async () => {
 		const confirmDelete = window.confirm('게시글을 삭제하시겠습니까?');
 		if (confirmDelete) {
@@ -49,7 +113,7 @@ const PostView = ({ post, onDelete }) => {
 				});
 				if (response.ok) {
 					console.log('Post deleted successfully');
-					// 삭제 후 추가 동작 (예: 부모 컴포넌트에서 상태 업데이트)
+					// 부모 컴포넌트에서 상태 업데이트
 					if (onDelete) {
 						onDelete(post.postingId);
 					}
@@ -84,8 +148,8 @@ const PostView = ({ post, onDelete }) => {
 						<div className="feed-profile-date">{formatDate(post.postingCreatedTime)}</div>
 					</div>
 				</div>
-				<div className='feed-head-right'>
-					<div className="feed-account-history">#{post.accountHistory}</div>
+				<div className="feed-head-right">
+					{post.accountHistory ? <div className="feed-account-history">#{post.accountHistory}</div> : null}
 					{/* 삭제 버튼 추가 */}
 					<button
 						onClick={handleDelete}
@@ -128,13 +192,16 @@ const PostView = ({ post, onDelete }) => {
 			)}
 
 			<div className="feed-att-area">
-				<div className="feed-att-like">
+				<div
+					className="feed-att-like"
+					onClick={handleLike}
+				>
 					<img
 						className="feed-att-like-icon"
-						src="/feed/Heart.svg"
+						src={isLiked ? '/feed/HeartFilled.svg' : '/feed/Heart.svg'}
 						alt="좋아요 아이콘"
 					/>
-					<div className="feed-att-like-count">{post.likeCount}</div>
+					<div className="feed-att-like-count">{isNaN(likeCount) ? '0' : likeCount}</div>
 				</div>
 				<div className="feed-att-comment">
 					<img
@@ -142,7 +209,7 @@ const PostView = ({ post, onDelete }) => {
 						src="/feed/chat.svg"
 						alt="댓글 아이콘"
 					/>
-					<div className="feed-att-comment-count">{post.commentCount}</div>
+					<div className="feed-att-comment-count">{commentCount || 0}</div>
 				</div>
 			</div>
 		</div>

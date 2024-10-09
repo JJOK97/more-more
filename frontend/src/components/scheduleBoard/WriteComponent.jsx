@@ -42,11 +42,8 @@ const WriteComponent = ({ onClose, onSubmit, selectedDate }) => {
 				return date; // 기본 날짜
 			},
 			confirm: (date) => {
-				// 선택된 날짜 및 시간을 5분 단위로 반올림
-				const roundedDate = roundToFiveMinutes(date);
-				const formattedDate = moment(roundedDate).format('YYYY-MM-DD HH:mm');
-				console.log('선택된 날짜 및 시간 (5분 단위):', formattedDate);
-				setSelectedDateTime(formattedDate);
+				console.log('선택된 날짜 및 시간:', date);
+				setSelectedDateTime(date);
 				setIsSelectingDateTime(false);
 			},
 			cancel: () => {
@@ -54,12 +51,6 @@ const WriteComponent = ({ onClose, onSubmit, selectedDate }) => {
 			},
 		});
 		rolldate.show();
-	};
-
-	// 5분 단위로 시간을 반올림하는 함수
-	const roundToFiveMinutes = (date) => {
-		const ms = 1000 * 60 * 5; // 5분을 밀리초로 변환
-		return new Date(Math.round(date.getTime() / ms) * ms); // 시간 반올림
 	};
 
 	const handleRegister = () => {
