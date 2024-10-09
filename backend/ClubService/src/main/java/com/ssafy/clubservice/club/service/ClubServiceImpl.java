@@ -78,7 +78,7 @@ public class ClubServiceImpl implements ClubService {
     @Override
     public Participant rejectParticipant(String clubCode, String participantId) {
         Participant participant = participantRepository.rejectParticipant(clubCode, participantId);
-       return participant.reject();
+       return participant.rejectParticipant();
     }
 
     private List<Club> changeClubImages(List<Club> clubs) {
