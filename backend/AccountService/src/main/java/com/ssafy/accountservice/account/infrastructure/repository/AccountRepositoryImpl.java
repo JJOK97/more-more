@@ -86,4 +86,10 @@ public class AccountRepositoryImpl implements AccountRepository {
         return accountMybatisMapper.selectUserKeyByClubCode(clubCode);
     }
 
+    @Override
+    public List<AccountHistoryEntity> selectAccountNumByDate(String accountNum, String date) {
+        return accountMybatisMapper.selectAccountHistoryByAccountNumByDate(accountNum, date);
+    }
+
+
 }

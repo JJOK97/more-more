@@ -353,4 +353,10 @@ public class AccountServiceImpl implements AccountService {
 
         return map;
     }
+
+    @Override
+    public List<AccountHistoryEntity> accountHistoryByDate(String clubCode, String date) {
+        String accountNum = accountRepository.selectAccountNum(clubCode);
+        return accountRepository.selectAccountNumByDate(accountNum, date);
+    }
 }

@@ -25,4 +25,5 @@ public interface AccountMybatisMapper {
     void updateByTransactionNum(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest);
     void deleteByTransactionNum(String ssafyTransactionNumber);
     String selectUserKeyByClubCode(String clubCode);
+    List<AccountHistoryEntity> selectAccountHistoryByAccountNumByDate(String accountNum, String date);
 }
