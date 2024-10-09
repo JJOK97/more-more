@@ -36,4 +36,9 @@ public class MemberRepositorylmpl implements MemberRepository {
     public String findByAccountNumber(String accountNumber) {
         return memberMybatisMapper.findByAccountNumber(accountNumber);
     }
+
+    @Override
+    public Boolean checkAccount(String accountNumber) {
+        return memberMybatisMapper.checkAccount(accountNumber);
+    }
 }

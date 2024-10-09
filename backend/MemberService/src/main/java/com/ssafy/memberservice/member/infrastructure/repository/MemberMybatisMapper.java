@@ -17,4 +17,6 @@ public interface MemberMybatisMapper {
     MemberEntity findByPhoneNumber(String phoneNumber);
 
     String findByAccountNumber(String accountNumber);
+
+    Boolean checkAccount(String accountNumber);
 }

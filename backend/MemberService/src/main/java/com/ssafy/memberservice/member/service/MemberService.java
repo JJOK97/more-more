@@ -11,4 +11,6 @@ public interface MemberService {
     MemberGetResponse findByMemberId(Long memberId);
     List<MemberAllGetResponse> findAllMembers();
     String findName(String accountNumber);
+
+    Boolean checkByAccountNumber(String accountNumber);
 }

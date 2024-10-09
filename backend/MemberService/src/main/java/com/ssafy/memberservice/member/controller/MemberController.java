@@ -121,9 +121,15 @@ public class MemberController {
     }
 
     @GetMapping("/{ssafyAccountNumber}/account")
+    @Operation(summary = "계좌번호로 이름조회", description = "계좌번호로 이름 조회하는 api")
     String getMemberByAccountNumber(@PathVariable("ssafyAccountNumber") String accountNumber) {
         return memberService.findName(accountNumber);
+    };
 
+    @GetMapping("/{ssafyAccountNumber}/existence")
+    @Operation(summary = "계좌번호가 존재 하는지 확인", description = "계좌번호로 이름 조회하는 api")
+    Boolean checkAccount(@PathVariable("ssafyAccountNumber") String accountNumber) {
+        return memberService.checkByAccountNumber(accountNumber);
     };
 
 

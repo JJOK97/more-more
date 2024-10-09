@@ -14,4 +14,6 @@ public interface MemberRepository {
     List<MemberEntity> findAllMembers();
 
     String findByAccountNumber(String accountNumber);
+
+    Boolean checkAccount(String accountNumber);
 }

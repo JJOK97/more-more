@@ -72,5 +72,11 @@
         WHERE account_number = #{accountNumber}
     </select>
 
+    <select id="checkAccount" resultType="Boolean" parameterType="String">
+        SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+        FROM members
+        WHERE account_number = #{accountNumber}
+    </select>
+
 
 </mapper>

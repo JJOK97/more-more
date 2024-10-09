@@ -71,4 +71,8 @@ public class MemberServicelmpl implements MemberService{
     public String findName(String accountNumber) {
         return memberRepository.findByAccountNumber(accountNumber);
     }
+
+    @Override
+    public Boolean checkByAccountNumber(String accountNumber) { return memberRepository.checkAccount(accountNumber);
+    }
 }
