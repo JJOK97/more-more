@@ -102,6 +102,7 @@ const CreateGroup = () => {
 						setFee={setFee}
 						intro={intro}
 						setIntro={setIntro}
+						password={password}
 					/>
 				);
 			case 6:
