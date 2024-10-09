@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getDatas } from '../feed/getData';
+import styles from './InviteMember.module.css';
+import logo from '@/assets/img/common/icon.svg'
 
 const InviteMember = () => {
 	const { groupId } = useParams();
@@ -48,18 +50,26 @@ const InviteMember = () => {
 
 	if (!memberId) {
 		return (
-			<div>
-				<div>초대를 받으려면 로그인이 필요합니다.</div>
-				<Link to={'/login'}>로그인 페이지로 이동</Link>
+			<div className={styles.loginRequired}>
+				<img className={styles.logo} src={'/icons/android-chrome-512x512.png'} />
+				<div className={styles.message}>초대를 받으려면 로그인이 필요합니다.</div>
+				<Link
+					to={'/login'}
+					className={styles.loginLink}
+				>
+					로그인 페이지로 이동
+				</Link>
 			</div>
 		);
 	} else {
 		return (
-			<div>
-				<div>{groupInfo?.clubName}에서 초대를 받았습니다.</div>
+			<div className={styles.inviteContainer}>
+				<img className={styles.clubImage} src={groupInfo?.clubImage} />
+				<div className={styles.groupName}>[{groupInfo?.clubName}] 모임에서 초대를 받았습니다.</div>
 				<button
 					onClick={handleClick}
 					disabled={isAccepted}
+					className={styles.acceptButton}
 				>
 					{isAccepted ? '초대를 수락하였습니다' : '초대 수락하기'}
 				</button>
