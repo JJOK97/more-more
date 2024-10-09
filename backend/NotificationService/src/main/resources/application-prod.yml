@@ -1,4 +1,0 @@
-# application-prod.yml
-spring:
-  profiles:
-    active: prod
