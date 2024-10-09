@@ -13,6 +13,7 @@ public class AccountHistoryEntity {
     private String accountTime;              // 결제 시각
     private String paymentType;              // 결제 타입
     private String paymentAmount;            // 결제 금액
+    private String paymentData;              // 결제 내용
     private String accountBalance;           // 계좌 잔고
     private String accountHistoryVerificationContent; // 계좌 내역 증빙 내용 (nullable)
 }

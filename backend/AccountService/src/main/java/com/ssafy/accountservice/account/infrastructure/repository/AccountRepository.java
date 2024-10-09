@@ -23,4 +23,5 @@ public interface AccountRepository {
     void updateVerify(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest);
     void deletetVerify(String ssafyTransactionNumber);
     String selectUserKey(String clubCode);
+    List<AccountHistoryEntity> selectAccountNumByDate(String accountNum, String date);
 }

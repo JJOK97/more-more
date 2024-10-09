@@ -188,4 +188,13 @@ public class AccountController {
     public Map<String, String> memberIdAccountBalance(@PathVariable("member_id") Long memberId) {
         return accountService.accountBalanceMemberId(memberId);
     }
+
+
+    @Operation(summary = "날짜로 입출금 내역 조회")
+    @GetMapping("/{clubCode}/{date}/historybydate")
+    public ResponseEntity<List<AccountHistoryEntity>> historyAccountByDate(@PathVariable("clubCode") String clubCode, @PathVariable("date") String date) {
+        List<AccountHistoryEntity> response = accountService.accountHistoryByDate(clubCode, date);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }
