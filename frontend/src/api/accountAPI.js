@@ -6,10 +6,13 @@ const accountApi = axios.create({
 	baseURL: `${API_BASE_URL}/api/account`,
 });
 
-export const getAccountHistories = async (groupId, page = 1) => {
-	const response = await accountApi.get(`/${groupId}/history`, {
-		params: { page },
-	});
+export const getAccountHistories = async (groupId) => {
+	const response = await accountApi.get(`/${groupId}/history`);
+	return response.data;
+};
+
+export const getAccountHistoriesByMonth = async (clubCode, date) => {
+	const response = await accountApi.get(`/${clubCode}/${date}/historybydate`);
 	return response.data;
 };
 

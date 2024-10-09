@@ -12,7 +12,7 @@ function Calendar({ onSelectDate, onMonthChange, scheduleDates = [] }) {
 
 	useEffect(() => {
 		if (onMonthChange) {
-			onMonthChange(activeStartDate);
+			onMonthChange(activeStartDate); // 월 변경 시 호출
 		}
 	}, [activeStartDate, onMonthChange]);
 
@@ -70,7 +70,7 @@ function Calendar({ onSelectDate, onMonthChange, scheduleDates = [] }) {
 				tileContent={({ date, view }) => {
 					let html = [];
 
-					// 오늘 날짜에 "오늘" 표시
+					// 오늘 날짜에는 도트 표시하지 않고 "오늘" 표시만
 					if (view === 'month' && moment(date).isSame(today, 'day')) {
 						html.push(
 							<div
@@ -81,9 +81,8 @@ function Calendar({ onSelectDate, onMonthChange, scheduleDates = [] }) {
 							</div>,
 						);
 					}
-
-					// scheduleDates 배열에 포함된 날짜에 점 표시
-					if (scheduleDates && scheduleDates.includes(moment(date).format('YYYY-MM-DD'))) {
+					// 거래 내역이 있는 날짜에 도트 표시 (오늘은 제외)
+					else if (view === 'month' && scheduleDates.includes(moment(date).format('YYYY-MM-DD'))) {
 						html.push(
 							<div
 								key={moment(date).format('YYYY-MM-DD')}
