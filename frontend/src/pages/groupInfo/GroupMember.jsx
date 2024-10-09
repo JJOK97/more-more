@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const GroupMember = ({ userId, isPending, onApprove, onReject }) => {
+const GroupMember = ({ userId, status }) => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
@@ -13,6 +13,7 @@ const GroupMember = ({ userId, isPending, onApprove, onReject }) => {
 				});
 				const data = await response.json();
 				console.log(data);
+				console.log(status);
 				setUser(data);
 			} catch (error) {
 				console.error('Error fetching user data:', error);
@@ -38,21 +39,15 @@ const GroupMember = ({ userId, isPending, onApprove, onReject }) => {
 				/>
 				<div className="group-info-member-name">{user.name}</div>
 			</div>
-			{isPending && (
+			{status == 'WAITING' && (
 				<div className="group-info-member-actions">
-					<button
-						className="group-info-member-approve"
-						onClick={() => onApprove(user.userId)}
-					>
+					<button className="group-info-member-approve">
 						<img
 							src="/info/ok.svg"
 							alt="Approve"
 						/>
 					</button>
-					<button
-						className="group-info-member-reject"
-						onClick={() => onReject(user.userId)}
-					>
+					<button className="group-info-member-reject">
 						<img
 							src="/info/close.svg"
 							alt="Reject"
