@@ -22,6 +22,4 @@ public class MemberEntity {
     private String profileImageUrl;
     private String userKey;
     private String bank;
-
-
 }
