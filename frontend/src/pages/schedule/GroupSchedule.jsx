@@ -8,10 +8,12 @@ import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
 import { getAllSchedules, createSchedule, getMonthlySchedules, getDailySchedules } from '@/api/scheduleApi';
 import moment from 'moment';
+import { getDatas } from '../feed/getData';
 
 const Schedule = () => {
 	const { setGroupName } = useGroupName();
 	const { groupId } = useParams();
+	const [groupInfo, setGroupInfo] = useState(null);
 	const [isWriting, setIsWriting] = useState(false);
 	const [schedules, setSchedules] = useState([]);
 	const [monthlySchedules, setMonthlySchedules] = useState([]);
@@ -20,6 +22,27 @@ const Schedule = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [attendDay, setAttendDay] = useState([]);
+
+	// 그룹 정보를 불러오는 useEffect
+	useEffect(() => {
+		const getGroupInfo = async () => {
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
+				const data = await getDatas(url);
+				setGroupInfo(data);
+			} catch (error) {
+				console.error('Error fetching group info:', error);
+			}
+		};
+		getGroupInfo();
+	}, [groupId]);
+
+	// groupInfo가 업데이트될 때, groupName 상태를 업데이트
+	useEffect(() => {
+		if (groupInfo && groupInfo.clubName) {
+			setGroupName(groupInfo.clubName);
+		}
+	}, [groupInfo, setGroupName]);
 
 	const fetchSchedules = useCallback(async () => {
 		setIsLoading(true);
