@@ -42,7 +42,7 @@ const Header = () => {
 							className="group-header-back-button-img"
 							src={chevron}
 							alt="Back"
-							onClick={() => navigate(-1)}
+							onClick={() => navigate("/")}
 						/>
 						<div>{groupName}</div>
 					</div>
