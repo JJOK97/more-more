@@ -5,13 +5,14 @@ import useGroupName from '@/store/useGroupName';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getDatas } from '../feed/getData';
+import useGroupStore from '@/store/useGroupStore';
 
 const GroupAccount = () => {
 	const { setGroupName } = useGroupName();
 	const { groupId } = useParams(); // URL에서 groupId를 추출
 	const [groupInfo, setGroupInfo] = useState(null);
+	const { setClubCode, setCreatedDate, setDues } = useGroupStore();
 
-	// 그룹 정보를 불러오는 useEffect
 	useEffect(() => {
 		const getGroupInfo = async () => {
 			try {
@@ -25,12 +26,14 @@ const GroupAccount = () => {
 		getGroupInfo();
 	}, [groupId]);
 
-	// groupInfo가 업데이트될 때, groupName 상태를 업데이트
 	useEffect(() => {
 		if (groupInfo && groupInfo.clubName) {
 			setGroupName(groupInfo.clubName);
+			setClubCode(groupInfo.clubCode); // clubCode 저장
+			setCreatedDate(groupInfo.createdDate); // createdDate 저장
+			setDues(groupInfo.dues); // dues 저장
 		}
-	}, [groupInfo, setGroupName]);
+	}, [groupInfo, setGroupName, setClubCode, setCreatedDate, setDues]);
 
 	return (
 		<div className="account-area">

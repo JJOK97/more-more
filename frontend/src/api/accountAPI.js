@@ -16,4 +16,9 @@ export const getAccountHistoriesByMonth = async (clubCode, date) => {
 	return response.data;
 };
 
+export const getAccountCompareDate = async (clubCode, date) => {
+	const response = await accountApi.get(`/${clubCode}/${date}/comparedate`);
+	return response.data;
+};
+
 export default accountApi;
