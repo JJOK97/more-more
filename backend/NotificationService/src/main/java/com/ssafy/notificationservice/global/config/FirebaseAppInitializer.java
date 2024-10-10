@@ -38,23 +38,10 @@ public class FirebaseAppInitializer {
         }
     }
 
-    @Bean
-    public FirebaseApp firebaseApp() throws IOException {
-        InputStream serviceAccount = getClass().getClassLoader().getResourceAsStream("firebase-adminsdk.json");
-
-        if (serviceAccount == null) {
-            throw new IllegalArgumentException("Firebase service account file not found");
-        }
-
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .build();
-
-        return FirebaseApp.initializeApp(options);
-    }
 
     @Bean
-    public FirebaseMessaging firebaseMessaging(FirebaseApp firebaseApp) {
+    public FirebaseMessaging firebaseMessaging() throws IOException {
+        FirebaseApp firebaseApp = FirebaseApp.getInstance(); // 이미 존재하는 FirebaseApp 인스턴스 가져오기
         return FirebaseMessaging.getInstance(firebaseApp);
     }
 }
