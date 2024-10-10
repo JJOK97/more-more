@@ -1,7 +1,17 @@
 import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-const DepositDetailOne = ({ id, paymentData, paymentAmount, date, time, balance, searchTerm, paymentType }) => {
+const DepositDetailOne = ({
+	id,
+	paymentData,
+	paymentAmount,
+	date,
+	time,
+	balance,
+	searchTerm,
+	paymentType,
+	tagName,
+}) => {
 	const location = useLocation();
 	const { groupId } = useParams();
 
@@ -107,6 +117,16 @@ const DepositDetailOne = ({ id, paymentData, paymentAmount, date, time, balance,
 				<Link
 					className="deposit-detail-container"
 					to={`/group/${groupId}/account/${id}`}
+					state={{
+						id,
+						paymentData,
+						paymentAmount: formattedAmount(),
+						date: formatDate(date),
+						time: formatTime(time),
+						balance: formatAmount(balance),
+						tagName,
+						paymentType,
+					}}
 				>
 					<div className="deposit-list-place-price">
 						<div className="deposit-list-place"> {paymentData} </div>

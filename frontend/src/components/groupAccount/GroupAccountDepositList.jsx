@@ -15,6 +15,7 @@ const GroupAccountDepositList = ({ selectedDate, searchTerm }) => {
 		setLoading(true);
 		try {
 			const data = await getAccountHistories(groupId);
+
 			setAccountHistories(data); // 받아온 데이터를 설정
 		} catch (e) {
 			console.error('Error fetching account history:', e);
@@ -54,6 +55,7 @@ const GroupAccountDepositList = ({ selectedDate, searchTerm }) => {
 					balance={item.accountBalance}
 					paymentType={item.paymentType}
 					searchTerm={searchTerm} // 검색어 전달
+					tagName={item.tagName}
 				/>
 			))}
 			{loading && <div>Loading...</div>}
