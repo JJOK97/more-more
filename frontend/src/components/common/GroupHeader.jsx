@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import '@/assets/css/common/header.css';
+import '@/assets/css/common/header.css'; // CSS 파일 참조
 import chevron from '@/assets/img/common/mainHeader/chevron-left.svg';
 import search from '@/assets/img/common/mainHeader/search.svg';
 import user from '@/assets/img/common/mainHeader/user.svg';
 import bell from '@/assets/img/common/mainHeader/bell.svg';
 import useGroupName from '@/store/useGroupName';
-import useNoticeState from '@/store/useNoticeState'; // zustand store 가져오기
+import useNoticeState from '@/store/useNoticeState'; // Zustand store 가져오기
+
+import { requestNotificationPermission } from '@/api/firebaseMessaging';
 
 const Header = () => {
 	const { groupName } = useGroupName();
 	const { isUnreadNotice } = useNoticeState(); // 읽지 않은 알림 상태 확인
 	const location = useLocation();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		requestNotificationPermission();
+	}, []);
+
+	console.log('헤더 컴포넌트에서 알림 상태 확인: ', isUnreadNotice);
 
 	if (
 		location.pathname === '/' ||
@@ -66,7 +74,7 @@ const Header = () => {
 								src={bell}
 								alt="Notifications"
 							/>
-							{isUnreadNotice && <div className="red-dot" />}
+							{isUnreadNotice && <div className="red-dot" />} {/* 빨간 점 표시 */}
 						</Link>
 					</div>
 				</div>

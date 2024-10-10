@@ -83,6 +83,7 @@ const Signup = () => {
 	const [isVerified, setIsVerified] = useState(false);
 
 	const userValues = {
+		bank: '',
 		member_name: '',
 		birth_date: '',
 		phone_number: '',

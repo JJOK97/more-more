@@ -1,5 +1,25 @@
 import axios from 'axios';
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken } from 'firebase/messaging';
 
+// Firebase 설정 정보 (v9 SDK 사용)
+const firebaseConfig = {
+	apiKey: 'AIzaSyCkl2sN3OJ_mbswLONax4DGqK6cZH3f8mM',
+	authDomain: 'moremore-f0f23.firebaseapp.com',
+	projectId: 'moremore-f0f23',
+	storageBucket: 'moremore-f0f23.appspot.com',
+	messagingSenderId: '182835002476',
+	appId: '1:182835002476:web:7e74ba67055f17f8e1ac49',
+	measurementId: 'G-Q6E9HJN68E',
+};
+
+// Firebase 초기화
+const firebaseApp = initializeApp(firebaseConfig);
+export const messaging = getMessaging(firebaseApp);
+
+console.log('userAPI', messaging);
+
+// API Base URL 설정
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const api = axios.create({
@@ -7,6 +27,26 @@ const api = axios.create({
 	headers: {
 		'Content-Type': 'application/json',
 	},
+});
+
+// Service Worker 등록 확인
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker
+		.register('/firebase-messaging-sw.js')
+		.then((registration) => {
+			console.log('Service Worker 등록 성공: ', registration);
+		})
+		.catch((error) => {
+			console.error('Service Worker 등록 실패: ', error);
+		});
+}
+
+Notification.requestPermission().then((permission) => {
+	if (permission === 'granted') {
+		console.log('알림 권한이 허용되었습니다.');
+	} else {
+		console.log('알림 권한이 거부되었습니다.');
+	}
 });
 
 // 액세스 토큰을 요청 헤더에 추가하는 인터셉터
@@ -39,14 +79,80 @@ api.interceptors.response.use(
 				// 리프레시 토큰도 만료된 경우, 로그아웃 처리
 				localStorage.removeItem('accessToken');
 				localStorage.removeItem('refreshToken');
-				// 로그아웃 상태로 리다이렉트 (예: 로그인 페이지로)
-				window.location.href = '/login';
+				window.location.href = '/login'; // 로그아웃 상태로 리다이렉트
 				return Promise.reject(refreshError);
 			}
 		}
 		return Promise.reject(error);
 	},
 );
+
+// FCM 토큰을 서버에 전송하는 함수
+const sendTokenToServer = async (token, memberId) => {
+	try {
+		const response = await api.put(`/api/member/${memberId}/fcm-token?fcmToken=${token}`);
+
+		if (response.status === 200) {
+			console.log('FCM 토큰이 서버로 전송되었습니다.');
+		} else {
+			console.error('FCM 토큰 전송 중 오류가 발생했습니다.');
+		}
+	} catch (error) {
+		console.error('FCM 토큰 전송 중 오류가 발생했습니다: ', error);
+	}
+};
+
+// FCM 토큰을 요청하고 서버에 전송하는 함수
+export const requestForToken = async (setFcmToken, userId) => {
+	try {
+		const token = await getToken(messaging, {
+			vapidKey: 'BEMC4sH15uFaAGu7bsqOBayTaoEzsYc6LMSVpPmJ4a0MV1k4JlIZVYLNf2u4HDte_vEa8kXvIuevP3fM_Tkd-rQ',
+			serviceWorkerRegistration: await navigator.serviceWorker.register('/firebase-messaging-sw.js'),
+		});
+
+		if (token) {
+			console.log('FCM Token:', token);
+			await sendTokenToServer(token, userId); // 서버로 전송
+		} else {
+			console.log('등록된 토큰이 없습니다.');
+		}
+	} catch (error) {
+		console.error('토큰을 가져오는 동안 오류가 발생했습니다: ', error);
+	}
+};
+
+const validateAndUpdateFCMToken = async (memberId) => {
+	if (!memberId) {
+		console.error('memberId is undefined in validateAndUpdateFCMToken');
+		return;
+	}
+
+	try {
+		const currentToken = await getToken(messaging, {
+			vapidKey: 'BEMC4sH15uFaAGu7bsqOBayTaoEzsYc6LMSVpPmJ4a0MV1k4JlIZVYLNf2u4HDte_vEa8kXvIuevP3fM_Tkd-rQ',
+			serviceWorkerRegistration: await navigator.serviceWorker.register('/firebase-messaging-sw.js'),
+		});
+
+		if (currentToken) {
+			// 서버에서 현재 저장된 토큰 조회
+			const response = await api.get(`/api/member/${memberId}/fcm-token`);
+			const storedToken = response.data.fcmToken;
+
+			if (currentToken !== storedToken) {
+				// 토큰이 다르면 새 토큰을 서버에 전송
+				await sendTokenToServer(currentToken, memberId);
+				console.log('FCM 토큰이 업데이트되었습니다.');
+			} else {
+				console.log('FCM 토큰이 유효합니다.');
+			}
+		} else {
+			console.log('FCM 토큰을 가져올 수 없습니다.');
+			// 필요한 경우 새 토큰 생성 로직 추가
+		}
+	} catch (error) {
+		console.error('FCM 토큰 유효성 검사 중 오류 발생:', error);
+	}
+};
 
 // 로그인 API
 export const loginUser = async (phoneNumber, password) => {
@@ -62,12 +168,22 @@ export const loginUser = async (phoneNumber, password) => {
 		localStorage.setItem('memberId', memberId);
 		localStorage.setItem('userKey', userKey);
 
+		console.log('Login memberId:', memberId);
+
+		// FCM 토큰 유효성 검사 및 업데이트
+		if (memberId) {
+			await validateAndUpdateFCMToken(memberId);
+		} else {
+			console.error('memberId is undefined after login');
+		}
+
 		return response.data;
 	} catch (error) {
 		console.error('로그인 오류:', error.response?.data || error.message);
 		throw error;
 	}
 };
+
 // 토큰 갱신 API
 export const refreshAccessToken = async (refreshToken) => {
 	try {
@@ -84,12 +200,9 @@ export const refreshAccessToken = async (refreshToken) => {
 };
 
 // 회원가입 API
-export const registerMember = async (userData) => {
+export const registerMember = async (userData, setFcmToken) => {
 	try {
-		// FormData 객체 생성
 		const formData = new FormData();
-
-		// 각 필드를 개별적으로 FormData에 추가
 		formData.append('accountNumber', userData.account_number);
 		formData.append('address', userData.address);
 		formData.append('email', userData.email);
@@ -98,7 +211,6 @@ export const registerMember = async (userData) => {
 		formData.append('birthDate', userData.birth_date);
 		formData.append('name', userData.member_name);
 
-		// 프로필 이미지가 있다면 추가
 		if (userData.profile_image) {
 			formData.append('profileImage', userData.profile_image);
 		}
@@ -108,6 +220,18 @@ export const registerMember = async (userData) => {
 				'Content-Type': 'multipart/form-data',
 			},
 		});
+
+		const { memberId } = response.data; // 서버에서 반환된 userId
+
+		// FCM 토큰 요청 후 서버에 전송
+		if (typeof setFcmToken === 'function') {
+			await requestForToken(setFcmToken, memberId);
+		} else {
+			await requestForToken((token) => {
+				console.log('FCM token received:', token);
+				// 여기서 토큰을 저장하거나 다른 작업을 수행할 수 있습니다.
+			}, userId);
+		}
 
 		return response.data;
 	} catch (error) {
@@ -139,7 +263,7 @@ export const verifyEmailCode = async (email, code) => {
 				message: response.data ? '인증이 성공적으로 완료되었습니다.' : '인증번호가 일치하지 않습니다.',
 			};
 		}
-		// 기존의 객체 형태 응답 처리 (혹시 나중에 API가 변경될 경우를 대비)
+		// 기존의 객체 형태 응답 처리
 		else if (response.data && typeof response.data.success === 'boolean') {
 			return {
 				success: response.data.success,
@@ -161,6 +285,7 @@ export const verifyEmailCode = async (email, code) => {
 	}
 };
 
+// 회원 정보 조회 API
 export const getMemberInfo = async (memberId) => {
 	try {
 		const response = await api.get(`/api/member/${memberId}`);
