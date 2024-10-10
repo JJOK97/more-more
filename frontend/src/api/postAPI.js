@@ -1,13 +1,14 @@
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 const postApi = axios.create({
 	baseURL: `${API_BASE_URL}/api/posting`,
 });
 
+console.log("BASEURL: " + API_BASE_URL);
 // 좋아요 API 호출
 export const likePost = async (postingId, memberId) => {
+	console.log("post: " +  postApi);
 	try {
 		const response = await postApi.post(`/${postingId}/like/${memberId}`);
 		return response.data;
