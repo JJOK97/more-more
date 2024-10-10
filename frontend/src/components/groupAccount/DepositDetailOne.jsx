@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import { useTagNameStore } from '@/store/useTagNameStore';
 
 const DepositDetailOne = ({
 	id,
@@ -14,6 +15,8 @@ const DepositDetailOne = ({
 }) => {
 	const location = useLocation();
 	const { groupId } = useParams();
+	const setTagName = useTagNameStore((state) => state.setTagName);
+	const currentTagName = useTagNameStore((state) => state.tagName);
 
 	// 날짜를 'YYYY-MM-DD' 형식으로 변환하는 함수
 	const formatDate = (dateString) => {
@@ -71,6 +74,9 @@ const DepositDetailOne = ({
 	const handleClick = () => {
 		if (location.pathname.includes('/group') && location.pathname.includes('/create')) {
 			alert(`${paymentData} ${time}`);
+			setTagName(tagName);
+			console.log('setTagName: ', tagName);
+			console.log('currentTagName from Zustand: ', currentTagName);
 		}
 	};
 

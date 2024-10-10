@@ -9,6 +9,7 @@ import useGroupName from '@/store/useGroupName';
 import { useNavigate, useParams } from 'react-router-dom';
 import AddTagModal from './AddTagModal';
 import { getDatas } from '../feed/getData';
+import { useTagNameStore } from '@/store/useTagNameStore';
 
 const CreatePost = () => {
 	const { setGroupName } = useGroupName();
@@ -18,6 +19,7 @@ const CreatePost = () => {
 	const [content, setContent] = useState('');
 	const [accountHistoryTag, setAccountHistoryTag] = useState(''); // 추가 태그 상태 관리
 	const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+	const { tagName } = useTagNameStore();
 	const navigate = useNavigate();
 
 	// 그룹 정보를 불러오는 useEffect
@@ -66,7 +68,7 @@ const CreatePost = () => {
 		// FormData에 데이터 추가
 		formData.append('memberId', parseInt(memberId)); // integer
 		formData.append('clubCode', clubCode); // string
-		formData.append('accountHistoryTag', accountHistoryTag); // string
+		formData.append('accountHistoryTag', tagName); // string
 		formData.append('postingContent', content); // string
 		images.forEach((image) => {
 			formData.append('files', image.file); // 배열이므로 같은 키를 반복해서 추가

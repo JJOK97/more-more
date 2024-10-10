@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import noImage from '@/assets/img/account/no-image.png';
-import useTagNameStore from '@/store/useTagNameStore';
+import { useTagNameStore } from '@/store/useTagNameStore';
 
 const TransactionDetailOneList = () => {
 	const location = useLocation();
