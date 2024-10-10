@@ -32,6 +32,17 @@ const PostView = ({ post, onDelete, commentCount }) => {
 	const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
 	const [likeCount, setLikeCount] = useState(0); // 초기값 0으로 설정
 
+	const [isMyPost, setIsMyPost] = useState(false);
+
+	useEffect(() => {
+		const localMemberId = localStorage.getItem('memberId');
+		const postMemberId = post.memberId;
+		console.log(localMemberId, postMemberId);
+		if (Number(localMemberId) === Number(postMemberId)) {
+			setIsMyPost(true);
+		}
+	}, []);
+
 	// 로컬스토리지에서 memberId 가져오기
 	useEffect(() => {
 		const storedMemberId = localStorage.getItem('memberId');
@@ -151,12 +162,14 @@ const PostView = ({ post, onDelete, commentCount }) => {
 				<div className="feed-head-right">
 					{post.accountHistory ? <div className="feed-account-history">#{post.accountHistory}</div> : null}
 					{/* 삭제 버튼 추가 */}
-					<button
-						onClick={handleDelete}
-						className="feed-delete-button"
-					>
-						삭제
-					</button>
+					{isMyPost && (
+						<button
+							onClick={handleDelete}
+							className="feed-delete-button"
+						>
+							삭제
+						</button>
+					)}
 				</div>
 			</div>
 
