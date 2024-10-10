@@ -3,6 +3,7 @@ package com.ssafy.accountservice.account.controller;
 import com.ssafy.accountservice.account.controller.dto.request.*;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryMemo;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.IsVerificationInEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.infrastructure.s3.S3Connector;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
@@ -220,9 +221,16 @@ public class AccountController {
         return accountService.dateCompare(clubCode,date);
     }
 
+//    @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
+//    @PostMapping("/{tag_name}/isverificationin")
+//    public void createVerification(@PathVariable("tag_name") String tagName) {
+//        accountService.isVerificationIn(tagName);
+//    }
+
     @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
-    @PostMapping("/{tag_name}/isverificationin")
-    public void createVerification(@PathVariable("tag_name") String tagName) {
+    @PostMapping("/isverificationin")
+    public void createVerification(@RequestBody IsVerificationInEntity isVerificationInEntity) {
+        String tagName = isVerificationInEntity.getTagName();
         accountService.isVerificationIn(tagName);
     }
 
