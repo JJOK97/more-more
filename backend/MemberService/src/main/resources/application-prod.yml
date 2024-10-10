@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    config:
+      name: aws-common,db-common,logging-common,mail-member,redis-member,ssafyapi-common,jwt-common
+  config:
+    import: "optional:configserver:http://config-server.config"
+
+aws:
+  club-image:
+    prefix: member/
