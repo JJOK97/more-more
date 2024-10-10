@@ -3,6 +3,6 @@ spring:
     name: account-service
   profiles:
     active:
-      - local
+      - locl
 server:
   port: 80
