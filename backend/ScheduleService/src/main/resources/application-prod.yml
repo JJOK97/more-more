@@ -9,3 +9,5 @@ aws:
   club-image:
     prefix: schedule/
 
+mybatis:
+  type-aliases-package: com.ssafy.scheduleservice.schedule.infrastructure.repository.entity
