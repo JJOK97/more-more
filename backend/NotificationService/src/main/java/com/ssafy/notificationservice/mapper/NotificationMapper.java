@@ -12,10 +12,12 @@ public interface NotificationMapper {
     void insertNotification(Notification notification);
 
     // 특정 유저의 알림 조회
-    List<Notification> getNotificationsByUser(Long userId);
+    List<Notification> getNotificationsByUser(Long memberId);
 
     // 알림 읽음 처리
     void markNotificationAsRead(Long notificationId);
 
+    // 특정 유저의 모든 알림 읽음 처리
+    void markAllAsRead(@Param("memberId") Long memberId);
 
 }
