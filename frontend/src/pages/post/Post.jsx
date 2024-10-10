@@ -29,6 +29,8 @@ const Post = () => {
 			try {
 				const commentsData = await getComments(postId);
 				setComments(commentsData); // 댓글 리스트 설정
+				console.log(commentsData);
+				console.log(comments);
 			} catch (error) {
 				console.error('Error fetching comments:', error);
 			}
