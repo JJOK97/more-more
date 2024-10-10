@@ -42,7 +42,7 @@ const WithdrawalInfo = () => {
 				const clubData = await clubResponse.json();
 				setClubName(clubData.clubName || '');
 			} catch (e) {
-				setError(`모임 이름을 가져오는 중 문제가 발생했습니다. 상태 코드: ${e.message}`);
+				setError(`모임 이름을 가져오는 중 문제가 발생했습니다. 상태 코드 : ${e.message}`);
 				setClubName('');
 			}
 		};
