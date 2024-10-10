@@ -102,11 +102,11 @@
             tag_name = #{tagName}
     </select>
 
-    <update id="updateByTransactionNum" parameterType="map">
+    <update id="updateByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest">
         UPDATE account_history_verification
         SET
-            account_history_memo = #{verificationSaveRequest.accountHistoryMemo},
-            account_history_image = #{verificationSaveRequest.accountHistoryImage}
+            account_history_memo = #{accountHistoryMemo},
+            account_history_image = #{accountHistoryImage}
         WHERE
             tag_name = #{tagName}
     </update>

@@ -24,7 +24,7 @@ public interface AccountService {
     AccountHistoryEntity historyGetOnly(String tagName);
     void verifySave(VerificationSaveRequest verificationSaveRequest);
     VerifyEntity verifySelect(String tagName);
-    void verifyUpdate(String tagName, VerificationSaveRequest verificationSaveRequest);
+    void verifyUpdate(VerificationSaveRequest verificationSaveRequest);
     void verifyDelete(String tagName);
     Map<String, String> accountBalanceMemberId(Long memberId);
     List<AccountHistoryEntity> accountHistoryByDate(String clubCode, String date);

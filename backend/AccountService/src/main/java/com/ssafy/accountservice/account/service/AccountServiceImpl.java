@@ -342,8 +342,8 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public void verifyUpdate(String tagName, VerificationSaveRequest verificationSaveRequest) {
-        accountRepository.updateVerify(tagName, verificationSaveRequest);
+    public void verifyUpdate(VerificationSaveRequest verificationSaveRequest) {
+        accountRepository.updateVerify(verificationSaveRequest);
     }
 
 
@@ -394,10 +394,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<String> dateCompare(String clubCode, String date) {
-        // Feign CLient - club에 접근
+        // Feign Client - club에 접근
         ClubReadResponse clubReadResponse = selectClubFeignClient.findClub(clubCode);
 
-        // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
+        // 모임코드를 들고 와서 해당 모임의 총무 API key를 넣어서 조회
         Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(clubCode);
 
         String accountNum = map.get("ssafy_account_number");
@@ -407,20 +407,23 @@ public class AccountServiceImpl implements AccountService {
 
         // formattedDate에서 마지막 두 자리(일)를 추출하여 새로운 날짜 생성
         String lastTwoDigits = createDate.substring(createDate.length() - 2); // 04 추출
-        String endDate = date + lastTwoDigits; // 202410 + 04 = 20241004
+        String endDate = date + lastTwoDigits; // 기준일 (예: 202410) + 04 = 20241004
 
-        // newDate의 한달 전보다 하루 큰 날짜를 계산
+        // 기준일로부터 한 달 뒤의 날짜 계산
         LocalDate newDateObj = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-        // 한달 전보다 하루 큰 날짜 계산
-        LocalDate adjustedDate = newDateObj.minusMonths(1).plusDays(1);
-        String startDate = adjustedDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        // 한 달 뒤 날짜에서 하루를 뺀 날짜 계산
+        LocalDate adjustedEndDate = newDateObj.plusMonths(1).minusDays(1); // 한 달 뒤에서 하루 빼기
+        String endDateFormatted = adjustedEndDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        // 기준일을 `startDate`로 설정
+        String startDate = endDate;
 
         // accountNum, startDate, endDate, dues
         DateEntity dateEntity = new DateEntity();
         dateEntity.setAccountNum(accountNum);
-        dateEntity.setStartDate(startDate);
-        dateEntity.setEndDate(endDate);
+        dateEntity.setStartDate(startDate); // 기준일을 시작일로 설정
+        dateEntity.setEndDate(endDateFormatted); // 한 달 뒤에서 하루 뺀 날짜를 종료일로 설정
         dateEntity.setDues(dues);
 
         return accountRepository.dateCompareByclubCode(dateEntity);

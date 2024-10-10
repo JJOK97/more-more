@@ -24,7 +24,7 @@ public interface AccountMybatisMapper {
     AccountHistoryEntity selectAccountHistoryOnly(String tagName);
     void insertByTransactionNum(VerificationSaveRequest verificationSaveRequest);
     VerifyEntity selectByTransactionNum(String tagName);
-    void updateByTransactionNum(String tagName, VerificationSaveRequest verificationSaveRequest);
+    void updateByTransactionNum(VerificationSaveRequest verificationSaveRequest);
     void deleteByTransactionNum(String tagName);
     String selectUserKeyByClubCode(String clubCode);
     List<AccountHistoryEntity> selectAccountHistoryByAccountNumByDate(String accountNum, String date);

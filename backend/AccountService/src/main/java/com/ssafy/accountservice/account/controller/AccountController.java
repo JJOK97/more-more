@@ -138,40 +138,48 @@ public class AccountController {
     @Operation(summary = "입출금 증빙 내역 업데이트", description = "이미지 파일과 메모를 업로드하여 증빙 내역을 업데이트한다.")
     public ResponseEntity<String> updateVerification(@PathVariable("tag_name") String tagName,
                                                      @ModelAttribute VerificationRequest verificationRequest) {
-        try {
-            // 이미지 파일 업로드
-            MultipartFile newAccountHistoryImage = verificationRequest.getAccountHistoryImage();
-            String s3ImageUrl = null;
 
-            // 이미지 파일이 있을 경우 S3에 업로드
-            if (newAccountHistoryImage != null && !newAccountHistoryImage.isEmpty()) {
-                String randomString = UUID.randomUUID().toString();
-                String fileName = tagName + "_" + randomString;
+        // 1. 기존 데이터를 조회합니다.
+        VerifyEntity existingData = accountService.verifySelect(tagName);
 
-                // S3에 파일 업로드
-                s3Connector.upload(fileName, newAccountHistoryImage);
+        // 2. 이미지 파일 처리
+        MultipartFile newAccountHistoryImage = verificationRequest.getAccountHistoryImage();
+        String s3ImageUrl = null;
 
-                // 업로드된 파일의 URL 가져오기
-                s3ImageUrl = s3Connector.getImageURL(fileName);
-            }
+        if (newAccountHistoryImage != null && !newAccountHistoryImage.isEmpty()) {
+            String randomString = UUID.randomUUID().toString();
+            String fileName = tagName + "_" + randomString;
 
-            // VerificationSaveRequest 객체 생성 후 값 설정
-            VerificationSaveRequest verificationSaveRequest = new VerificationSaveRequest();
-            verificationSaveRequest.setTagName(tagName);
-            verificationSaveRequest.setAccountHistoryMemo(verificationRequest.getAccountHistoryMemo());
+            // S3에 파일 업로드
+            s3Connector.upload(fileName, newAccountHistoryImage);
 
-            // 새 이미지 URL이 있을 경우에만 설정
-            if (s3ImageUrl != null) {
-                verificationSaveRequest.setAccountHistoryImage(s3ImageUrl);
-            }
-
-            // 검증 데이터를 업데이트하는 서비스 호출
-            accountService.verifyUpdate(tagName, verificationSaveRequest);
-
-            return ResponseEntity.ok("업데이트에 성공했습니다");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 중 오류가 발생했습니다: " + e.getMessage());
+            // 업로드된 파일의 URL 가져오기
+            s3ImageUrl = s3Connector.getImageURL(fileName);
         }
+
+        // 3. VerificationSaveRequest 객체 생성 후 기존 데이터와 비교하여 변경된 값만 설정
+        VerificationSaveRequest verificationSaveRequest = new VerificationSaveRequest();
+        verificationSaveRequest.setTagName(tagName);
+
+        // 기존 메모와 비교하여 변경된 경우에만 새로운 값 설정
+        String newMemo = verificationRequest.getAccountHistoryMemo();
+        if (newMemo != null && !newMemo.equals(existingData.getAccountHistoryMemo())) {
+            verificationSaveRequest.setAccountHistoryMemo(newMemo);
+        } else {
+            verificationSaveRequest.setAccountHistoryMemo(existingData.getAccountHistoryMemo());
+        }
+
+        // 새 이미지 URL이 있을 경우에만 설정, 없으면 기존 값 유지
+        if (s3ImageUrl != null) {
+            verificationSaveRequest.setAccountHistoryImage(s3ImageUrl);
+        } else {
+            verificationSaveRequest.setAccountHistoryImage(existingData.getAccountHistoryImage());
+        }
+
+        // 4. 검증 데이터를 업데이트하는 서비스 호출
+        accountService.verifyUpdate(verificationSaveRequest);
+
+        return ResponseEntity.ok("업데이트에 성공했습니다");
     }
 
 
@@ -203,7 +211,7 @@ public class AccountController {
         return accountService.tagNameSelect(clubCode);
     }
 
-    @Operation(summary = "날짜로 비교해서 회비 낸 명단 제공", description = "날짜형식은 yyyy-dd")
+    @Operation(summary = "날짜로 비교해서 회비 낸 명단 제공", description = "날짜형식은 yyyymm")
     @GetMapping("/{clubCode}/{date}/comparedate")
     public List<String> compareDate(@PathVariable("clubCode") String clubCode, @PathVariable("date") String date) {
         return accountService.dateCompare(clubCode,date);
