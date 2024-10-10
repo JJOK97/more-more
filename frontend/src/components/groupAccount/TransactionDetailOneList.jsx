@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import noImage from '@/assets/img/account/no-image.png';
 import useTagNameStore from '@/store/useTagNameStore';
 
-const TransactionDetailOneList = () => {
+const TransactionDetailOneList = ({ groupId }) => {
 	const location = useLocation();
+	const navigate = useNavigate();
 	const { setTagName } = useTagNameStore();
 	const {
 		paymentData = '데이터 없음',
@@ -131,6 +132,7 @@ const TransactionDetailOneList = () => {
 	const handleMoveToPost = () => {
 		setTagName(tagName);
 		console.log('Tag name set: ', tagName);
+		navigate(`/group/${groupId}/search?keyword=${tagName}`);
 	};
 
 	return (
