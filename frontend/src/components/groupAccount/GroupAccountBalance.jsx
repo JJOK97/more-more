@@ -7,8 +7,8 @@ const AccountBalance = () => {
 	const [accountInfo, setAccountInfo] = useState({
 		account_num: '',
 		account_balance: 0,
-		createdDate: '01',
-		dues: 0,
+		createDate: '',
+		dues: '0', // dues를 기본적으로 문자열로 설정
 	});
 	const [loading, setLoading] = useState(true);
 
@@ -31,16 +31,16 @@ const AccountBalance = () => {
 					setAccountInfo({
 						account_num: data.account_num || '',
 						account_balance: data.account_balance || 0,
-						createdDate: data.createdDate || '01',
-						dues: data.dues || 0,
+						createDate: data.createDate || '',
+						dues: data.dues || '0', // dues를 문자열로 처리
 					});
 				} catch (e) {
 					console.error('Error fetching account info:', e);
 					setAccountInfo({
 						account_num: '',
 						account_balance: 0,
-						createdDate: '01',
-						dues: 0,
+						createDate: '',
+						dues: '0',
 					});
 				} finally {
 					setLoading(false);
@@ -68,6 +68,10 @@ const AccountBalance = () => {
 		}
 	};
 
+	const day = accountInfo.createDate ? parseInt(accountInfo.createDate.split('-')[2], 10) : '';
+
+	const formattedDues = Number(accountInfo.dues).toLocaleString();
+
 	return (
 		<div className="account-balance">
 			{loading ? (
@@ -80,8 +84,7 @@ const AccountBalance = () => {
 						style={{ cursor: 'pointer' }}
 					>
 						<span name="account-due-list">
-							매 월 {new Date(accountInfo.createdDate).getDate()}일,{' '}
-							{accountInfo.dues?.toLocaleString() || '0'}원씩 | 입금현황
+							매 월 {day}일, {formattedDues}원씩 | 입금현황
 						</span>
 						<img
 							className="account-due-list-icon"
@@ -90,9 +93,7 @@ const AccountBalance = () => {
 						/>
 					</div>
 					<div className="account-balance-info">
-						{/* 계좌번호는 문자열 그대로 표시 */}
 						<span name="account-number">{accountInfo.account_num || 'N/A'}</span>
-						{/* 잔액은 숫자로 변환해 포맷 적용 */}
 						<span name="account-balance">{Number(accountInfo.account_balance).toLocaleString()} 원</span>
 					</div>
 					<div className="account-balance-button">
