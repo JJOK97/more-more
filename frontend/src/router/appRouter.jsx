@@ -18,16 +18,18 @@ import Feed from '@/pages/feed/Feed';
 import Post from '@/pages/post/Post';
 import GroupAccountDepositStatus from '@/pages/groupAccount/GroupAccountDepositStatus';
 import GroupDuesSetting from '@/pages/groupAccount/GroupDuesSetting';
-import GroupInfo from '../pages/groupInfo/GroupInfo';
+import GroupInfo from '@/pages/groupInfo/GroupInfo';
 import AccountTransfer from '@/pages/groupAccount/AccountTransfer';
-import AccountWithDrawal from '@/pages/groupAccount/AccountWithDrawal';
 import AccountTransferQuestion from '@/pages/groupAccount/AccountTransferQuestion';
 import AccountTransferCheck from '@/pages/groupAccount/AccountTransferCheck';
+import AccountWithdrawal from '@/pages/groupAccount/AccountWithdrawal';
+import AccountWithdrawalQuesion from '@/pages/groupAccount/AccountWithdrawalQuestion';
+import AccountWithdrawalCheck from '@/pages/groupAccount/AccountWithdrawalCheck';
 import GroupAccountSearch from '@/pages/groupAccount/GroupAccountSearch';
 import TransactionDetail from '@/pages/groupAccount/TransactionDetail';
-import Notice from '../pages/notification/Notice';
-import UserHeader from '../components/common/UserHeader';
-import SearchPost from '../pages/searchPost/SearchPost';
+import Notice from '@/pages/notification/Notice';
+import UserHeader from '@/components/common/UserHeader';
+import SearchPost from '@/pages/searchPost/SearchPost';
 import React, { useEffect } from 'react';
 
 import data from '../pages/notification/data.json'; // data.json 경로
@@ -135,10 +137,6 @@ const AppRouter = () => {
 						element={<AccountTransfer />}
 					/>
 					<Route
-						path="/group/:groupId/account/withDrawal"
-						element={<AccountWithDrawal />}
-					></Route>
-					<Route
 						path="/group/:groupId/account/transfer-question"
 						element={<AccountTransferQuestion />}
 					/>
@@ -146,6 +144,18 @@ const AppRouter = () => {
 						path="/group/:groupId/account/transfer-check"
 						element={<AccountTransferCheck />}
 					/>
+					<Route
+						path="/group/:groupId/account/withdrawal"
+						element={<AccountWithdrawal />}
+					></Route>
+					<Route
+						path="/group/:groupId/account/withdrawal-question"
+						element={<AccountWithdrawalQuesion />}
+					></Route>
+					<Route
+						path="/group/:groupId/account/withdrawal-check"
+						element={<AccountWithdrawalCheck />}
+					></Route>
 					<Route
 						path="/group/:groupId/account/search"
 						element={<GroupAccountSearch />}

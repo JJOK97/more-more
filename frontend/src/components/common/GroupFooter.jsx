@@ -19,7 +19,7 @@ const Footer = () => {
 	if (
 		['/', '/login', '/signup', '/profile', '/notice', '/create'].includes(location.pathname) ||
 		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer/) ||
-		location.pathname.match(/^\/group\/[^\/]+\/account\/withDrawal/)
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withdrawal/)
 	) {
 		return null;
 	}

@@ -1,9 +1,9 @@
 import React from 'react';
-import TransferInfo from '@/components/groupAccount/TransferInfo';
+import WithdrawalInfo from '@/components/groupAccount/WithdrawalInfo';
 import AccountCheckMessage from '@/components/groupAccount/AccountCheckMessage';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
-const AccountTransferCheck = () => {
+const AccountWithdrawalCheck = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { groupId } = useParams();
@@ -22,7 +22,7 @@ const AccountTransferCheck = () => {
 		<div className="account-check-info-area">
 			<div className="account-check-top-component">
 				<div className="transfer-info-area">
-					<TransferInfo />
+					<WithdrawalInfo />
 				</div>
 				<div>
 					<AccountCheckMessage amount={amount} />
@@ -40,4 +40,4 @@ const AccountTransferCheck = () => {
 	);
 };
 
-export default AccountTransferCheck;
+export default AccountWithdrawalCheck;
