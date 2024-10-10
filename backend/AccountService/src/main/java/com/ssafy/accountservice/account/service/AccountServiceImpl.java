@@ -8,11 +8,10 @@ import com.ssafy.accountservice.account.infrastructure.repository.entity.DateEnt
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.service.domain.*;
 import com.ssafy.accountservice.client.*;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.parser.Entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -71,17 +70,19 @@ public class AccountServiceImpl implements AccountService {
 
         String managerKey = map.get("ssafy_user_key");
         String accountNum = map.get("ssafy_account_number");
-
+        
         AccountSelectApiRequest accountSelectApiRequest = new AccountSelectApiRequest();
         accountSelectApiRequest.getHeader().setApiKey(apiKey);
         accountSelectApiRequest.getHeader().setUserKey(managerKey);
         accountSelectApiRequest.setAccountNo(accountNum);
-
+        
         // Feign Client
         AccountSelectBalanceApiResponse response = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
 
         // Feign CLient - club에 접근
         ClubReadResponse clubReadResponse = selectClubFeignClient.findClub(clubCode);
+
+        System.out.println("clubReadResponse = " + clubReadResponse);
 
         // account number, account balance만 담아서 return
         Map<String, String> numAndBalance = new HashMap<>();
@@ -91,6 +92,8 @@ public class AccountServiceImpl implements AccountService {
         numAndBalance.put("dues", String.valueOf(clubReadResponse.getDues()));
         numAndBalance.put("createDate", String.valueOf(clubReadResponse.getCreatedDate()));
 
+        System.out.println("numAndBalance = " + numAndBalance);
+        
         return numAndBalance;
     }
 
