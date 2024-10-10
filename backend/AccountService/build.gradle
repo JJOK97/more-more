@@ -54,6 +54,8 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'  // 추가된 부분
 
+	//h2
+	runtimeOnly 'com.h2database:h2'
 	//mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
