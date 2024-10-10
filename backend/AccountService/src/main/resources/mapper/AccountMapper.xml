@@ -161,6 +161,7 @@
     <insert id="verificationInSave" parameterType="String">
         INSERT INTO account_history_verification (tag_name, account_history_memo, account_history_image)
         SELECT #{tagName}, "", ""
+            FROM account_history_verification
             WHERE NOT EXISTS (
                 SELECT 1 FROM account_history_verification WHERE tag_name = #{tagName}
             )

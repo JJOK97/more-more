@@ -221,18 +221,18 @@ public class AccountController {
         return accountService.dateCompare(clubCode,date);
     }
 
-//    @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
-//    @PostMapping("/{tag_name}/isverificationin")
-//    public void createVerification(@PathVariable("tag_name") String tagName) {
-//        accountService.isVerificationIn(tagName);
-//    }
-
     @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
-    @PostMapping("/isverificationin")
-    public void createVerification(@RequestBody IsVerificationInEntity isVerificationInEntity) {
-        String tagName = isVerificationInEntity.getTagName();
+    @PostMapping("/{tag_name}/isverificationin")
+    public void createVerification(@PathVariable("tag_name") String tagName) {
         accountService.isVerificationIn(tagName);
     }
+
+//    @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
+//    @PostMapping("/isverificationin")
+//    public void createVerification(@RequestBody IsVerificationInEntity isVerificationInEntity) {
+//        String tagName = isVerificationInEntity.getTagName();
+//        accountService.isVerificationIn(tagName);
+//    }
 
     @PutMapping(value = "/{tag_name}/verificationmemo")
     @ResponseStatus(HttpStatus.OK)
