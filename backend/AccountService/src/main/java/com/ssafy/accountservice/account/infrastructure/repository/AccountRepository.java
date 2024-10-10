@@ -27,6 +27,8 @@ public interface AccountRepository {
     String selectUserKey(String clubCode);
     List<AccountHistoryEntity> selectAccountNumByDate(String accountNum, String date);
     List<String> selectTagNameByAccountNum(String accountNum);
-
     List<String> dateCompareByclubCode(DateEntity dateEntity);
+    void verificationIn(String tagName);
+    void memoVerifyUpdate(String tagName, String accountHistoryMemo);
+    void imageUpdateImage(String tagName, String accountHistoryImage);
 }

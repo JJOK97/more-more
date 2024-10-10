@@ -30,5 +30,7 @@ public interface AccountService {
     List<AccountHistoryEntity> accountHistoryByDate(String clubCode, String date);
     List<String> tagNameSelect(String clubCode);
     List<String> dateCompare(String clubCode, String date);
-//    String accountNumberIsValid(String accountNumber);
+    void isVerificationIn(String tagName);
+    void verifyUpdateMemo(String tagName, String accountHistoryMemo);
+    void verifyUpdateImage(String tagName, String accountHistoryImage);
 }

@@ -104,5 +104,20 @@ public class AccountRepositoryImpl implements AccountRepository {
         return accountMybatisMapper.dateCompareByAccountNum(dateEntity);
     }
 
+    @Override
+    public void verificationIn(String tagName) {
+        accountMybatisMapper.verificationInSave(tagName);
+    }
+
+    @Override
+    public void memoVerifyUpdate(String tagName, String accountHistoryMemo) {
+        accountMybatisMapper.memoVerification(tagName, accountHistoryMemo);
+    }
+
+    @Override
+    public void imageUpdateImage(String tagName, String accountHistoryImage) {
+        accountMybatisMapper.imageVerification(tagName, accountHistoryImage);
+    }
+
 
 }
