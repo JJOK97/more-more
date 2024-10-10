@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    config:
+      name: acctuator-common,aws-common,db-common,logging-common
+  config:
+    import: "optional:configserver:http://config-server.config"
+
+aws:
+  club-image:
+    prefix: club/
+
