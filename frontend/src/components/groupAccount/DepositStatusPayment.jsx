@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Rolldate from 'rolldate';
 import '@/assets/css/groupAccount/GroupAccount.css';
 import arrow from '@/assets/img/account/arrow_down.svg';
-import { getAccountCompareDate } from '@/api/accountApi';
+import { getAccountCompareDate } from '@/api/accountAPI';
 import { getMemberInfo } from '@/api/userAPI';
 import useGroupStore from '@/store/useGroupStore';
 

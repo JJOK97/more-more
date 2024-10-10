@@ -4,7 +4,7 @@ import checkOn from '@/assets/img/account/check-on.svg';
 import checkOff from '@/assets/img/account/check-off.svg';
 import { useParams } from 'react-router-dom';
 import { getMemberInfo } from '@/api/userAPI';
-import { getAccountCompareDate } from '@/api/accountApi';
+import { getAccountCompareDate } from '@/api/accountAPI';
 import useGroupStore from '@/store/useGroupStore';
 
 const DuesGroupMemberStatus = ({ selectedDate }) => {
