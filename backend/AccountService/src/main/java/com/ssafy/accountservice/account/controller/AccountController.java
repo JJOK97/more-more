@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Tag(name = "Account API", description = "계좌 생성 API")
@@ -221,7 +223,8 @@ public class AccountController {
     @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
     @GetMapping("{tag_name}/isVerificationIn")
     public void createVerification(@PathVariable("tag_name") String tagName) {
-        accountService.isVerificationIn(tagName);
+        String decodedTagName = URLDecoder.decode(tagName, StandardCharsets.UTF_8);
+        accountService.isVerificationIn(decodedTagName);
     }
 
     @PutMapping(value = "/{tag_name}/verificationmemo")
@@ -229,6 +232,7 @@ public class AccountController {
     @Operation(summary = "입출금 증빙 내역 업데이트 - 메모", description = "입출금 증빙 내역의 메모를 업데이트한다.")
     public ResponseEntity<String> updateVerificationMemo(@PathVariable("tag_name") String tagName,
                                                          @RequestParam(required = false) String accountHistoryMemo) {
+
         // accountHistoryMemo가 null이면 빈 문자열로 설정
         if (accountHistoryMemo == null) {
             accountHistoryMemo = "";
