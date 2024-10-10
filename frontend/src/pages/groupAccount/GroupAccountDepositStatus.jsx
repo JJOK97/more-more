@@ -4,6 +4,7 @@ import DepositStatusPayment from '@/components/groupAccount/DepositStatusPayment
 import DuesGroupMemberStatus from '@/components/groupAccount/DuesGroupMemberStatus';
 import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
+import { getDatas } from '../feed/getData';
 
 const GroupAccountDepositStatus = () => {
 	const { setGroupName } = useGroupName();
@@ -15,9 +16,30 @@ const GroupAccountDepositStatus = () => {
 		yyyymm: '', // '202410'
 	});
 
-	useEffect(() => {
-		setGroupName(groupId);
+	const [groupInfo, setGroupInfo] = useState(null);
 
+	// 그룹 정보를 불러오는 useEffect
+	useEffect(() => {
+		const getGroupInfo = async () => {
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
+				const data = await getDatas(url);
+				setGroupInfo(data);
+			} catch (error) {
+				console.error('Error fetching group info:', error);
+			}
+		};
+		getGroupInfo();
+	}, [groupId]);
+
+	// groupInfo가 업데이트될 때, groupName 상태를 업데이트
+	useEffect(() => {
+		if (groupInfo && groupInfo.clubName) {
+			setGroupName(groupInfo.clubName);
+		}
+	}, [groupInfo, setGroupName]);
+
+	useEffect(() => {
 		// 현재 날짜로 초기화
 		const currDate = new Date();
 		const currYear = currDate.getFullYear().toString();
