@@ -37,14 +37,14 @@ const RegisterAccountStep1 = () => {
 	const [selectedBank, setSelectedBank] = useState(null);
 
 	const banks = [
-		{ value: 'NHBank', label: 'NH농협', img: NHBank },
+		{ value: '농협', label: 'NH농협', img: NHBank },
 		{ value: 'KakaoBank', label: '카카오 뱅크', img: KakaoBank },
-		{ value: 'KBBank', label: '국민은행', img: KBBank },
+		{ value: '국민', label: '국민은행', img: KBBank },
 		{ value: 'TossBank', label: '토스 뱅크', img: TossBank },
 		{ value: 'ShinhanBank', label: '신한', img: ShinhanBank },
-		{ value: 'WooriBank', label: '우리', img: WooriBank },
+		{ value: '우리', label: '우리', img: WooriBank },
 		{ value: 'IBKBank', label: 'IBK기업', img: IBKBank },
-		{ value: 'HanaBank', label: '하나', img: HanaBank },
+		{ value: '하나', label: '하나', img: HanaBank },
 		{ value: 'SaemaeulBank', label: '새마을', img: SaemaeulBank },
 		{ value: 'BusanBank', label: '부산', img: BusanBank },
 		{ value: 'DaeguBank', label: '대구', img: DaeguBank },

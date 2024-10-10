@@ -31,19 +31,22 @@ import Notice from '@/pages/notification/Notice';
 import UserHeader from '@/components/common/UserHeader';
 import SearchPost from '@/pages/searchPost/SearchPost';
 import React, { useEffect } from 'react';
-import data from '@/pages/notification/data.json'; // data.json 경로
-import useNoticeState from '@/store/useNoticeState'; // zustand 스토어
 
-import GetFcmToken from '@/pages/GetFcmToken';
+import data from '../pages/notification/data.json'; // data.json 경로
+import useNoticeState from '../store/useNoticeState'; // zustand 스토어
+import { setupFCMListener, requestNotificationPermission } from '@/api/firebaseMessaging';
+
 import InviteMember from '../pages/inviteMember/InviteMember';
 
 const AppRouter = () => {
-	const { setIsUnreadNotice } = useNoticeState();
+	const { setIsUnreadNotice } = useNoticeState(); // 상태를 컴포넌트 내부에서 가져옴
 
 	useEffect(() => {
-		// 읽지 않은 알림이 있는지 확인하여 상태 업데이트
-		const hasUnreadNotice = data.notice.some((notice) => !notice.isRead);
-		setIsUnreadNotice(hasUnreadNotice); // 읽지 않은 알림이 있으면 true로 설정
+		requestNotificationPermission();
+	}, []);
+
+	useEffect(() => {
+		setupFCMListener(setIsUnreadNotice); // 상태 업데이트를 위해 함수 전달
 	}, [setIsUnreadNotice]);
 
 	return (
@@ -160,11 +163,6 @@ const AppRouter = () => {
 					<Route
 						path="/group/:groupId/account/:detail"
 						element={<TransactionDetail />}
-					/>
-
-					<Route
-						path="/get-fcm-token"
-						element={<GetFcmToken />} // FCM 토큰 받기 위한 페이지 추가
 					/>
 				</Routes>
 			</main>
