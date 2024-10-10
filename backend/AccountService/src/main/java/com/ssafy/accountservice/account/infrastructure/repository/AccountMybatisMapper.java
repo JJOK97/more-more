@@ -6,6 +6,7 @@ import com.ssafy.accountservice.account.infrastructure.repository.entity.Account
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,5 @@ public interface AccountMybatisMapper {
     void deleteByTransactionNum(String ssafyTransactionNumber);
     String selectUserKeyByClubCode(String clubCode);
     List<AccountHistoryEntity> selectAccountHistoryByAccountNumByDate(String accountNum, String date);
+    List<String> selectTagName(String accountNum);
 }

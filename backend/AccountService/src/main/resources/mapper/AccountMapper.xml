@@ -135,4 +135,17 @@
           AND account_date LIKE CONCAT(#{date}, '%')
         ORDER BY account_history_id DESC
     </select>
+
+    <select id="selectTagName" resultType="String" parameterType="String">
+        SELECT
+            tag_name
+        FROM
+            account_history
+        WHERE
+            account_id = #{accountNum}
+          AND tag_name NOT LIKE '%\_%'
+        ORDER BY account_history_id DESC
+    </select>
+
+
 </mapper>

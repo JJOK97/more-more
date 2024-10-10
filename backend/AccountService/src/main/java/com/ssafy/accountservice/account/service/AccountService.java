@@ -27,5 +27,6 @@ public interface AccountService {
     void verifyDelete(String ssafyTransactionNumber);
     Map<String, String> accountBalanceMemberId(Long memberId);
     List<AccountHistoryEntity> accountHistoryByDate(String clubCode, String date);
+    List<String> tagNameSelect(String clubCode);
 //    String accountNumberIsValid(String accountNumber);
 }

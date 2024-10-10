@@ -197,6 +197,12 @@ public class AccountController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "클럽에 존재하는 태그 이름 모두 조회")
+    @GetMapping("/{clubCode}/tagname")
+    public List<String> selectTagName(@PathVariable("clubCode") String clubCode) {
+        return accountService.tagNameSelect(clubCode);
+    }
+
 //    @Operation(summary = "계좌번호 유효한지 확인")
 //    @GetMapping("accountNumber/isValid")
 //    public String isValidAccountNumber(@PathVariable("accountNumber") String accountNumber) {

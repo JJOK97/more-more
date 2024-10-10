@@ -8,6 +8,7 @@ import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyE
 import com.ssafy.accountservice.account.service.domain.*;
 import com.ssafy.accountservice.client.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -372,6 +373,17 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountHistoryEntity> accountHistoryByDate(String clubCode, String date) {
         String accountNum = accountRepository.selectAccountNum(clubCode);
         return accountRepository.selectAccountNumByDate(accountNum, date);
+    }
+
+    @Override
+    public List<String> tagNameSelect(String clubCode) {
+        // 모임코드 들고 온 다음 계좌 번호 조회
+        Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(clubCode);
+
+        String managerKey = map.get("ssafy_user_key");
+        String accountNum = map.get("ssafy_account_number");
+
+        return accountRepository.selectTagNameByAccountNum(accountNum);
     }
 
 //    @Override
