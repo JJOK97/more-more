@@ -7,6 +7,7 @@ import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyE
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -89,6 +90,11 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public List<AccountHistoryEntity> selectAccountNumByDate(String accountNum, String date) {
         return accountMybatisMapper.selectAccountHistoryByAccountNumByDate(accountNum, date);
+    }
+
+    @Override
+    public List<String> selectTagNameByAccountNum(String accountNum) {
+        return accountMybatisMapper.selectTagName(accountNum);
     }
 
 

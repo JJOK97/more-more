@@ -4,6 +4,7 @@ import com.ssafy.accountservice.account.controller.dto.request.VerificationSaveR
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,4 +25,5 @@ public interface AccountRepository {
     void deletetVerify(String ssafyTransactionNumber);
     String selectUserKey(String clubCode);
     List<AccountHistoryEntity> selectAccountNumByDate(String accountNum, String date);
+    List<String> selectTagNameByAccountNum(String accountNum);
 }
