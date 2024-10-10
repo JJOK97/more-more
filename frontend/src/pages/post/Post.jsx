@@ -163,7 +163,7 @@ const Post = () => {
 
 			{/* 댓글 리스트 */}
 			<div className="comment-list-area">
-				{comments.length > 0 ? (
+				{comments ? (
 					comments.map((comment, index) => (
 						<CommentItem
 							key={index}
