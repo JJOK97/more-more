@@ -13,7 +13,7 @@ const TransactionDetail = () => {
 
 	return (
 		<div className="detail-container">
-			<TransactionDetailOneList />
+			<TransactionDetailOneList groupId={groupId} />
 		</div>
 	);
 };

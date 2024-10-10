@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; // useParams 추가
+import { useParams, useLocation, useNavigate } from 'react-router-dom'; // useLocation, useNavigate 추가
 import './SearchPost.css';
-import PostView from '@/components/postView/PostView'; // PostView 컴포넌트 가져오기
+import PostView from '@/components/postView/PostView';
 import useGroupName from '@/store/useGroupName';
 import { getDatas } from '../feed/getData';
 
 const SearchPost = () => {
 	const { setGroupName } = useGroupName();
-	const { groupId } = useParams(); // groupId 가져오기
+	const { groupId } = useParams();
+	const location = useLocation();
+	const navigate = useNavigate();
 	const [groupInfo, setGroupInfo] = useState(null);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [results, setResults] = useState([]);
+
+	// 쿼리 스트링에서 검색어 추출
+	useEffect(() => {
+		const params = new URLSearchParams(location.search);
+		const keyword = params.get('keyword');
+		if (keyword) {
+			setSearchTerm(keyword);
+			handleSearch(keyword);
+		}
+	}, [location.search]);
 
 	// 그룹 정보를 불러오는 useEffect
 	useEffect(() => {
@@ -32,23 +44,27 @@ const SearchPost = () => {
 			setGroupName(groupInfo.clubName);
 		}
 	}, [groupInfo, setGroupName]);
-	// };
-	const handleSearch = async () => {
+
+	const handleSearch = async (keyword) => {
 		try {
-			const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/search?keyword=${searchTerm}`;
+			const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/search?keyword=${keyword}`;
 			const data = await getDatas(url);
 			setResults(data);
-			console.log(data);
 		} catch (error) {
-			console.log('Error fetching search result', error);
+			console.error('Error fetching search result', error);
 		}
 	};
 
 	const handleKeyDown = (e) => {
 		if (e.key === 'Enter') {
-			// 엔터 키가 눌렸을 때
-			handleSearch(); // 검색 함수 호출
+			// 검색어를 URL 쿼리 스트링에 추가하여 페이지 이동
+			navigate(`/group/${groupId}/search?keyword=${searchTerm}`);
 		}
+	};
+
+	const handleButtonClick = () => {
+		// 검색어를 URL 쿼리 스트링에 추가하여 페이지 이동
+		navigate(`/group/${groupId}/search?keyword=${searchTerm}`);
 	};
 
 	return (
@@ -58,12 +74,12 @@ const SearchPost = () => {
 					type="text"
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
-					onKeyDown={handleKeyDown} // 엔터 키 이벤트 핸들러 추가
+					onKeyDown={handleKeyDown}
 					placeholder="검색어를 입력하세요..."
 					className="search-input"
 				/>
 				<button
-					onClick={handleSearch}
+					onClick={handleButtonClick}
 					className="search-button"
 				>
 					검색
@@ -74,9 +90,9 @@ const SearchPost = () => {
 				<div className="search-results">
 					{results.map((post) => (
 						<PostView
-							key={post.postId}
+							key={post.postingId}
 							post={post}
-						/> // PostView 컴포넌트로 표시
+						/>
 					))}
 				</div>
 			) : (
