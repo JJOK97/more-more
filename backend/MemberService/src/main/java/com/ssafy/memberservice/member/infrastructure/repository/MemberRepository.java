@@ -16,4 +16,8 @@ public interface MemberRepository {
     String findByAccountNumber(String accountNumber);
 
     Boolean checkAccount(String accountNumber);
+
+    void updateFcmToken(Long memberId, String fcmToken);
+
+    String getFcmTokenByMemberId(Long memberId);
 }

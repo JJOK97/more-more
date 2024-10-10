@@ -3,6 +3,7 @@ package com.ssafy.memberservice.member.infrastructure.repository;
 
 import com.ssafy.memberservice.member.infrastructure.repository.entity.MemberEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,4 +20,8 @@ public interface MemberMybatisMapper {
     String findByAccountNumber(String accountNumber);
 
     Boolean checkAccount(String accountNumber);
+
+    void updateFcmToken(@Param("memberId") Long memberId, @Param("fcmToken") String fcmToken);
+
+    String getFcmTokenByMemberId(@Param("memberId")Long memberId);
 }

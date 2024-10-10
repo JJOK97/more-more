@@ -13,4 +13,8 @@ public interface MemberService {
     String findName(String accountNumber);
 
     Boolean checkByAccountNumber(String accountNumber);
+
+    void updateFcmToken(Long memberId, String fcmToken);
+
+    String getFcmTokenByMemberId(Long memberId);
 }

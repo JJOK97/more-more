@@ -132,6 +132,24 @@ public class MemberController {
         return memberService.checkByAccountNumber(accountNumber);
     };
 
+    @PutMapping("/{memberId}/fcm-token")
+    @Operation(summary = "fcm토큰 발급 api", description = "프론트가 준 fcm 토큰을 db에 넣어줌")
+    public ResponseEntity<String> updateFcmToken(@PathVariable("memberId") Long memberId, @RequestParam("fcmToken") String fcmToken) {
+        memberService.updateFcmToken(memberId, fcmToken);
+        return new ResponseEntity<>("OK", HttpStatus.OK); // 성공 시 OK 반환
+    };
+
+    @GetMapping("{memberId}/fcm-token")
+    @Operation(summary = "memberId로 fcm토큰 조회", description = "memberid로 fcm token 조회하는 api")
+    public String getFcmTokenByUserId(@PathVariable("memberId") Long memberId) {
+        return memberService.getFcmTokenByMemberId(memberId);
+    }
+
+
+
+
+
+
 
 
 

@@ -41,4 +41,14 @@ public class MemberRepositorylmpl implements MemberRepository {
     public Boolean checkAccount(String accountNumber) {
         return memberMybatisMapper.checkAccount(accountNumber);
     }
+
+    @Override
+    public void updateFcmToken(Long memberId, String fcmToken) {
+        memberMybatisMapper.updateFcmToken(memberId, fcmToken);
+    }
+
+    @Override
+    public String getFcmTokenByMemberId(Long memberId) {
+        return memberMybatisMapper.getFcmTokenByMemberId(memberId);
+    }
 }
