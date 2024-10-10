@@ -37,7 +37,6 @@ const PostView = ({ post, onDelete, commentCount }) => {
 	useEffect(() => {
 		const localMemberId = localStorage.getItem('memberId');
 		const postMemberId = post.memberId;
-		console.log(localMemberId, postMemberId);
 		if (Number(localMemberId) === Number(postMemberId)) {
 			setIsMyPost(true);
 		}
