@@ -158,4 +158,27 @@
           AND payment_amount >= #{dues}
     </select>
 
+    <insert id="verificationInSave" parameterType="String">
+        INSERT INTO account_history_verification (tag_name, account_history_memo, account_history_image)
+        SELECT #{tagName}, "", ""
+            WHERE NOT EXISTS (
+        SELECT 1 FROM account_history_verification WHERE tag_name = #{tagName}
+                )
+    </insert>
+
+    <update id="memoVerification" parameterType="map">
+        UPDATE account_history_verification
+        SET
+            account_history_memo = #{accountHistoryMemo}
+        WHERE
+            tag_name = #{tagName}
+    </update>
+
+    <update id="imageVerification" parameterType="map">
+        UPDATE account_history_verification
+        SET
+            account_history_image = #{accountHistoryImage}
+        WHERE
+            tag_name = #{tagName}
+    </update>
 </mapper>

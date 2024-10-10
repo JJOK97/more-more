@@ -30,4 +30,7 @@ public interface AccountMybatisMapper {
     List<AccountHistoryEntity> selectAccountHistoryByAccountNumByDate(String accountNum, String date);
     List<String> selectTagName(String accountNum);
     List<String> dateCompareByAccountNum(DateEntity dateEntity);
+    void verificationInSave(String tagName);
+    void memoVerification(String tagName, String accountHistoryMemo);
+    void imageVerification(String tagName, String accountHistoryImage);
 }

@@ -2,6 +2,7 @@ package com.ssafy.accountservice.account.controller;
 
 import com.ssafy.accountservice.account.controller.dto.request.*;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryMemo;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.infrastructure.s3.S3Connector;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
@@ -215,5 +216,58 @@ public class AccountController {
     @GetMapping("/{clubCode}/{date}/comparedate")
     public List<String> compareDate(@PathVariable("clubCode") String clubCode, @PathVariable("date") String date) {
         return accountService.dateCompare(clubCode,date);
+    }
+
+    @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
+    @GetMapping("{tag_name}/isVerificationIn")
+    public void createVerification(@PathVariable("tag_name") String tagName) {
+        accountService.isVerificationIn(tagName);
+    }
+
+    @PutMapping(value = "/{tag_name}/verificationmemo")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "입출금 증빙 내역 업데이트 - 메모", description = "입출금 증빙 내역의 메모를 업데이트한다.")
+    public ResponseEntity<String> updateVerificationMemo(@PathVariable("tag_name") String tagName,
+                                                         @RequestParam(required = false) String accountHistoryMemo) {
+        // accountHistoryMemo가 null이면 빈 문자열로 설정
+        if (accountHistoryMemo == null) {
+            accountHistoryMemo = "";
+        }
+
+        // 서비스 호출하여 메모 업데이트
+        accountService.verifyUpdateMemo(tagName, accountHistoryMemo);
+
+        return ResponseEntity.ok("업데이트에 성공했습니다");
+    }
+
+    @PutMapping(value = "/{tag_name}/verificationImage", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "입출금 증빙 내역 업데이트 - 이미지", description = "이미지 파일과 메모를 업로드하여 증빙 내역을 업데이트한다.")
+    public ResponseEntity<String> updateVerificationImage(@PathVariable("tag_name") String tagName,
+                                                     @ModelAttribute VerificationRequestImage verificationRequestImage) {
+
+        // 2. 이미지 파일 처리
+        MultipartFile newAccountHistoryImage = verificationRequestImage.getAccountHistoryImage();
+        String s3ImageUrl = "";
+
+        if (newAccountHistoryImage != null && !newAccountHistoryImage.isEmpty()) {
+            String randomString = UUID.randomUUID().toString();
+            String fileName = tagName + "_" + randomString;
+
+            // S3에 파일 업로드
+            s3Connector.upload(fileName, newAccountHistoryImage);
+
+            // 업로드된 파일의 URL 가져오기
+            s3ImageUrl = s3Connector.getImageURL(fileName);
+        }
+
+        if (s3ImageUrl == null) {
+            s3ImageUrl = ""; // null일 경우 빈 문자열로 처리
+        }
+
+        // 3. 서비스 로직
+        accountService.verifyUpdateImage(tagName, s3ImageUrl);
+
+        return ResponseEntity.ok("업데이트에 성공했습니다");
     }
 }

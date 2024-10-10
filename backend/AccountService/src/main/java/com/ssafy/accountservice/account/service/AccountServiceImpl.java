@@ -428,4 +428,19 @@ public class AccountServiceImpl implements AccountService {
 
         return accountRepository.dateCompareByclubCode(dateEntity);
     }
+
+    @Override
+    public void isVerificationIn(String tagName) {
+        accountRepository.verificationIn(tagName);
+    }
+
+    @Override
+    public void verifyUpdateMemo(String tagName, String accountHistoryMemo) {
+        accountRepository.memoVerifyUpdate(tagName, accountHistoryMemo);
+    }
+
+    @Override
+    public void verifyUpdateImage(String tagName, String accountHistoryImage) {
+        accountRepository.imageUpdateImage(tagName, accountHistoryImage);
+    }
 }
