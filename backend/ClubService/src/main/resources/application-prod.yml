@@ -9,3 +9,5 @@ aws:
   club-image:
     prefix: club/
 
+mybatis:
+  type-aliases-package: com.ssafy.clubservice.*.infrastructure.repository.entity
