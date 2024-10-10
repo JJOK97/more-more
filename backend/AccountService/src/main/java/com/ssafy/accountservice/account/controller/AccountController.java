@@ -221,7 +221,7 @@ public class AccountController {
     }
 
     @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
-    @PostMapping("/{tag_name}/isVerificationIn")
+    @PostMapping("/{tag_name}/isverificationin")
     public void createVerification(@PathVariable("tag_name") String tagName) {
         accountService.isVerificationIn(tagName);
     }
@@ -243,7 +243,7 @@ public class AccountController {
         return ResponseEntity.ok("업데이트에 성공했습니다");
     }
 
-    @PutMapping(value = "/{tag_name}/verificationImage", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/{tag_name}/verificationimage", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "입출금 증빙 내역 업데이트 - 이미지", description = "이미지 파일과 메모를 업로드하여 증빙 내역을 업데이트한다.")
     public ResponseEntity<String> updateVerificationImage(@PathVariable("tag_name") String tagName,
