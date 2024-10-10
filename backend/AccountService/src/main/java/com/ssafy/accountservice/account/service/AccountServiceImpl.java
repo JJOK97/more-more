@@ -4,6 +4,7 @@ import com.ssafy.accountservice.account.controller.dto.request.*;
 import com.ssafy.accountservice.account.controller.dto.response.*;
 import com.ssafy.accountservice.account.infrastructure.repository.AccountRepository;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.DateEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.service.domain.*;
 import com.ssafy.accountservice.client.*;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.parser.Entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -386,9 +388,37 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.selectTagNameByAccountNum(accountNum);
     }
 
-//    @Override
-//    public String accountNumberIsValid(String accountNumber) {
-//        String accountNum = accountRepository.selectAccountNum(accountNumber);
-//        return accountNum;
-//    }
+    @Override
+    public List<String> dateCompare(String clubCode, String date) {
+        // Feign CLient - club에 접근
+        ClubReadResponse clubReadResponse = selectClubFeignClient.findClub(clubCode);
+
+        // 모임코드 들고 왔을 때, 해당 모임의 총무 api key를 넣어서 조회
+        Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(clubCode);
+
+        String accountNum = map.get("ssafy_account_number");
+
+        String dues = String.valueOf(clubReadResponse.getDues());
+        String createDate = String.valueOf(clubReadResponse.getCreatedDate());
+
+        // formattedDate에서 마지막 두 자리(일)를 추출하여 새로운 날짜 생성
+        String lastTwoDigits = createDate.substring(createDate.length() - 2); // 04 추출
+        String endDate = date + lastTwoDigits; // 202410 + 04 = 20241004
+
+        // newDate의 한달 전보다 하루 큰 날짜를 계산
+        LocalDate newDateObj = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        // 한달 전보다 하루 큰 날짜 계산
+        LocalDate adjustedDate = newDateObj.minusMonths(1).plusDays(1);
+        String startDate = adjustedDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        // accountNum, startDate, endDate, dues
+        DateEntity dateEntity = new DateEntity();
+        dateEntity.setAccountNum(accountNum);
+        dateEntity.setStartDate(startDate);
+        dateEntity.setEndDate(endDate);
+        dateEntity.setDues(dues);
+
+        return accountRepository.dateCompareByclubCode(dateEntity);
+    }
 }

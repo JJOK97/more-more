@@ -2,6 +2,7 @@ package com.ssafy.accountservice.account.infrastructure.repository;
 
 import com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.DateEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
 import org.springframework.http.ResponseEntity;
@@ -26,4 +27,6 @@ public interface AccountRepository {
     String selectUserKey(String clubCode);
     List<AccountHistoryEntity> selectAccountNumByDate(String accountNum, String date);
     List<String> selectTagNameByAccountNum(String accountNum);
+
+    List<String> dateCompareByclubCode(DateEntity dateEntity);
 }
