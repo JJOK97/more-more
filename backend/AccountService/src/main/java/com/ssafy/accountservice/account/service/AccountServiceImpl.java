@@ -324,8 +324,8 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public AccountHistoryEntity historyGetOnly(String ssafyTransactionNumber) {
-        return accountRepository.selectHistoryOnly(ssafyTransactionNumber);
+    public AccountHistoryEntity historyGetOnly(String tagName) {
+        return accountRepository.selectHistoryOnly(tagName);
     }
 
 
@@ -336,19 +336,20 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public VerifyEntity verifySelect(String ssafyTransactionNumber) {
-        return accountRepository.selectVerify(ssafyTransactionNumber);
-    }
-
-    @Override
-    public void verifyUpdate(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest) {
-        accountRepository.updateVerify(ssafyTransactionNumber, verificationSaveRequest);
+    public VerifyEntity verifySelect(String tagName) {
+        return accountRepository.selectVerify(tagName);
     }
 
 
     @Override
-    public void verifyDelete(String ssafyTransactionNumber) {
-        accountRepository.deletetVerify(ssafyTransactionNumber);
+    public void verifyUpdate(String tagName, VerificationSaveRequest verificationSaveRequest) {
+        accountRepository.updateVerify(tagName, verificationSaveRequest);
+    }
+
+
+    @Override
+    public void verifyDelete(String tagName) {
+        accountRepository.deletetVerify(tagName);
     }
 
 

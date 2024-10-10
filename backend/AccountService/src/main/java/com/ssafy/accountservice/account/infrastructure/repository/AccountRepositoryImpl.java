@@ -59,8 +59,8 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public AccountHistoryEntity selectHistoryOnly(String ssafyTransactionNumber) {
-        return accountMybatisMapper.selectAccountHistoryOnly(ssafyTransactionNumber);
+    public AccountHistoryEntity selectHistoryOnly(String tagName) {
+        return accountMybatisMapper.selectAccountHistoryOnly(tagName);
     }
 
     @Override
@@ -69,18 +69,18 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public VerifyEntity selectVerify(String ssafyTransactionNumber) {
-        return accountMybatisMapper.selectByTransactionNum(ssafyTransactionNumber);
+    public VerifyEntity selectVerify(String tagName) {
+        return accountMybatisMapper.selectByTransactionNum(tagName);
     }
 
     @Override
-    public void updateVerify(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest) {
-        accountMybatisMapper.updateByTransactionNum(ssafyTransactionNumber, verificationSaveRequest);
+    public void updateVerify(String tagName, VerificationSaveRequest verificationSaveRequest) {
+        accountMybatisMapper.updateByTransactionNum(tagName, verificationSaveRequest);
     }
 
     @Override
-    public void deletetVerify(String ssafyTransactionNumber) {
-        accountMybatisMapper.deleteByTransactionNum(ssafyTransactionNumber);
+    public void deletetVerify(String tagName) {
+        accountMybatisMapper.deleteByTransactionNum(tagName);
     }
 
     @Override
