@@ -5,7 +5,6 @@ import InviteModal from './InviteModal';
 import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
 import { getDatas } from '../feed/getData';
-import { logoutUser } from '@/api/userAPI'; // 로그아웃 API 함수 가져오기
 
 const GroupInfo = () => {
 	const { setGroupName } = useGroupName();
@@ -125,16 +124,6 @@ const GroupInfo = () => {
 
 	const openModal = () => setIsModalOpen(true); // 모달 열기
 	const closeModal = () => setIsModalOpen(false); // 모달 닫기
-
-	// 로그아웃 버튼 클릭 시 처리
-	const handleLogout = async () => {
-		try {
-			await logoutUser(); // 로그아웃 API 호출
-			console.log('로그아웃 성공');
-		} catch (error) {
-			console.error('로그아웃 오류:', error);
-		}
-	};
 
 	return (
 		<div className="group-info-container">
@@ -285,16 +274,6 @@ const GroupInfo = () => {
 						)}
 					</div>
 				)}
-			</div>
-
-			{/* 로그아웃 버튼 */}
-			<div className="group-info-logout">
-				<button
-					onClick={handleLogout}
-					className="logout-button"
-				>
-					로그아웃
-				</button>
 			</div>
 
 			{isModalOpen && (
