@@ -221,10 +221,9 @@ public class AccountController {
     }
 
     @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
-    @GetMapping("{tag_name}/isVerificationIn")
+    @GetMapping("/{tag_name}/isVerificationIn")
     public void createVerification(@PathVariable("tag_name") String tagName) {
-        String decodedTagName = URLDecoder.decode(tagName, StandardCharsets.UTF_8);
-        accountService.isVerificationIn(decodedTagName);
+        accountService.isVerificationIn(tagName);
     }
 
     @PutMapping(value = "/{tag_name}/verificationmemo")
