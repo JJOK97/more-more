@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import noImage from '@/assets/img/account/no-image.png';
-import MoveToPost from '@/components/groupAccount/MoveToPost';
+import useTagNameStore from '@/store/useTagNameStore';
 
 const TransactionDetailOneList = () => {
 	const location = useLocation();
+	const { setTagName } = useTagNameStore();
 	const {
 		paymentData = '데이터 없음',
 		paymentAmount = '0',
@@ -127,6 +128,11 @@ const TransactionDetailOneList = () => {
 		}
 	};
 
+	const handleMoveToPost = () => {
+		setTagName(tagName);
+		console.log('Tag name set: ', tagName);
+	};
+
 	return (
 		<div className="transaction-detail">
 			<div>
@@ -177,7 +183,12 @@ const TransactionDetailOneList = () => {
 					</div>
 				</div>
 			</div>
-			<MoveToPost />
+			<button
+				className="move-to-post"
+				onClick={handleMoveToPost}
+			>
+				관련 게시글로 이동
+			</button>
 		</div>
 	);
 };
