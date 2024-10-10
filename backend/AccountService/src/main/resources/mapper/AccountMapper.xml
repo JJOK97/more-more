@@ -83,13 +83,13 @@
         FROM
             account_history
         WHERE
-            ssafy_transaction_number = #{ssafyTransactionNumber}
+            tag_name = #{tagName}
     </select>
 
 
     <insert id="insertByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest">
-        INSERT INTO account_history_verification (account_history_memo, account_history_image, ssafy_transaction_number)
-        VALUES (#{accountHistoryMemo}, #{accountHistoryImage}, #{ssafyTransactionNumber} )
+        INSERT INTO account_history_verification (account_history_memo, account_history_image, tag_name)
+        VALUES (#{accountHistoryMemo}, #{accountHistoryImage}, #{tagName} )
     </insert>
 
 
@@ -99,7 +99,7 @@
         FROM
             account_history_verification
         WHERE
-            ssafy_transaction_number = #{ssafyTransactionNumber}
+            tag_name = #{tagName}
     </select>
 
     <update id="updateByTransactionNum" parameterType="map">
@@ -108,12 +108,12 @@
             account_history_memo = #{verificationSaveRequest.accountHistoryMemo},
             account_history_image = #{verificationSaveRequest.accountHistoryImage}
         WHERE
-            ssafy_transaction_number = #{ssafyTransactionNumber}
+            tag_name = #{tagName}
     </update>
 
     <delete id="deleteByTransactionNum" parameterType="String">
         DELETE FROM account_history_verification
-        WHERE ssafy_transaction_number = #{ssafyTransactionNumber}
+        WHERE tag_name = #{tagName}
     </delete>
 
     <select id="selectUserKeyByClubCode" resultType="String" parameterType="String">

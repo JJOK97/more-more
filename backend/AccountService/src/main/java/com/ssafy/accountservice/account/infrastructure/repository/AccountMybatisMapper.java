@@ -21,11 +21,11 @@ public interface AccountMybatisMapper {
     String selectAccountNumByPg(String cardNum);
     String selectAccountNumByClubCode(String clubCode);
     List<AccountHistoryEntity> selectAccountHistoryByAccountNum(String accountNum);
-    AccountHistoryEntity selectAccountHistoryOnly(String ssafyTransactionNumber);
+    AccountHistoryEntity selectAccountHistoryOnly(String tagName);
     void insertByTransactionNum(VerificationSaveRequest verificationSaveRequest);
-    VerifyEntity selectByTransactionNum(String ssafyTransactionNumber);
-    void updateByTransactionNum(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest);
-    void deleteByTransactionNum(String ssafyTransactionNumber);
+    VerifyEntity selectByTransactionNum(String tagName);
+    void updateByTransactionNum(String tagName, VerificationSaveRequest verificationSaveRequest);
+    void deleteByTransactionNum(String tagName);
     String selectUserKeyByClubCode(String clubCode);
     List<AccountHistoryEntity> selectAccountHistoryByAccountNumByDate(String accountNum, String date);
     List<String> selectTagName(String accountNum);

@@ -19,11 +19,11 @@ public interface AccountRepository {
     String useAccountPg(String cardNum);
     String selectAccountNum(String clubCode);
     List<AccountHistoryEntity> selectAccountHistory(String accountNum);
-    AccountHistoryEntity selectHistoryOnly(String ssafyTransactionNumber);
+    AccountHistoryEntity selectHistoryOnly(String tagName);
     void insertVerify(VerificationSaveRequest verificationSaveRequest);
-    VerifyEntity selectVerify(String ssafyTransactionNumber);
-    void updateVerify(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest);
-    void deletetVerify(String ssafyTransactionNumber);
+    VerifyEntity selectVerify(String tagName);
+    void updateVerify(String tagName, VerificationSaveRequest verificationSaveRequest);
+    void deletetVerify(String tagName);
     String selectUserKey(String clubCode);
     List<AccountHistoryEntity> selectAccountNumByDate(String accountNum, String date);
     List<String> selectTagNameByAccountNum(String accountNum);

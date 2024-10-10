@@ -21,11 +21,11 @@ public interface AccountService {
     ArrayList<String> accountFill(AccountTransferFillRequest accountTransferFillRequest);
     List<AccountHistoryEntity> accountHistory(String clubCode);
     String cardUse(CardRequest cardRequest);
-    AccountHistoryEntity historyGetOnly(String ssafyTransactionNumber);
+    AccountHistoryEntity historyGetOnly(String tagName);
     void verifySave(VerificationSaveRequest verificationSaveRequest);
-    VerifyEntity verifySelect(String ssafyTransactionNumber);
-    void verifyUpdate(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest);
-    void verifyDelete(String ssafyTransactionNumber);
+    VerifyEntity verifySelect(String tagName);
+    void verifyUpdate(String tagName, VerificationSaveRequest verificationSaveRequest);
+    void verifyDelete(String tagName);
     Map<String, String> accountBalanceMemberId(Long memberId);
     List<AccountHistoryEntity> accountHistoryByDate(String clubCode, String date);
     List<String> tagNameSelect(String clubCode);
