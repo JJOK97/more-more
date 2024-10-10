@@ -9,17 +9,23 @@ const AccountWithdrawalQuesion = () => {
 
 	const amount = location.state?.amount || '0';
 	const accountNumber = location.state?.accountNumber || '계좌번호 없음';
+	const [errorMessage, setErrorMessage] = useState('');
 
 	const handleSendClick = async () => {
 		if (!groupId) {
-			alert('모임 정보가 없습니다.');
+			setErrorMessage('모임 정보가 없습니다.');
+			return;
+		}
+
+		if (parseInt(amount) === 0 || accountNumber === '계좌번호 없음') {
+			setErrorMessage('송금 금액 또는 계좌번호가 유효하지 않습니다.');
 			return;
 		}
 
 		const requestData = {
-			ssafyAccountNumber: accountNumber,
-			transactionBalance: amount,
-			clubCode: groupId,
+			ssafyAccountNumber: String(accountNumber),
+			transactionBalance: String(amount),
+			clubCode: String(groupId),
 		};
 
 		try {
@@ -35,16 +41,12 @@ const AccountWithdrawalQuesion = () => {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 
-			const responseData = await response.json();
-			const [receiveAccount, receivedAmount, remainingBalance] = responseData;
-			console.log('송금 성공: ', responseData);
-
 			navigate(`/group/${groupId}/account/withdrawal-check`, {
-				state: { amount },
+				state: { amount, accountNumber },
 			});
 		} catch (error) {
 			console.error('송금 중 오류 발생: ', error.message);
-			alert('송금 중 오류가 발생했습니다.');
+			setErrorMessage('송금 중 오류가 발생했습니다.');
 		}
 	};
 
@@ -61,6 +63,7 @@ const AccountWithdrawalQuesion = () => {
 					<div className="account-question-message">
 						{Number(amount).toLocaleString()}원을 송금하시겠어요?
 					</div>
+					{errorMessage && <div style={{ color: 'red', marginTop: '0.7rem' }}>{errorMessage}</div>}
 				</div>
 			</div>
 			<div className="account-question-button">

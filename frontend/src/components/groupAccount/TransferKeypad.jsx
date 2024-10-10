@@ -17,8 +17,6 @@ const TransferKeypad = ({ setAmount, amount, mode, accountNumber }) => {
 	};
 
 	const handleSendClick = () => {
-		console.log(`보낼 금액: ${amount}원`);
-
 		let targetPath = '';
 		if (mode === 'withdrawal') {
 			targetPath = `/group/${groupId}/account/withdrawal-question`;

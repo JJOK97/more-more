@@ -10,8 +10,7 @@ const WithdrawalInfo = () => {
 	const [clubName, setClubName] = useState('');
 	const [error, setError] = useState(null);
 
-	// 이전 페이지에서 전달받은 accountNumber를 location.state로 가져옴
-	const accountNumber = location.state?.accountNumber || ''; // 빈 문자열로 설정
+	const accountNumber = location.state?.accountNumber || '';
 
 	useEffect(() => {
 		const fetchAccountInfo = async () => {
@@ -73,9 +72,7 @@ const WithdrawalInfo = () => {
 							</div>
 						</div>
 						<div className="transfer-group-account">
-							{/* 여기서 accountNumber를 화면에 렌더링 */}
-							<div className="to-group-account">{accountNumber || '계좌번호를 입력하세요.'}</div>
-							<div className="transfer-account">{accountNumber || '계좌번호를 입력하세요'}</div>
+							<div className="transfer-account">{accountNumber + '로' || '계좌번호를 입력하세요.'}</div>
 						</div>
 					</>
 				)}

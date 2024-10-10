@@ -8,7 +8,6 @@ const AccountTransferCheck = () => {
 	const location = useLocation();
 	const { groupId } = useParams();
 
-	console.log('location.state: ', location.state);
 	const amount = location.state?.amount || '0';
 
 	const handleSendClick = async () => {
@@ -27,7 +26,6 @@ const AccountTransferCheck = () => {
 				</div>
 				<div>
 					<AccountCheckMessage amount={amount} />
-					{/* <div>보낼 금액: {Number(amount).toLocaleString()}원</div> */}
 				</div>
 			</div>
 			<div className="account-check-button">
@@ -35,7 +33,7 @@ const AccountTransferCheck = () => {
 					className="send-button"
 					onClick={handleSendClick}
 				>
-					보내기
+					확인
 				</button>
 			</div>
 		</div>

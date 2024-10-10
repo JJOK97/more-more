@@ -8,15 +8,16 @@ const AccountWithdrawal = () => {
 	const [accountNumber, setAccountNumber] = useState('');
 	const navigate = useNavigate();
 	const { groupId } = useParams();
+	const [errorMessage, setErrorMessage] = useState('');
 
 	const handleSendClick = async () => {
 		if (!amount || parseInt(amount) === 0) {
-			alert('송금 금액이 유효하지 않습니다.');
+			setErrorMessage('송금 금액이 유효하지 않습니다.');
 			return;
 		}
 
 		if (!accountNumber) {
-			alert('계좌 번호를 입력해주세요.');
+			setErrorMessage('계좌 번호를 입력해주세요.');
 			return;
 		}
 
@@ -29,12 +30,15 @@ const AccountWithdrawal = () => {
 				setAccountNumber={setAccountNumber}
 				mode="withdrawal"
 			/>
-			<TransferKeypad
-				setAmount={setAmount}
-				amount={amount}
-				mode="withdrawal"
-				accountNumber={accountNumber}
-			/>
+			<div className="transfer-keypad-container">
+				{errorMessage && <div style={{ color: 'red', marginTop: '0.7rem' }}>{errorMessage}</div>}
+				<TransferKeypad
+					setAmount={setAmount}
+					amount={amount}
+					mode="withdrawal"
+					accountNumber={accountNumber}
+				/>
+			</div>
 		</div>
 	);
 };
