@@ -147,5 +147,15 @@
         ORDER BY account_history_id DESC
     </select>
 
+    <select id="dateCompareByAccountNum" resultType="String" parameterType="DateEntity">
+        SELECT DISTINCT
+            payment_data
+        FROM
+            account_history
+        WHERE account_id LIKE CONCAT('%', #{accountNum}, '%')
+          AND payment_type = '입금(이체)'
+          AND account_date BETWEEN #{startDate} AND #{endDate}
+          AND payment_amount >= #{dues}
+    </select>
 
 </mapper>

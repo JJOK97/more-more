@@ -2,6 +2,7 @@ package com.ssafy.accountservice.account.controller;
 
 import com.ssafy.accountservice.account.controller.dto.request.*;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.DateEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.infrastructure.s3.S3Connector;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
@@ -203,10 +204,9 @@ public class AccountController {
         return accountService.tagNameSelect(clubCode);
     }
 
-//    @Operation(summary = "계좌번호 유효한지 확인")
-//    @GetMapping("accountNumber/isValid")
-//    public String isValidAccountNumber(@PathVariable("accountNumber") String accountNumber) {
-//        return accountService.accountNumberIsValid(accountNumber);
-//    }
-
+    @Operation(summary = "날짜로 비교해서 회비 낸 명단 제공", description = "날짜형식은 yyyy-dd")
+    @GetMapping("/{clubCode}/{date}/comparedate")
+    public List<String> compareDate(@PathVariable("clubCode") String clubCode, @PathVariable("date") String date) {
+        return accountService.dateCompare(clubCode,date);
+    }
 }

@@ -3,6 +3,7 @@ package com.ssafy.accountservice.account.infrastructure.repository;
 import com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.DateEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
@@ -95,6 +96,12 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public List<String> selectTagNameByAccountNum(String accountNum) {
         return accountMybatisMapper.selectTagName(accountNum);
+    }
+
+    @Override
+    public List<String> dateCompareByclubCode(DateEntity dateEntity) {
+        List<String> list = accountMybatisMapper.dateCompareByAccountNum(dateEntity);
+        return accountMybatisMapper.dateCompareByAccountNum(dateEntity);
     }
 
 

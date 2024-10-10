@@ -4,6 +4,7 @@ import com.ssafy.accountservice.account.controller.dto.request.AccountTransferFi
 import com.ssafy.accountservice.account.controller.dto.request.CardRequest;
 import com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.DateEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.service.domain.Account;
 import com.ssafy.accountservice.account.service.domain.AccountTransfer;
@@ -28,5 +29,6 @@ public interface AccountService {
     Map<String, String> accountBalanceMemberId(Long memberId);
     List<AccountHistoryEntity> accountHistoryByDate(String clubCode, String date);
     List<String> tagNameSelect(String clubCode);
+    List<String> dateCompare(String clubCode, String date);
 //    String accountNumberIsValid(String accountNumber);
 }
