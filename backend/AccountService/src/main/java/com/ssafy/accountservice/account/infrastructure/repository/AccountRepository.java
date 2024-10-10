@@ -22,7 +22,7 @@ public interface AccountRepository {
     AccountHistoryEntity selectHistoryOnly(String tagName);
     void insertVerify(VerificationSaveRequest verificationSaveRequest);
     VerifyEntity selectVerify(String tagName);
-    void updateVerify(String tagName, VerificationSaveRequest verificationSaveRequest);
+    void updateVerify(VerificationSaveRequest verificationSaveRequest);
     void deletetVerify(String tagName);
     String selectUserKey(String clubCode);
     List<AccountHistoryEntity> selectAccountNumByDate(String accountNum, String date);

@@ -74,8 +74,8 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public void updateVerify(String tagName, VerificationSaveRequest verificationSaveRequest) {
-        accountMybatisMapper.updateByTransactionNum(tagName, verificationSaveRequest);
+    public void updateVerify(VerificationSaveRequest verificationSaveRequest) {
+        accountMybatisMapper.updateByTransactionNum(verificationSaveRequest);
     }
 
     @Override
