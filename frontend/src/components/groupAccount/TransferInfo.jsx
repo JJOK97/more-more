@@ -6,7 +6,7 @@ import back from '@/assets/img/account/back.svg';
 const TransferInfo = () => {
 	const navigate = useNavigate();
 	const { groupId } = useParams();
-	const [memberInfo, setMemberInfo] = useState({ account_balance: 0 });
+	const [memberInfo, setMemberInfo] = useState({ account_balance: 0, bankName: '' });
 	const [accountInfo, setAccountInfo] = useState({ account_num: '', account_balance: 0 });
 	const [clubName, setClubName] = useState('');
 	const [error, setError] = useState(null);
@@ -26,7 +26,10 @@ const TransferInfo = () => {
 					throw new Error(`HTTP error! status: ${memberResponse.status}`);
 				}
 				const memberData = await memberResponse.json();
-				setMemberInfo({ account_balance: memberData.balance });
+				setMemberInfo({
+					account_balance: memberData.balance,
+					bankName: memberData.bankName,
+				});
 			} catch (e) {
 				setError(`개인 계좌 정보를 가져오는 중 문제가 발생했습니다. 상태 코드: ${e.message}`);
 			}
@@ -81,7 +84,7 @@ const TransferInfo = () => {
 				) : (
 					<>
 						<div className="transfer-my-account">
-							<div className="from-my-account">내 하나은행 입출금 계좌에서</div>
+							<div className="from-my-account">내 {memberInfo.bankName} 입출금 계좌에서</div>
 							<div className="transfer-balance">잔액 {memberInfo.account_balance.toLocaleString()}원</div>
 						</div>
 						<div className="transfer-group-account">

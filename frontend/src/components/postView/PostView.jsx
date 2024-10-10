@@ -159,7 +159,9 @@ const PostView = ({ post, onDelete, commentCount }) => {
 					</div>
 				</div>
 				<div className="feed-head-right">
-					{post.accountHistory ? <div className="feed-account-history">#{post.accountHistory}</div> : null}
+					{post.accountHistoryTag ? (
+						<div className="feed-account-history">#{post.accountHistoryTag}</div>
+					) : null}
 					{/* 삭제 버튼 추가 */}
 					{isMyPost && (
 						<button

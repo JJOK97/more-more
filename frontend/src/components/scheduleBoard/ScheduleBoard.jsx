@@ -40,7 +40,6 @@ const ScheduleBoard = ({ schedule, onUpdate, onDelete }) => {
 					<img
 						className="profile-image"
 						src={memberInfo.profileImageUrl} // Use the profile image URL from memberInfo
-						alt={`${memberInfo.name} 프로필`}
 					/>
 				) : (
 					// Fallback if image is not available
@@ -50,7 +49,7 @@ const ScheduleBoard = ({ schedule, onUpdate, onDelete }) => {
 			<div className="post-area">
 				<div className="post-top f">
 					<div className="info-area f">
-						<div className="name-area">{schedule.userName}</div>
+						<div className="name-area">{memberInfo ? memberInfo.name : 'Loading...'}</div>
 						<div className="time-area">{schedule.time}</div>
 					</div>
 					<div className="setting-area f">
