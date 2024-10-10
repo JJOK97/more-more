@@ -1,4 +1,34 @@
-# application-prod.yml
 spring:
-  profiles:
-    active: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S11P22A605?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: S11P22A605@stg-yswa-kr-practice-db-master.mariadb.database.azure.com
+    password: moremore
+    hikari:
+      pool-name: hikari-pool
+      maximum-pool-size: 5
+      minimum-idle: 2
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 30000
+      auto-commit: true
+      read-only: false
+
+mybatis:
+  type-aliases-package: com.ssafy.notificationservice.*.infrastructure.repository.entity
+  mapper-locations: mapper/**/*.xml
+
+firebase:
+  config:
+    path: classpath:firebase-adminsdk.json
+
+logging:
+  level:
+    jdbc:
+      sqlonly: INFO  # SQL 쿼리만 로그로 남기기
+      sqltiming: WARN  # SQL 쿼리 실행 시간이 경고 수준일 때만 로그 남기기
+    org.mybatis: INFO  # MyBatis 로그는 INFO 수준
+    com.ssafy.notificationservice.repository: INFO
+    com:
+      zaxxer:
+        hikari: INFO  # HikariCP 관련 로그는 유지

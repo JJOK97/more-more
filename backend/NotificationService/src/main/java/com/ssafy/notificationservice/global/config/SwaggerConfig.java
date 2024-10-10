@@ -1,4 +1,4 @@
-package com.ssafy.notificationservice.config;
+package com.ssafy.notificationservice.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

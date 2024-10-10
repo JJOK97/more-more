@@ -17,9 +17,5 @@ public interface NotificationMapper {
     // 알림 읽음 처리
     void markNotificationAsRead(Long notificationId);
 
-    // FCM 토큰 저장 및 업데이트
-    void updateFcmToken(@Param("userId") Long userId, @Param("fcmToken") String fcmToken);
 
-    // FCM 토큰 조회
-    String getFcmTokenByUserId(Long userId);
 }

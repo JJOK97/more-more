@@ -25,16 +25,4 @@
         WHERE id = #{notificationId};
     </update>
 
-    <!-- 유저의 FCM 토큰 저장 및 업데이트 -->
-    <update id="updateFcmToken" parameterType="map">
-        UPDATE local_db.MEMBERS
-        SET fcm_token = #{fcmToken}
-        WHERE member_id = #{userId};
-    </update>
-
-    <!-- 유저 ID로 FCM 토큰 조회 -->
-    <select id="getFcmTokenByUserId" resultType="string" parameterType="long">
-        SELECT fcm_token FROM local_db.MEMBERS WHERE member_id = #{userId};
-    </select>
-
 </mapper>

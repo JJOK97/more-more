@@ -1,4 +1,4 @@
-package com.ssafy.notificationservice.config;
+package com.ssafy.notificationservice.global.config;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;

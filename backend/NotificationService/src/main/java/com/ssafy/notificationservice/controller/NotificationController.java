@@ -56,4 +56,14 @@ public class NotificationController {
         notificationService.markNotificationAsRead(notificationId);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/validate-token")
+    public ResponseEntity<Map<String, Boolean>> validateToken(@RequestBody Map<String, Object> requestData) {
+        Long userId = Long.valueOf(requestData.get("userId").toString());
+        String fcmToken = requestData.get("fcmToken").toString();
+        boolean isValid = notificationService.validateFcmToken(userId, fcmToken);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isValid", isValid);
+        return ResponseEntity.ok(response);
+    }
 }
