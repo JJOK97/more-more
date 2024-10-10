@@ -5,6 +5,7 @@ import InviteModal from './InviteModal';
 import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
 import { getDatas } from '../feed/getData';
+import { logoutUser } from '@/api/userAPI'; // 로그아웃 API 함수 가져오기
 
 const GroupInfo = () => {
 	const { setGroupName } = useGroupName();
@@ -26,7 +27,7 @@ const GroupInfo = () => {
 				setGroupInfo(data); // 가져온 데이터를 상태에 저장
 				setProfileImage(data.clubImage); // 기본 이미지를 설정
 			} catch (error) {
-				console.error('Error fetching group info:', error);
+				console.error('그룹 정보 불러오기 오류:', error);
 			}
 		};
 		getGroupInfo();
@@ -56,25 +57,25 @@ const GroupInfo = () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					clubId: clubId, // 기존 clubId 유지
-					dues: dues, // 기존 dues 유지
-					clubCode: clubCode, // 기존 clubCode 유지
-					clubName: clubName, // 수정된 clubName 값
-					clubIntro: clubIntro, // clubIntro 포함
-					createdDate: createdDate,
+					clubId, // 기존 clubId 유지
+					dues, // 기존 dues 유지
+					clubCode, // 기존 clubCode 유지
+					clubName, // 수정된 clubName 값
+					clubIntro, // clubIntro 포함
+					createdDate, // 기존 생성일 유지
 				}),
 			});
 
 			if (response.ok) {
 				const updatedData = await response.json();
-				console.log('Group info updated successfully:', updatedData);
+				console.log('그룹 정보 업데이트 성공:', updatedData);
 				setGroupInfo(updatedData); // 서버에서 반환한 업데이트된 데이터를 상태에 저장
 				setIsEditing(false); // 편집 모드를 비활성화
 			} else {
-				console.error('Failed to update group info');
+				console.error('그룹 정보 업데이트 실패');
 			}
 		} catch (error) {
-			console.error('Error updating group info:', error);
+			console.error('그룹 정보 업데이트 오류:', error);
 		}
 	};
 
@@ -105,13 +106,13 @@ const GroupInfo = () => {
 				});
 				if (response.ok) {
 					const updatedData = await response.json();
-					console.log('Image uploaded successfully:', updatedData);
+					console.log('이미지 업로드 성공:', updatedData);
 					// 업로드 성공 후 추가적인 처리가 필요하다면 여기서 진행
 				} else {
-					console.error('Failed to upload image');
+					console.error('이미지 업로드 실패');
 				}
 			} catch (error) {
-				console.error('Error uploading image:', error);
+				console.error('이미지 업로드 오류:', error);
 			}
 		}
 	};
@@ -124,6 +125,16 @@ const GroupInfo = () => {
 
 	const openModal = () => setIsModalOpen(true); // 모달 열기
 	const closeModal = () => setIsModalOpen(false); // 모달 닫기
+
+	// 로그아웃 버튼 클릭 시 처리
+	const handleLogout = async () => {
+		try {
+			await logoutUser(); // 로그아웃 API 호출
+			console.log('로그아웃 성공');
+		} catch (error) {
+			console.error('로그아웃 오류:', error);
+		}
+	};
 
 	return (
 		<div className="group-info-container">
@@ -152,6 +163,7 @@ const GroupInfo = () => {
 			</div>
 
 			<div className="group-info-details">
+				{/* 그룹 정보 */}
 				<div className="group-info-header">
 					<div className="group-info-header-info">모임 정보</div>
 					<div className="group-info-header-actions">
@@ -242,9 +254,9 @@ const GroupInfo = () => {
 				{isMembersOpen && (
 					<div className="group-info-members-list">
 						{/* ACCEPTED 멤버 */}
-						{acceptedMembers.length > 0 && (
+						{acceptedMembers?.length > 0 && (
 							<>
-								<div className='group-info-members-list-accepted'>모임원 목록</div>
+								<div className="group-info-members-list-accepted">모임원 목록</div>
 								{acceptedMembers.map((user) => (
 									<GroupMember
 										key={user.userId}
@@ -259,7 +271,7 @@ const GroupInfo = () => {
 						{/* WAITING 멤버 */}
 						{waitingMembers?.length > 0 && (
 							<>
-								<div className='group-info-members-list-waiting'>가입 대기</div>
+								<div className="group-info-members-list-waiting">가입 대기</div>
 								{waitingMembers.map((user) => (
 									<GroupMember
 										key={user.userId}
@@ -274,6 +286,17 @@ const GroupInfo = () => {
 					</div>
 				)}
 			</div>
+
+			{/* 로그아웃 버튼 */}
+			<div className="group-info-logout">
+				<button
+					onClick={handleLogout}
+					className="logout-button"
+				>
+					로그아웃
+				</button>
+			</div>
+
 			{isModalOpen && (
 				<InviteModal
 					onClose={closeModal}

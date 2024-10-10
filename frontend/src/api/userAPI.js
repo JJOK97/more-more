@@ -61,6 +61,7 @@ export const loginUser = async (phoneNumber, password) => {
 		localStorage.setItem('refreshToken', refreshToken);
 		localStorage.setItem('memberId', memberId);
 		localStorage.setItem('userKey', userKey);
+		localStorage.setItem('phoneNumber', phoneNumber);
 
 		return response.data;
 	} catch (error) {
@@ -167,6 +168,32 @@ export const getMemberInfo = async (memberId) => {
 		return response.data;
 	} catch (error) {
 		console.error('회원 정보 조회 오류:', error.response?.data || error.message);
+		throw error;
+	}
+};
+
+// 로그아웃 API 구현
+export const logoutUser = async () => {
+	try {
+		// 로컬 스토리지에서 phoneNumber 가져오기
+		const phoneNumber = localStorage.getItem('phoneNumber');
+
+		// 로그아웃 요청 보내기
+		await api.post(`/api/auth/logout`, null, {
+			params: { phoneNumber }, // query string에 phoneNumber 추가
+		});
+
+		// 로그아웃 성공 시, 로컬 스토리지에서 토큰 및 사용자 정보 삭제
+		localStorage.removeItem('accessToken');
+		localStorage.removeItem('refreshToken');
+		localStorage.removeItem('memberId');
+		localStorage.removeItem('userKey');
+		localStorage.removeItem('phoneNumber');
+
+		// 로그아웃 후 로그인 페이지로 리다이렉트
+		window.location.href = '/login';
+	} catch (error) {
+		console.error('로그아웃 오류:', error.response?.data || error.message);
 		throw error;
 	}
 };
