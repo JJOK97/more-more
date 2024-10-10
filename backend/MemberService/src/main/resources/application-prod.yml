@@ -8,3 +8,5 @@ spring:
 aws:
   club-image:
     prefix: member/
+mybatis:
+  type-aliases-package: com.ssafy.memberservice.*.infrastructure.repository.entity
