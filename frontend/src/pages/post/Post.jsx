@@ -27,8 +27,12 @@ const Post = () => {
 	useEffect(() => {
 		const fetchComments = async () => {
 			try {
-				const commentsData = await getComments(postId);
+				// const commentsData = await getComments(postId);
+				const url = `https://j11a605.p.ssafy.io/api/posting/${postId}/comment`;
+				const commentsData = await getDatas(url);
 				setComments(commentsData); // 댓글 리스트 설정
+				console.log(commentsData);
+				console.log(comments);
 			} catch (error) {
 				console.error('Error fetching comments:', error);
 			}
@@ -163,7 +167,7 @@ const Post = () => {
 
 			{/* 댓글 리스트 */}
 			<div className="comment-list-area">
-				{comments.length > 0 ? (
+				{comments ? (
 					comments.map((comment, index) => (
 						<CommentItem
 							key={index}

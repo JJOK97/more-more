@@ -41,6 +41,7 @@ const Feed = () => {
 				const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
 				const data = await getDatas(url);
 				setPosts(data);
+				console.log(data);
 			} catch (error) {
 				console.error('Error fetching posts:', error);
 			} finally {

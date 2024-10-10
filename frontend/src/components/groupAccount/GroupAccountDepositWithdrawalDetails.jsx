@@ -3,17 +3,15 @@ import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import GroupAccountDepositList from '@/components/groupAccount/GroupAccountDepositList';
 import account_search from '@/assets/img/account/account_search.svg';
 
-const GroupAccountDepositWithDrawalDetails = () => {
+const GroupAccountDepositWithdrawalDetails = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const { groupId } = useParams();
-	console.log('groupId: ', groupId);
 
 	// 이미지 클릭 시 실행되는 함수
 	const handleSearchClick = () => {
 		if (groupId) {
-			console.log(`Navigating to: /group/${groupId}/account/search`);
 			navigate(`/group/${groupId}/account/search`);
 		}
 	};
@@ -34,4 +32,4 @@ const GroupAccountDepositWithDrawalDetails = () => {
 	);
 };
 
-export default GroupAccountDepositWithDrawalDetails;
+export default GroupAccountDepositWithdrawalDetails;

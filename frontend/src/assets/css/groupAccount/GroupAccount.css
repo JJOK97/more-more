@@ -595,7 +595,7 @@ div.account-check-top-component > div.transfer-info-area > div > div.transfer-ac
 	margin-top: 1.5rem;
 }
 
-.transer-my-account {
+.transfer-my-account {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
@@ -835,4 +835,10 @@ button.new-transfer-button {
 
 button.new-transfer-button:hover {
 	background-color: #4aa260;
+}
+
+.error-message {
+	color: red;
+	font-size: 12px;
+	margin-top: 5px;
 }

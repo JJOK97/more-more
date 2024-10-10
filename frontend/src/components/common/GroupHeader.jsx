@@ -20,10 +20,12 @@ const Header = () => {
 		location.pathname === '/signup' ||
 		location.pathname === '/profile' ||
 		location.pathname === '/notice' ||
-		location.pathname.match(/^\/group\/[^\/]+\/account\/withDrawal/) ||
 		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer/) ||
 		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer-question/) ||
-		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer-check/)
+		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer-check/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withdrawal/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withdrawal-question/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withdrawal-check/)
 	) {
 		return null;
 	}
@@ -40,7 +42,7 @@ const Header = () => {
 							className="group-header-back-button-img"
 							src={chevron}
 							alt="Back"
-							onClick={() => navigate(-1)}
+							onClick={() => navigate("/")}
 						/>
 						<div>{groupName}</div>
 					</div>

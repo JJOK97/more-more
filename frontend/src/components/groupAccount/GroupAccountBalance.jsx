@@ -26,7 +26,6 @@ const AccountBalance = () => {
 						throw new Error('Failed to fetch account information');
 					}
 					const data = await response.json();
-					console.log('Fetched Data:', data); // 응답 데이터 확인
 
 					// 응답 데이터에서 정확한 키 사용
 					setAccountInfo({
@@ -59,13 +58,13 @@ const AccountBalance = () => {
 
 	const handleFillClick = () => {
 		if (groupId) {
-			navigate(`/group/${groupId}/account/transfer`);
+			navigate(`/group/${groupId}/account/transfer`, { status: { mode: 'transfer' } });
 		}
 	};
 
 	const handleSendClick = () => {
 		if (groupId) {
-			navigate(`/group/${groupId}/account/withDrawal`);
+			navigate(`/group/${groupId}/account/withdrawal`, { status: { mode: 'withdrawal' } });
 		}
 	};
 
