@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import account_search from '@/assets/img/account/account_search.svg';
+import '@/assets/css/groupAccount/GroupAccount.css';
 
 const SearchBar = ({ selectedDate, onSearch }) => {
 	const [searchTerm, setSearchTerm] = useState('');
@@ -17,8 +18,8 @@ const SearchBar = ({ selectedDate, onSearch }) => {
 	return (
 		<div>
 			<div className="search-standard">
-				<div>
-					<span>{selectedDate ? selectedDate.toLocaleDateString() : today.toLocaleDateString()}</span>
+				<div className="search-text">
+					<div>{selectedDate ? selectedDate.toLocaleDateString() : today.toLocaleDateString()}</div>
 				</div>
 				<div className="search-box-with-img">
 					<input

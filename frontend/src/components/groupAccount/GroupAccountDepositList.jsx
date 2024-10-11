@@ -60,7 +60,9 @@ const GroupAccountDepositList = ({ selectedDate, searchTerm, onTagClick, onClose
 
 	return (
 		<div className="group-account-deposit-list-area">
-			{filteredHistories.length === 0 && !loading && <div>해당 날짜에 거래 내역이 없습니다.</div>}
+			{filteredHistories.length === 0 && !loading && (
+				<div className="none-text-area">해당 날짜에 거래 내역이 없습니다.</div>
+			)}
 			{filteredHistories.map((item, index) => (
 				<DepositDetailOne
 					key={index}
