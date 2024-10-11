@@ -229,7 +229,7 @@
 
 .deposit-list {
 	width: 100%;
-	height: 65%;
+	height: 60vh;
 	background-color: #ffffff;
 	border-top: 0.5px solid lightGray;
 }
@@ -726,9 +726,9 @@ button[name='send'] {
 .modal-content {
 	background: white;
 	border-radius: 10px;
-	width: 90%;
+	width: 80%;
 	padding: 20px;
-	max-height: 80vh;
+	max-height: 50vh;
 	overflow-y: auto;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -843,4 +843,43 @@ button.new-transfer-button:hover {
 	color: red;
 	font-size: 12px;
 	margin-top: 5px;
+}
+
+.search-text {
+	font-size: 0.9rem;
+}
+
+.group-account-deposit-list-area {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	background-color: white;
+}
+
+.deposit-detail-one {
+	display: flex;
+	flex-direction: column;
+	margin: 1rem;
+	width: 100%;
+	margin-top: 1rem;
+}
+
+.deposit-list-place-price {
+	margin: 0 1rem;
+	margin-bottom: 0.3rem;
+}
+
+.deposit-list-time-balance {
+	margin: 0 1rem;
+	margin-bottom: 0.3rem;
+}
+
+.none-text-area {
+	height: 30vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
