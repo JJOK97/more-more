@@ -62,6 +62,9 @@
 	font-size: 16px;
 	border-radius: 4px;
 	cursor: pointer;
+	border: none;
+	width: 4rem;
+	height: 2rem;
 }
 
 .cancel-button {

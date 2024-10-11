@@ -42,7 +42,7 @@ const Feed = () => {
 			} finally {
 				setTimeout(() => {
 					setLoading(false);
-				}, 500); // 1초 후에 로딩 해제
+				}, 250);
 			}
 		};
 		getAllPosts();

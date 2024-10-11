@@ -1,3 +1,4 @@
+// Schedule.jsx
 import React, { useEffect, useState, useCallback } from 'react';
 import Calendar from '@/components/calendar/Calendar';
 import ScheduleBoard from '@/components/scheduleBoard/ScheduleBoard';
@@ -18,8 +19,9 @@ const Schedule = () => {
 	const [schedules, setSchedules] = useState([]);
 	const [monthlySchedules, setMonthlySchedules] = useState([]);
 	const [selectedDateSchedules, setSelectedDateSchedules] = useState([]);
-	const [selectedDate, setSelectedDate] = useState(new Date()); // 사용자가 클릭한 날짜를 저장
-	const [isLoading, setIsLoading] = useState(true);
+	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [loading, setLoading] = useState(true); // 로딩 상태
+	const [feedVisible, setFeedVisible] = useState(false); // 페이드인 효과를 위한 상태
 	const [error, setError] = useState(null);
 	const [attendDay, setAttendDay] = useState([]);
 
@@ -32,6 +34,10 @@ const Schedule = () => {
 				setGroupInfo(data);
 			} catch (error) {
 				console.error('Error fetching group info:', error);
+			} finally {
+				setTimeout(() => {
+					setLoading(false);
+				}, 500); // 로딩 시간을 1초로 변경
 			}
 		};
 		getGroupInfo();
@@ -45,7 +51,7 @@ const Schedule = () => {
 	}, [groupInfo, setGroupName]);
 
 	const fetchSchedules = useCallback(async () => {
-		setIsLoading(true);
+		setLoading(true);
 		setError(null);
 		try {
 			const response = await getAllSchedules(groupId);
@@ -54,7 +60,9 @@ const Schedule = () => {
 			console.error('스케줄을 가져오는데 실패했습니다:', error);
 			setError('스케줄을 가져오는데 실패했습니다. 나중에 다시 시도해주세요.');
 		} finally {
-			setIsLoading(false);
+			setTimeout(() => {
+				setLoading(false);
+			}, 500); // 로딩 시간을 1초로 변경
 		}
 	}, [groupId]);
 
@@ -65,6 +73,10 @@ const Schedule = () => {
 				setAttendDay(response);
 			} catch (error) {
 				console.error('월간 스케줄을 가져오는데 실패했습니다:', error);
+			} finally {
+				setTimeout(() => {
+					setLoading(false);
+				}, 500); // 로딩 시간을 1초로 변경
 			}
 		},
 		[groupId],
@@ -78,6 +90,10 @@ const Schedule = () => {
 				setSelectedDateSchedules(response);
 			} catch (error) {
 				console.error('일간 스케줄을 가져오는데 실패했습니다:', error);
+			} finally {
+				setTimeout(() => {
+					setLoading(false);
+				}, 500); // 로딩 시간을 1초로 변경
 			}
 		},
 		[groupId],
@@ -89,6 +105,13 @@ const Schedule = () => {
 		fetchMonthlySchedules(moment().format('YYYY-MM'));
 		fetchDailySchedules(new Date());
 	}, [groupId, setGroupName, fetchSchedules, fetchMonthlySchedules, fetchDailySchedules]);
+
+	// 로딩이 끝난 후에 페이드인 효과를 주기 위한 useEffect
+	useEffect(() => {
+		if (!loading) {
+			setFeedVisible(true);
+		}
+	}, [loading]);
 
 	const handleCreateSchedule = async (newScheduleData) => {
 		try {
@@ -129,56 +152,59 @@ const Schedule = () => {
 		[fetchDailySchedules],
 	);
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-
-	if (error) {
-		return <div>{error}</div>;
-	}
-
 	const formattedDate = moment(selectedDate).format('YYYY년 MM월 DD일');
 
 	return (
-		<div className="body">
-			<Calendar
-				onMonthChange={handleMonthChange}
-				onSelectDate={handleDateSelect}
-				scheduleDates={attendDay}
-			/>
-			<div className="schedule-container">
-				<div className="selected-date-info">
-					<h2>{formattedDate}</h2>
+		<div className="schedule-wrapper">
+			{loading && (
+				<div className="loading">
+					<span></span>
+					<span></span>
+					<span></span>
 				</div>
-				{selectedDateSchedules.length > 0 ? (
-					selectedDateSchedules.map((schedule) => (
-						<ScheduleBoard
-							key={schedule.scheduleId}
-							schedule={schedule}
-							onUpdate={fetchDailySchedules}
-							onDelete={fetchDailySchedules}
-						/>
-					))
-				) : (
-					<div>
-						<p>선택한 날짜에 스케줄이 없습니다.</p>
-					</div>
-				)}
-			</div>
-			{isWriting && (
-				<WriteComponent
-					selectedDate={selectedDate} // 클릭한 날짜를 WriteComponent로 전달
-					onClose={() => setIsWriting(false)}
-					onSubmit={handleCreateSchedule}
-				/>
 			)}
-			{!isWriting && (
-				<img
-					src={PostButton}
-					alt="글쓰기 버튼"
-					className="floating-button"
-					onClick={() => setIsWriting(true)}
-				/>
+			{!loading && (
+				<div className={`schedule-container ${feedVisible ? 'fade-in' : ''}`}>
+					<Calendar
+						onMonthChange={handleMonthChange}
+						onSelectDate={handleDateSelect}
+						scheduleDates={attendDay}
+					/>
+					<div className="schedule-content">
+						<div className="selected-date-info">
+							<div>{formattedDate}</div>
+						</div>
+						{selectedDateSchedules.length > 0 ? (
+							selectedDateSchedules.map((schedule) => (
+								<ScheduleBoard
+									key={schedule.scheduleId}
+									schedule={schedule}
+									onUpdate={fetchDailySchedules}
+									onDelete={fetchDailySchedules}
+								/>
+							))
+						) : (
+							<div className="noneSchedule">
+								<p>선택한 날짜에 스케줄이 없습니다.</p>
+							</div>
+						)}
+					</div>
+					{isWriting && (
+						<WriteComponent
+							selectedDate={selectedDate} // 클릭한 날짜를 WriteComponent로 전달
+							onClose={() => setIsWriting(false)}
+							onSubmit={handleCreateSchedule}
+						/>
+					)}
+					{!isWriting && (
+						<img
+							src={PostButton}
+							alt="글쓰기 버튼"
+							className="floating-button"
+							onClick={() => setIsWriting(true)}
+						/>
+					)}
+				</div>
 			)}
 		</div>
 	);
