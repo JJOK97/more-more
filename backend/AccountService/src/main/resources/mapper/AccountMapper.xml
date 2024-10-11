@@ -83,13 +83,13 @@
         FROM
             account_history
         WHERE
-            ssafy_transaction_number = #{ssafyTransactionNumber}
+            tag_name = #{tagName}
     </select>
 
 
     <insert id="insertByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest">
-        INSERT INTO account_history_verification (account_history_memo, account_history_image, ssafy_transaction_number)
-        VALUES (#{accountHistoryMemo}, #{accountHistoryImage}, #{ssafyTransactionNumber} )
+        INSERT INTO account_history_verification (account_history_memo, account_history_image, tag_name)
+        VALUES (#{accountHistoryMemo}, #{accountHistoryImage}, #{tagName} )
     </insert>
 
 
@@ -99,21 +99,21 @@
         FROM
             account_history_verification
         WHERE
-            ssafy_transaction_number = #{ssafyTransactionNumber}
+            tag_name = #{tagName}
     </select>
 
-    <update id="updateByTransactionNum" parameterType="map">
+    <update id="updateByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest">
         UPDATE account_history_verification
         SET
-            account_history_memo = #{verificationSaveRequest.accountHistoryMemo},
-            account_history_image = #{verificationSaveRequest.accountHistoryImage}
+            account_history_memo = #{accountHistoryMemo},
+            account_history_image = #{accountHistoryImage}
         WHERE
-            ssafy_transaction_number = #{ssafyTransactionNumber}
+            tag_name = #{tagName}
     </update>
 
     <delete id="deleteByTransactionNum" parameterType="String">
         DELETE FROM account_history_verification
-        WHERE ssafy_transaction_number = #{ssafyTransactionNumber}
+        WHERE tag_name = #{tagName}
     </delete>
 
     <select id="selectUserKeyByClubCode" resultType="String" parameterType="String">
@@ -135,4 +135,51 @@
           AND account_date LIKE CONCAT(#{date}, '%')
         ORDER BY account_history_id DESC
     </select>
+
+    <select id="selectTagName" resultType="String" parameterType="String">
+        SELECT
+            tag_name
+        FROM
+            account_history
+        WHERE
+            account_id = #{accountNum}
+          AND tag_name NOT LIKE '%\_%'
+        ORDER BY account_history_id DESC
+    </select>
+
+    <select id="dateCompareByAccountNum" resultType="String" parameterType="DateEntity">
+        SELECT DISTINCT
+            payment_data
+        FROM
+            account_history
+        WHERE account_id LIKE CONCAT('%', #{accountNum}, '%')
+          AND payment_type = '입금(이체)'
+          AND account_date BETWEEN #{startDate} AND #{endDate}
+          AND payment_amount >= #{dues}
+    </select>
+
+    <insert id="verificationInSave" parameterType="String">
+        INSERT INTO account_history_verification (tag_name, account_history_memo, account_history_image)
+        SELECT #{tagName}, "", ""
+            FROM account_history_verification
+            WHERE NOT EXISTS (
+                SELECT 1 FROM account_history_verification WHERE tag_name = #{tagName}
+            )
+    </insert>
+
+    <update id="memoVerification" parameterType="map">
+        UPDATE account_history_verification
+        SET
+            account_history_memo = #{accountHistoryMemo}
+        WHERE
+            tag_name = #{tagName}
+    </update>
+
+    <update id="imageVerification" parameterType="map">
+        UPDATE account_history_verification
+        SET
+            account_history_image = #{accountHistoryImage}
+        WHERE
+            tag_name = #{tagName}
+    </update>
 </mapper>

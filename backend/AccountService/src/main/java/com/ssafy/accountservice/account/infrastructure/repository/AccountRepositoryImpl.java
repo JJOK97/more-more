@@ -3,10 +3,12 @@ package com.ssafy.accountservice.account.infrastructure.repository;
 import com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.DateEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
 import com.ssafy.accountservice.account.service.domain.AccountHistoryAll;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -57,8 +59,8 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public AccountHistoryEntity selectHistoryOnly(String ssafyTransactionNumber) {
-        return accountMybatisMapper.selectAccountHistoryOnly(ssafyTransactionNumber);
+    public AccountHistoryEntity selectHistoryOnly(String tagName) {
+        return accountMybatisMapper.selectAccountHistoryOnly(tagName);
     }
 
     @Override
@@ -67,18 +69,18 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public VerifyEntity selectVerify(String ssafyTransactionNumber) {
-        return accountMybatisMapper.selectByTransactionNum(ssafyTransactionNumber);
+    public VerifyEntity selectVerify(String tagName) {
+        return accountMybatisMapper.selectByTransactionNum(tagName);
     }
 
     @Override
-    public void updateVerify(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest) {
-        accountMybatisMapper.updateByTransactionNum(ssafyTransactionNumber, verificationSaveRequest);
+    public void updateVerify(VerificationSaveRequest verificationSaveRequest) {
+        accountMybatisMapper.updateByTransactionNum(verificationSaveRequest);
     }
 
     @Override
-    public void deletetVerify(String ssafyTransactionNumber) {
-        accountMybatisMapper.deleteByTransactionNum(ssafyTransactionNumber);
+    public void deletetVerify(String tagName) {
+        accountMybatisMapper.deleteByTransactionNum(tagName);
     }
 
     @Override
@@ -89,6 +91,32 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public List<AccountHistoryEntity> selectAccountNumByDate(String accountNum, String date) {
         return accountMybatisMapper.selectAccountHistoryByAccountNumByDate(accountNum, date);
+    }
+
+    @Override
+    public List<String> selectTagNameByAccountNum(String accountNum) {
+        return accountMybatisMapper.selectTagName(accountNum);
+    }
+
+    @Override
+    public List<String> dateCompareByclubCode(DateEntity dateEntity) {
+        List<String> list = accountMybatisMapper.dateCompareByAccountNum(dateEntity);
+        return accountMybatisMapper.dateCompareByAccountNum(dateEntity);
+    }
+
+    @Override
+    public void verificationIn(String tagName) {
+        accountMybatisMapper.verificationInSave(tagName);
+    }
+
+    @Override
+    public void memoVerifyUpdate(String tagName, String accountHistoryMemo) {
+        accountMybatisMapper.memoVerification(tagName, accountHistoryMemo);
+    }
+
+    @Override
+    public void imageUpdateImage(String tagName, String accountHistoryImage) {
+        accountMybatisMapper.imageVerification(tagName, accountHistoryImage);
     }
 
 

@@ -6,7 +6,7 @@ import lombok.Data;
 public class AccountHistoryEntity {
 
     private Long accountHistoryId;           // 계좌 내역 ID
-    private Long accountId;                  // 계좌 ID
+    private String accountId;                  // 계좌 ID
     private String tagName;                  // 결제 태그
     private String ssafyTransactionNumber;   // SSAFY 거래 번호
     private String accountDate;              // 결제 날짜

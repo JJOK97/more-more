@@ -2,6 +2,8 @@ package com.ssafy.accountservice.account.controller;
 
 import com.ssafy.accountservice.account.controller.dto.request.*;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryMemo;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.IsVerificationInEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.infrastructure.s3.S3Connector;
 import com.ssafy.accountservice.account.mapper.AccountObjectMapper;
@@ -15,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Tag(name = "Account API", description = "계좌 생성 API")
@@ -82,17 +86,17 @@ public class AccountController {
 
 
     @Operation(summary = "계좌 내역 단일 조회")
-    @GetMapping("/history/{ssafy_transaction_number}")
-    public ResponseEntity<AccountHistoryEntity> getHistoryOnly(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber) {
-        AccountHistoryEntity accountHistoryEntity = accountService.historyGetOnly(ssafyTransactionNumber);
+    @GetMapping("/history/{tag_name}")
+    public ResponseEntity<AccountHistoryEntity> getHistoryOnly(@PathVariable("tag_name") String tagName) {
+        AccountHistoryEntity accountHistoryEntity = accountService.historyGetOnly(tagName);
         return new ResponseEntity<>(accountHistoryEntity, HttpStatus.CREATED);
     }
 
 
-    @PostMapping(value = "/{ssafy_transaction_number}/verification", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/{tag_name}/verification", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "입출금 증빙 내역 생성", description = "이미지 파일과 메모를 업로드하여 증빙 내역을 생성한다.")
-    public ResponseEntity<String> saveVerify(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber, @ModelAttribute VerificationRequest verificationRequest) {
+    public ResponseEntity<String> saveVerify(@PathVariable("tag_name") String tagName, @ModelAttribute VerificationRequest verificationRequest) {
         try {
             // 이미지 파일 업로드
             MultipartFile accountHistoryImage = verificationRequest.getAccountHistoryImage();
@@ -101,7 +105,7 @@ public class AccountController {
             // 이미지 파일이 있을 경우 S3에 업로드
             if (accountHistoryImage != null && !accountHistoryImage.isEmpty()) {
                 String randomString = UUID.randomUUID().toString();
-                String fileName = ssafyTransactionNumber + "_" + randomString;
+                String fileName = tagName + "_" + randomString;
 
                 // S3에 파일 업로드
                 s3Connector.upload(fileName, accountHistoryImage);
@@ -112,7 +116,7 @@ public class AccountController {
 
             // VerificationSaveRequest 객체 생성 후 값 설정
             VerificationSaveRequest verificationSaveRequest = new VerificationSaveRequest();
-            verificationSaveRequest.setSsafyTransactionNumber(ssafyTransactionNumber);
+            verificationSaveRequest.setTagName(tagName);
             verificationSaveRequest.setAccountHistoryMemo(verificationRequest.getAccountHistoryMemo());
             verificationSaveRequest.setAccountHistoryImage(s3ImageUrl);  // MultipartFile 대신 S3 URL 저장
 
@@ -127,58 +131,66 @@ public class AccountController {
 
 
     @Operation(summary = "입출금 증빙 내역 조회")
-    @GetMapping("{ssafy_transaction_number}/verification")
-    public VerifyEntity selectVerification(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber) {
-        return accountService.verifySelect(ssafyTransactionNumber);
+    @GetMapping("{tag_name}/verification")
+    public VerifyEntity selectVerification(@PathVariable("tag_name") String tagName) {
+        return accountService.verifySelect(tagName);
     }
 
 
-    @PutMapping(value = "/{ssafy_transaction_number}/verification", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/{tag_name}/verification", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "입출금 증빙 내역 업데이트", description = "이미지 파일과 메모를 업로드하여 증빙 내역을 업데이트한다.")
-    public ResponseEntity<String> updateVerification(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber,
+    public ResponseEntity<String> updateVerification(@PathVariable("tag_name") String tagName,
                                                      @ModelAttribute VerificationRequest verificationRequest) {
-        try {
-            // 이미지 파일 업로드
-            MultipartFile newAccountHistoryImage = verificationRequest.getAccountHistoryImage();
-            String s3ImageUrl = null;
 
-            // 이미지 파일이 있을 경우 S3에 업로드
-            if (newAccountHistoryImage != null && !newAccountHistoryImage.isEmpty()) {
-                String randomString = UUID.randomUUID().toString();
-                String fileName = ssafyTransactionNumber + "_" + randomString;
+        // 1. 기존 데이터를 조회합니다.
+        VerifyEntity existingData = accountService.verifySelect(tagName);
 
-                // S3에 파일 업로드
-                s3Connector.upload(fileName, newAccountHistoryImage);
+        // 2. 이미지 파일 처리
+        MultipartFile newAccountHistoryImage = verificationRequest.getAccountHistoryImage();
+        String s3ImageUrl = null;
 
-                // 업로드된 파일의 URL 가져오기
-                s3ImageUrl = s3Connector.getImageURL(fileName);
-            }
+        if (newAccountHistoryImage != null && !newAccountHistoryImage.isEmpty()) {
+            String randomString = UUID.randomUUID().toString();
+            String fileName = tagName + "_" + randomString;
 
-            // VerificationSaveRequest 객체 생성 후 값 설정
-            VerificationSaveRequest verificationSaveRequest = new VerificationSaveRequest();
-            verificationSaveRequest.setSsafyTransactionNumber(ssafyTransactionNumber);
-            verificationSaveRequest.setAccountHistoryMemo(verificationRequest.getAccountHistoryMemo());
+            // S3에 파일 업로드
+            s3Connector.upload(fileName, newAccountHistoryImage);
 
-            // 새 이미지 URL이 있을 경우에만 설정
-            if (s3ImageUrl != null) {
-                verificationSaveRequest.setAccountHistoryImage(s3ImageUrl);
-            }
-
-            // 검증 데이터를 업데이트하는 서비스 호출
-            accountService.verifyUpdate(ssafyTransactionNumber, verificationSaveRequest);
-
-            return ResponseEntity.ok("업데이트에 성공했습니다");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 중 오류가 발생했습니다: " + e.getMessage());
+            // 업로드된 파일의 URL 가져오기
+            s3ImageUrl = s3Connector.getImageURL(fileName);
         }
+
+        // 3. VerificationSaveRequest 객체 생성 후 기존 데이터와 비교하여 변경된 값만 설정
+        VerificationSaveRequest verificationSaveRequest = new VerificationSaveRequest();
+        verificationSaveRequest.setTagName(tagName);
+
+        // 기존 메모와 비교하여 변경된 경우에만 새로운 값 설정
+        String newMemo = verificationRequest.getAccountHistoryMemo();
+        if (newMemo != null && !newMemo.equals(existingData.getAccountHistoryMemo())) {
+            verificationSaveRequest.setAccountHistoryMemo(newMemo);
+        } else {
+            verificationSaveRequest.setAccountHistoryMemo(existingData.getAccountHistoryMemo());
+        }
+
+        // 새 이미지 URL이 있을 경우에만 설정, 없으면 기존 값 유지
+        if (s3ImageUrl != null) {
+            verificationSaveRequest.setAccountHistoryImage(s3ImageUrl);
+        } else {
+            verificationSaveRequest.setAccountHistoryImage(existingData.getAccountHistoryImage());
+        }
+
+        // 4. 검증 데이터를 업데이트하는 서비스 호출
+        accountService.verifyUpdate(verificationSaveRequest);
+
+        return ResponseEntity.ok("업데이트에 성공했습니다");
     }
 
 
     @Operation(summary = "입출금 증빙 내역 삭제")
-    @DeleteMapping("/{ssafy_transaction_number}/verification")
-    public ResponseEntity<String> deleteVerification(@PathVariable("ssafy_transaction_number") String ssafyTransactionNumber) {
-        accountService.verifyDelete(ssafyTransactionNumber);
+    @DeleteMapping("/{tag_name}/verification")
+    public ResponseEntity<String> deleteVerification(@PathVariable("tag_name") String tagName) {
+        accountService.verifyDelete(tagName);
         return ResponseEntity.ok("삭제에 성공했습니다");
     }
 
@@ -197,4 +209,76 @@ public class AccountController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "클럽에 존재하는 태그 이름 모두 조회")
+    @GetMapping("/{clubCode}/tagname")
+    public List<String> selectTagName(@PathVariable("clubCode") String clubCode) {
+        return accountService.tagNameSelect(clubCode);
+    }
+
+    @Operation(summary = "날짜로 비교해서 회비 낸 명단 제공", description = "날짜형식은 yyyymm")
+    @GetMapping("/{clubCode}/{date}/comparedate")
+    public List<String> compareDate(@PathVariable("clubCode") String clubCode, @PathVariable("date") String date) {
+        return accountService.dateCompare(clubCode,date);
+    }
+
+    @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
+    @PostMapping("/{tag_name}/isverificationin")
+    public void createVerification(@PathVariable("tag_name") String tagName) {
+        accountService.isVerificationIn(tagName);
+    }
+
+//    @Operation(summary = "증빙 내역에 없으면 생성 후 수정")
+//    @PostMapping("/isverificationin")
+//    public void createVerification(@RequestBody IsVerificationInEntity isVerificationInEntity) {
+//        String tagName = isVerificationInEntity.getTagName();
+//        accountService.isVerificationIn(tagName);
+//    }
+
+    @PutMapping(value = "/{tag_name}/verificationmemo")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "입출금 증빙 내역 업데이트 - 메모", description = "입출금 증빙 내역의 메모를 업데이트한다.")
+    public ResponseEntity<String> updateVerificationMemo(@PathVariable("tag_name") String tagName,
+                                                         @RequestParam(required = false) String accountHistoryMemo) {
+
+        // accountHistoryMemo가 null이면 빈 문자열로 설정
+        if (accountHistoryMemo == null) {
+            accountHistoryMemo = "";
+        }
+
+        // 서비스 호출하여 메모 업데이트
+        accountService.verifyUpdateMemo(tagName, accountHistoryMemo);
+
+        return ResponseEntity.ok("업데이트에 성공했습니다");
+    }
+
+    @PutMapping(value = "/{tag_name}/verificationimage", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "입출금 증빙 내역 업데이트 - 이미지", description = "이미지 파일과 메모를 업로드하여 증빙 내역을 업데이트한다.")
+    public ResponseEntity<String> updateVerificationImage(@PathVariable("tag_name") String tagName,
+                                                     @ModelAttribute VerificationRequestImage verificationRequestImage) {
+
+        // 2. 이미지 파일 처리
+        MultipartFile newAccountHistoryImage = verificationRequestImage.getAccountHistoryImage();
+        String s3ImageUrl = "";
+
+        if (newAccountHistoryImage != null && !newAccountHistoryImage.isEmpty()) {
+            String randomString = UUID.randomUUID().toString();
+            String fileName = tagName + "_" + randomString;
+
+            // S3에 파일 업로드
+            s3Connector.upload(fileName, newAccountHistoryImage);
+
+            // 업로드된 파일의 URL 가져오기
+            s3ImageUrl = s3Connector.getImageURL(fileName);
+        }
+
+        if (s3ImageUrl == null) {
+            s3ImageUrl = ""; // null일 경우 빈 문자열로 처리
+        }
+
+        // 3. 서비스 로직
+        accountService.verifyUpdateImage(tagName, s3ImageUrl);
+
+        return ResponseEntity.ok("업데이트에 성공했습니다");
+    }
 }

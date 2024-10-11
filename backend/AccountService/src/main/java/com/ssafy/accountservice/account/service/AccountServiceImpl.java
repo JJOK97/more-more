@@ -4,9 +4,11 @@ import com.ssafy.accountservice.account.controller.dto.request.*;
 import com.ssafy.accountservice.account.controller.dto.response.*;
 import com.ssafy.accountservice.account.infrastructure.repository.AccountRepository;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.AccountHistoryEntity;
+import com.ssafy.accountservice.account.infrastructure.repository.entity.DateEntity;
 import com.ssafy.accountservice.account.infrastructure.repository.entity.VerifyEntity;
 import com.ssafy.accountservice.account.service.domain.*;
 import com.ssafy.accountservice.client.*;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,7 @@ public class AccountServiceImpl implements AccountService {
     private final UseCardFeignClient useCardFeignClient;
     private final MemberClient memberClient;
     private final MemberClientByAccountNumber memberClientByAccountNumber;
+    private final SelectClubFeignClient selectClubFeignClient;
 
     @Override
     public void accountCreate(Account account) {
@@ -67,21 +70,30 @@ public class AccountServiceImpl implements AccountService {
 
         String managerKey = map.get("ssafy_user_key");
         String accountNum = map.get("ssafy_account_number");
-
+        
         AccountSelectApiRequest accountSelectApiRequest = new AccountSelectApiRequest();
         accountSelectApiRequest.getHeader().setApiKey(apiKey);
         accountSelectApiRequest.getHeader().setUserKey(managerKey);
         accountSelectApiRequest.setAccountNo(accountNum);
-
+        
         // Feign Client
         AccountSelectBalanceApiResponse response = selectAccountNumFeignClient.selectAccountBalance(accountSelectApiRequest);
+
+        // Feign CLient - club에 접근
+        ClubReadResponse clubReadResponse = selectClubFeignClient.findClub(clubCode);
+
+        System.out.println("clubReadResponse = " + clubReadResponse);
 
         // account number, account balance만 담아서 return
         Map<String, String> numAndBalance = new HashMap<>();
         numAndBalance.put("account_num", accountNum);
         numAndBalance.put("account_balance", response.getRec().getAccountBalance());
         numAndBalance.put("bankName", response.getRec().getBankName());
+        numAndBalance.put("dues", String.valueOf(clubReadResponse.getDues()));
+        numAndBalance.put("createDate", String.valueOf(clubReadResponse.getCreatedDate()));
 
+        System.out.println("numAndBalance = " + numAndBalance);
+        
         return numAndBalance;
     }
 
@@ -138,7 +150,7 @@ public class AccountServiceImpl implements AccountService {
         arr.add(accountBalance);
 
         LocalTime time = LocalTime.now();
-        String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("HHmmss"));
 
         // account_history 테이블에 저장할 AccountHistoryAll 객체 생성 및 데이터 설정
         AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
@@ -205,7 +217,7 @@ public class AccountServiceImpl implements AccountService {
         arr.add(balanceResponse.getRec().getAccountBalance());
 
         LocalTime time = LocalTime.now();
-        String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm"));
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("HHmmss"));
 
         // 이체 내역을 기록할 AccountHistoryAll 객체 생성
         AccountHistoryAll accountHistoryAll = new AccountHistoryAll();
@@ -312,8 +324,8 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public AccountHistoryEntity historyGetOnly(String ssafyTransactionNumber) {
-        return accountRepository.selectHistoryOnly(ssafyTransactionNumber);
+    public AccountHistoryEntity historyGetOnly(String tagName) {
+        return accountRepository.selectHistoryOnly(tagName);
     }
 
 
@@ -324,19 +336,20 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public VerifyEntity verifySelect(String ssafyTransactionNumber) {
-        return accountRepository.selectVerify(ssafyTransactionNumber);
-    }
-
-    @Override
-    public void verifyUpdate(String ssafyTransactionNumber, VerificationSaveRequest verificationSaveRequest) {
-        accountRepository.updateVerify(ssafyTransactionNumber, verificationSaveRequest);
+    public VerifyEntity verifySelect(String tagName) {
+        return accountRepository.selectVerify(tagName);
     }
 
 
     @Override
-    public void verifyDelete(String ssafyTransactionNumber) {
-        accountRepository.deletetVerify(ssafyTransactionNumber);
+    public void verifyUpdate(VerificationSaveRequest verificationSaveRequest) {
+        accountRepository.updateVerify(verificationSaveRequest);
+    }
+
+
+    @Override
+    public void verifyDelete(String tagName) {
+        accountRepository.deletetVerify(tagName);
     }
 
 
@@ -366,5 +379,68 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountHistoryEntity> accountHistoryByDate(String clubCode, String date) {
         String accountNum = accountRepository.selectAccountNum(clubCode);
         return accountRepository.selectAccountNumByDate(accountNum, date);
+    }
+
+    @Override
+    public List<String> tagNameSelect(String clubCode) {
+        // 모임코드 들고 온 다음 계좌 번호 조회
+        Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(clubCode);
+
+        String managerKey = map.get("ssafy_user_key");
+        String accountNum = map.get("ssafy_account_number");
+
+        return accountRepository.selectTagNameByAccountNum(accountNum);
+    }
+
+    @Override
+    public List<String> dateCompare(String clubCode, String date) {
+        // Feign Client - club에 접근
+        ClubReadResponse clubReadResponse = selectClubFeignClient.findClub(clubCode);
+
+        // 모임코드를 들고 와서 해당 모임의 총무 API key를 넣어서 조회
+        Map<String, String> map = accountRepository.selectAccountNumberAndUserKey(clubCode);
+
+        String accountNum = map.get("ssafy_account_number");
+
+        String dues = String.valueOf(clubReadResponse.getDues());
+        String createDate = String.valueOf(clubReadResponse.getCreatedDate());
+
+        // formattedDate에서 마지막 두 자리(일)를 추출하여 새로운 날짜 생성
+        String lastTwoDigits = createDate.substring(createDate.length() - 2); // 04 추출
+        String endDate = date + lastTwoDigits; // 기준일 (예: 202410) + 04 = 20241004
+
+        // 기준일로부터 한 달 뒤의 날짜 계산
+        LocalDate newDateObj = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        // 한 달 뒤 날짜에서 하루를 뺀 날짜 계산
+        LocalDate adjustedEndDate = newDateObj.plusMonths(1).minusDays(1); // 한 달 뒤에서 하루 빼기
+        String endDateFormatted = adjustedEndDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        // 기준일을 `startDate`로 설정
+        String startDate = endDate;
+
+        // accountNum, startDate, endDate, dues
+        DateEntity dateEntity = new DateEntity();
+        dateEntity.setAccountNum(accountNum);
+        dateEntity.setStartDate(startDate); // 기준일을 시작일로 설정
+        dateEntity.setEndDate(endDateFormatted); // 한 달 뒤에서 하루 뺀 날짜를 종료일로 설정
+        dateEntity.setDues(dues);
+
+        return accountRepository.dateCompareByclubCode(dateEntity);
+    }
+
+    @Override
+    public void isVerificationIn(String tagName) {
+        accountRepository.verificationIn(tagName);
+    }
+
+    @Override
+    public void verifyUpdateMemo(String tagName, String accountHistoryMemo) {
+        accountRepository.memoVerifyUpdate(tagName, accountHistoryMemo);
+    }
+
+    @Override
+    public void verifyUpdateImage(String tagName, String accountHistoryImage) {
+        accountRepository.imageUpdateImage(tagName, accountHistoryImage);
     }
 }

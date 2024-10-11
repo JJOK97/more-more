@@ -6,5 +6,5 @@ import lombok.Data;
 public class VerificationSaveRequest {
     private String accountHistoryMemo;
     private String accountHistoryImage;
-    private String ssafyTransactionNumber;
+    private String tagName;
 }
