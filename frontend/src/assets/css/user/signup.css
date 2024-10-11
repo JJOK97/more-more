@@ -170,3 +170,7 @@
 	border-radius: 20rem;
 	object-fit: cover;
 }
+
+div.input-group > label:nth-child(3) {
+	margin-top: 2rem;
+}
