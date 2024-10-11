@@ -1,4 +1,13 @@
-# application-prod.yml
 spring:
-  profiles:
-    active: prod
+  cloud:
+    config:
+      name: db-common,logging-common
+  config:
+    import: "optional:configserver:http://config-server.config"
+
+firebase:
+  config:
+    path: classpath:firebase-adminsdk.json
+
+mybatis:
+  type-aliases-package: com.ssafy.notificationservice.service.domain

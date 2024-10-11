@@ -1,11 +1,10 @@
 package com.ssafy.notificationservice.service.domain;
 
 import java.sql.Timestamp;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
+import lombok.*;
+
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
