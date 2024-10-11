@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import '@/assets/css/user/Profile.css';
-// import data from './data.json';
 import ProfileItem from './ProfileItem';
 import usePageName from '../../store/usePageName';
 import { getDatas } from '../feed/getData';
+import { logoutUser } from '@/api/userAPI'; // 로그아웃 API 함수 가져오기
 
 const Profile = () => {
 	const { setPageName } = usePageName();
@@ -32,6 +32,16 @@ const Profile = () => {
 		{ label: '계좌', value: info.accountNumber },
 	];
 
+	// 로그아웃 버튼 클릭 시 처리
+	const handleLogout = async () => {
+		try {
+			await logoutUser(); // 로그아웃 API 호출
+			console.log('로그아웃 성공');
+		} catch (error) {
+			console.error('로그아웃 오류:', error);
+		}
+	};
+
 	return (
 		<div className="profile-container">
 			<img
@@ -49,7 +59,16 @@ const Profile = () => {
 						/>
 					))}
 			</div>
-			{/* <button className="profile-edit-button">프로필 수정하기</button> */}
+
+			{/* 로그아웃 버튼 */}
+			<div className="group-info-logout">
+				<button
+					className="profile-logout-button"
+					onClick={handleLogout}
+				>
+					로그아웃
+				</button>
+			</div>
 		</div>
 	);
 };

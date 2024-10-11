@@ -21,7 +21,7 @@ const Login = () => {
 			setFadeOut(true);
 			setTimeout(() => {
 				setLoading(false);
-			}, 150);
+			}, 250);
 		}, 1000);
 	}, []);
 
