@@ -1,37 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import arrow from '@/assets/img/account/arrow_left.svg';
 
-const TransferKeypad = ({ setAmount, amount, mode, accountNumber }) => {
+const TransferKeypad = ({ setAmount, amount }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const groupId = location.pathname.match(/^\/group\/([^\/]+)\/account/)?.[1];
 
 	const handleNumberClick = (value) => {
-		setAmount((prevAmount) => prevAmount + value);
+		setAmount((prevAmount) => {
+			const newAmount = prevAmount + value;
+			return newAmount.replace(/, /g, '');
+		});
 	};
 
 	const handleDelete = () => {
-		setAmount(amount.slice(0, -1));
+		setAmount((amount) => amount.slice(0, -1).replace(/, /g, ''));
 	};
 
 	const handleSendClick = () => {
-		let targetPath = '';
-		if (mode === 'withdrawal') {
-			targetPath = `/group/${groupId}/account/withdrawal-question`;
-		} else if (mode === 'transfer') {
-			targetPath = `/group/${groupId}/account/transfer-question`;
-		}
-		if (groupId && targetPath) {
-			navigate(targetPath, { state: { amount, accountNumber } });
+		console.log(`보낼 금액: ${amount}원`);
+		if (groupId) {
+			navigate(`/group/${groupId}/account/transfer-question`, { state: { amount } });
 		}
 	};
+
+	const formattedAmount = amount ? `${Number(amount).toLocaleString()}원` : '0원';
 
 	return (
 		<div className="keypad-container">
 			<div className="amount-display">
-				<span>{amount ? `${Number(amount).toLocaleString()}원` : '0원'}</span>
+				<span>{formattedAmount}</span>
 			</div>
 			<div className="keypad">
 				{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((number) => (
