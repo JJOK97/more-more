@@ -160,7 +160,12 @@ const PostView = ({ post, onDelete, commentCount }) => {
 				</div>
 				<div className="feed-head-right">
 					{post.accountHistoryTag ? (
-						<div className="feed-account-history">#{post.accountHistoryTag}</div>
+						<div className="feed-account-history">
+							#
+							{post.accountHistoryTag.length > 22
+								? `${post.accountHistoryTag.substring(0, 22)}...`
+								: post.accountHistoryTag}
+						</div>
 					) : null}
 					{/* 삭제 버튼 추가 */}
 					{isMyPost && (

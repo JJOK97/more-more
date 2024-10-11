@@ -18,7 +18,7 @@ const Step5 = () => {
 					<Field
 						id="phone_number"
 						name="phone_number"
-						placeholder="010-1234-5678"
+						placeholder="01012345678"
 						type="text"
 						className="input-field"
 					/>
