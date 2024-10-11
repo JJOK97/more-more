@@ -12,6 +12,8 @@ const DepositDetailOne = ({
 	searchTerm,
 	paymentType,
 	tagName,
+	onClick,
+	checkVerification,
 }) => {
 	const location = useLocation();
 	const { groupId } = useParams();
@@ -73,11 +75,77 @@ const DepositDetailOne = ({
 
 	const handleClick = () => {
 		if (location.pathname.includes('/group') && location.pathname.includes('/create')) {
-			alert(`${paymentData} ${time}`);
-			setTagName(tagName);
+			// alert(`${paymentData} ${time}`);
+			useTagNameStore(tagName);
+			checkVerification(tagName);
 			console.log('setTagName: ', tagName);
 			console.log('currentTagName from Zustand: ', currentTagName);
+			onClose();
 		}
+	};
+
+	const handleDepositClick = async (tagName) => {
+		try {
+			const response = await fetch(`https://j11a605.p.ssafy.io/api/account/${tagName}/isverificationin`, {
+				method: 'POST',
+			});
+			if (response.ok) {
+				console.log(`Verification for ${tagName} created successfully`);
+			} else {
+				console.error(`Verification creation failed for ${tagName}, Status: ${response.status}`);
+			}
+		} catch (error) {
+			console.error('Error during verification creation:', error);
+		}
+	};
+
+	const handleImageUpload = async (tagName, file) => {
+		const formData = new FormData();
+		formData.append('accountHistoryImage', file);
+
+		try {
+			const response = await fetch(`https://j11a605.p.ssafy.io/api/account/${tagName}/verificationimage`, {
+				method: 'PUT',
+				body: formData,
+			});
+			if (response.ok) {
+				console.log('Image uploaded successfully');
+			} else {
+				console.error(`Image upload failed, Status: ${response.status}`);
+			}
+		} catch (error) {
+			console.error('Error during image upload:', error);
+		}
+	};
+
+	const handleMemoUpdate = async (tagName, memo) => {
+		try {
+			const response = await fetch(
+				`https://j11a605.p.ssafy.io/api/account/${tagName}/verificationmemo?accountHistoryMemo=${memo}`,
+				{
+					method: 'PUT',
+				},
+			);
+			if (response.ok) {
+				console.log('Memo updated successfully');
+			} else {
+				console.error(`Memo update failed, Status: ${response.status}`);
+			}
+		} catch (error) {
+			console.error('Error during memo update:', error);
+		}
+	};
+
+	// 사용자가 메모 입력을 완료한 후 focus가 벗어나면 호출
+	const handleMemoBlur = (e) => {
+		const memo = e.target.value;
+		handleMemoUpdate(tagName, memo);
+	};
+
+	// 사용자가 이미지를 선택했을 때 호출
+	const handleFileChange = (e) => {
+		const file = e.target.files[0];
+		handleImageUpload(tagName, file);
 	};
 
 	const highlightText = (text, searchTerm) => {
@@ -101,7 +169,7 @@ const DepositDetailOne = ({
 	return (
 		<div
 			className="deposit-detail-one"
-			onClick={handleClick}
+			onClick={onClick}
 		>
 			{location.pathname.includes('/group') && location.pathname.includes('/create') ? (
 				<div className="deposit-detail-container">
