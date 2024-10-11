@@ -1,8 +1,17 @@
 import React from 'react';
-import Calendar from '@/components/calendar/Calendar'
-import GroupAccountDepositList from '@/components/groupAccount/GroupAccountDepositList'
+import Calendar from '@/components/calendar/Calendar';
+import GroupAccountDepositList from '@/components/groupAccount/GroupAccountDepositList';
+import { useTagNameStore } from '@/store/useTagNameStore';
 
 const AddTagModal = ({ onClose }) => {
+	console.log('AddTagModal - onClose: ', onClose);
+	const { setTagName } = useTagNameStore();
+
+	const handleTagClick = (tagName) => {
+		setTagName(tagName);
+		console.log('Tag clicked: ', tagName);
+		onClose();
+	};
 	return (
 		<div
 			className="invite-modal-overlay"
@@ -18,8 +27,11 @@ const AddTagModal = ({ onClose }) => {
 				>
 					&times;
 				</span>
-                <Calendar />
-                <GroupAccountDepositList />
+				<Calendar />
+				<GroupAccountDepositList
+					onTagClick={handleTagClick}
+					onClose={onClose}
+				/>
 			</div>
 		</div>
 	);
