@@ -1,64 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '@/assets/css/common/header.css';
 import chevron from '@/assets/img/common/mainHeader/chevron-left.svg';
+import search from '@/assets/img/common/mainHeader/search.svg';
 import user from '@/assets/img/common/mainHeader/user.svg';
 import bell from '@/assets/img/common/mainHeader/bell.svg';
 import useGroupName from '@/store/useGroupName';
-import datas from '@/components/main/data.json';
+import useNoticeState from '@/store/useNoticeState'; // zustand store 가져오기
 
 const Header = () => {
-	const groups = datas.groups;
-	const { groupName } = useGroupName(); // groupName이 groupId를 가리킴
+	const { groupName } = useGroupName();
+	const { isUnreadNotice } = useNoticeState(); // 읽지 않은 알림 상태 확인
 	const location = useLocation();
-	const navigate = useNavigate(); // useNavigate 훅 사용
+	const navigate = useNavigate();
 
-	// 그룹 ID에 해당하는 그룹의 이름을 찾기
-	const currentGroup = groups.find((group) => group.groupId === parseInt(groupName));
-
-	// 만약 그룹을 찾지 못하면 빈 문자열을 사용
-	const displayedGroupName = currentGroup ? currentGroup.groupName : '';
-
-	// '/' 경로에서는 Header가 보이지 않도록
 	if (
 		location.pathname === '/' ||
-		location.pathname == '/login' ||
-		location.pathname == '/signup' ||
-		location.pathname == '/group/:groupId/account/transfer' ||
-		location.pathname == '/group/:groupId/account/transfer-question' ||
-		location.pathname == '/group/:groupId/account/transfer-check'
-	)
+		location.pathname === '/login' ||
+		location.pathname === '/signup' ||
+		location.pathname === '/profile' ||
+		location.pathname === '/notice' ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer-question/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer-check/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withdrawal/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withdrawal-question/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withdrawal-check/)
+	) {
 		return null;
+	}
+
+	// 현재 경로가 그룹의 메인 페이지(Feed)인지 확인
+	const isGroupFeedPage = location.pathname.match(/^\/group\/[^/]+$/);
 
 	return (
 		<header className="common-header">
 			<div className="menu">
 				<div className="headLeft">
 					<div className="groupName">
-						{/* 뒤로가기 버튼 */}
 						<img
 							className="group-header-back-button-img"
 							src={chevron}
 							alt="Back"
-							onClick={() => navigate(-1)} // 뒤로가기
+							onClick={() => navigate("/")}
 						/>
-						{/* 해당 그룹의 이름을 보여줌 */}
-						<div>{displayedGroupName}</div>
+						<div>{groupName}</div>
 					</div>
 				</div>
 				<div className="headerRight">
+					{isGroupFeedPage && (
+						<Link to={`${location.pathname}/search`}>
+							<img
+								src={search}
+								alt="Search"
+							/>
+						</Link>
+					)}
 					<Link to={'/profile'}>
 						<img
 							src={user}
 							alt="User"
 						/>
 					</Link>
-					<Link>
-						<img
-							src={bell}
-							alt="Notifications"
-						/>
-					</Link>
+					<div className="notification-icon-wrapper">
+						<Link to={'/notice'}>
+							<img
+								src={bell}
+								alt="Notifications"
+							/>
+							{isUnreadNotice && <div className="red-dot" />}
+						</Link>
+					</div>
 				</div>
 			</div>
 		</header>

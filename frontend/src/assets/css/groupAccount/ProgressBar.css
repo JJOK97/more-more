@@ -8,20 +8,33 @@
 	background-color: #a8d7b0;
 	border-radius: 5px;
 	height: 30px;
+	width: 100%;
+}
+
+.progress-bar {
+	position: relative;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
 }
 
 .barCompleted {
-	background-color: #53b36c;
-	width: 80%;
-	border-radius: 5px;
-	height: 30px;
+	display: none;
 }
 
-.label {
-	font-size: 20px;
-	color: #ffffff;
+.completedBar {
+	background-color: #53b36c;
+	border-radius: 5px;
+	height: 30px;
+	transition: width 0.5s ease-in-out;
+}
+
+.progress-bar .label {
 	position: absolute;
-	left: 44%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+	font-weight: bold;
 }
 
 input[type='checkbox'] {

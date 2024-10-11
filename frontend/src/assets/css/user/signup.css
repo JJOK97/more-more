@@ -7,6 +7,9 @@
 	background-color: #52bd6d;
 	display: flex;
 	align-items: end;
+	height: 100vh;
+	max-height: 100vh;
+	z-index: 100;
 }
 
 .signup-form {
@@ -40,6 +43,12 @@
 	border-radius: 10px;
 	background-color: #52bd6d;
 	color: white;
+	border: none;
+	font-size: 1rem;
+}
+
+.signup-nav-button > button:focus {
+	border: none !important;
 }
 
 .registration-step-title {
@@ -95,6 +104,8 @@
 	padding: 0.5rem;
 	background-color: #52bd6d;
 	color: white;
+	border: none;
+	font-size: 1rem;
 }
 
 .input-field {
@@ -105,6 +116,7 @@
 	font-size: 0.8rem;
 	padding: 0.5rem;
 	margin-top: 0.285rem;
+	font-family: 'Pretendard';
 }
 
 .input-field:focus {
@@ -157,4 +169,8 @@
 	height: 12rem;
 	border-radius: 20rem;
 	object-fit: cover;
+}
+
+div.input-group > label:nth-child(3) {
+	margin-top: 2rem;
 }

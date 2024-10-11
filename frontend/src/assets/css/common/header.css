@@ -1,21 +1,22 @@
 .common-header {
 	height: 7.5vh;
 	width: 100vw;
-	background-color: #53b36c;
+	background-color: #52bd6d;
 	display: flex;
 	align-items: center;
-	border-radius: 0 0 1rem 1rem;
+	/* border-radius: 0 0 1rem 1rem; */
 	justify-content: center;
 	position: fixed;
 	top: 0;
 }
 
 .menu {
-	width: 21rem;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	max-width: 21rem;
+	max-width: 600px;
+	padding: 0 0.5rem;
 }
 
 .logo {
@@ -51,7 +52,7 @@
 	font-size: 1.25rem;
 	font-weight: 600;
 	color: white;
-	gap: 1rem;
+	gap: 0.5rem;
 }
 
 .group-header-back-button-img {
@@ -69,4 +70,22 @@
 .headerRight img {
 	width: 1.5rem;
 	height: 1.5rem;
+}
+
+.group-header-space {
+	width: 1rem;
+}
+
+.notification-icon-wrapper {
+	position: relative;
+}
+
+.red-dot {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 8px;
+	height: 8px;
+	background-color: red;
+	border-radius: 50%;
 }

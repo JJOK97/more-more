@@ -1,29 +1,126 @@
-import '@/assets/css/groupInfo/GroupInfo.css';
-import React, { useState } from 'react';
-import data from './data.json';
-import GroupMember from '@/components/groupInfo/GroupMember.jsx';
+import './GroupInfo.css';
+import React, { useEffect, useState } from 'react';
+import GroupMember from './GroupMember.jsx';
 import InviteModal from './InviteModal';
+import useGroupName from '@/store/useGroupName';
+import { useParams } from 'react-router-dom';
+import { getDatas } from '../feed/getData';
 
 const GroupInfo = () => {
+	const { setGroupName } = useGroupName();
+	const { groupId } = useParams(); // URL에서 groupId를 추출
 	const [isInfoOpen, setIsInfoOpen] = useState(true);
 	const [isMembersOpen, setIsMembersOpen] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
-	const [groupName, setGroupName] = useState('옥냥이네 가족');
-	const [intro, setIntro] = useState('행복한 하루@...');
+	const [groupInfo, setGroupInfo] = useState(null); // 그룹 정보를 저장할 상태
 	const [profileImage, setProfileImage] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	// 그룹 정보를 불러오는 useEffect
+	useEffect(() => {
+		const getGroupInfo = async () => {
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
+				const data = await getDatas(url);
+				console.log(data);
+				setGroupInfo(data); // 가져온 데이터를 상태에 저장
+				setProfileImage(data.clubImage); // 기본 이미지를 설정
+			} catch (error) {
+				console.error('그룹 정보 불러오기 오류:', error);
+			}
+		};
+		getGroupInfo();
+	}, [groupId]);
+
+	// groupInfo가 업데이트될 때, groupName 상태를 업데이트
+	useEffect(() => {
+		if (groupInfo && groupInfo.clubName) {
+			setGroupName(groupInfo.clubName);
+		}
+	}, [groupInfo, setGroupName]);
+
 	const toggleInfo = () => setIsInfoOpen(!isInfoOpen);
 	const toggleMembers = () => setIsMembersOpen(!isMembersOpen);
-	const handleEditToggle = () => setIsEditing(!isEditing);
 
-	const handleImageChange = (e) => {
+	// 모임 이름과 한 줄 소개 저장을 위한 함수
+	const handleSaveGroupInfo = async () => {
+		try {
+			const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
+
+			// 기존 값에서 필요한 데이터 추출
+			const { clubId, dues, clubCode, clubName, clubIntro, createdDate } = groupInfo;
+
+			const response = await fetch(url, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					clubId, // 기존 clubId 유지
+					dues, // 기존 dues 유지
+					clubCode, // 기존 clubCode 유지
+					clubName, // 수정된 clubName 값
+					clubIntro, // clubIntro 포함
+					createdDate, // 기존 생성일 유지
+				}),
+			});
+
+			if (response.ok) {
+				const updatedData = await response.json();
+				console.log('그룹 정보 업데이트 성공:', updatedData);
+				setGroupInfo(updatedData); // 서버에서 반환한 업데이트된 데이터를 상태에 저장
+				setIsEditing(false); // 편집 모드를 비활성화
+			} else {
+				console.error('그룹 정보 업데이트 실패');
+			}
+		} catch (error) {
+			console.error('그룹 정보 업데이트 오류:', error);
+		}
+	};
+
+	// 편집 버튼 토글 핸들러 수정
+	const handleEditToggle = () => {
+		if (isEditing) {
+			handleSaveGroupInfo(); // 편집 모드에서 저장할 때 API 호출
+		} else {
+			setIsEditing(true); // 편집 모드로 전환
+		}
+	};
+
+	// 프로필 이미지를 변경할 때 호출되는 함수
+	const handleImageChange = async (e) => {
 		const file = e.target.files[0];
 		if (file) {
 			const imageUrl = URL.createObjectURL(file);
-			setProfileImage(imageUrl);
+			setProfileImage(imageUrl); // 새 이미지를 미리보기로 설정
+
+			// 서버에 이미지 업로드
+			const formData = new FormData();
+			formData.append('file', file);
+
+			try {
+				const response = await fetch(`https://j11a605.p.ssafy.io/api/club/${groupId}/image`, {
+					method: 'POST',
+					body: formData,
+				});
+				if (response.ok) {
+					const updatedData = await response.json();
+					console.log('이미지 업로드 성공:', updatedData);
+					// 업로드 성공 후 추가적인 처리가 필요하다면 여기서 진행
+				} else {
+					console.error('이미지 업로드 실패');
+				}
+			} catch (error) {
+				console.error('이미지 업로드 오류:', error);
+			}
 		}
 	};
+
+	// ACCEPTED 상태의 멤버 수 계산
+	const acceptedMembers = groupInfo?.participants?.filter((user) => user.acceptanceStatus === 'ACCEPTED');
+
+	// WAITING 상태의 멤버 리스트 구분
+	const waitingMembers = groupInfo?.participants?.filter((user) => user.acceptanceStatus === 'WAITING');
 
 	const openModal = () => setIsModalOpen(true); // 모달 열기
 	const closeModal = () => setIsModalOpen(false); // 모달 닫기
@@ -55,6 +152,7 @@ const GroupInfo = () => {
 			</div>
 
 			<div className="group-info-details">
+				{/* 그룹 정보 */}
 				<div className="group-info-header">
 					<div className="group-info-header-info">모임 정보</div>
 					<div className="group-info-header-actions">
@@ -75,7 +173,7 @@ const GroupInfo = () => {
 					</div>
 				</div>
 
-				{isInfoOpen && (
+				{isInfoOpen && groupInfo && (
 					<div className="group-info-body">
 						<div className="group-info-name">
 							<div className="group-info-name-value">
@@ -83,12 +181,12 @@ const GroupInfo = () => {
 								{isEditing ? (
 									<input
 										type="text"
-										value={groupName}
-										onChange={(e) => setGroupName(e.target.value)}
+										value={groupInfo.clubName}
+										onChange={(e) => setGroupInfo({ ...groupInfo, clubName: e.target.value })}
 										className="group-info-name-input"
 									/>
 								) : (
-									<div className="group-info-name-text">{groupName}</div>
+									<div className="group-info-name-text">{groupInfo.clubName}</div>
 								)}
 							</div>
 						</div>
@@ -98,19 +196,19 @@ const GroupInfo = () => {
 								{isEditing ? (
 									<input
 										type="text"
-										value={intro}
-										onChange={(e) => setIntro(e.target.value)}
+										value={groupInfo.clubIntro}
+										onChange={(e) => setGroupInfo({ ...groupInfo, clubIntro: e.target.value })}
 										className="group-info-intro-input"
 									/>
 								) : (
-									<div className="group-info-intro-text">{intro}</div>
+									<div className="group-info-intro-text">{groupInfo.clubIntro}</div>
 								)}
 							</div>
 						</div>
 						<div className="group-info-start-date">
 							<div className="group-info-start-date-value">
 								<div className="group-info-start-date-label">개설일 :</div>
-								<div className="group-info-start-date-text">2024-09-09</div>
+								<div className="group-info-start-date-text">{groupInfo.createdDate}</div>
 							</div>
 						</div>
 					</div>
@@ -121,7 +219,8 @@ const GroupInfo = () => {
 				<div className="group-info-members-header">
 					<div className="group-info-members-info">
 						<div className="group-info-members-label">모임원</div>
-						<div className="group-info-members-count">{data.users.length}명</div>
+						<div className="group-info-members-count">{acceptedMembers?.length}명</div>{' '}
+						{/* ACCEPTED 멤버 수 */}
 					</div>
 					<div className="group-info-members-actions">
 						{isMembersOpen && (
@@ -143,39 +242,46 @@ const GroupInfo = () => {
 
 				{isMembersOpen && (
 					<div className="group-info-members-list">
-						{/* 일반 멤버 */}
-						{data.users && data.users.length > 0 ? (
-							data.users.map((user) => (
-								<GroupMember
-									key={user.userId}
-									user={user}
-								/>
-							))
-						) : (
-							<div>모임원이 없습니다.</div>
-						)}
-
-						{/* 펜딩 멤버 */}
-						{data.pendings && data.pendings.length > 0 ? (
-							<div className="group-info-pending-invites">
-								<div className="group-info-pending-label">수락 대기</div>
-								{data.pendings.map((pending) => (
+						{/* ACCEPTED 멤버 */}
+						{acceptedMembers?.length > 0 && (
+							<>
+								<div className="group-info-members-list-accepted">모임원 목록</div>
+								{acceptedMembers.map((user) => (
 									<GroupMember
-										key={pending.userId}
-										user={pending}
-										isPending={true}
-										// onApprove={handleApprove}
-										// onReject={handleReject}
+										key={user.userId}
+										userId={user.userId}
+										status={user.acceptanceStatus}
+										groupId={groupId}
 									/>
 								))}
-							</div>
-						) : (
-							<div>수락 대기 중인 멤버가 없습니다.</div>
+							</>
+						)}
+
+						{/* WAITING 멤버 */}
+						{waitingMembers?.length > 0 && (
+							<>
+								<div className="group-info-members-list-waiting">가입 대기</div>
+								{waitingMembers.map((user) => (
+									<GroupMember
+										key={user.userId}
+										userId={user.userId}
+										status={user.acceptanceStatus}
+										groupId={groupId}
+										participantId={user.participantId}
+									/>
+								))}
+							</>
 						)}
 					</div>
 				)}
 			</div>
-			{isModalOpen && <InviteModal onClose={closeModal} />}
+
+			{isModalOpen && (
+				<InviteModal
+					onClose={closeModal}
+					groupId={groupId}
+				/>
+			)}
 		</div>
 	);
 };

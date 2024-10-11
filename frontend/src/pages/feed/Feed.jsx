@@ -2,59 +2,90 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '@/assets/css/feed/Feed.css';
 import PostView from '@/components/postView/PostView';
-import datas from '@/pages/feed/data.json';
 import useGroupName from '@/store/useGroupName';
+import { getDatas } from './getData';
 
 const Feed = () => {
+	const { groupId } = useParams();
+	const [groupInfo, setGroupInfo] = useState(null);
 	const { setGroupName } = useGroupName();
-	const { groupId } = useParams(); // URL에서 groupId를 추출
 	const [posts, setPosts] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		setGroupName(groupId);
-	}, []);
-
-	useEffect(() => {
-		const fetchPosts = () => {
-			// groupId에 해당하는 게시물만 필터링
-			const filteredPosts = datas.posts.filter((post) => post.groupId === parseInt(groupId, 10));
-			setPosts(filteredPosts);
+		const getGroupInfo = async () => {
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
+				const data = await getDatas(url);
+				setGroupInfo(data);
+			} catch (error) {
+				console.error('Error fetching group info:', error);
+			}
 		};
+		getGroupInfo();
+	}, [groupId]);
 
-		fetchPosts();
-	}, [groupId]); // groupId가 변경될 때마다 실행
+	useEffect(() => {
+		if (groupInfo && groupInfo.clubName) {
+			setGroupName(groupInfo.clubName);
+		}
+	}, [groupInfo, setGroupName]);
 
-	if (!posts) {
-		return <div>Loading...</div>;
-	}
+	useEffect(() => {
+		const getAllPosts = async () => {
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
+				const data = await getDatas(url);
+				setPosts(data);
+			} catch (error) {
+				console.error('Error fetching posts:', error);
+			} finally {
+				setTimeout(() => {
+					setLoading(false);
+				}, 250);
+			}
+		};
+		getAllPosts();
+	}, [groupId]);
 
 	return (
-		<div className="group-feed">
-			<img
-				className="group-background-image"
-				src="/feed/회식.webp"
-				alt="배경사진"
-			/>
-			<div className="feed-container">
-				{posts.length > 0 ? (
-					posts.map((post) => (
-						<PostView
-							key={post.postId}
-							post={post}
-						/>
-					))
-				) : (
-					<p>이 그룹에 게시물이 없습니다.</p>
-				)}
+		<>
+			{/* 로딩 컴포넌트는 항상 렌더링하고, loading 상태에 따라 클래스명을 변경합니다 */}
+			<div className={`loading ${!loading ? 'loaded' : ''}`}>
+				<span></span>
+				<span></span>
+				<span></span>
 			</div>
-			<Link to={`/group/${groupId}/create`}>
+
+			{/* 피드 컴포넌트도 항상 렌더링하고, loading 상태에 따라 클래스명을 변경합니다 */}
+			<div className={`group-feed ${!loading ? 'loaded' : ''}`}>
 				<img
-					className="feed-write-btn"
-					src="/feed/edit.svg"
-					alt="글쓰기"
+					className="group-background-image"
+					src={groupInfo && groupInfo.clubImage}
+					alt="배경사진"
 				/>
-			</Link>
-		</div>
+				<div className="feed-container">
+					{posts.length > 0 ? (
+						posts.map((post) => (
+							<PostView
+								key={post.postingId}
+								post={post}
+								commentCount={post.commentCount !== 0 ? post.commentCount : 0}
+							/>
+						))
+					) : (
+						<p>게시물이 없습니다</p>
+					)}
+				</div>
+				<Link to={`/group/${groupId}/create`}>
+					<img
+						className="feed-write-btn"
+						src="/feed/edit.svg"
+						alt="글쓰기"
+					/>
+				</Link>
+			</div>
+		</>
 	);
 };
 

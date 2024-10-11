@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, ErrorMessage, useField } from 'formik';
 
 const Step4 = () => {
-	const [pwdField, pwdMeta] = useField('pwd');
+	const [pwdField, pwdMeta] = useField('password');
 	const [confirmPwdField, confirmPwdMeta] = useField('confirm_pwd');
 
 	return (
@@ -11,16 +11,17 @@ const Step4 = () => {
 			<div className="registration-step-content">
 				<div className="welcome-message">비밀번호를 입력해주세요.</div>
 				<div className="input-group">
-					<label htmlFor="pwd">비밀번호</label>
+					<label htmlFor="password">비밀번호</label>
 					<Field
-						id="pwd"
-						name="pwd"
+						id="password"
+						name="password"
 						placeholder="비밀번호 입력"
 						type="password"
 						className="input-field"
+						value={pwdField.value || ''}
 					/>
 					<ErrorMessage
-						name="pwd"
+						name="password"
 						component="div"
 						className="error-message"
 					/>
@@ -37,6 +38,7 @@ const Step4 = () => {
 						placeholder="비밀번호 확인"
 						type="password"
 						className="input-field"
+						value={confirmPwdField.value || ''}
 					/>
 					<ErrorMessage
 						name="confirm_pwd"

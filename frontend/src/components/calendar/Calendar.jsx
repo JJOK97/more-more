@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar as ReactCalendar } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '@/assets/css/schedule/calendar/calendar.css';
 import moment from 'moment';
 
-function Calendar() {
-	const today = new Date();
+function Calendar({ onSelectDate, onMonthChange, scheduleDates = [] }) {
+	const today = new Date(); // 오늘 날짜
 	const [date, setDate] = useState(today);
-
 	const [activeStartDate, setActiveStartDate] = useState(today);
-
 	const [view, setView] = useState('month');
 
-	const attendDay = ['2024-09-11', '2024-09-06'];
+	useEffect(() => {
+		if (onMonthChange) {
+			onMonthChange(activeStartDate); // 월 변경 시 호출
+		}
+	}, [activeStartDate, onMonthChange]);
 
 	const handleDateChange = (newDate) => {
 		setDate(newDate);
+		if (onSelectDate) {
+			onSelectDate(newDate);
+		}
 	};
 
 	const getButtonText = () => {
@@ -32,6 +37,9 @@ function Calendar() {
 		} else if (view === 'month') {
 			setActiveStartDate(today);
 			setDate(today);
+			if (onSelectDate) {
+				onSelectDate(today);
+			}
 		}
 	};
 
@@ -53,16 +61,17 @@ function Calendar() {
 					setActiveStartDate(activeStartDate);
 					setView(view);
 				}}
-				onViewChange={({ activesStartDate, view }) => {
+				onViewChange={({ activeStartDate, view }) => {
 					setView(view);
+					if (view === 'month') {
+						setActiveStartDate(activeStartDate);
+					}
 				}}
 				tileContent={({ date, view }) => {
 					let html = [];
-					if (
-						view === 'month' &&
-						date.getMonth() === today.getMonth() &&
-						date.getDate() === today.getDate()
-					) {
+
+					// 오늘 날짜에는 도트 표시하지 않고 "오늘" 표시만
+					if (view === 'month' && moment(date).isSame(today, 'day')) {
 						html.push(
 							<div
 								key="today"
@@ -72,7 +81,8 @@ function Calendar() {
 							</div>,
 						);
 					}
-					if (attendDay.includes(moment(date).format('YYYY-MM-DD'))) {
+					// 거래 내역이 있는 날짜에 도트 표시 (오늘은 제외)
+					else if (view === 'month' && scheduleDates.includes(moment(date).format('YYYY-MM-DD'))) {
 						html.push(
 							<div
 								key={moment(date).format('YYYY-MM-DD')}
@@ -80,6 +90,7 @@ function Calendar() {
 							/>,
 						);
 					}
+
 					return <>{html}</>;
 				}}
 			/>

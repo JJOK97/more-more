@@ -18,7 +18,7 @@ const Step8 = () => {
 					<Field
 						id="birth_date"
 						name="birth_date"
-						placeholder="yymmdd"
+						placeholder="yyyy-mm-dd"
 						type="text"
 						className="input-field"
 					/>

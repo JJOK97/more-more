@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import '@/assets/css/common/groupFooter.css';
 
@@ -10,27 +11,55 @@ import calendarOn from '@/assets/img/common/groupFooter/calendar-on.svg';
 import calendarOff from '@/assets/img/common/groupFooter/calendar-off.svg';
 import settingOn from '@/assets/img/common/groupFooter/setting-on.svg';
 import settingOff from '@/assets/img/common/groupFooter/setting-off.svg';
-import { useLocation } from 'react-router-dom';
 
 const Footer = () => {
+	const navigate = useNavigate();
 	const location = useLocation();
+
 	if (
-		location.pathname === '/' ||
-		location.pathname == '/login' ||
-		location.pathname == '/signup' ||
-		location.pathname == '/group/:groupId/account/transfer' ||
-		location.pathname == '/group/:groupId/account/transfer-question' ||
-		location.pathname == '/group/:groupId/account/transfer-check'
-	)
+		['/', '/login', '/signup', '/profile', '/notice', '/create'].includes(location.pathname) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/transfer/) ||
+		location.pathname.match(/^\/group\/[^\/]+\/account\/withdrawal/)
+	) {
 		return null;
+	}
+
+	const isAccountActive = /^\/group\/[^\/]+\/account(\/.*)?$/.test(location.pathname);
+	const isCalendarActive = /^\/group\/[^\/]+\/schedule(\/.*)?$/.test(location.pathname);
+	const isSettingActive = /^\/group\/[^\/]+\/info(\/.*)?$/.test(location.pathname);
+	const isBoardActive =
+		/^\/group\/[^\/]+(\/.*)?$/.test(location.pathname) && !isAccountActive && !isCalendarActive && !isSettingActive;
+
+	const handleNavigation = (path) => {
+		const groupId = location.pathname.split('/')[2]; // 그룹 ID 추출
+		if (groupId) {
+			navigate(path.replace(':groupId', groupId));
+		}
+	};
 
 	return (
 		<footer>
 			<div className="navbar">
-				<img src={boardOff}></img>
-				<img src={accountOff}></img>
-				<img src={calendarOff}></img>
-				<img src={settingOff}></img>
+				<img
+					src={isBoardActive ? boardOn : boardOff}
+					alt="Board"
+					onClick={() => handleNavigation('/group/:groupId')}
+				/>
+				<img
+					src={isAccountActive ? accountOn : accountOff}
+					alt="Account"
+					onClick={() => handleNavigation('/group/:groupId/account')}
+				/>
+				<img
+					src={isCalendarActive ? calendarOn : calendarOff}
+					alt="Calendar"
+					onClick={() => handleNavigation('/group/:groupId/schedule')}
+				/>
+				<img
+					src={isSettingActive ? settingOn : settingOff}
+					alt="Setting"
+					onClick={() => handleNavigation('/group/:groupId/info')}
+				/>
 			</div>
 		</footer>
 	);

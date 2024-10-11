@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { registerMember } from '@/api/userAPI';
+
+import '@/assets/css/registerAccount/Account.css';
+
+import arrowleft from '@/assets/img/common/arrow-left.svg';
+
 import RegisterAccountStep1 from '@/components/register/AccountStep1';
 import RegisterAccountStep2 from '@/components/register/AccountStep2';
 import RegisterAccountStep3 from '@/components/register/AccountStep3';
+import RegisterAccountStep4 from '@/components/register/AccountStep4';
+import RegisterAccountStep5 from '@/components/register/AccountStep5';
 
 const validationSchemas = [
 	Yup.object({
@@ -15,57 +24,90 @@ const validationSchemas = [
 			.required('계좌 번호는 필수 입력 항목입니다.'),
 	}),
 	Yup.object({
-		name: Yup.string().required('이름은 필수 입력 항목입니다.'),
+		member_name: Yup.string().required('이름은 필수 입력 항목입니다.'),
 		phone_number: Yup.string()
-			.matches(/^01[0-9]-\d{3,4}-\d{4}$/, '유효한 휴대폰 번호를 입력하세요.')
+			.matches(/^01[0|1|6|7|8|9]-?\d{3,4}-?\d{4}$/, '유효한 휴대폰 번호를 입력하세요.')
 			.required('휴대폰 번호는 필수 입력 항목입니다.'),
+	}),
+	Yup.object({
+		verification_code: Yup.string()
+			.matches(/^\d{4}$/, '인증번호는 4자리 숫자로 입력해야 합니다.')
+			.required('인증번호는 필수 입력 항목입니다.'),
 	}),
 ];
 
 const RegisterAccount = () => {
 	const [step, setStep] = useState(0);
+	const location = useLocation();
+	const navigate = useNavigate();
+	const userData = location.state?.userData || {};
 
-	const userValues = {
+	const initialValues = {
+		...userData,
 		bank: '',
 		account_number: '',
-		name: '',
-		phone_number: '',
+		member_name: userData.member_name || '',
+		verification_code: '',
 	};
 
-	const handleNext = () => setStep((prevStep) => prevStep + 1);
-	const handlePrevious = () => setStep((prevStep) => prevStep - 1);
+	const handlePrevious = () => {
+		if (step === 0) {
+			if (location.state?.from) {
+				// location.state에 저장된 이전 경로가 있을 경우
+				navigate(location.state.from);
+			} else {
+				// 이전 경로가 없다면 기본적으로 브라우저 이전 페이지로 이동
+				navigate(-1);
+			}
+		} else {
+			setStep((prevStep) => prevStep - 1);
+		}
+	};
+
+	const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+		if (step < validationSchemas.length - 1) {
+			setStep((prevStep) => prevStep + 1);
+		} else {
+			try {
+				const response = await registerMember(values);
+				console.log('회원가입 성공:', response);
+				navigate('/login');
+			} catch (error) {
+				console.error('회원가입 실패:', error);
+				setFieldError('submit', '회원가입에 실패했습니다. 다시 시도해 주세요.');
+			}
+		}
+		setSubmitting(false);
+	};
 
 	return (
-		<div>
+		<div className="signup-container">
 			<Formik
-				initialValues={userValues}
+				initialValues={initialValues}
 				validationSchema={validationSchemas[step]}
-				onSubmit={(values) => {
-					if (step === validationSchemas.length - 1) {
-						console.log('Form Data:', values); // 최종 제출
-					} else {
-						handleNext();
-					}
-				}}
+				onSubmit={handleSubmit}
 			>
-				{({ values }) => (
-					<Form>
+				{({ isSubmitting }) => (
+					<Form className="signup-form">
 						{step === 0 && <RegisterAccountStep1 />}
 						{step === 1 && <RegisterAccountStep2 />}
 						{step === 2 && <RegisterAccountStep3 />}
+						{step === 3 && <RegisterAccountStep4 setStep={setStep} />}
+						{step === 4 && <RegisterAccountStep5 />}
 
-						<div className="nav-buttons">
-							{step > 0 && (
-								<button
-									type="button"
-									onClick={handlePrevious}
-								>
-									이전
-								</button>
-							)}
-							<button type="submit">{step === validationSchemas.length - 1 ? '완료' : '다음'}</button>
+						<div className="signup-nav-button">
+							<img
+								src={arrowleft}
+								onClick={handlePrevious}
+								alt="Previous"
+							/>
+							<button
+								type="submit"
+								disabled={isSubmitting}
+							>
+								{step === validationSchemas.length - 1 ? '로그인하러 가기' : '다음으로'}
+							</button>
 						</div>
-						<pre>{JSON.stringify(values, null, 2)}</pre>
 					</Form>
 				)}
 			</Formik>
