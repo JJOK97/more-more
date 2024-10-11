@@ -71,4 +71,18 @@ public class MemberServicelmpl implements MemberService{
     public String findName(String accountNumber) {
         return memberRepository.findByAccountNumber(accountNumber);
     }
+
+    @Override
+    public Boolean checkByAccountNumber(String accountNumber) { return memberRepository.checkAccount(accountNumber);
+    }
+
+    @Override
+    public void updateFcmToken(Long memberId, String fcmToken) {
+        memberRepository.updateFcmToken(memberId, fcmToken);
+    }
+
+    @Override
+    public String getFcmTokenByMemberId(Long memberId) {
+        return memberRepository.getFcmTokenByMemberId(memberId);
+    }
 }

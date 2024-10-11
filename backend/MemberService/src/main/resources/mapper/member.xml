@@ -72,5 +72,25 @@
         WHERE account_number = #{accountNumber}
     </select>
 
+    <select id="checkAccount" resultType="Boolean" parameterType="String">
+        SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+        FROM members
+        WHERE account_number = #{accountNumber}
+    </select>
+
+
+    <update id="updateFcmToken">
+        UPDATE members
+        SET fcm_token = #{fcmToken}
+        WHERE member_id = #{memberId}
+    </update>
+
+    <select id="getFcmTokenByMemberId" resultType="String">
+        SELECT fcm_token
+        FROM members
+        WHERE member_id = #{memberId}
+    </select>
+
+
 
 </mapper>

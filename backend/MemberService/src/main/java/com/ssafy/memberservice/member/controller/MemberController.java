@@ -121,10 +121,34 @@ public class MemberController {
     }
 
     @GetMapping("/{ssafyAccountNumber}/account")
+    @Operation(summary = "계좌번호로 이름조회", description = "계좌번호로 이름 조회하는 api")
     String getMemberByAccountNumber(@PathVariable("ssafyAccountNumber") String accountNumber) {
         return memberService.findName(accountNumber);
-
     };
+
+    @GetMapping("/{ssafyAccountNumber}/existence")
+    @Operation(summary = "계좌번호가 존재 하는지 확인", description = "계좌번호로 이름 조회하는 api")
+    Boolean checkAccount(@PathVariable("ssafyAccountNumber") String accountNumber) {
+        return memberService.checkByAccountNumber(accountNumber);
+    };
+
+    @PutMapping("/{memberId}/fcm-token")
+    @Operation(summary = "fcm토큰 발급 api", description = "프론트가 준 fcm 토큰을 db에 넣어줌")
+    public ResponseEntity<String> updateFcmToken(@PathVariable("memberId") Long memberId, @RequestParam("fcmToken") String fcmToken) {
+        memberService.updateFcmToken(memberId, fcmToken);
+        return new ResponseEntity<>("OK", HttpStatus.OK); // 성공 시 OK 반환
+    };
+
+    @GetMapping("{memberId}/fcm-token")
+    @Operation(summary = "memberId로 fcm토큰 조회", description = "memberid로 fcm token 조회하는 api")
+    public String getFcmTokenByUserId(@PathVariable("memberId") Long memberId) {
+        return memberService.getFcmTokenByMemberId(memberId);
+    }
+
+
+
+
+
 
 
 
