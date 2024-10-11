@@ -16,6 +16,7 @@
 	font-weight: 700;
 	font-size: 1rem;
 	margin: 1rem;
+	width: 100%;
 }
 
 .dues-group-member-status input {
@@ -38,6 +39,7 @@
 	height: 15rem;
 	overflow-y: scroll;
 	padding-right: 1rem;
+	align-items: flex-start;
 }
 
 .dues-one-member {
@@ -115,12 +117,14 @@
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 1.25rem;
 	padding: 2rem;
+	width: 100%;
 }
 
 .dues-group-member-status-area {
 	height: 55vh;
 	display: flex;
 	align-items: flex-end;
+	height: 95%;
 }
 
 .dues-member-gather-count {
@@ -151,6 +155,11 @@
 	height: 35vh;
 	display: flex;
 	justify-content: center;
+	width: 95%;
+}
+
+.deposit-payment-area {
+	width: 100%;
 }
 
 .dues-payment {
@@ -207,7 +216,8 @@
 .deposit-detail-one {
 	display: flex;
 	flex-direction: column;
-	margin: 1rem;
+	width: 100%;
+	margin: 1rem 0;
 }
 
 .deposit-detail-container {
@@ -337,10 +347,13 @@
 	padding-bottom: 2rem;
 	box-shadow: 0px 4px 4px rgba(55, 54, 54, 0.5);
 	margin-top: 1rem;
+	justify-content: space-around;
+	height: 50vh;
 }
 
 .bill-area img {
-	max-width: 70%;
+	max-height: 70%;
+	width: 90%;
 	margin-bottom: 1rem;
 }
 
@@ -868,12 +881,10 @@ button.new-transfer-button:hover {
 }
 
 .deposit-list-place-price {
-	margin: 0 1rem;
 	margin-bottom: 0.3rem;
 }
 
 .deposit-list-time-balance {
-	margin: 0 1rem;
 	margin-bottom: 0.3rem;
 }
 
@@ -882,4 +893,11 @@ button.new-transfer-button:hover {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.deposit-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
 }

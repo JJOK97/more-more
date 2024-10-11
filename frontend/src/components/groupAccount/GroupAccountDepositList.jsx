@@ -6,8 +6,6 @@ import { getAccountHistories } from '@/api/accountAPI';
 import moment from 'moment';
 
 const GroupAccountDepositList = ({ selectedDate, searchTerm, onTagClick, onClose }) => {
-	console.log('GroupAccountDepositList - onTagClick: ', onTagClick); // 로그 추가
-	console.log('GroupAccountDepositList - onClose: ', onClose); // 로그 추가
 	const [accountHistories, setAccountHistories] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const { groupId } = useParams();
@@ -64,29 +62,34 @@ const GroupAccountDepositList = ({ selectedDate, searchTerm, onTagClick, onClose
 				<div className="none-text-area">해당 날짜에 거래 내역이 없습니다.</div>
 			)}
 			{filteredHistories.map((item, index) => (
-				<DepositDetailOne
+				<div
+					className="deposit-container"
 					key={index}
-					id={item.accountHistoryId}
-					paymentData={item.paymentData}
-					paymentAmount={item.paymentAmount}
-					date={item.accountDate}
-					time={item.accountTime}
-					balance={item.accountBalance}
-					paymentType={item.paymentType}
-					searchTerm={searchTerm} // 검색어 전달
-					tagName={item.tagName}
 					onClick={() => {
 						console.log('Tag clicked in GroupAccountDepositList: ', item.tagName);
-						console.log('onTagClick:', onTagClick);
-						console.log('onClose:', onClose);
-						onTagClick(item.tagName);
-						console.log('Tag clicked after onTagClick');
-						onClose();
-						console.log('Tag clicked before checkVerification');
+						if (onTagClick) {
+							onTagClick(item.tagName);
+						}
+						if (onClose) {
+							onClose();
+						}
 						checkVerification(item.tagName);
 					}}
-				/>
+				>
+					<DepositDetailOne
+						id={item.accountHistoryId}
+						paymentData={item.paymentData}
+						paymentAmount={item.paymentAmount}
+						date={item.accountDate}
+						time={item.accountTime}
+						balance={item.accountBalance}
+						paymentType={item.paymentType}
+						searchTerm={searchTerm}
+						tagName={item.tagName}
+					/>
+				</div>
 			))}
+
 			{loading && <div>Loading...</div>}
 		</div>
 	);

@@ -12,7 +12,6 @@ const AddTagModal = ({ onClose }) => {
 
 	const handleTagClick = (tagName) => {
 		setTagName(tagName);
-		console.log('Tag clicked: ', tagName);
 		onClose();
 	};
 
