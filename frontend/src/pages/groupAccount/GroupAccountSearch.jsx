@@ -6,6 +6,7 @@ import useGroupName from '@/store/useGroupName';
 import { useParams } from 'react-router-dom';
 import { getAccountHistoriesByMonth } from '@/api/accountAPI'; // API 호출 임포트
 import moment from 'moment';
+import { getDatas } from '../feed/getData';
 
 const GroupAccountSearch = () => {
 	const { setGroupName } = useGroupName();
@@ -38,8 +39,17 @@ const GroupAccountSearch = () => {
 	};
 
 	useEffect(() => {
-		setGroupName(groupId);
-	}, [groupId, setGroupName]);
+		const getGroupInfo = async () => {
+			try {
+				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
+				const data = await getDatas(url);
+				setGroupInfo(data);
+			} catch (error) {
+				console.error('Error fetching group info:', error);
+			}
+		};
+		getGroupInfo();
+	}, [groupId]);
 
 	return (
 		<div className="group-account-search-area">
