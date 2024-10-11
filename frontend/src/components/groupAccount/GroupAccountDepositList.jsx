@@ -5,7 +5,9 @@ import { useParams } from 'react-router-dom';
 import { getAccountHistories } from '@/api/accountAPI';
 import moment from 'moment';
 
-const GroupAccountDepositList = ({ selectedDate, searchTerm }) => {
+const GroupAccountDepositList = ({ selectedDate, searchTerm, onTagClick, onClose }) => {
+	console.log('GroupAccountDepositList - onTagClick: ', onTagClick); // 로그 추가
+	console.log('GroupAccountDepositList - onClose: ', onClose); // 로그 추가
 	const [accountHistories, setAccountHistories] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const { groupId } = useParams();
@@ -15,7 +17,6 @@ const GroupAccountDepositList = ({ selectedDate, searchTerm }) => {
 		setLoading(true);
 		try {
 			const data = await getAccountHistories(groupId);
-
 			setAccountHistories(data); // 받아온 데이터를 설정
 		} catch (e) {
 			console.error('Error fetching account history:', e);
@@ -28,6 +29,22 @@ const GroupAccountDepositList = ({ selectedDate, searchTerm }) => {
 	useEffect(() => {
 		fetchAccountHistories();
 	}, [fetchAccountHistories]);
+
+	const checkVerification = async (tagName) => {
+		try {
+			console.log('여기 tagName: ', tagName);
+			const response = await fetch(`https://j11a605.p.ssafy.io/api/account/${tagName}/isverificationin`, {
+				method: 'POST',
+			});
+			if (response.ok) {
+				console.log(`Verification check for ${tagName} was successful`);
+			} else {
+				console.error(`Verification check for ${tagName} failed. Status: ${response.status}`);
+			}
+		} catch (error) {
+			console.error(`Error during verification check for ${tagName}: `, error);
+		}
+	};
 
 	// 날짜 및 검색어에 맞게 거래 내역 필터링 (selectedDate가 있을 때만 필터링)
 	const filteredHistories = accountHistories
@@ -56,6 +73,16 @@ const GroupAccountDepositList = ({ selectedDate, searchTerm }) => {
 					paymentType={item.paymentType}
 					searchTerm={searchTerm} // 검색어 전달
 					tagName={item.tagName}
+					onClick={() => {
+						console.log('Tag clicked in GroupAccountDepositList: ', item.tagName);
+						console.log('onTagClick:', onTagClick);
+						console.log('onClose:', onClose);
+						onTagClick(item.tagName);
+						console.log('Tag clicked after onTagClick');
+						onClose();
+						console.log('Tag clicked before checkVerification');
+						checkVerification(item.tagName);
+					}}
 				/>
 			))}
 			{loading && <div>Loading...</div>}
