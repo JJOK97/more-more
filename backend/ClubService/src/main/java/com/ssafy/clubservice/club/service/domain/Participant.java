@@ -2,13 +2,11 @@ package com.ssafy.clubservice.club.service.domain;
 
 import com.ssafy.clubservice.club.enumeration.AcceptanceStatus;
 import com.ssafy.clubservice.club.enumeration.ClubRole;
-import com.ssafy.clubservice.global.error.ErrorCode;
 import com.ssafy.clubservice.global.error.exception.NoSuchAcceptanceStatusException;
 import com.ssafy.clubservice.global.error.exception.NoSuchClubRoleException;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -65,4 +63,8 @@ public class Participant {
         return true;
     }
 
+    public Participant rejectParticipant() {
+        this.acceptanceStatus = AcceptanceStatus.REFUSED;
+        return this;
+    }
 }

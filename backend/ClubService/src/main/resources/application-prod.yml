@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      name: actuator-common,aws-common,db-common,logging-common
+  config:
+    import: "optional:configserver:http://config-server.config"
+
+aws:
+  club-image:
+    prefix: club/
+
+mybatis:
+  type-aliases-package: com.ssafy.clubservice.*.infrastructure.repository.entity

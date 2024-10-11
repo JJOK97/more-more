@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.postingservice.posting.infrastructure.repository.PostingMybatisMapper">
+    <insert id="save" parameterType="PostingEntity" useGeneratedKeys="true" keyProperty="postingId">
+        insert into posting (member_id, account_history_tag, club_code, posting_content)
+        values(#{memberId}, #{accountHistoryTag}, #{clubCode}, #{postingContent});
+    </insert>
+
+    <select id="findByClubCode" resultType="com.ssafy.postingservice.posting.infrastructure.repository.entity.PostingEntity" parameterType="string">
+        SELECT p.posting_id,
+        p.member_id,
+        p.account_history_tag,
+        p.club_code,
+        p.posting_content,
+        p.posting_created_time,
+        COUNT(c.comment_id) AS comment_count
+        FROM posting p
+        LEFT JOIN comment c ON p.posting_id = c.posting_id
+        WHERE p.club_code = #{clubCode}
+        GROUP BY p.posting_id,
+        p.member_id,
+        p.account_history_tag,
+        p.club_code,
+        p.posting_content,
+        p.posting_created_time
+        ORDER BY p.posting_id DESC;
+    </select>
+
+    <select id="findByPostingId" parameterType="Long" resultType="com.ssafy.postingservice.posting.infrastructure.repository.entity.PostingEntity">
+        SELECT posting_id AS postingId,
+               member_id AS memberId,
+               account_history_tag AS accountHistoryTag,
+               club_code AS clubCode,
+               posting_content AS postingContent,
+               posting_created_time AS postingCreatedTime,
+               (SELECT COUNT(*) FROM comment WHERE posting_id = #{postingId}) AS commentCount
+        FROM posting
+        WHERE posting_id = #{postingId}
+    </select>
+
+    <update id="updatePosting" parameterType="PostingOneEntity">
+        UPDATE posting
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId},
+            </if>
+            <if test="accountHistoryTag != null">
+                account_history_tag = #{accountHistoryTag},
+            </if>
+            <if test="clubCode != null">
+                club_code = #{clubCode},
+            </if>
+            <if test="postingContent != null">
+                posting_content = #{postingContent},
+            </if>
+            <if test="postingCreatedTime != null">
+                posting_created_time = #{postingCreatedTime},
+            </if>
+        </set>
+        WHERE posting_id = #{postingId}
+    </update>
+
+    <delete id="deleteByPostingId" parameterType="Long">
+        DELETE FROM posting
+        WHERE posting_id = #{postingId}
+    </delete>
+
+    <select id="searchPostsByClubCodeAndKeyword" resultType="com.ssafy.postingservice.posting.infrastructure.repository.entity.PostingEntity">
+        SELECT DISTINCT p.posting_id AS postingId,
+                        p.member_id AS memberId,
+                        p.account_history_tag AS accountHistoryTag,
+                        p.club_code AS clubCode,
+                        p.posting_content AS postingContent,
+                        p.posting_created_time AS postingCreatedTime,
+                        (SELECT COUNT(*)
+                         FROM comment c
+                         WHERE c.posting_id = p.posting_id) AS commentCount
+        FROM posting p
+        WHERE p.club_code = #{clubCode}
+          AND (p.posting_content LIKE CONCAT('%', #{keyword}, '%')
+            OR p.account_history_Tag LIKE CONCAT('%', #{keyword}, '%'))
+        ORDER BY p.posting_id DESC;
+    </select>
+
+</mapper>

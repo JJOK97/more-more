@@ -5,4 +5,5 @@ include 'AccountService',
         'MemberService',
         'NotificationService',
         'PostingService',
-        'ScheduleService'
+        'ScheduleService',
+        'ConfigServer'

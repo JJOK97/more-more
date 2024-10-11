@@ -6,7 +6,7 @@ import java.util.List;
 public class PostingUpdateResponse {
 
     private Long memberId;
-    private Long accountHistoryId;
+    private String accountHistoryTag;
     private String postingContent;
     private List<String> imageUrls;
 

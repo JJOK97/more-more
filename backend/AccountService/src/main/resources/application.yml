@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: account-service
+  profiles:
+    active:
+      - locl
+server:
+  port: 80

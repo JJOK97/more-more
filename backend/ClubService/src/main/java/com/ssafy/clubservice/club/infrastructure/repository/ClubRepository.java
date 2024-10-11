@@ -1,6 +1,7 @@
 package com.ssafy.clubservice.club.infrastructure.repository;
 
 import com.ssafy.clubservice.club.service.domain.Club;
+import com.ssafy.clubservice.club.service.domain.Participant;
 
 import java.util.List;
 

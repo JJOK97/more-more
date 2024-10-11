@@ -8,10 +8,14 @@ import com.ssafy.postingservice.posting.infrastructure.repository.CommentReposit
 import com.ssafy.postingservice.posting.infrastructure.repository.PostImageRepository;
 import com.ssafy.postingservice.posting.infrastructure.repository.PostingRepository;
 import com.ssafy.postingservice.posting.infrastructure.repository.entity.PostImageEntity;
+import com.ssafy.postingservice.posting.infrastructure.repository.entity.PostingEntity;
 import com.ssafy.postingservice.posting.infrastructure.s3.S3Connector;
 import com.ssafy.postingservice.posting.mapper.PostingObjectMapper;
 import com.ssafy.postingservice.posting.service.domain.Comment;
 import com.ssafy.postingservice.posting.service.domain.Posting;
+import com.ssafy.postingservice.posting.controller.dto.request.*;
+import com.ssafy.postingservice.posting.controller.dto.response.*;
+import com.ssafy.postingservice.global.member.MemberClient;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +32,7 @@ public class PostingServiceImpl implements PostingService {
     private final S3Connector s3Connector;
     private final PostImageRepository postImageRepository;
     private final CommentRepository commentRepository;
-
+    private final MemberClient memberClient;
 
 
     public Posting create(Posting posting, MultipartFile[] files){
@@ -40,8 +44,6 @@ public class PostingServiceImpl implements PostingService {
                 // 난수를 사용하여 파일 이름 생성 (postingId + UUID)
                 String randomString = UUID.randomUUID().toString();  // 난수 생성
                 String fileName = savedPosting.getPostingId() + "_" + randomString;
-
-                System.out.println(fileName);
 
                 // S3에 파일 업로드 (파일 이름으로 저장)
                 s3Connector.upload(fileName, file);
@@ -78,15 +80,16 @@ public class PostingServiceImpl implements PostingService {
 
         for (Posting posting : postings) {
             Long postingId = posting.getPostingId();
+            Long memberId = posting.getMemberId();  // 각 게시물의 memberId 가져오기
 
-
+            // Feign Client를 통해 Member 서비스에서 회원 정보 가져오기
+            MemberGetResponse memberInfo = memberClient.getMember(memberId);
 
             // 각 게시물의 이미지 URL 목록을 가져옵니다.
             List<String> imageUrls = postImageRepository.findByPostingId(postingId)
                     .stream()
                     .map(PostImageEntity::getPostImageUrl)
                     .collect(Collectors.toList());
-
 
 
             // PostingGetAllResponse 객체 생성
@@ -101,6 +104,9 @@ public class PostingServiceImpl implements PostingService {
             // 이미지 URL 리스트 추가
             postingGetAllResponse.setImageUrls(imageUrls);
 
+            // Member 정보 추가
+            postingGetAllResponse.setMemberInfo(memberInfo);
+
             postingGetAllResponses.add(postingGetAllResponse);
         }
 
@@ -109,7 +115,6 @@ public class PostingServiceImpl implements PostingService {
 
     @Override
     public PostingGetResponse findByPostId(Long postingId) {
-
         // 각 게시물의 이미지 URL 목록을 가져옵니다.
         List<String> imageUrls = postImageRepository.findByPostingId(postingId)
                 .stream()
@@ -120,9 +125,9 @@ public class PostingServiceImpl implements PostingService {
 
         // 이미지 URL 리스트 추가
         postingGetResponse.setImageUrls(imageUrls);
-        List<Comment> comments= commentRepository.getComment(postingId);
+        List<CommentFindResponse> comments= commentRepository.getComment(postingId);
+        postingGetResponse.setMemberInfo(memberClient.getMember(postingGetResponse.getMemberId()));
         postingGetResponse.setComments(comments);
-
         return postingGetResponse;
     }
 
@@ -137,8 +142,8 @@ public class PostingServiceImpl implements PostingService {
         }
 
         // 3. accountHistoryId 수정 처리
-        if (postingUpdateRequest.getAccountHistoryId() != null) {
-            existingPosting.setAccountHistoryId(postingUpdateRequest.getAccountHistoryId());
+        if (postingUpdateRequest.getAccountHistoryTag() != null) {
+            existingPosting.setAccountHistoryTag(postingUpdateRequest.getAccountHistoryTag());
         }
 
 
@@ -197,6 +202,58 @@ public class PostingServiceImpl implements PostingService {
 
 
 
+    }
+
+    @Override
+    public List<PostingGetAllResponse> searchByClubCodeAndKeyword(String clubCode, String keyword) {
+
+
+        List<Posting> postings = postingRepository.searchPostsByClubCodeAndKeyword(clubCode, keyword);
+
+        if (postings.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<Long> postingIds = postings.stream()
+                .map(Posting::getPostingId)
+                .collect(Collectors.toList());
+
+        Map<Long, Long> likeCounts = likeService.getLikeCountsForPostings(postingIds);
+
+        List<PostingGetAllResponse> postingGetAllResponses = new ArrayList<>();
+
+        for (Posting posting : postings) {
+            Long postingId = posting.getPostingId();
+            Long memberId = posting.getMemberId();  // 각 게시물의 memberId 가져오기
+
+            // Feign Client를 통해 Member 서비스에서 회원 정보 가져오기
+            MemberGetResponse memberInfo = memberClient.getMember(memberId);
+
+            // 각 게시물의 이미지 URL 목록을 가져옵니다.
+            List<String> imageUrls = postImageRepository.findByPostingId(postingId)
+                    .stream()
+                    .map(PostImageEntity::getPostImageUrl)
+                    .collect(Collectors.toList());
+
+
+            // PostingGetAllResponse 객체 생성
+            PostingGetAllResponse postingGetAllResponse = postingObjectMapper.fromDomainToPostingGetAllResponse(posting);
+
+            // 좋아요 수 처리
+            postingGetAllResponse.setLikeCount(likeCounts.getOrDefault(postingId, 0L));
+
+            // 댓글 수는 이제 posting에서 직접 가져옴
+            postingGetAllResponse.setCommentCount(posting.getCommentCount());
+
+            // 이미지 URL 리스트 추가
+            postingGetAllResponse.setImageUrls(imageUrls);
+
+            // Member 정보 추가
+            postingGetAllResponse.setMemberInfo(memberInfo);
+
+            postingGetAllResponses.add(postingGetAllResponse);
+        }
+
+        return postingGetAllResponses;
     }
 
 

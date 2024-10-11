@@ -2,7 +2,7 @@ package com.ssafy.clubservice.club.infrastructure.repository;
 
 
 import com.ssafy.clubservice.club.infrastructure.repository.entity.ParticipantEntity;
-import com.ssafy.clubservice.club.mapper.ParticipantObjectMapper;
+import com.ssafy.clubservice.club.mapper.CustomObjectMapper;
 import com.ssafy.clubservice.club.service.domain.Participant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -13,23 +13,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ParticipantRepositoryImpl implements ParticipantRepository {
     private final ParticipantMybatisMapper participantMybatisMapper;
-    private final ParticipantObjectMapper participantObjectMapper;
+    private final CustomObjectMapper customObjectMapper;
 
     @Override
     public List<Participant> addMember(String clubCode, List<Participant> participants) {
-        List<ParticipantEntity> participantEntities = participantObjectMapper.fromDomainToEntity(participants);
+        List<ParticipantEntity> participantEntities = customObjectMapper.fromParticipantDomainsToEntities(participants);
         participantMybatisMapper.saveMembers(participantEntities);
         return findParticipantsInUserId(clubCode, participantEntities.stream().map(ParticipantEntity::getUserId).toList());
     }
 
     @Override
     public List<Participant> findParticipantsInUserId(String clubCode, List<Long> userId) {
-        return participantObjectMapper.fromEntityToDomain(participantMybatisMapper.findParticipantsInUserId(clubCode, userId));
+        return customObjectMapper.fromParticipantEntitiesToDomains(participantMybatisMapper.findParticipantsInUserId(clubCode, userId));
     }
 
     @Override
     public List<Participant> findParticipants(String clubCode) {
-        return participantObjectMapper.fromEntityToDomain(participantMybatisMapper.findParticipantsInUserId(clubCode, null));
+        return customObjectMapper.fromParticipantEntitiesToDomains(participantMybatisMapper.findParticipantsInUserId(clubCode, null));
+    }
+
+    @Override
+    public Participant acceptParticipant(String clubCode, String participantId) {
+        participantMybatisMapper.updateAcceptanceStatus(clubCode, participantId);
+        return customObjectMapper.fromEntityToDomain(participantMybatisMapper.findByParticipantId(participantId));
+    }
+
+    @Override
+    public Participant rejectParticipant(String clubCode, String participantId) {
+        ParticipantEntity participantEntity = participantMybatisMapper.findByParticipantId(participantId);
+        participantMybatisMapper.removeParticipant(clubCode, participantId);
+        return customObjectMapper.fromEntityToDomain(participantEntity);
     }
 
 

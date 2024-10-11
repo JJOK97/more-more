@@ -16,7 +16,6 @@ class ParticipantTest {
     @DisplayName("관리자를 생성 시 모임에 바로 참여되며, 역할은 Creator가 부여된다.")
     void createCreator() {
         Participant creator = Participant.createClubCreator("test", 1L);
-
         assertThat(creator.getClubCode()).isEqualTo("test");
         assertThat(creator.getUserId()).isEqualTo(1L);
         assertThat(creator.getClubRole()).isEqualTo(ClubRole.CREATOR);
@@ -24,14 +23,25 @@ class ParticipantTest {
     }
 
     @Test
-    @DisplayName("참여자를 생성 시 대기 상태가 되며, 역할느 Participant가 부여된다.")
+    @DisplayName("참여자를 생성 시 대기 상태가 되며, 역할은 Participant가 부여된다.")
     void createParticipant() {
-        Participant creator = Participant.createClubParticipant("test", 1L);
+        Participant participant = Participant.createClubParticipant("test", 1L);
 
-        assertThat(creator.getClubCode()).isEqualTo("test");
-        assertThat(creator.getUserId()).isEqualTo(1L);
-        assertThat(creator.getClubRole()).isEqualTo(ClubRole.PARTICIPANT);
-        assertThat(creator.getAcceptanceStatus()).isEqualTo(AcceptanceStatus.WAITING);
+        assertThat(participant.getClubCode()).isEqualTo("test");
+        assertThat(participant.getUserId()).isEqualTo(1L);
+        assertThat(participant.getClubRole()).isEqualTo(ClubRole.PARTICIPANT);
+        assertThat(participant.getAcceptanceStatus()).isEqualTo(AcceptanceStatus.WAITING);
+    }
+
+    @Test
+    @DisplayName("참여자 거절 시 참여자의 상태는 REFUSED가 된다.")
+    void rejectParticipant(){
+        Participant participant = Participant.createClubParticipant("test", 1L);
+        participant.rejectParticipant();
+        assertThat(participant.getClubCode()).isEqualTo("test");
+        assertThat(participant.getUserId()).isEqualTo(1L);
+        assertThat(participant.getClubRole()).isEqualTo(ClubRole.PARTICIPANT);
+        assertThat(participant.getAcceptanceStatus()).isEqualTo(AcceptanceStatus.REFUSED);
     }
 
     @Test

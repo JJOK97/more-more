@@ -18,4 +18,6 @@ public interface PostingService {
     PostingGetResponse updatePostingById(Long postingId, PostingUpdateRequest postingUpdateRequest);
 
     void PostingDeleteByPostId(Long postingId);
+
+    List<PostingGetAllResponse> searchByClubCodeAndKeyword(String clubCode, String keyword);
 }
