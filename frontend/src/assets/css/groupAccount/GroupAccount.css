@@ -1,0 +1,903 @@
+.deposit-payment-status {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	background-color: #ffffff;
+	border-radius: 1.25rem;
+	height: 10rem;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.filter-date {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	font-weight: 700;
+	font-size: 1rem;
+	margin: 1rem;
+	width: 100%;
+}
+
+.dues-group-member-status input {
+	accent-color: #53b36c;
+}
+
+.dues-group-member-status checkbox:checked {
+	color: #ffffff;
+}
+.dues-group-member-status checkbox:checked {
+	color: #ffffff;
+}
+
+.dues-member-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding-top: 1rem;
+	height: 15rem;
+	overflow-y: scroll;
+	padding-right: 1rem;
+	align-items: flex-start;
+}
+
+.dues-one-member {
+	display: flex;
+	flex-direction: row;
+	width: 45%;
+	justify-content: space-between;
+	margin-bottom: 1.5rem;
+	align-items: center;
+}
+
+.dues-one-member label {
+	width: 5rem;
+	display: flex;
+
+	justify-content: center;
+}
+
+.edit-save {
+	display: flex;
+	cursor: pointer;
+}
+
+.dues-payment-date label {
+	margin-bottom: 0.5rem;
+}
+
+.dues-date-text {
+	margin-bottom: 0.3rem;
+	width: 100%;
+}
+
+.dues-input {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.dues-input label {
+	display: block;
+	margin-bottom: 0.5rem;
+}
+
+.dues-input input {
+	display: block;
+	margin-bottom: 0.5rem;
+	width: 100%;
+}
+
+.dues-payment-date input {
+	border: none;
+	border-bottom: 1px solid #ccc;
+	padding: 0.5rem;
+	outline: none;
+	font-size: 16px;
+	color: #aaaaaa;
+	background-color: #fffdf5;
+}
+
+.dues-setting-title {
+	font-size: 1.25rem;
+}
+
+.dues-setting-top {
+	display: flex;
+	justify-content: space-between;
+	font-weight: 700;
+	margin-bottom: 2.5rem;
+}
+
+.dues-group-member-status {
+	font-weight: 700;
+	font-size: 1rem;
+	background-color: white;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 1.25rem;
+	padding: 2rem;
+	width: 100%;
+}
+
+.dues-group-member-status-area {
+	height: 55vh;
+	display: flex;
+	align-items: flex-end;
+	height: 95%;
+}
+
+.dues-member-gather-count {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: 1rem;
+}
+
+.dues-gather {
+	color: #53b36c;
+}
+
+.dues-people-count {
+	color: #53b36c;
+}
+
+.deposit-status {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 85vh;
+	overflow-y: hidden;
+	align-items: center;
+}
+
+.deposit-status-payment {
+	height: 35vh;
+	display: flex;
+	justify-content: center;
+	width: 95%;
+}
+
+.deposit-payment-area {
+	width: 100%;
+}
+
+.dues-payment {
+	margin: 1.5rem;
+	font-weight: 700;
+}
+
+.dues-payment span {
+	color: #53b36c;
+}
+
+.dues-payment-info {
+	margin-left: 1rem;
+	padding-bottom: 1rem;
+}
+
+.dues-payment-info li {
+	margin-bottom: 1rem;
+}
+
+.dues-payment-info > li::marker {
+	color: #53b36c;
+}
+
+.dues-payment-date {
+	display: flex;
+	flex-direction: column;
+	padding: 2rem 1rem;
+	margin: 0 auto;
+}
+
+.dues-payment-date-detail {
+	color: #aaaaaa;
+}
+
+.payment-date {
+	color: #53b36c;
+	font-weight: 700;
+}
+
+.payment-this-month {
+	color: #53b36c;
+	font-weight: 700;
+}
+
+.account-area {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
+}
+
+.deposit-detail-one {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: 1rem 0;
+}
+
+.deposit-detail-container {
+	text-decoration: none;
+}
+
+.deposit-list-place-price {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-bottom: 0.3rem;
+}
+
+.deposit-list-time-balance {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.deposit-list {
+	width: 100%;
+	height: 60vh;
+	background-color: #ffffff;
+	border-top: 0.5px solid lightGray;
+}
+
+.deposit-list-date {
+	font-size: 0.875rem;
+	font-weight: 700;
+	margin-left: 1rem;
+}
+
+.deposit-list-place {
+	font-size: 1rem;
+	font-weight: 700;
+	color: black;
+	text-decoration: none;
+}
+
+.deposit-list-price {
+	font-size: 1rem;
+	font-weight: 700;
+	color: black;
+	text-decoration: none;
+}
+
+.deposit-list-time {
+	font-size: 14px;
+	font-weight: 700;
+	color: #959494;
+}
+
+.deposit-list-balance {
+	font-size: 14px;
+	font-weight: 700;
+	color: #959494;
+}
+
+.search-box-with-img {
+	display: flex;
+	flex-grow: 1;
+	position: relative;
+}
+
+.search-box-with-img input {
+	width: 100%;
+	padding: 1rem;
+	padding-right: 3rem;
+	margin-left: 2rem;
+	box-sizing: border-box;
+	border-radius: 1rem;
+	height: 1rem;
+	border: 1px solid #ddd;
+	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+	outline: none;
+}
+
+.search-box-with-img img {
+	position: absolute;
+	top: 50%;
+	right: 0.5rem;
+	transform: translateY(-50%);
+	width: 1.5rem;
+	height: 1.2rem;
+}
+
+.group-account-search-area {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.searchStandard {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin: 1rem;
+}
+
+.search-standard {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin: 1rem;
+}
+
+.memo-title {
+	font-size: 0.875rem;
+	font-weight: 700;
+}
+
+.memo-content {
+	font-size: 0.75rem;
+}
+
+.bill-area {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #ffffff;
+	border: 1px solid #959494;
+	border-radius: 1rem;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+	box-shadow: 0px 4px 4px rgba(55, 54, 54, 0.5);
+	margin-top: 1rem;
+	justify-content: space-around;
+	height: 50vh;
+}
+
+.bill-area img {
+	max-height: 70%;
+	width: 90%;
+	margin-bottom: 1rem;
+}
+
+.bill-area > div {
+	width: 80%;
+}
+
+.memo {
+	text-align: left;
+	margin-bottom: 0.5rem;
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.memo-content {
+	text-align: left;
+}
+
+.transaction-detail {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 85vh;
+	margin: 0 1rem;
+}
+
+.transaction-detail-one-list {
+	border: 1px solid #999898;
+	border-radius: 1rem;
+	height: 5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: #ffffff;
+	box-shadow: 0px 4px 4px rgba(55, 54, 54, 0.5);
+	padding-left: 1rem;
+	padding-right: 1rem;
+	margin-top: 1rem;
+}
+
+.transaction-detail-date {
+	font-size: 0.875rem;
+	font-weight: 700;
+	margin-bottom: 0.7rem;
+}
+
+.plus {
+	color: #53b36c;
+}
+
+.search-deposit-list-area {
+	background-color: #ffffff;
+	height: 65vh;
+}
+
+.account-transfer-area {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 0 1rem;
+	max-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+text[name='dues'] {
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.keypad-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	background-color: #fffdf5;
+	margin-bottom: 2rem;
+}
+
+.move-to-post {
+	background-color: #53b36c;
+	color: #ffffff;
+	font-size: 1rem;
+	padding: 10px;
+	border: none;
+	border-radius: 10px;
+	width: 100%;
+	margin-bottom: 2rem;
+	cursor: pointer;
+	box-shadow: 0px 4px 4px rgba(55, 54, 54, 0.5);
+}
+
+.amount-display {
+	font-size: 2rem;
+	font-weight: 700;
+	padding-bottom: 0.25rem;
+	border-bottom: 1px solid #000;
+	width: 97%;
+	text-align: right;
+	margin-bottom: 7rem;
+}
+
+div.amount-display > span {
+	margin-right: 0.25rem;
+}
+
+.keypad {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 1rem;
+	width: 100%;
+	max-width: 30rem;
+}
+
+.keypad button {
+	font-size: 1.5rem;
+	padding: 1rem;
+	background-color: #fffdf5;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	border: none;
+}
+
+.account-question-button {
+	margin-bottom: 2rem;
+}
+
+.account-check-button {
+	margin-bottom: 2rem;
+}
+
+.send-button {
+	background-color: #53b36c;
+	color: #ffffff;
+	font-size: 1.2rem;
+	border: none;
+	border-radius: 10px;
+	width: 100%;
+	margin-top: 2rem;
+	cursor: pointer;
+	height: 3rem;
+}
+
+.account-question {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.account-check {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.account-question-message {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-top: 3rem;
+}
+
+.account-check-area {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.account-check-message {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-top: 3rem;
+}
+
+div.account-question-top-component > div.transfer-info-area > div > div.transfer-account-info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+div.account-question-top-component > div.transfer-info-area > div > div.transfer-account-info > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+	align-items: center;
+}
+
+div.account-check-top-component > div.transfer-info-area > div > div.transfer-account-info > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+	align-items: center;
+}
+
+.account-question-info-area {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 0 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	max-height: 100vh;
+}
+
+.account-check-info-area {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 0 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	max-height: 100vh;
+	overflow-y: hidden;
+}
+
+.transfer-account-info {
+	margin-left: 0.5rem;
+}
+
+.transfer-back {
+	margin-bottom: 1rem;
+}
+
+.zero {
+	font-weight: 700;
+}
+
+.zerozero {
+	font-weight: 700;
+}
+
+.keypad button.number {
+	font-weight: 700;
+}
+
+.transfer-info {
+	margin-top: 1.5rem;
+}
+
+.transfer-my-account {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+}
+
+.transfer-group-account {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+}
+
+.from-my-account {
+	font-weight: 700;
+}
+
+.transfer-balance {
+	font-size: 0.875rem;
+	color: #999898;
+	font-weight: 700;
+}
+
+.to-group-account {
+	font-weight: 700;
+}
+
+.transfer-account {
+	font-size: 0.875rem;
+	color: #999898;
+	font-weight: 700;
+}
+
+.account-balance {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem 0;
+	gap: 1rem;
+}
+
+.dues {
+	display: flex;
+	gap: 0.5rem;
+}
+
+span[name='account-due-list'] {
+	font-size: 0.75rem;
+	font-weight: 700;
+}
+
+.account-balance-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: #53b36c;
+	border-radius: 1rem;
+	width: 20rem;
+	height: 6.25rem;
+	/* box-shadow: 3px 6px 5px #1a19193e; */
+	color: white;
+	gap: 0.5rem;
+	padding-bottom: 0.25rem;
+}
+
+span[name='account-number'] {
+	color: #eae5e5;
+	font-size: 0.75rem;
+}
+
+span[name='account-balance'] {
+	color: #ffffff;
+	font-size: 1.5rem;
+	font-weight: 500;
+}
+
+.account-balance-button {
+	display: flex;
+	flex-direction: row;
+	width: 20rem;
+	justify-content: space-between;
+}
+
+.account-balance-button > button {
+	color: #ffffff;
+	width: 8.8rem;
+	border-radius: 1rem;
+	font-size: 1rem;
+	font-weight: 700;
+	font-family: 'Pretendard';
+	border: none;
+	padding: 0.75rem 0;
+	/* box-shadow: 3px 6px 5px #1a19193e; */
+}
+
+button[name='fill'] {
+	background-color: #a8d7b0;
+}
+
+button[name='send'] {
+	background-color: #53b36c;
+}
+
+/* detail */
+.detail-container {
+	width: 100%;
+	min-height: 85vh;
+}
+
+/* withDrawal */
+.group-modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.modal-content {
+	background: white;
+	border-radius: 10px;
+	width: 80%;
+	padding: 20px;
+	max-height: 50vh;
+	overflow-y: auto;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.modal-header h2 {
+	font-size: 18px;
+	margin: 0;
+}
+
+.modal-header button {
+	background: none;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.bank-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+}
+
+.bank-item {
+	display: flex;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.bank-image {
+	width: 40px;
+	height: 40px;
+}
+
+/* 새로운 스타일 클래스 추가: 송금 섹션 */
+.transfer-other-account-new {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	background-color: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 1.25rem;
+	padding: 1.5rem;
+	margin: 1rem 0;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bank-select-new {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 3rem;
+	border: 1px solid #ddd;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	background-color: #f9f9f9;
+}
+
+.bank-select-new:hover {
+	background-color: #f0f0f0;
+}
+
+.selected-bank-img-new {
+	width: 40px;
+	height: 40px;
+}
+
+.account-input-new {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.account-input-new input {
+	width: 100%;
+	padding: 0.75rem;
+	border: 1px solid #ddd;
+	border-radius: 0.5rem;
+	font-size: 1rem;
+	outline: none;
+}
+
+.account-input-new input:focus {
+	border-color: #53b36c;
+	box-shadow: 0 0 5px rgba(83, 179, 108, 0.5);
+}
+
+button.new-transfer-button {
+	background-color: #53b36c;
+	color: white;
+	font-size: 1rem;
+	padding: 0.75rem 1.5rem;
+	border: none;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	width: 100%;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+button.new-transfer-button:hover {
+	background-color: #4aa260;
+}
+
+.error-message {
+	color: red;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+.search-text {
+	font-size: 0.9rem;
+}
+
+.group-account-deposit-list-area {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	background-color: white;
+}
+
+.deposit-detail-one {
+	display: flex;
+	flex-direction: column;
+	margin: 1rem;
+	width: 100%;
+	margin-top: 1rem;
+}
+
+.deposit-list-place-price {
+	margin-bottom: 0.3rem;
+}
+
+.deposit-list-time-balance {
+	margin-bottom: 0.3rem;
+}
+
+.none-text-area {
+	height: 30vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.deposit-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}

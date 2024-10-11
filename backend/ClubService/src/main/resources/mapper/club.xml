@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.clubservice.club.infrastructure.repository.ClubMybatisMapper">
+
+    <resultMap id="ClubEntityResultMap" type="ClubEntity">
+        <id property="clubId" column="club_id"/>
+        <result property="dues" column="dues"/>
+        <result property="clubCode" column="club_code"/>
+        <result property="clubName" column="club_name"/>
+        <result property="clubIntro" column="club_intro" javaType="String"/>
+        <result property="createdDate" column="created_date"/>
+        <collection javaType="java.util.List" property="participants" ofType="ParticipantEntity">
+            <id property="participantId" column="participant_id"/>
+            <result property="clubCode" column="club_code"/>
+            <result property="acceptanceStatus" column="acceptance_status"/>
+            <result property="clubRole" column="club_role"/>
+            <result property="userId" column="user_id"/>
+            <result property="createdDate" column="participant_created_date"/>
+        </collection>
+    </resultMap>
+
+
+    <insert id="saveClub" parameterType="clubEntity" useGeneratedKeys="true" keyProperty="clubId">
+        insert into club (dues, club_code, club_name, club_intro)
+        values(#{dues}, #{clubCode}, #{clubName}, #{clubIntro});
+    </insert>
+    <select id="findClubByClubCode" parameterType="string" resultMap="ClubEntityResultMap">
+        select c.club_id, c.dues, c.club_code, c.club_name, c.club_intro, c.created_date,
+            p.participant_id, p.acceptance_status, p.club_role, p.user_id, p.created_date AS participant_created_date
+        FROM
+            club c INNER JOIN participant p
+        ON p.club_code = c.club_code
+        where c.club_code = #{clubCode}
+    </select>
+    <update id="updateClub" parameterType="clubEntity">
+        update club
+        set club_name = #{clubName},
+            dues = #{dues},
+            club_intro = #{clubIntro}
+        where club_id = #{clubId};
+    </update>
+    <select id="findClubByMemberId" resultMap="ClubEntityResultMap">
+        SELECT
+            c.club_id, c.dues, c.club_code, c.club_name, c.club_intro, c.created_date,
+            p.participant_id, p.acceptance_status, p.club_role, p.user_id, p.created_date AS participant_created_date
+        FROM
+            club c
+                INNER JOIN
+            participant p ON p.club_code = c.club_code
+		where c.club_code in(
+			SELECT
+				sub_c.club_code
+			FROM
+				club sub_c
+					INNER JOIN
+				participant sub_p ON sub_c.club_code = sub_p.club_code
+			WHERE
+				sub_p.user_id = #{userId} and sub_p.acceptance_status = 'ACCEPTED'
+		);
+
+    </select>
+
+</mapper>

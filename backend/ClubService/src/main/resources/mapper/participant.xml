@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.clubservice.club.infrastructure.repository.ParticipantMybatisMapper">
+    <insert id="saveMembers" parameterType="participantEntity">
+        insert into participant (club_code, user_id, club_role, acceptance_status) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.clubCode}, #{item.userId}, #{item.clubRole}, #{item.acceptanceStatus})
+        </foreach>
+    </insert>
+
+
+    <select id="findParticipantsInUserId" resultType="participantEntity">
+        SELECT participant_id, club_code, acceptance_status, club_role, user_id, created_date
+        FROM participant
+        <where>
+            <if test="userIds != null">
+            AND user_id IN
+                <foreach item="id" collection="userIds" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="clubCode != null">
+                AND club_code=#{clubCode}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateAcceptanceStatus">
+        update participant set acceptance_status = 'ACCEPTED'
+                           where participant_id = #{participantId}
+                            and club_code = #{clubCode};
+    </update>
+
+    <select id="findByParticipantId" resultType="participantEntity">
+        SELECT participant_id, club_code, acceptance_status, club_role, user_id, created_date
+            FROM participant where participant_id = #{participantId};
+    </select>
+
+    <delete id="removeParticipant">
+        delete from participant where participant_id = #{participantId}
+                            and club_code = #{clubCode};
+    </delete>
+</mapper>

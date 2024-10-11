@@ -1,0 +1,9 @@
+rootProject.name = 'backend'
+
+include 'AccountService',
+        'ClubService',
+        'MemberService',
+        'NotificationService',
+        'PostingService',
+        'ScheduleService',
+        'ConfigServer'

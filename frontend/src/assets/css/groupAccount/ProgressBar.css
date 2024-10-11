@@ -1,0 +1,67 @@
+.wrapper {
+	border: 3px solid rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	height: 30px;
+}
+
+.container {
+	background-color: #a8d7b0;
+	border-radius: 5px;
+	height: 30px;
+	width: 100%;
+}
+
+.progress-bar {
+	position: relative;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.barCompleted {
+	display: none;
+}
+
+.completedBar {
+	background-color: #53b36c;
+	border-radius: 5px;
+	height: 30px;
+	transition: width 0.5s ease-in-out;
+}
+
+.progress-bar .label {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+	font-weight: bold;
+}
+
+input[type='checkbox'] {
+	appearance: none; /* 기본 체크박스 스타일 제거 */
+	width: 20px;
+	height: 20px;
+	border: 2px solid #000;
+	border-radius: 4px;
+	position: relative;
+	cursor: pointer;
+}
+
+/* 체크박스 선택 시 커스텀 스타일 추가 */
+input[type='checkbox']:checked {
+	background-color: #4caf50; /* 체크박스 배경색 */
+	border-color: #4caf50; /* 체크박스 테두리색 */
+}
+
+/* 체크 표시 추가 */
+input[type='checkbox']:checked::after {
+	content: '';
+	position: absolute;
+	left: 5px;
+	top: 2px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}

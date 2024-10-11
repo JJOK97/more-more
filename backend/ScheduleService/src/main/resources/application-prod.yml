@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      name: db-common,logging-common
+  config:
+    import: "optional:configserver:http://config-server.config"
+
+aws:
+  club-image:
+    prefix: schedule/
+
+mybatis:
+  type-aliases-package: com.ssafy.scheduleservice.schedule.infrastructure.repository.entity

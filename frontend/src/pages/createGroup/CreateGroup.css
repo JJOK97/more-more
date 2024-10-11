@@ -1,0 +1,188 @@
+/* 기본 컨테이너 설정 */
+.create-group {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 단계별 레이아웃 */
+.create-group-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* 모임 이름 입력 필드 */
+.create-group-name-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.create-group-name {
+    background-color: #FFFDF5;
+    border: none;
+    outline: none;
+    width: auto;
+    min-width: 10rem;
+    box-sizing: border-box;
+    text-align: center;
+    font-family: 'Pretendard';
+    font-size: 1rem;
+}
+
+/* 이미지 업로드 섹션 */
+.create-group-image-upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.create-group-image-upload {
+    width: 12rem;
+    height: 12rem;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.create-group-image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.create-group-add-photo {
+    color: #999;
+}
+
+/* 회비 및 납부일 입력 */
+.create-group-fee-input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.create-group-fee-input input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+}
+
+/* 키패드 스타일 */
+.create-group-keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 18rem;
+    margin: 0 auto;
+    justify-items: center;
+}
+
+.create-group-keypad-button {
+    width: 5rem;
+    height: 5rem;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.create-group-keypad-button:hover {
+    background-color: #ddd;
+}
+
+.create-group-keypad-zero {
+    grid-column: 2; /* 가운데 열에 배치 */
+}
+
+
+/* 비밀번호 및 확인 비밀번호 텍스트 스타일 */
+.create-group-password-display {
+    font-size: 2rem;
+    letter-spacing: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* 버튼 스타일 */
+.create-group-button {
+    background-color: #52BD6D;
+    border: none;
+    color: white;
+    width: 4rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    font-family: 'Pretendard';
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.create-group-button:disabled {
+    background-color: #ccc;
+}
+
+.create-group-navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* 이전 및 다음 버튼 컨테이너 */
+.create-group-navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 버튼 disabled 상태 */
+.create-group-next-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 이전 버튼 */
+.create-group-prev-btn {
+    background-color: #dddddd;
+    color: #333;
+    border: none;
+    border-radius: 1rem;
+    width: 6rem;
+    height: 3rem;
+    font-size: 1rem;
+    font-family: 'Pretendard';
+}
+
+.create-group-prev-btn:hover {
+    background-color: #ddd;
+}
+
+/* 다음 버튼 */
+.create-group-next-btn {
+    background-color: #52BD6D;
+    color: white;
+    border: none;
+    border-radius: 1rem;
+    width: 6rem;
+    height: 3rem;
+    font-size: 1rem;
+    font-family: 'Pretendard';
+}
+
+.create-group-next-btn:hover {
+    background-color: #45a85c;
+}

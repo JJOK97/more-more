@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.accountservice.account.infrastructure.repository.AccountMybatisMapper">
+    <insert id="insertAccount" parameterType="com.ssafy.accountservice.account.infrastructure.repository.entity.AccountEntity" useGeneratedKeys="true" keyProperty="accountId">
+        INSERT INTO account (ssafy_account_number, club_code, club_password, ssafy_user_key)
+        VALUES (#{ssafyAccountNumber}, #{clubCode}, #{clubPassword}, #{ssafyUserKey})
+    </insert>
+
+    <select id="selectAccountNumAndManagerKey" resultType="map" parameterType="String">
+        SELECT
+            ssafy_user_key, ssafy_account_number
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
+    <select id="selectAccountNum" resultType="String" parameterType="String">
+        SELECT
+            ssafy_account_number
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
+    <insert id="insertAccountHistory" parameterType="com.ssafy.accountservice.account.service.domain.AccountHistoryAll" useGeneratedKeys="true" keyProperty="accountHistoryId">
+        INSERT INTO account_history (
+            account_id,
+            tag_name,
+            ssafy_transaction_number,
+            account_date,
+            account_time,
+            payment_type,
+            payment_amount,
+            payment_data,
+            account_balance
+        ) VALUES (
+                     #{accountId},
+                     #{tagName},
+                     #{ssafyTransactionNumber},
+                     #{accountDate},
+                     #{accountTime},
+                     #{paymentType},
+                     #{paymentAmount},
+                     #{paymentData},
+                     #{accountBalance}
+                 )
+    </insert>
+
+    <select id="selectAccountNumByPg" resultType="String" parameterType="String">
+        SELECT
+            club_code
+        FROM
+            account_pg
+        WHERE
+            account_credit = #{cardNum}
+    </select>
+
+    <select id="selectAccountNumByClubCode" resultType="String" parameterType="String">
+        SELECT
+            ssafy_account_number
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
+    <select id="selectAccountHistoryByAccountNum" resultType="AccountHistoryEntity" parameterType="String">
+        SELECT
+            *
+        FROM
+            account_history
+        WHERE
+            account_id = #{accountNum}
+        ORDER BY account_date DESC, account_time DESC
+    </select>
+
+    <select id="selectAccountHistoryOnly" resultType="AccountHistoryEntity" parameterType="String">
+        SELECT
+            *
+        FROM
+            account_history
+        WHERE
+            tag_name = #{tagName}
+    </select>
+
+
+    <insert id="insertByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest">
+        INSERT INTO account_history_verification (account_history_memo, account_history_image, tag_name)
+        VALUES (#{accountHistoryMemo}, #{accountHistoryImage}, #{tagName} )
+    </insert>
+
+
+    <select id="selectByTransactionNum" resultType="VerifyEntity" parameterType="String">
+        SELECT
+            *
+        FROM
+            account_history_verification
+        WHERE
+            tag_name = #{tagName}
+    </select>
+
+    <update id="updateByTransactionNum" parameterType="com.ssafy.accountservice.account.controller.dto.request.VerificationSaveRequest">
+        UPDATE account_history_verification
+        SET
+            account_history_memo = #{accountHistoryMemo},
+            account_history_image = #{accountHistoryImage}
+        WHERE
+            tag_name = #{tagName}
+    </update>
+
+    <delete id="deleteByTransactionNum" parameterType="String">
+        DELETE FROM account_history_verification
+        WHERE tag_name = #{tagName}
+    </delete>
+
+    <select id="selectUserKeyByClubCode" resultType="String" parameterType="String">
+        SELECT
+            ssafy_user_key
+        FROM
+            account
+        WHERE
+            club_code = #{clubCode}
+    </select>
+
+    <select id="selectAccountHistoryByAccountNumByDate" resultType="AccountHistoryEntity" parameterType="map">
+        SELECT
+            *
+        FROM
+            account_history
+        WHERE
+            account_id = #{accountNum}
+          AND account_date LIKE CONCAT(#{date}, '%')
+        ORDER BY account_history_id DESC
+    </select>
+
+    <select id="selectTagName" resultType="String" parameterType="String">
+        SELECT
+            tag_name
+        FROM
+            account_history
+        WHERE
+            account_id = #{accountNum}
+          AND tag_name NOT LIKE '%\_%'
+        ORDER BY account_history_id DESC
+    </select>
+
+    <select id="dateCompareByAccountNum" resultType="String" parameterType="DateEntity">
+        SELECT DISTINCT
+            payment_data
+        FROM
+            account_history
+        WHERE account_id LIKE CONCAT('%', #{accountNum}, '%')
+          AND payment_type = '입금(이체)'
+          AND account_date BETWEEN #{startDate} AND #{endDate}
+          AND payment_amount >= #{dues}
+    </select>
+
+    <insert id="verificationInSave" parameterType="String">
+        INSERT INTO account_history_verification (tag_name, account_history_memo, account_history_image)
+        SELECT #{tagName}, "", ""
+            FROM account_history_verification
+            WHERE NOT EXISTS (
+                SELECT 1 FROM account_history_verification WHERE tag_name = #{tagName}
+            )
+    </insert>
+
+    <update id="memoVerification" parameterType="map">
+        UPDATE account_history_verification
+        SET
+            account_history_memo = #{accountHistoryMemo}
+        WHERE
+            tag_name = #{tagName}
+    </update>
+
+    <update id="imageVerification" parameterType="map">
+        UPDATE account_history_verification
+        SET
+            account_history_image = #{accountHistoryImage}
+        WHERE
+            tag_name = #{tagName}
+    </update>
+</mapper>

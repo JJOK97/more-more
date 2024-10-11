@@ -1,0 +1,25 @@
+/* 캘린더 열기/닫기 버튼 스타일 */
+.toggle-calendar-button {
+	background-color: #4caf50;
+	color: white;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	width: 100%;
+}
+
+.toggle-calendar-button:hover {
+	background-color: #45a049;
+}
+
+/* 캘린더 컨테이너 애니메이션 */
+.calendar-container {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease-out;
+}
+
+.calendar-container.open {
+	max-height: 500px; /* 캘린더의 실제 높이에 맞게 조정 */
+}
