@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import back from '@/assets/img/account/back.svg';
 
 const TransferInfo = () => {
@@ -27,8 +26,8 @@ const TransferInfo = () => {
 				}
 				const memberData = await memberResponse.json();
 				setMemberInfo({
-					account_balance: memberData.balance,
-					bankName: memberData.bankName,
+					account_balance: memberData.balance || 0,
+					bankName: memberData.bankName || '',
 				});
 			} catch (e) {
 				setError(`개인 계좌 정보를 가져오는 중 문제가 발생했습니다. 상태 코드: ${e.message}`);
@@ -43,8 +42,8 @@ const TransferInfo = () => {
 				}
 				const clubData = await clubResponse.json();
 				setAccountInfo({
-					account_num: clubData.account_num,
-					account_balance: clubData.account_balance,
+					account_num: clubData.account_num || '',
+					account_balance: clubData.account_balance || 0,
 				});
 			} catch (e) {
 				setError(`모임 계좌 정보를 가져오는 중 문제가 발생했습니다. 상태 코드: ${e.message}`);
@@ -69,6 +68,10 @@ const TransferInfo = () => {
 		fetchClubName();
 	}, [groupId]);
 
+	const formatAmount = (amount) => {
+		return Number(amount).toLocaleString();
+	};
+
 	return (
 		<div className="transfer-info">
 			<div className="transfer-back">
@@ -85,13 +88,11 @@ const TransferInfo = () => {
 					<>
 						<div className="transfer-my-account">
 							<div className="from-my-account">내 {memberInfo.bankName} 입출금 계좌에서</div>
-							<div className="transfer-balance">잔액 {memberInfo.account_balance.toLocaleString()}원</div>
+							<div className="transfer-balance">잔액 {formatAmount(memberInfo.account_balance)}원</div>
 						</div>
 						<div className="transfer-group-account">
 							<div className="to-group-account">{clubName || '모임'} 계좌로</div>
-							<div className="transfer-balance">
-								잔액 {accountInfo.account_balance.toLocaleString()}원
-							</div>
+							<div className="transfer-balance">잔액 {formatAmount(accountInfo.account_balance)}원</div>
 						</div>
 					</>
 				)}
