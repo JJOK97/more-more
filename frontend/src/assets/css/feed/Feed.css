@@ -44,8 +44,7 @@
 .feed-delete-button {
 	border: none;
 	border-radius: 0.5rem;
-	padding: 0 0.5rem;
-	background-color: red;
+
 	color: white;
 	font-size: 0.75rem;
 	font-family: 'Pretendard';

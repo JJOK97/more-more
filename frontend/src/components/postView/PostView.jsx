@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { likePost, unlikePost, checkLikeStatus, getLikeCount } from '@/api/postAPI'; // getLikeCount 추가
 
+import dot from '@/assets/img/common/three_dot.svg';
+
 const formatDate = (dateString) => {
 	const postDate = new Date(dateString);
 	const now = new Date();
@@ -162,19 +164,18 @@ const PostView = ({ post, onDelete, commentCount }) => {
 					{post.accountHistoryTag ? (
 						<div className="feed-account-history">
 							#
-							{post.accountHistoryTag.length > 22
-								? `${post.accountHistoryTag.substring(0, 22)}...`
+							{post.accountHistoryTag.length > 20
+								? `${post.accountHistoryTag.substring(0, 20)}...`
 								: post.accountHistoryTag}
 						</div>
 					) : null}
 					{/* 삭제 버튼 추가 */}
 					{isMyPost && (
-						<button
+						<img
+							src={dot}
 							onClick={handleDelete}
 							className="feed-delete-button"
-						>
-							삭제
-						</button>
+						/>
 					)}
 				</div>
 			</div>
