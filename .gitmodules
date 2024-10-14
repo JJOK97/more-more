@@ -1,3 +1,3 @@
-[submodule "moremore"]
-	path = moremore
-	url = https://github.com/parkjumsun/moremore.git
+[submodule "moremore-k8s"]
+	path = moremore-k8s
+	url = https://github.com/parkjumsun/moremore-k8s.git
