@@ -65,5 +65,5 @@
 |:------:|:------:|:------:|:------:|:------:| :------:|
 | <img src="images/profiles/jihwan.jpeg" alt="박지환" width="150"> | <img src="images/profiles/jungsun.png" alt="박정선" width="150"> | <img src="images/profiles/seungho.jpeg" alt="신승호" width="150"> | <img src="images/profiles/jinseok.jpeg" alt="옥진석" width="150"> | <img src="images/profiles/jaesung.jpeg" alt="이재성" width="150"> | <img src="images/profiles/juan.jpeg" alt="권주안" width="150"> 
 | 팀장/BE | BE/infra | BE | FE | FE | FE |
-| [GitHub](https://github.com/parkjumsun) | [GitHub](https://github.com/parkjumsun) | [GitHub](https://github.com/parkjumsun) | [GitHub](https://github.com/parkjumsun) | [GitHub](https://github.com/parkjumsun) | [GitHub](https://github.com/parkjumsun) 
+| [GitHub](https://github.com/ParkJiHwan22) | [GitHub](https://github.com/parkjumsun) | [GitHub](https://github.com/ssh2957) | [GitHub](https://github.com/JJOK97) | [GitHub](https://github.com/nunori) | [GitHub](https://github.com/YqqAH) 
 | 계좌서비스, 일정 서비스 구현 | 인프라 구축, 모임 서비스 구현 | 멤버서비스, 게시물 서비스 구현| 프론트 엔드 구현 | 프론트 엔드 구현 | 프론트 엔드 구현
