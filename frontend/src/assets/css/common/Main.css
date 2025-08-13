@@ -13,6 +13,7 @@
 	gap: 1.5rem;
 	max-width: 600px;
 	margin: 0 auto;
+	margin-top: 7.5vh;
 }
 
 .main-profile-title,
@@ -150,7 +151,6 @@
 	}
 }
 
-
 input {
 	font-family: pretandard;
 }
@@ -174,4 +174,3 @@ input {
 .main-create-title {
 	color: #52bd6d;
 }
-

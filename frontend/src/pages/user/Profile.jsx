@@ -16,6 +16,17 @@ const Profile = () => {
 	useEffect(() => {
 		const getUserInfo = async () => {
 			const memberId = localStorage.getItem('memberId');
+
+			// 테스트 로그인인지 확인
+			if (memberId === 'test-member-id') {
+				const testUserInfo = localStorage.getItem('testUserInfo');
+				if (testUserInfo) {
+					setUserInfo(JSON.parse(testUserInfo));
+					return;
+				}
+			}
+
+			// 실제 API 호출
 			const url = `https://j11a605.p.ssafy.io/api/member/${memberId}`;
 			const data = await getDatas(url);
 			setUserInfo(data);

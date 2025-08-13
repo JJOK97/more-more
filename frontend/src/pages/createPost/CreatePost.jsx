@@ -26,6 +26,17 @@ const CreatePost = () => {
 	useEffect(() => {
 		const getGroupInfo = async () => {
 			try {
+				// 테스트 그룹인지 확인
+				if (groupId.startsWith('TEST')) {
+					const testGroups = JSON.parse(localStorage.getItem('testGroups') || '[]');
+					const testGroup = testGroups.find((group) => group.clubCode === groupId);
+					if (testGroup) {
+						setGroupInfo(testGroup);
+						return;
+					}
+				}
+
+				// 실제 API 호출
 				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
 				const data = await getDatas(url);
 				setGroupInfo(data);
@@ -61,30 +72,59 @@ const CreatePost = () => {
 	};
 
 	const handleSubmit = async () => {
-		const memberId = localStorage.getItem('memberId'); // localStorage에서 memberId 가져오기
-		const clubCode = groupId; // URL에서 추출한 groupId를 clubCode로 사용
-		const formData = new FormData();
+		const memberId = localStorage.getItem('memberId');
+		const clubCode = groupId;
 
-		// FormData에 데이터 추가
-		formData.append('memberId', parseInt(memberId)); // integer
-		formData.append('clubCode', clubCode); // string
-		formData.append('accountHistoryTag', tagName); // string
-		formData.append('postingContent', content); // string
+		// 테스트 그룹인지 확인
+		if (groupId.startsWith('TEST')) {
+			// 테스트 그룹의 경우 localStorage에 게시물 저장
+			const newPost = {
+				postingId: Date.now(),
+				memberId: memberId,
+				clubCode: clubCode,
+				accountHistoryTag: tagName || '',
+				postingContent: content,
+				createdDate: new Date().toISOString(),
+				commentCount: 0,
+				likeCount: 0,
+				images: images.map((img) => img.preview), // 이미지 미리보기 URL 저장
+				memberName: '옥진석', // 테스트 사용자명
+				memberProfileImage: '/user/profile_man.jpg',
+			};
+
+			// 기존 테스트 게시물들 가져오기
+			const existingPosts = JSON.parse(localStorage.getItem(`testPosts_${groupId}`) || '[]');
+
+			// 새 게시물 추가 (최신 순으로 정렬하기 위해 앞에 추가)
+			existingPosts.unshift(newPost);
+
+			// localStorage에 저장
+			localStorage.setItem(`testPosts_${groupId}`, JSON.stringify(existingPosts));
+
+			console.log('Test post created successfully:', newPost);
+			navigate(-1);
+			return;
+		}
+
+		// 실제 API 호출
+		const formData = new FormData();
+		formData.append('memberId', parseInt(memberId));
+		formData.append('clubCode', clubCode);
+		formData.append('accountHistoryTag', tagName);
+		formData.append('postingContent', content);
 		images.forEach((image) => {
-			formData.append('files', image.file); // 배열이므로 같은 키를 반복해서 추가
+			formData.append('files', image.file);
 		});
 
 		try {
-			// 서버에 POST 요청 보내기
 			const response = await fetch('https://j11a605.p.ssafy.io/api/posting', {
 				method: 'POST',
-				body: formData, // FormData를 요청 본문으로 설정
+				body: formData,
 			});
 
 			if (response.ok) {
 				const responseData = await response.json();
 				console.log('Post created successfully:', responseData);
-				// 성공 후 추가 동작 (예: 페이지 이동 또는 알림)
 				navigate(-1);
 			} else {
 				console.error('Error creating post:', response.statusText);

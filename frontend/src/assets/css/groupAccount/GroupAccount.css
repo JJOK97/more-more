@@ -117,7 +117,8 @@
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 1.25rem;
 	padding: 2rem;
-	width: 100%;
+	width: 77vw;
+	margin-top: 1rem;
 }
 
 .dues-group-member-status-area {
@@ -149,6 +150,8 @@
 	height: 85vh;
 	overflow-y: hidden;
 	align-items: center;
+	margin-top: 7.5vh;
+	overflow-x: hidden;
 }
 
 .deposit-status-payment {
@@ -211,6 +214,7 @@
 	justify-content: space-between;
 	align-items: center;
 	height: 100%;
+	margin-top: 7.5vh;
 }
 
 .deposit-detail-one {

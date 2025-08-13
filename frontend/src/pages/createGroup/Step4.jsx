@@ -8,8 +8,13 @@ const Step4 = ({ handlePrevStep, handleNextStep, password, confirmPassword, setC
 	};
 
 	return (
-		<div className="create-group-step">
-			<h2 className="create-group-title">동일한 비밀번호를 한 번 더 입력해주세요</h2>
+		<div className="create-group-step scroll-action">
+			<h2
+				className="create-group-title"
+				style={{ marginTop: '4rem' }}
+			>
+				한 번 더 입력해주세요
+			</h2>
 			<div className="create-group-password-display">
 				{'•'.repeat(confirmPassword.length)}
 				{'○'.repeat(4 - confirmPassword.length)}
@@ -31,10 +36,10 @@ const Step4 = ({ handlePrevStep, handleNextStep, password, confirmPassword, setC
 					0
 				</button>
 				<button
-					className="create-group-keypad-button"
+					className="create-group-keypad-button create-group-keypad-backspace"
 					onClick={() => setConfirmPassword(confirmPassword.slice(0, -1))}
 				>
-					Backspace
+					<span className="backspace-icon"></span>
 				</button>
 			</div>
 			<div className="create-group-navigation-buttons">

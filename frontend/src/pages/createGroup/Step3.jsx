@@ -9,8 +9,13 @@ const Step3 = ({ handlePrevStep, handleNextStep, password, setPassword }) => {
 	};
 
 	return (
-		<div className="create-group-step">
-			<h2 className="create-group-title">비밀번호를 설정해주세요</h2>
+		<div className="create-group-step scroll-action">
+			<h2
+				className="create-group-title"
+				style={{ marginTop: '4rem' }}
+			>
+				비밀번호를 설정해주세요
+			</h2>
 			<div className="create-group-password-display">
 				{'•'.repeat(password.length)}
 				{'○'.repeat(4 - password.length)}
@@ -32,10 +37,10 @@ const Step3 = ({ handlePrevStep, handleNextStep, password, setPassword }) => {
 					0
 				</button>
 				<button
-					className="create-group-keypad-button"
+					className="create-group-keypad-button create-group-keypad-backspace"
 					onClick={() => setPassword(password.slice(0, -1))}
 				>
-					Backspace
+					<span className="backspace-icon"></span>
 				</button>
 			</div>
 			<div className="create-group-navigation-buttons">

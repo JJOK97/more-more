@@ -12,6 +12,7 @@ import ShinhanBank from '@/assets/img/bank/ShinhanBank.svg';
 import WooriBank from '@/assets/img/bank/WooriBank.svg';
 import IBKBank from '@/assets/img/bank/IBKBank.svg';
 import HanaBank from '@/assets/img/bank/HanaBank.svg';
+import BNKBank from '/main/BNK.png';
 
 const Main = () => {
 	const { setGroupName } = useGroupName();
@@ -30,11 +31,21 @@ const Main = () => {
 			if (!memberId) {
 				navigate('/login'); // 로그인 페이지로 이동
 				return; // 함수 종료
-			} else {
-				const url = `https://j11a605.p.ssafy.io/api/member/${memberId}`;
-				const data = await getDatas(url);
-				setUserInfo(data);
 			}
+
+			// 테스트 로그인인지 확인
+			if (memberId === 'test-member-id') {
+				const testUserInfo = localStorage.getItem('testUserInfo');
+				if (testUserInfo) {
+					setUserInfo(JSON.parse(testUserInfo));
+					return;
+				}
+			}
+
+			// 실제 API 호출
+			const url = `https://j11a605.p.ssafy.io/api/member/${memberId}`;
+			const data = await getDatas(url);
+			setUserInfo(data);
 		};
 		getUserInfo();
 	}, []);
@@ -46,11 +57,20 @@ const Main = () => {
 			if (!memberId) {
 				navigate('/login'); // 로그인 페이지로 이동
 				return; // 함수 종료
-			} else {
-				const url = `https://j11a605.p.ssafy.io/api/club?memberId=${memberId}`;
-				const data = await getDatas(url);
-				setAllGroups(data);
 			}
+
+			// 테스트 로그인인지 확인
+			if (memberId === 'test-member-id') {
+				// 테스트용 모임들 가져오기
+				const testGroups = JSON.parse(localStorage.getItem('testGroups') || '[]');
+				setAllGroups(testGroups);
+				return;
+			}
+
+			// 실제 API 호출
+			const url = `https://j11a605.p.ssafy.io/api/club?memberId=${memberId}`;
+			const data = await getDatas(url);
+			setAllGroups(data);
 		};
 
 		getAllGroups();
@@ -71,6 +91,8 @@ const Main = () => {
 				return IBKBank;
 			case '하나':
 				return HanaBank;
+			case 'BNK':
+				return BNKBank;
 			default:
 				return '/main/DefaultBank.svg'; // 기본 로고 설정
 		}
@@ -97,7 +119,6 @@ const Main = () => {
 								src={userInfo && getBankLogo(userInfo.bank)}
 								alt="은행 로고"
 							/>
-							<div className="main-bank-name">{userInfo?.bank}</div>
 							<div className="main-account-number">{userInfo && userInfo.accountNumber}</div>
 						</div>
 						{/* <div className="main-profile-balance">394,227원</div> */}

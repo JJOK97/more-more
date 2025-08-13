@@ -15,6 +15,17 @@ const Feed = () => {
 	useEffect(() => {
 		const getGroupInfo = async () => {
 			try {
+				// 테스트 그룹인지 확인 (groupId가 TEST로 시작하는 경우)
+				if (groupId.startsWith('TEST')) {
+					const testGroups = JSON.parse(localStorage.getItem('testGroups') || '[]');
+					const testGroup = testGroups.find((group) => group.clubCode === groupId);
+					if (testGroup) {
+						setGroupInfo(testGroup);
+						return;
+					}
+				}
+
+				// 실제 API 호출
 				const url = `https://j11a605.p.ssafy.io/api/club/${groupId}`;
 				const data = await getDatas(url);
 				setGroupInfo(data);
@@ -34,9 +45,16 @@ const Feed = () => {
 	useEffect(() => {
 		const getAllPosts = async () => {
 			try {
-				const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
-				const data = await getDatas(url);
-				setPosts(data);
+				// 테스트 그룹인지 확인
+				if (groupId.startsWith('TEST')) {
+					const testPosts = JSON.parse(localStorage.getItem(`testPosts_${groupId}`) || '[]');
+					setPosts(testPosts);
+				} else {
+					// 실제 API 호출
+					const url = `https://j11a605.p.ssafy.io/api/posting/${groupId}/allPostings`;
+					const data = await getDatas(url);
+					setPosts(data);
+				}
 			} catch (error) {
 				console.error('Error fetching posts:', error);
 			} finally {

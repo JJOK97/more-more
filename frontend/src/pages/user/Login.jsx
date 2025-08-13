@@ -29,6 +29,34 @@ const Login = () => {
 		e.preventDefault();
 		console.log('로그인 시도 중...'); // 디버깅을 위한 로그
 		setError('');
+
+		// 테스트용 로그인 정보 확인
+		if (phoneNumber === '01012345678' && password === '1234') {
+			console.log('테스트 로그인 성공');
+			// 테스트용 토큰 및 사용자 정보 설정
+			localStorage.setItem('accessToken', 'test-access-token');
+			localStorage.setItem('refreshToken', 'test-refresh-token');
+			localStorage.setItem('memberId', 'test-member-id');
+			localStorage.setItem('userKey', 'test-user-key');
+			localStorage.setItem('phoneNumber', phoneNumber);
+
+			// 테스트용 사용자 프로필 정보 저장
+			const testUserInfo = {
+				name: '옥진석',
+				phoneNumber: '01012345678',
+				birthDate: '1997-04-14',
+				email: 'okjinseok@gmail.com',
+				address: '서울특별시 강남구 역삼동',
+				accountNumber: '1002-123-456789',
+				bank: 'BNK',
+				profileImageUrl: '/user/profile_man.jpg',
+			};
+			localStorage.setItem('testUserInfo', JSON.stringify(testUserInfo));
+
+			navigate('/'); // 메인 페이지로 이동
+			return;
+		}
+
 		try {
 			const response = await loginUser(phoneNumber, password);
 			console.log('로그인 성공:', response);

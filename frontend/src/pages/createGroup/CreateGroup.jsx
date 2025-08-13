@@ -100,7 +100,19 @@ const CreateGroup = () => {
 		}
 	};
 
-	return <div className="create-group">{renderStepContent()}</div>;
+	return (
+		<div className="create-group">
+			<div className="create-group-progress">
+				{[1, 2, 3, 4, 5, 6].map((stepNum) => (
+					<div
+						key={stepNum}
+						className={`create-group-progress-dot ${step >= stepNum ? 'active' : ''}`}
+					/>
+				))}
+			</div>
+			{renderStepContent()}
+		</div>
+	);
 };
 
 export default CreateGroup;
